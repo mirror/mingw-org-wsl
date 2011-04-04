@@ -1,3 +1,9 @@
+2011-04-04  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add a missing manifest constant definition.
+
+	* include/winnt.h (DOMAIN_ALIAS_RID_REMOTE_DESKTOP_USERS): Define.
+
 2011-03-29  Corinna Vinschen  <corinna@vinschen.de>
 
 	Win2K and Vista userenv updates.
