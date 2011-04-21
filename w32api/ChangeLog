@@ -1,3 +1,10 @@
+2011-04-21  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
+
+	Fix bad typedef, per MinGW-Bug [#1529].
+
+	* include/imagehlp.h (PREAD_PROCESS_MEMORY_ROUTINE): Corrected, to
+	conform with MSDN reference, as identified by Safety0ff.
+
 2011-04-04  Corinna Vinschen  <corinna@vinschen.de>
 
 	Add a missing manifest constant definition.
