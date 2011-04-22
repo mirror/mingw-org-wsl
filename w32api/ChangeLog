@@ -1,3 +1,12 @@
+2011-04-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid pollution of user namespace; fix MinGW-Bug [#1531].
+
+	* include/windef.h (PACKED): Delete macro definition; its name is not
+	reserved, and may thus conflict with a user defined name; replace it...
+	* include/wincon.h (KEY_EVENT_RECORD): ...at this sole point of use;
+	use __attribute__((packed)) directly instead.
+
 2011-04-21  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 
 	Fix bad typedef, per MinGW-Bug [#1529].
