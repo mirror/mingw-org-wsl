@@ -1,3 +1,10 @@
+2011-05-22  Albrecht Schlosser  <vms-news@go4more.de>
+
+	Fix an incorrectly typed structure member.
+
+	* include/wingdi.h (GCP_RESULTSW): lpClass field defined as LPWSTR;
+	should be LPSTR; correct it.
+
 2011-05-15  Corinna Vinschen  <corinna@vinschen.de>
 
 	Add another missing manifest constant definition.
