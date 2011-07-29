@@ -1,3 +1,9 @@
+2011-07-29  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add a missing Win2K sockets IOCTL feature.
+
+	* include/winsock2.h (SIO_UDP_CONNRESET): Define.
+
 2011-05-22  Albrecht Schlosser  <vms-news@go4more.de>
 
 	Fix an incorrectly typed structure member.
