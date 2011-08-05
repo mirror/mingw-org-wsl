@@ -1,3 +1,15 @@
+2011-08-05  Corinna Vinschen  <corinna@vinschen.de>
+
+	Correct some misspelled manifest constant names.
+
+	* include/winnt.h (IMAGE_DLL_CHARACTERISTICS_NX_COMPAT): Should be...
+	(IMAGE_DLLCHARACTERISTICS_NX_COMPAT): ...this; define correctly; also
+	alias to original misspelling, to maintain backward compatibility.
+	(IMAGE_DLL_CHARACTERISTICS_FORCE_INTEGRITY): Likewise; should be...
+	(IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY): ...this; define and alias.
+	(IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE): Likewise; should be...
+	(IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE): ...this; define and alias.
+
 2011-07-29  Corinna Vinschen  <corinna@vinschen.de>
 
 	Add a missing Win2K sockets IOCTL feature.
