@@ -1,3 +1,10 @@
+2011-08-19  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add missing MAPVK manifest constant definitions.
+
+	* include/winuser.h (MAPVK_VK_TO_VSC, MAPVK_VSC_TO_VK): Define them.
+	(MAPVK_VK_TO_CHAR, MAPVK_VSC_TO_VK_EX, MAPVK_VK_TO_VSC_EX): Likewise.
+
 2011-08-05  Corinna Vinschen  <corinna@vinschen.de>
 
 	Correct some misspelled manifest constant names.
