@@ -1,3 +1,12 @@
+2011-11-30  Ozkan Sezer  <sezero@users.sourceforge.net>
+
+	Correct prototypes for _wfindfirst()/_wfindnext() function family.
+
+	* include/io.h (_wfindfirst, _wfindfirst32, _wfindfirsti64)
+	(_wfindfirst32i64, _wfindfirst64i32): Return type changed to intptr_t.
+	(_wfindnext, _wfindnext32, _wfindnexti64, _wfindnext32i64)
+	(_wfindnext64i32, _wfindnext64): Type of parameter #1 must match.
+
 2011-11-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Avoid potential GCC "missing function prototype" warnings.
