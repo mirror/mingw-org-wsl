@@ -1,3 +1,11 @@
+2011-11-30  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Avoid potential GCC "missing function prototype" warnings.
+
+	* include/stdio.h (getc, putc, getchar, putchar, fopen64)
+	(ftello64): Provide a function prototype declaration for each of
+	these, prior to the corresponding inline implementation.
+
 2011-08-23 Chris Sutcliffe <ir0nh34d@users.sourceforge.net>
 
 	* include/_mingw.h: Increment version to 3.20.
