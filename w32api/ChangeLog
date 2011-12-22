@@ -1,3 +1,9 @@
+2011-12-22  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add missing PROCESS_QUERY_LIMITED_INFORMATION.
+
+	* include/winnt.h (PROCESS_QUERY_LIMITED_INFORMATION): Define it.
+
 2011-08-19  Corinna Vinschen  <corinna@vinschen.de>
 
 	Add missing MAPVK manifest constant definitions.
