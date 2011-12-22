@@ -1,5 +1,14 @@
 2011-12-22  Corinna Vinschen  <corinna@vinschen.de>
 
+	Replace more incorrectly named manifest constants.
+
+	* include/winnt.h (JOB_OBJECT_LIMIT_BREAKAWAY_OK)
+	(JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK): Define; make aliases for...
+	(JOB_OBJECT_BREAKAWAY_OK, JOB_OBJECT_SILENT_BREAKAWAY): ...these old
+	definitions respectively; retain for backward compatibility only.
+
+2011-12-22  Corinna Vinschen  <corinna@vinschen.de>
+
 	Add missing PROCESS_QUERY_LIMITED_INFORMATION.
 
 	* include/winnt.h (PROCESS_QUERY_LIMITED_INFORMATION): Define it.
