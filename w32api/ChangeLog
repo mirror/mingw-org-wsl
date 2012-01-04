@@ -1,3 +1,17 @@
+2012-01-03  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	Remove duplicate definitions, identified by 'make test'.
+
+	* include/wincrypt.h (CRYPT_NEWKEYSET, CRYPT_DELETEKEYSET)
+	(CRYPT_MACHINE_KEYSET, CRYPT_EXPORTABLE, CRYPT_USER_PROTECTED)
+	(CRYPT_SILENT, CRYPT_CREATE_SALT, CRYPT_UPDATE_KEY, CRYPT_NO_SALT)
+	(CRYPT_PREGEN, CRYPT_RECIPIENT, CRYPT_INITIATOR, CRYPT_ONLINE)
+	(CRYPT_SF, CRYPT_CREATE_IV, CRYPT_KEK, CRYPT_DATA_KEY)
+	(CRYPT_VOLATILE, CRYPT_SGCKEY): Delete second instance of each.
+
+	* include/winerror.h (CRYPT_E_REVOKED): Delete; it is already
+	correctly defined (per MSDN) in <wincrypt.h>
+
 2012-01-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct misuse of #ifdef, identified by 'make test'.
