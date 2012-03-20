@@ -1,3 +1,10 @@
+2012-03-19  Ben Greear  <greear@users.sf.net>
+
+	Adjust header file definition order, to fix issue [#1570].
+
+	* include/routprot.h (IP_LOCAL_BINDING): Must be defined before...
+	(IP_ADAPTER_BINDING_INFO): ...this; adjust order of definition.
+
 2012-01-03  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	Add missing return value, flagged by 'make test'.
