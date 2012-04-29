@@ -1,3 +1,10 @@
+2012-04-28  LRN  <l_r_nightmare@users.sf.net>
+
+	Add missing <shobjidl.h> and associated UUID implementation.
+
+	* include/shobjidl.h lib/shobjidl-uuid.c: New files.
+	* lib/Makefile.in (UUID_SOURCES, UUID_OBJS): Add references.
+
 2012-03-19  Ben Greear  <greear@users.sf.net>
 
 	Adjust header file definition order, to fix issue [#1570].
