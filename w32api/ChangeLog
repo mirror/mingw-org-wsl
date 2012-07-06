@@ -1,3 +1,19 @@
+2012-07-06  Corinna Vinschen  <corinna@vinschen.de>
+
+	Extend visibility of winsock definitions when building Cygwin.
+
+	* include/winsock.h [__INSIDE_CYGWIN__]: Expose definitions of...
+	(IP_OPTIONS, SO_DEBUG, SO_ACCEPTCONN, SO_REUSEADDR, SO_KEEPALIVE)
+	(SO_DONTROUTE, SO_BROADCAST, SO_USELOOPBACK, SO_LINGER, SO_OOBINLINE)
+	(SO_DONTLINGER, SO_SNDBUF, SO_RCVBUF, SO_SNDLOWAT, SO_RCVLOWAT)
+	(SO_SNDTIMEO, SO_RCVTIMEO, SO_ERROR, SO_TYPE): ...these; however...
+	[__INSIDE_MSYS__]: ...keep them hidden.
+
+	* include/winsock2.h [__INSIDE_CYGWIN__]: Likewise, expose...
+	(AF_MAX, _SS_MAXSIZE, _SS_ALIGNSIZE, _SS_PAD1SIZE, _SS_PAD2SIZE)
+	(struct sockaddr, struct sockaddr_storage): ...these, whereas...
+	[__INSIDE_MSYS__]: ...also keep them hidden.
+
 2012-04-29  Jan Ringos  <tringi@users.sf.net>
 
 	Correct version guard for WinXP minimum requirement.
