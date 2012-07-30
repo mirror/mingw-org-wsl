@@ -1,3 +1,10 @@
+2012-07-30  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct missing inclusion of <_mingw.h>.
+
+	* include/stdint.h: Add omitted #include; all mingwrt headers are
+	expected to include this; it is required to define __int64.
+
 2011-11-30  Ozkan Sezer  <sezero@users.sourceforge.net>
 
 	Correct prototypes for _wfindfirst()/_wfindnext() function family.
