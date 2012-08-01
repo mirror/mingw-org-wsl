@@ -1,3 +1,10 @@
+2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Update for _WIN64 exception handler readiness.
+
+	* include/excpt.h [_WIN64] (__try1, __except1): Add alternative inline
+	assembly code implementation, based on X86-64 architecture.
+
 2012-07-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Correct missing inclusion of <_mingw.h>.
