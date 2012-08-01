@@ -1,3 +1,10 @@
+2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct MENUITEMINFO structure definition per issue [#1659].
+
+	* include/winuser.h (tagMENUITEMINFOA, tagMENUITEMINFOW): dwItemData
+	field was defined as type DWORD; correct it to type ULONG_PTR.
+
 2012-07-06  Corinna Vinschen  <corinna@vinschen.de>
 
 	Extend visibility of winsock definitions when building Cygwin.
