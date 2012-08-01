@@ -1,5 +1,17 @@
 2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Declare WTSVirtualChannel API functions per issue [#1342].
+
+	* include/wtsapi32.h [_WIN32_WINNT >= 0x500]
+	(WTSVirtualChannelOpen, WTSVirtualChannelQuery, WTSVirtualChannelRead)
+	(WTSVirtualChannelPurgeInput, WTSVirtualChannelPurgeOutput)
+	(WTSVirtualChannelWrite, WTSVirtualChannelClose): Declare them.
+	[_WIN32_WINNT >= 0x600] (WTSVirtualchannelOpenEx): Likewise.
+
+	* lib/wtsapi32.def (WTSVirtualChannelOpenEx@12): Add reference.
+
+2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Correct MENUITEMINFO structure definition per issue [#1659].
 
 	* include/winuser.h (tagMENUITEMINFOA, tagMENUITEMINFOW): dwItemData
