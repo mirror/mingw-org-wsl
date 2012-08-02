@@ -1,3 +1,16 @@
+2012-08-01  Stephan Jorek  <sjorek@users.sourceforge.net>
+
+	Correct typos, as identified by issue [#1534].
+
+	* include/setupapi.h (SetupCancelTemporary): Should be...
+	(SetupCancelTemporarySourceList): ...this; complete truncated name.
+	(SetupFreeA, SetupFreeW): Likewise, complete these respectively to...
+	(SetupFreeSourceListA, SetupFreeSourceListW): ...these, and...
+	(SetupQueryA, SetupQueryW): ...these respectively to...
+	(SetupQuerySourceListA, SetupQuerySourceListW): ...these.
+	(SetupDiGetWizardage): Misspelled; correct it to...
+	(SetupDiGetWizardPage): ...this.
+
 2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Declare WTSVirtualChannel API functions per issue [#1342].
