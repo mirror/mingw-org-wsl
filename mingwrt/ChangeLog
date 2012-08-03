@@ -1,3 +1,11 @@
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Add another more rigorous __STRICT_ANSI__ filter.
+
+	* include/limits.h [__STRICT_ANSI__] (PATH_MAX): Suppress definition.
+	* include/sys/param.h [PATH_MAX defined] (MAXPATHLEN): Alias it.
+	[PATH_MAX not defined] (MAXPATHLEN): Define it directly.
+
 2012-08-02  Ivan Maidanski  <ivmai@users.sourceforge.net>
 
 	Add missing function prototypes per issue [#1305].
