@@ -1,5 +1,14 @@
 2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Apply some more rigorous __STRICT_ANSI__ filtering.
+
+	* include/stdio.h (_getws, _putws, _wfdopen, _wfopen) 
+	(_wfreopen, _wfsopen, _wtmpnam, _wtempnam, _wrename, _wremove)
+	(_wperror, _wpopen): Do not declare these functions unless...
+	[#ifndef __STRICT_ANSI__]: ...this is satisfied.
+
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Add string to 64-bit integer conversion function prototypes.
 
 	* include/stdlib.h (_strtoi64, _strtoi64_l, _strtoui64, _strtoui64_l)
