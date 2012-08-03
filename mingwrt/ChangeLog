@@ -1,3 +1,12 @@
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Add string to 64-bit integer conversion function prototypes.
+
+	* include/stdlib.h (_strtoi64, _strtoi64_l, _strtoui64, _strtoui64_l)
+	(_wcstoi64, _wcstoi64_l, _wcstoui64, _wcstoui64_l): Declare them.
+	* include/wchar.h (_wcstoi64, _wcstoi64_l, _wcstoui64, _wcstoui64_l):
+	Likewise; these are duplicates of the <stdlib.h> declarations.
+
 2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Update for _WIN64 exception handler readiness.
