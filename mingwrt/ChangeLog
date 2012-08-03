@@ -1,3 +1,12 @@
+2012-08-02  Ivan Maidanski  <ivmai@users.sourceforge.net>
+
+	Add missing function prototypes per issue [#1305].
+
+	* include/process.h [#ifndef _WPROCESS_DEFINED]
+	(_wexecl, _wexecle, _wexeclp, _wexeclpe, _wexecv, _wexecve)
+	(_wexecvp, _wexecvpe, _wspawnl, _wspawnle, _wspawnlp, _wspawnlpe)
+	(_wspawnv, _wspawnve, _wspawnvp, _wspawnvpe): Declare them.
+
 2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Add function prototype declarations per issue [#1293].
