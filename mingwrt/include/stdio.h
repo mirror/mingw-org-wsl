@@ -595,6 +595,8 @@ _CRTIMP wint_t __cdecl __MINGW_NOTHROW	putwc (wint_t, FILE*);
 _CRTIMP wint_t __cdecl __MINGW_NOTHROW	putwchar (wint_t);
 
 #ifndef __STRICT_ANSI__
+_CRTIMP void __cdecl __MINGW_NOTHROW _lock_file(FILE*);
+_CRTIMP void __cdecl __MINGW_NOTHROW _unlock_file(FILE*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _getws (wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_putws (const wchar_t*);
 _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wfdopen(int, const wchar_t *);

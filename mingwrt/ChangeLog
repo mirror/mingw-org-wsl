@@ -1,5 +1,11 @@
 2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Add function prototype declarations per issue [#1293].
+
+	* include/stdio.h (_lock_file, _unlock_file): Declare them.
+
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Apply some more rigorous __STRICT_ANSI__ filtering.
 
 	* include/stdio.h (_getws, _putws, _wfdopen, _wfopen) 
