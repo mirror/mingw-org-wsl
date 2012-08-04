@@ -1,3 +1,11 @@
+2012-08-04  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Cosmetic adjustment to match MSDN documentation.
+
+	* include/winver.h (VerQueryValueA, VerQueryValueW): Declare type
+	of parameter #1 to be LPCVOID, in preference to formerly specified,
+	and functionally equivalent, 'const LPVOID'.
+
 2012-08-01  Stephan Jorek  <sjorek@users.sourceforge.net>
 
 	Correct typos, as identified by issue [#1534].
