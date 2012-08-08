@@ -1,0 +1,7 @@
+Makefile
+configure
+.*.swp
+*~
+autom4te.cache
+missing
+depcomp

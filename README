@@ -1,0 +1,12 @@
+mingw.org-wsl (Windows System Libraries):
+=====
+This package contains both the C Runtime (libcrt) and the Windows API (winapi)
+definitions as provided by the MinGW.org team.  These libraries can be used
+for both 32 bit and 64 bit Windows programming.  We have extended some parts
+of the C runtime to be C99 compliant but for the most part you can find the
+documentation provided by http://msdn.microsoft.com to be your best source for
+how to use these libraries in your C programming.  The GNU C++ compiler (g++)
+has its own implementation of the C++ standard and the documentation you find
+for stdc++ on the http://gcc.gnu.org site will be your best source of informa-
+tion for it.  Note that some of the C++ API will not able to be used on Windows
+due to lack of implementation for the Windows platform.
