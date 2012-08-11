@@ -1,3 +1,7 @@
+2012-08-11  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/*: Add combined winsup/mingw and winsup/w32api include files.
+
 2012-08-08  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* ChangeLog: New file.
