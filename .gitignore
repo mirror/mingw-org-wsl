@@ -1,10 +1,10 @@
 Makefile
-Makefile.in
 aclocal.m4
 configure
 .*.swp
 *~
 *.log
+*.bak
 autom4te.cache
 missing
 depcomp
