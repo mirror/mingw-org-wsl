@@ -18,7 +18,9 @@ CFLAGS=@CFLAGS@
 RANLIB=@RANLIB@
 AS=@AS@
 DLLTOOL=@DLLTOOL@
+DLLTOOL_FLAGS := --as $(AS) -k -U --dllname
 INSTALL=@INSTALL@
+MKDIR_P=@MKDIR_P@
 
 INCLUDES=-I$(top_srcdir)/include -I$(srcdir)/include \
   -I$(top_srcdir)/src/libcrt/include -nostdinc \
@@ -27,7 +29,7 @@ ALL_CFLAGS=$(CFLAGS) $(INCLUDES) -DNTDDI_VERSION=0x04000000
 
 .SUFFIXES: .def.in .def
 
-lib_LIBRARIES = \
+mingwrt_lib_LIBRARIES = \
   libmsvcrt.a \
   libmsvcrtd.a \
   libmsvcr70.a \
@@ -58,6 +60,14 @@ lib_LIBRARIES = \
   libm.a \
   libmingwex.a \
   libgmon.a
+
+winapi_DEF := $(notdir $(wildcard ${top_srcdir}/lib/lib32/*.def))
+winapi_MRI := $(notdir $(wildcard ${top_srcdir}/lib/lib32/*.mri))
+winapi_lib_LIBRARIES := $(addprefix lib,$(winapi_DEF:.def=.a))
+winapi_mri_LIBRARIES := $(addprefix lib,$(winapi_MRI:.mri=.a))
+winapi_lib_EXTRA_LIBRARIES := libuuid.a libscrnsave.a libscrnsavw.a liblargeint.a
+
+lib_LIBRARIES := $(mingwrt_lib_LIBRARIES) $(winapi_lib_LIBRARIES) $(winapi_lib_EXTRA_LIBRARIES) $(winapi_mri_LIBRARIES)
 
 SRCDIR := src/libcrt/crt
 crt0_SOURCES := \
@@ -99,6 +109,21 @@ lib_OBJECTS := $(crt0_OBJECTS) $(gcrt0_OBJECTS)
 
 bin_LIBRARIES := mingwm10.dll
 doc_DOCUMENTS := README LICENSE
+doc_DOCUMENTS_EXTRA := doc/historical/mingw doc/historical/w32api
+
+libuuid_a_SOURCES := $(addprefix src/libuuid/,$(notdir $(wildcard ${top_srcdir}/src/libuuid/*.c)))
+libuuid_a_OBJECTS := $(libuuid_a_SOURCES:.c=.o)
+
+libscrnsave_a_SOURCES := src/libscrnsave/scrnsave.c
+libscrnsave_a_OBJECTS := $(libscrnsave_a_SOURCES:.c=.o)
+scrnsave_o_CFLAGS := -UUNICODE
+
+libscrnsavw_a_SOURCES := src/libscrnsave/scrnsave.c
+libscrnsavw_a_OBJECTS := src/libscrnsave/srcnsavw.o
+scrnsavw_o_CFLAGS := -DUNICODE
+
+liblargeint_a_SOURCES := src/liblargeint/largeint.c
+liblargeint_a_OBJECTS := $(liblargeint_a_SOURCES:.c=.o)
 
 msvcrt_DEF = \
   msvcrt.def \
@@ -566,26 +591,47 @@ $(moldname_DEF): lib/lib32/moldname.def.in
 		-D__MSVCRT__ -C -E -P -xc-header \
 		$? > $@
 
+SRCDIR := lib/lib32
+$(notdir $(winapi_lib_LIBRARIES)): $(addprefix lib/lib32/,$(winapi_DEF))
+	@echo Making library $@ from $<.
+	DLLNAME=$(notdir $(<:.def=.dll))
+	$(DLLTOOL) $(DLLTOOL_FLAGS) $${DLLNAME} --def $< --output-lib $@
+	$(RANLIB) $@
+
+$(notdir $(winapi_mri_LIBRARIES)): $(addprefix lib/lib32/,$(winapi_MRI))
+	@echo Making library $@ from $<.
+	$(AR) -M < $<
+	$(RANLIB) $@
+
 lib%.a: %.def
 	@echo Making library $@ from $?.
 	N=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\1|'`; \
 	V=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\2|'`; \
 	DLLNAME="$${N}$${V}.dll"; \
-	$(DLLTOOL) --as $(AS) -k -U --dllname $${DLLNAME} --def $< --output-lib $@
+	$(DLLTOOL) $(DLLTOOL_FLAGS) $${DLLNAME} --def $< --output-lib $@
 	$(RANLIB) $@
 
 %.o : %.c
-	mkdir -p $(@D)
+	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
 SRCDIR := src/libcrt/crt
 $(SRCDIR)/crt1.o $(SRCDIR)/dllcrt1.o:
-	mkdir -p $(@D)
+	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -U__MSVCRT__ -D__CRTDLL__ -o $@ $<
 
 $(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o:
-	mkdir -p $(@D)
+	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -D__MSVCRT__ -U__CRTDLL__ -o $@ $<
+
+SRCDIR := src/libscrnsave
+$(libscrnsave_a_OBJECTS): $(libscrnsave_a_SOURCES)
+	$(MKDIR_P) $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(scrnsave_o_CFLAGS) -o $@ $<
+
+$(libscrnsavw_a_OBJECTS): $(libscrnsavw_a_SOURCES)
+	$(MKDIR_P) $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(scrnsavw_o_CFLAGS) -o $@ $<
 
 $(SRCDIR)/crt1.o: $(SRCDIR)/crt1.c
 $(SRCDIR)/dllcrt1.o: $(SRCDIR)/dllcrt1.c
@@ -616,13 +662,29 @@ libmingwthrd.a: $(libmingwthrd_a_OBJECTS)
 	$(RANLIB) $@
 
 libmingwthrd_old.a: $(libmingwthrd_a_OBJECTS) mingwm10.dll mingwthrd.def
-	$(DLLTOOL) $(DLLTOOL_FLAGS) --dllname mingwm10.dll \
+	$(DLLTOOL) $(DLLTOOL_FLAGS) mingwm10.dll \
 	  --def mingwthrd.def --output-lib $@
 	$(AR) rc $@ $(libmingwthrd_a_OBJECTS)
 	$(RANLIB) $@
 
 libgmon.a: $(libgmon_a_OBJECTS)
 	$(AR) rc $@ $(libgmon_a_OBJECTS)
+	$(RANLIB) $@
+
+libuuid.a: $(libuuid_a_OBJECTS)
+	$(AR) rc $@ $(libuuid_a_OBJECTS)
+	$(RANLIB) $@
+
+libscrnsave.a: $(libscrnsave_a_OBJECTS)
+	$(AR) rc $@ $(libscrnsave_a_OBJECTS)
+	$(RANLIB) $@
+
+libscrnsavw.a: $(libscrnsavw_a_OBJECTS)
+	$(AR) rc $@ $(libscrnsavw_a_OBJECTS)
+	$(RANLIB) $@
+
+liblargeint.a: $(liblargeint_a_OBJECTS)
+	$(AR) rc $@ $(liblargeint_a_OBJECTS)
 	$(RANLIB) $@
 
 _libm_dummy.c:
@@ -640,7 +702,7 @@ mingwm10.dll: $(mingwm10_dll_OBJECTS) mingwthrd.def libmingwex.a
 	  -o mingwm10.dll
 
 clean:
-	rm -f *.def *.a _libm_dummy.c stamp*
+	rm -f *.def *.s *.a _libm_dummy.c stamp*
 	rm -rf .deps/
 	find . -type f -name \*.o -delete
 	find . -type f -name \*.dll -delete
@@ -668,6 +730,10 @@ install-dirs: $(need-DESTDIR-compatibility)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
 	$(mkinstalldirs) $(DESTDIR)$(docdir)
+	$(mkinstalldirs) $(DESTDIR)$(docdir)/historical
+	$(mkinstalldirs) $(DESTDIR)$(docdir)/historical/mingw
+	$(mkinstalldirs) $(DESTDIR)$(docdir)/historical/mingw/man
+	$(mkinstalldirs) $(DESTDIR)$(docdir)/historical/w32api
 	$(mkinstalldirs) $(DESTDIR)$(includedir)
 	for I in `find $(top_srcdir)/include/* -type d`; do \
 	  J=`basename $$I`; \
@@ -688,6 +754,7 @@ install-docs:
 	for DOC in $(doc_DOCUMENTS); do \
 	  $(INSTALL) $(INSTALL_FLAGS) $(top_srcdir)/$$DOC $(DESTDIR)$(docdir)/$$DOC ; \
 	done
+	cp -a $(top_srcdir)/doc/historical $(DESTDIR)$(docdir) ;
 
 install-includes:
 	for INC in $(top_srcdir)/include/*.h; do \
