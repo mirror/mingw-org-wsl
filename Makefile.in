@@ -1,0 +1,715 @@
+VPATH=$(srcdir)
+PACKAGE_TARNAME=@PACKAGE_TARNAME@
+srcdir=@srcdir@
+top_srcdir=@top_srcdir@
+top_builddir=@top_builddir@
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+datarootdir=@datarootdir@
+bindir=@bindir@
+libdir=@libdir@
+includedir=@includedir@
+docdir=@docdir@
+
+mkinstalldirs=@MKDIR_P@
+
+CFLAGS=@CFLAGS@
+RANLIB=@RANLIB@
+AS=@AS@
+DLLTOOL=@DLLTOOL@
+INSTALL=@INSTALL@
+
+INCLUDES=-I$(top_srcdir)/include -I$(srcdir)/include \
+  -I$(top_srcdir)/src/libcrt/include -nostdinc \
+  -iwithprefixbefore include
+ALL_CFLAGS=$(CFLAGS) $(INCLUDES) -DNTDDI_VERSION=0x04000000
+
+.SUFFIXES: .def.in .def
+
+lib_LIBRARIES = \
+  libmsvcrt.a \
+  libmsvcrtd.a \
+  libmsvcr70.a \
+  libmsvcr70d.a \
+  libmsvcr71.a \
+  libmsvcr71d.a \
+  libmsvcr80.a \
+  libmsvcr80d.a \
+  libmsvcr90.a \
+  libmsvcr90d.a \
+  libmsvcr100.a \
+  libmsvcr100d.a \
+  libmingw32.a \
+  libmoldname.a \
+  libmoldnamed.a \
+  libmoldname70.a \
+  libmoldname70d.a \
+  libmoldname71.a \
+  libmoldname71d.a \
+  libmoldname80.a \
+  libmoldname80d.a \
+  libmoldname90.a \
+  libmoldname90d.a \
+  libmoldname100.a \
+  libmoldname100d.a \
+  libmingwthrd.a \
+  libmingwthrd_old.a \
+  libm.a \
+  libmingwex.a \
+  libgmon.a
+
+SRCDIR := src/libcrt/crt
+crt0_SOURCES := \
+  $(SRCDIR)/crt1.c \
+  $(SRCDIR)/dllcrt1.c \
+  $(SRCDIR)/CRT_noglob.c \
+  $(SRCDIR)/crtmt.c \
+  $(SRCDIR)/crtst.c \
+  $(SRCDIR)/CRT_fp8.c \
+  $(SRCDIR)/CRT_fp10.c \
+  $(SRCDIR)/txtmode.c \
+  $(SRCDIR)/binmode.c
+crt0_OBJECTS := $(crt0_SOURCES:.c=.o) $(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o
+
+SRCDIR := src/libcrt/crt
+mingwm10_dll_SOURCES := \
+  $(SRCDIR)/mthr.c \
+  $(SRCDIR)/mthr_init.c
+mingwm10_dll_OBJECTS := $(mingwm10_dll_SOURCES:.c=.o)
+mingwm10_dll_FLAGS := -shared -Wl,--image-base,0x6FBC0000 \
+  -Wl,--entry,_DllMainCRTStartup@12 -L.
+
+SRCDIR := src/libcrt/crt
+mold_SOURCES := \
+  $(SRCDIR)/isascii.c \
+  $(SRCDIR)/iscsym.c \
+  $(SRCDIR)/iscsymf.c \
+  $(SRCDIR)/toascii.c \
+  $(SRCDIR)/strcasecmp.c \
+  $(SRCDIR)/strncasecmp.c \
+  $(SRCDIR)/wscmpi.c
+mold_OBJECTS := $(mode_SOURCES:.c=.o)
+
+SRCDIR := gpl/profile
+gcrt0_SOURCES := $(SRCDIR)/gcrt0.c
+gcrt0_OBJECTS := $(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o
+
+lib_OBJECTS := $(crt0_OBJECTS) $(gcrt0_OBJECTS)
+
+bin_LIBRARIES := mingwm10.dll
+doc_DOCUMENTS := README LICENSE
+
+msvcrt_DEF = \
+  msvcrt.def \
+  msvcr70.def \
+  msvcr71.def \
+  msvcr80.def \
+  msvcr90.def \
+  msvcr100.def \
+  msvcrtd.def \
+  msvcr70d.def \
+  msvcr71d.def \
+  msvcr80d.def \
+  msvcr90d.def \
+  msvcr100d.def
+
+moldname_DEF = \
+  moldname.def \
+  moldnamed.def \
+  moldname70.def \
+  moldname71.def \
+  moldname80.def \
+  moldname90.def \
+  moldname100.def \
+  moldname70d.def \
+  moldname71d.def \
+  moldname80d.def \
+  moldname90d.def \
+  moldname100d.def
+
+SRCDIR := src/libcrt/crt
+libmingw32_a_SOURCES := \
+  $(SRCDIR)/CRTglob.c \
+  $(SRCDIR)/CRTfmode.c \
+  $(SRCDIR)/CRTinit.c \
+  $(SRCDIR)/dllmain.c \
+  $(SRCDIR)/gccmain.c \
+  $(SRCDIR)/main.c \
+  $(SRCDIR)/crtst.c \
+  $(SRCDIR)/CRT_fp10.c \
+  $(SRCDIR)/txtmode.c \
+  $(SRCDIR)/pseudo-reloc.c \
+  $(SRCDIR)/pseudo-reloc-list.c \
+  $(SRCDIR)/cpu_features.c \
+  $(SRCDIR)/tlsmcrt.c \
+  $(SRCDIR)/tlsmthread.c \
+  $(SRCDIR)/tlssup.c \
+  $(SRCDIR)/tlsthrd.c
+libmingw32_a_OBJECTS := $(libmingw32_a_SOURCES:.c=.o)
+
+libmingwthrd_a_SOURCES := $(SRCDIR)/crtmt.c
+libmingwthrd_a_OBJECTS := $(libmingwthrd_a_SOURCES:.c=.o)
+
+SRCDIR := src/libcrt/complex
+complex_SOURCES := \
+  $(SRCDIR)/cabs.c \
+  $(SRCDIR)/carg.c \
+  $(SRCDIR)/catan.c \
+  $(SRCDIR)/ccoshf.c \
+  $(SRCDIR)/clog.c \
+  $(SRCDIR)/creal.c \
+  $(SRCDIR)/csqrt.c \
+  $(SRCDIR)/cabsf.c \
+  $(SRCDIR)/cargf.c \
+  $(SRCDIR)/catanf.c \
+  $(SRCDIR)/ccoshl.c \
+  $(SRCDIR)/clogf.c \
+  $(SRCDIR)/crealf.c \
+  $(SRCDIR)/csqrtf.c \
+  $(SRCDIR)/cabsl.c \
+  $(SRCDIR)/cargl.c \
+  $(SRCDIR)/catanh.c \
+  $(SRCDIR)/ccosl.c\
+  $(SRCDIR)/clogl.c \
+  $(SRCDIR)/creall.c \
+  $(SRCDIR)/csqrtl.c \
+  $(SRCDIR)/cacos.c \
+  $(SRCDIR)/casin.c \
+  $(SRCDIR)/catanhf.c \
+  $(SRCDIR)/cexp.c \
+  $(SRCDIR)/cpow.c \
+  $(SRCDIR)/csin.c \
+  $(SRCDIR)/ctan.c \
+  $(SRCDIR)/cacosf.c \
+  $(SRCDIR)/casinf.c \
+  $(SRCDIR)/catanhl.c \
+  $(SRCDIR)/cexpf.c \
+  $(SRCDIR)/cpowf.c \
+  $(SRCDIR)/csinf.c \
+  $(SRCDIR)/ctanf.c \
+  $(SRCDIR)/cacosh.c \
+  $(SRCDIR)/casinh.c \
+  $(SRCDIR)/catanl.c \
+  $(SRCDIR)/cexpl.c \
+  $(SRCDIR)/cpowl.c \
+  $(SRCDIR)/csinh.c \
+  $(SRCDIR)/ctanh.c \
+  $(SRCDIR)/cacoshf.c \
+  $(SRCDIR)/casinhf.c \
+  $(SRCDIR)/ccos.c \
+  $(SRCDIR)/cimag.c \
+  $(SRCDIR)/cproj.c \
+  $(SRCDIR)/csinhf.c \
+  $(SRCDIR)/ctanhf.c \
+  $(SRCDIR)/cacoshl.c \
+  $(SRCDIR)/casinhl.c \
+  $(SRCDIR)/ccosf.c \
+  $(SRCDIR)/cimagf.c \
+  $(SRCDIR)/cprojf.c \
+  $(SRCDIR)/csinhl.c \
+  $(SRCDIR)/ctanhl.c \
+  $(SRCDIR)/cacosl.c \
+  $(SRCDIR)/casinl.c \
+  $(SRCDIR)/ccosh.c \
+  $(SRCDIR)/cimagl.c \
+  $(SRCDIR)/cprojl.c \
+  $(SRCDIR)/csinl.c \
+  $(SRCDIR)/ctanl.c
+
+SRCDIR := src/libcrt/ctype
+ctype_SOURCES := $(SRCDIR)/isblank.c $(SRCDIR)/iswblank.c
+
+SRCDIR := src/libcrt/fenv
+fenv_SOURCES := \
+  $(SRCDIR)/feclearexcept.c \
+  $(SRCDIR)/fegetround.c \
+  $(SRCDIR)/fesetenv.c \
+  $(SRCDIR)/fetestexcept.c \
+  $(SRCDIR)/fegetenv.c \
+  $(SRCDIR)/feholdexcept.c \
+  $(SRCDIR)/fesetexceptflag.c \
+  $(SRCDIR)/feupdateenv.c \
+  $(SRCDIR)/fegetexceptflag.c \
+  $(SRCDIR)/feraiseexcept.c \
+  $(SRCDIR)/fesetround.c
+
+SRCDIR := src/libcrt/gdtoa
+gdtoa_SOURCES := \
+  $(SRCDIR)/g__fmt.c \
+  $(SRCDIR)/gethex.c \
+  $(SRCDIR)/qnan.c \
+  $(SRCDIR)/strtopx.c \
+  $(SRCDIR)/g_dfmt.c \
+  $(SRCDIR)/gdtoa.c \
+  $(SRCDIR)/gmisc.c \
+  $(SRCDIR)/smisc.c \
+  $(SRCDIR)/sum.c \
+  $(SRCDIR)/arithchk.c \
+  $(SRCDIR)/g_ffmt.c \
+  $(SRCDIR)/hd_init.c \
+  $(SRCDIR)/strtodg.c \
+  $(SRCDIR)/ulp.c \
+  $(SRCDIR)/dmisc.c \
+  $(SRCDIR)/g_xfmt.c \
+  $(SRCDIR)/hexnan.c \
+  $(SRCDIR)/strtodnrp.c \
+  $(SRCDIR)/dtoa.c \
+  $(SRCDIR)/misc.c \
+  $(SRCDIR)/strtof.c
+
+SRCDIR := src/libcrt/inttypes
+inttypes_SOURCES := \
+  $(SRCDIR)/imaxabs.c \
+  $(SRCDIR)/imaxdiv.c \
+  $(SRCDIR)/strtoimax.c \
+  $(SRCDIR)/strtoumax.c \
+  $(SRCDIR)/wcstoimax.c \
+  $(SRCDIR)/wcstoumax.c
+
+SRCDIR := src/libcrt/math
+math_SOURCES := \
+  $(SRCDIR)/acosf.c \
+  $(SRCDIR)/acosh.c \
+  $(SRCDIR)/acoshf.c \
+  $(SRCDIR)/acoshl.c \
+  $(SRCDIR)/acosl.c \
+  $(SRCDIR)/asinf.c \
+  $(SRCDIR)/asinh.c \
+  $(SRCDIR)/asinhf.c \
+  $(SRCDIR)/asinhl.c \
+  $(SRCDIR)/asinl.c \
+  $(SRCDIR)/atan2f.c \
+  $(SRCDIR)/atan2l.c \
+  $(SRCDIR)/atanf.c \
+  $(SRCDIR)/atanh.c \
+  $(SRCDIR)/atanhf.c \
+  $(SRCDIR)/atanhl.c \
+  $(SRCDIR)/atanl.c \
+  $(SRCDIR)/cbrt.c \
+  $(SRCDIR)/cbrtf.c \
+  $(SRCDIR)/cbrtl.c \
+  $(SRCDIR)/ceilf.S \
+  $(SRCDIR)/ceill.S \
+  $(SRCDIR)/copysign.S \
+  $(SRCDIR)/copysignf.S \
+  $(SRCDIR)/copysignl.S \
+  $(SRCDIR)/cosf.S \
+  $(SRCDIR)/coshf.c \
+  $(SRCDIR)/coshl.c \
+  $(SRCDIR)/cosl.S \
+  $(SRCDIR)/erfl.c \
+  $(SRCDIR)/exp2.S \
+  $(SRCDIR)/exp2f.S \
+  $(SRCDIR)/exp2l.S \
+  $(SRCDIR)/expf.c \
+  $(SRCDIR)/expl.c \
+  $(SRCDIR)/expm1.c \
+  $(SRCDIR)/expm1f.c \
+  $(SRCDIR)/expm1l.c \
+  $(SRCDIR)/fabs.c \
+  $(SRCDIR)/fabsf.c \
+  $(SRCDIR)/fabsl.c \
+  $(SRCDIR)/fdim.c \
+  $(SRCDIR)/fdimf.c \
+  $(SRCDIR)/fdiml.c \
+  $(SRCDIR)/floorf.S \
+  $(SRCDIR)/floorl.S \
+  $(SRCDIR)/fma.S \
+  $(SRCDIR)/fmaf.S \
+  $(SRCDIR)/fmal.c \
+  $(SRCDIR)/fmax.c \
+  $(SRCDIR)/fmaxf.c \
+  $(SRCDIR)/fmaxl.c \
+  $(SRCDIR)/fmin.c \
+  $(SRCDIR)/fminf.c \
+  $(SRCDIR)/fminl.c \
+  $(SRCDIR)/fmodf.c \
+  $(SRCDIR)/fmodl.c \
+  $(SRCDIR)/fp_consts.c \
+  $(SRCDIR)/fp_constsf.c \
+  $(SRCDIR)/fp_constsl.c \
+  $(SRCDIR)/fpclassify.c \
+  $(SRCDIR)/fpclassifyf.c \
+  $(SRCDIR)/fpclassifyl.c \
+  $(SRCDIR)/frexpf.c \
+  $(SRCDIR)/frexpl.S \
+  $(SRCDIR)/fucom.c \
+  $(SRCDIR)/hypotf.c \
+  $(SRCDIR)/hypotl.c \
+  $(SRCDIR)/ilogb.S \
+  $(SRCDIR)/ilogbf.S \
+  $(SRCDIR)/ilogbl.S \
+  $(SRCDIR)/isnan.c \
+  $(SRCDIR)/isnanf.c \
+  $(SRCDIR)/isnanl.c \
+  $(SRCDIR)/ldexpf.c \
+  $(SRCDIR)/ldexpl.c \
+  $(SRCDIR)/lgamma.c \
+  $(SRCDIR)/lgammaf.c \
+  $(SRCDIR)/lgammal.c \
+  $(SRCDIR)/llrint.c \
+  $(SRCDIR)/llrintf.c \
+  $(SRCDIR)/llrintl.c \
+  $(SRCDIR)/log10f.S \
+  $(SRCDIR)/log10l.S \
+  $(SRCDIR)/log1p.S \
+  $(SRCDIR)/log1pf.S \
+  $(SRCDIR)/log1pl.S \
+  $(SRCDIR)/log2.S \
+  $(SRCDIR)/log2f.S \
+  $(SRCDIR)/log2l.S \
+  $(SRCDIR)/logb.c \
+  $(SRCDIR)/logbf.c \
+  $(SRCDIR)/logbl.c \
+  $(SRCDIR)/logf.S \
+  $(SRCDIR)/logl.S \
+  $(SRCDIR)/lrint.c \
+  $(SRCDIR)/lrintf.c \
+  $(SRCDIR)/lrintl.c \
+  $(SRCDIR)/lround_generic.c \
+  $(SRCDIR)/modff.c \
+  $(SRCDIR)/modfl.c \
+  $(SRCDIR)/nearbyint.S \
+  $(SRCDIR)/nearbyintf.S \
+  $(SRCDIR)/nearbyintl.S \
+  $(SRCDIR)/nextafterf.c \
+  $(SRCDIR)/nextafterl.c \
+  $(SRCDIR)/nexttoward.c \
+  $(SRCDIR)/nexttowardf.c \
+  $(SRCDIR)/pow.c \
+  $(SRCDIR)/powf.c \
+  $(SRCDIR)/powi.c \
+  $(SRCDIR)/powif.c \
+  $(SRCDIR)/powil.c \
+  $(SRCDIR)/powl.c \
+  $(SRCDIR)/remainder.S \
+  $(SRCDIR)/remainderf.S \
+  $(SRCDIR)/remainderl.S \
+  $(SRCDIR)/remquo.S \
+  $(SRCDIR)/remquof.S \
+  $(SRCDIR)/remquol.S \
+  $(SRCDIR)/rint.c \
+  $(SRCDIR)/rintf.c \
+  $(SRCDIR)/rintl.c \
+  $(SRCDIR)/round_generic.c \
+  $(SRCDIR)/s_erf.c \
+  $(SRCDIR)/scalbn.S \
+  $(SRCDIR)/scalbnf.S \
+  $(SRCDIR)/scalbnl.S \
+  $(SRCDIR)/sf_erf.c \
+  $(SRCDIR)/signbit.c \
+  $(SRCDIR)/signbitf.c \
+  $(SRCDIR)/signbitl.c \
+  $(SRCDIR)/sinf.S \
+  $(SRCDIR)/sinhf.c \
+  $(SRCDIR)/sinhl.c \
+  $(SRCDIR)/sinl.S \
+  $(SRCDIR)/sqrtf.c \
+  $(SRCDIR)/sqrtl.c \
+  $(SRCDIR)/tanf.S \
+  $(SRCDIR)/tanhf.c \
+  $(SRCDIR)/tanhl.c \
+  $(SRCDIR)/tanl.S \
+  $(SRCDIR)/tgamma.c \
+  $(SRCDIR)/tgammaf.c \
+  $(SRCDIR)/tgammal.c \
+  $(SRCDIR)/trunc.c \
+  $(SRCDIR)/truncf.c \
+  $(SRCDIR)/truncl.c
+
+SRCDIR := src/libcrt/misc
+misc_SOURCES := \
+  $(SRCDIR)/getopt.c \
+  $(SRCDIR)/membarrier.c \
+  $(SRCDIR)/mingw-aligned-malloc.c \
+  $(SRCDIR)/mingw-fseek.c
+
+SRCDIR := src/libcrt/posix/libgen
+posix_libgen_SOURCES := $(SRCDIR)/basename.c $(SRCDIR)/dirname.c
+SRCDIR := src/libcrt/posix/unistd
+posix_unistd_SOURCES := $(SRCDIR)/ftruncate.c $(SRCDIR)/usleep.c
+posix_SOURCES := $(posix_libgen_SOURCES) $(posix_unistd_SOURCES)
+
+SRCDIR := src/libcrt/profile
+profile_SOURCES := \
+  $(SRCDIR)/gmon.c \
+  $(SRCDIR)/mcount.c \
+  gpl/profile/profil.c \
+libgmon_a_SOURCES := $(profile_SOURCES)
+libgmon_a_OBJECTS := $(libgmon_a_SOURCES:.c=.o)
+
+SRCDIR := src/libcrt/search
+search_SOURCES := \
+  $(SRCDIR)/tdelete.c \
+  $(SRCDIR)/tfind.c \
+  $(SRCDIR)/tsearch.c \
+  $(SRCDIR)/twalk.c
+
+SRCDIR := src/libcrt/stdio
+stdio_SOURCES := \
+  $(SRCDIR)/btowc.c \
+  $(SRCDIR)/fopen64.c \
+  $(SRCDIR)/fprintf.c \
+  $(SRCDIR)/fseeko64.c \
+  $(SRCDIR)/ftello64.c \
+  $(SRCDIR)/lseek64.c \
+  $(SRCDIR)/pformat.c \
+  $(SRCDIR)/printf.c \
+  $(SRCDIR)/snprintf.c \
+  $(SRCDIR)/snwprintf.c \
+  $(SRCDIR)/sprintf.c \
+  $(SRCDIR)/vfprintf.c \
+  $(SRCDIR)/vfscanf.c \
+  $(SRCDIR)/vfwscanf.c \
+  $(SRCDIR)/vprintf.c \
+  $(SRCDIR)/vscanf.c \
+  $(SRCDIR)/vsnprintf.c \
+  $(SRCDIR)/vsnwprintf.c \
+  $(SRCDIR)/vsprintf.c \
+  $(SRCDIR)/vsscanf.c \
+  $(SRCDIR)/vswscanf.c \
+  $(SRCDIR)/vwscanf.c
+
+SRCDIR := src/libcrt/stdlib
+stdlib_SOURCES := \
+  $(SRCDIR)/_Exit.c \
+  $(SRCDIR)/atoll.c \
+  $(SRCDIR)/lltoa.c \
+  $(SRCDIR)/lltow.c \
+  $(SRCDIR)/ulltoa.c \
+  $(SRCDIR)/ulltow.c \
+  $(SRCDIR)/wtoll.c
+
+SRCDIR := src/libcrt/sys/time
+sys_time_SOURCES := $(SRCDIR)/gettimeofday.c
+sys_SOURCES := $(sys_time_SOURCES)
+
+SRCDIR := src/libcrt/tchar
+tchar_SOURCES := \
+  $(SRCDIR)/dirent.c \
+  $(SRCDIR)/wdirent.c
+
+SRCDIR := src/libcrt/wchar
+wchar_SOURCES := \
+  $(SRCDIR)/fwide.c \
+  $(SRCDIR)/mbrtowc.c \
+  $(SRCDIR)/mbsinit.c \
+  $(SRCDIR)/wcrtomb.c \
+  $(SRCDIR)/wcstof.c \
+  $(SRCDIR)/wcstold.c \
+  $(SRCDIR)/wctob.c \
+  $(SRCDIR)/wmemchr.c \
+  $(SRCDIR)/wmemcmp.c \
+  $(SRCDIR)/wmemcpy.c \
+  $(SRCDIR)/wmemmove.c \
+  $(SRCDIR)/wmemset.c
+
+SRCDIR := src/libcrt/wctype
+wctype_SOURCES := \
+  $(SRCDIR)/wctrans.c \
+  $(SRCDIR)/wctype.c
+
+libmingwex_a_SOURCES := \
+  $(complex_SOURCES) \
+  $(ctype_SOURCES) \
+  $(fenv_SOURCES) \
+  $(gdtoa_SOURCES) \
+  $(inittypes_SOURCES) \
+  $(math_SOURCES) \
+  $(misc_SOURCES) \
+  $(posix_SOURCES) \
+  $(search_SOURCES) \
+  $(stdio_SOURCES) \
+  $(stdlib_SOURCES) \
+  $(sys_SOURCES) \
+  $(tchar_SOURCES) \
+  $(wchar_SOURCES) \
+  $(wctype_SOURCES)
+libmingwex_a_OBJECTS := $(libmingwex_a_SOURCES:.c=.o)
+libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS:.S=.o)
+
+ALL_SOURCES := \
+  $(libmingw32_a_SOURCES) \
+  $(libmingwthrd_a_SOURCES) \
+  $(libgmon_a_SOURCES) \
+  $(libmingwex_a_SOURCES) \
+  $(mingwm10_dll_SOURCES)
+
+all: $(msvcrt_DEF) $(moldname_DEF) $(lib_LIBRARIES) $(bin_LIBRARIES) $(lib_OBJECTS)
+
+$(msvcrt_DEF): lib/lib32/msvcrt.def.in
+	N=`echo $@ | sed -e 's|\([a-z]*\)\([0-9]*\).*|\1|'`; \
+	test "$$N" == "msvcr" && N="msvcrt"; \
+	V=`echo $@ | sed -e 's|\([a-z]*\)\([0-9]*\).*|\2|'`; \
+	test -z "$$V" && V=60; \
+	test "$$V" != "100" && V="0$${V}"; \
+	V="0x$${V}0"; \
+	$(CC) -DRUNTIME=$(basename $(notdir $@)) \
+		-D__FILENAME__=$@ \
+		-D__$(basename $(notdir $@))__=1 \
+		-D__MSVCRT__ -C -E -P -xc-header \
+		$? > $@
+
+
+$(moldname_DEF): lib/lib32/moldname.def.in
+	N=`echo $@ | sed -e 's|\([a-z]*\)\([0-9]*\).*|\1|'`; \
+	test "$$N" == "msvcr" && N="msvcrt"; \
+	V=`echo $@ | sed -e 's|\([a-z]*\)\([0-9]*\).*|\2|'`; \
+	test -z "$$V" && V=60; \
+	F="$@"; \
+	test "$$V" != "100" && V="0$${V}"; \
+	V="0x$${V}0"; \
+	$(CC) -DRUNTIME=$(basename $(notdir $@)) \
+		-D__FILENAME__=$$F \
+		-D__$(basename $(notdir $@))__=1 \
+		-D__MSVCRT__ -C -E -P -xc-header \
+		$? > $@
+
+lib%.a: %.def
+	@echo Making library $@ from $?.
+	N=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\1|'`; \
+	V=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\2|'`; \
+	DLLNAME="$${N}$${V}.dll"; \
+	$(DLLTOOL) --as $(AS) -k -U --dllname $${DLLNAME} --def $< --output-lib $@
+	$(RANLIB) $@
+
+%.o : %.c
+	mkdir -p $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+SRCDIR := src/libcrt/crt
+$(SRCDIR)/crt1.o $(SRCDIR)/dllcrt1.o:
+	mkdir -p $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -U__MSVCRT__ -D__CRTDLL__ -o $@ $<
+
+$(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o:
+	mkdir -p $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -D__MSVCRT__ -U__CRTDLL__ -o $@ $<
+
+$(SRCDIR)/crt1.o: $(SRCDIR)/crt1.c
+$(SRCDIR)/dllcrt1.o: $(SRCDIR)/dllcrt1.c
+$(SRCDIR)/crt2.o: $(SRCDIR)/crt1.c
+$(SRCDIR)/dllcrt2.o: $(SRCDIR)/dllcrt1.c
+
+SRCDIR := gpl/profile
+$(SRCDIR)/gcrt1.o:
+	mkdir -p $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -U__MSVCRT__ -D__CRTDLL__ -o $@ $<
+
+$(SRCDIR)/gcrt2.o:
+	mkdir -p $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -D__MSVCRT__ -U__CRTDLL__ -o $@ $<
+
+$(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o: $(SRCDIR)/gcrt0.c
+
+libmingw32.a: $(libmingw32_a_OBJECTS)
+	$(AR) rc $@ $(libmingw32_a_OBJECTS)
+	$(RANLIB) $@
+
+libmingwex.a: $(libmingwex_a_OBJECTS)
+	$(AR) rc $@ $(libmingwex_a_OBJECTS)
+	$(RANLIB) $@
+
+libmingwthrd.a: $(libmingwthrd_a_OBJECTS)
+	$(AR) rc $@ $(libmingwthrd_a_OBJECTS)
+	$(RANLIB) $@
+
+libmingwthrd_old.a: $(libmingwthrd_a_OBJECTS) mingwm10.dll mingwthrd.def
+	$(DLLTOOL) $(DLLTOOL_FLAGS) --dllname mingwm10.dll \
+	  --def mingwthrd.def --output-lib $@
+	$(AR) rc $@ $(libmingwthrd_a_OBJECTS)
+	$(RANLIB) $@
+
+libgmon.a: $(libgmon_a_OBJECTS)
+	$(AR) rc $@ $(libgmon_a_OBJECTS)
+	$(RANLIB) $@
+
+_libm_dummy.c:
+	@echo "static int __mingw_libm_dummy;" > _libm_dummy.c
+
+libm.a: _libm_dummy.o
+	$(AR) rc $@ _libm_dummy.o
+	$(RANLIB) $@
+
+mingwthrd.def: $(mingwm10_dll_OBJECTS)
+	$(DLLTOOL) --as $(AS) --output-def mingwthrd.def $(mingwm10_dll_OBJECTS)
+
+mingwm10.dll: $(mingwm10_dll_OBJECTS) mingwthrd.def libmingwex.a
+	$(CC) $(mingwm10_dll_FLAGS) $(mingwm10_dll_OBJECTS) mingwthrd.def \
+	  -o mingwm10.dll
+
+clean:
+	rm -f *.def *.a _libm_dummy.c stamp*
+	rm -rf .deps/
+	find . -type f -name \*.o -delete
+	find . -type f -name \*.dll -delete
+	test ! -f "Makefile.in" && find . -type d -delete
+
+distclean: clean
+	rm -f config.log config.status config.cache config.h
+	rm -f core a.out *~ Makefile
+
+need-DESTDIR-compatibility := prefix bindir includedir libdir mandir
+
+$(need-DESTDIR-compatibility):
+	@test -z "$(DESTDIR)" || case "$($@)" in ?:*) \
+	  $(MAKE) --no-print-directory REJECT="$@" \
+	    fail-DESTDIR-compatibility ;; \
+	esac
+
+fail-DESTDIR-compatibility:
+	$(error DESTDIR is not supported when $(REJECT) contains a Windows \
+	path '$($(REJECT))'; \
+	try 'make install $(REJECT)=$(shell echo '$($(REJECT))' | \
+	sed s,:,:$(DESTDIR),) ...' instead)
+
+install-dirs: $(need-DESTDIR-compatibility)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	$(mkinstalldirs) $(DESTDIR)$(docdir)
+	$(mkinstalldirs) $(DESTDIR)$(includedir)
+	for I in `find $(top_srcdir)/include/* -type d`; do \
+	  J=`basename $$I`; \
+	  $(mkinstalldirs) $(DESTDIR)$(includedir)/$$J ; \
+	done
+
+install-libs: all
+	for LIB in $(lib_LIBRARIES); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/$$LIB ; \
+	done
+
+install-objs: all
+	for OBJ in $(lib_OBJECTS); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir) ; \
+	done
+
+install-docs:
+	for DOC in $(doc_DOCUMENTS); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $(top_srcdir)/$$DOC $(DESTDIR)$(docdir)/$$DOC ; \
+	done
+
+install-includes:
+	for INC in $(top_srcdir)/include/*.h; do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	done
+	for I in `find $(top_srcdir)/include/* -type d`; do \
+	  J=`basename $$I`; \
+	  for INC in $$I/*.h; do \
+	    $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/$$J ; \
+	  done \
+	done
+
+install-bins: all
+	for BIN in $(bin_LIBRARIES); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/$$BIN ; \
+	done
+
+install: all \
+  install-dirs \
+  install-libs \
+  install-objs \
+  install-docs \
+  install-includes \
+  install-bins
+
