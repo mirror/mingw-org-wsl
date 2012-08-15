@@ -1,6 +1,8 @@
 2012-08-14  Earnie Boyd  <earnie@users.sourceforge.net>
 
-	* Makefile.in: New file
+	* Makefile.in: New file.
+	* configure.ac: Ditto.
+	* config.h.in: Ditto.
 	* .gitignore: Add install-sh.
 
 2012-08-13  Earnie Boyd  <earnie@users.sourceforge.net>
