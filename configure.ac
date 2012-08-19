@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([MinGW.org WSL], [1.0], [http://www.mingw.org/report_bugs], [mingw.org-wsl], [http://www.mingw.org])
+AC_INIT([MinGW.org WSL], [4.0], [http://www.mingw.org/report_bugs], [mingw.org-wsl], [http://www.mingw.org])
 AC_CONFIG_SRCDIR([include/_mingw.h])
 AC_CONFIG_HEADERS([config.h])
 
@@ -13,6 +13,9 @@ AC_PROG_MKDIR_P
 AC_PROG_RANLIB
 AC_CHECK_TOOL([AS], [as], [as])
 AC_CHECK_TOOL([DLLTOOL], [dlltool], [dlltool])
+
+AC_ARG_VAR([PACKAGE_RELEASE], [Release serial number for the current PACKAGE_VERSION])
+AC_SUBST([PACKAGE_RELEASE], [${PACKAGE_RELEASE-"1"}])
 
 # Checks for libraries.
 

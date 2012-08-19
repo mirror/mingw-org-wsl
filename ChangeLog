@@ -1,3 +1,96 @@
+2012-08-19  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Needed to be able to make dist-mingwrt and dist-w32api to create these
+	packages individually.  Eventually we also need dist-wsl target to
+	create a package named mingw.org-wsl.
+
+	* include/_mingw.h (__MINGW_VERSION): Correct typo.
+	(__MINGW_MAJOR_VERSION): Ditto.
+	* include/w32api.h: Add deprecated file warning.
+	* Makefile.in: Throughout, add and correct targets for building
+	distributed mingwrt and w32api packages.
+	(PACKAGE_VERSION): Add configured variable.
+	(PACKAGE_RELEASE): Ditto.
+	(winapi_DDK_DEF): New variable.
+	(winapi_DIRECTX_DEF): Ditto.
+	(winapi_DIRECTX_DINPUT_DEF): Ditto.
+	(winapi_lib_DDK_LIBRARIES): Ditto.
+	(winapi_lib_DIRECTX_LIBRARIES): Ditto.
+	(winapi_lib_DIRECTX_INPUT_LIBRARIES): Ditto.
+	(libdmoguids_a_SOURCES): Ditto.
+	(libdmoguids_a_OBJECTS): Ditto.
+	(libdxguid_a_SOURCES): Ditto.
+	(libdxguid_a_OBJECTS): Ditto.
+	(libstrmiids_a_SOURCES): Ditto.
+	(libstrmiids_a_OBJECTS): Ditto.
+	(complex_SOURCES): Ditto.
+	(libdinput_a_SOURCES): Ditto.
+	(libdinput_a_OBJECTS): Ditto.
+	(libdxerr8_a_SOURCES): Ditto.
+	(libdxerr8_a_OBJECTS): Ditto.
+	(libdxerr9_a_SOURCES): Ditto.
+	(libdxerr9_a_OBJECTS): Ditto.
+	(mingwrt_bin_LIBRARIES): Ditto.
+	(mingwrt_lib_LIBRARIES): Ditto.
+	(mingwrt_lib_INCLUDES): Ditto.
+	(mingwrt_lib_SYS_INCLUDES): Ditto.
+	(w32api_lib_INCLUDES): Ditto.
+	(w32api_lib_DDK_INCLUDES): Ditto.
+	(w32api_lib_GDIPLUS_INCLUDES): Ditto.
+	(w32api_lib_GL_INCLUDES): Ditto
+	(w32api_lib_DIRECTX_INCLUDES): Ditto.
+	(w32api_lib_LIBRARIES): Ditto.
+	(winapi_lib_EXTRA_LIBRARIES): Add libdmoguids.a, libdxguid.a and
+	libstrmiids.a
+	(lib_LIBRARIES): Add winapi_lib_DDK_LIBRARIES,
+	winapi_lib_DIRECTX_LIBRARIES and winapi_lib_DIRECTX_DINPUT_LIBRARIES.
+	(ALL_SOURCES): Add libdinput_a_SOURCES, libdxerr8_a_SOURCES and
+	libdxerr9_a_SOURCES.
+	(winapi_lib_DDK_LIBRARIES): New target.
+	(winapi_lib_DIRECTX_LIBRARIES): Ditto.
+	(lib%.a): Ditto.
+	(crt1.o): Ditto.
+	(crt2.o): Ditto.
+	(dllcrt1.o): Ditto.
+	(dllcrt2.o): Ditto.
+	(libdinput.a): Ditto.
+	(libdinput8.a): Ditto.
+	(libdinput_a_OBJECTS): Ditto.
+	(libdmoguids_a_OBJECTS): Ditto.
+	(libdxguid_a_OBJECTS): Ditto.
+	(libstrmiids_a_OBJECTS): Ditto.
+	(libdxerr8.a): Ditto.
+	(libdxerr9.a): Ditto.
+	(libmoguids.a): Ditto.
+	(libdxguid.a): Ditto.
+	(libstrmiids.a): Ditto.
+	(install-mingwrt-dirs): Ditto.
+	(install-mingwrt): Ditto.
+	(dist): Ditto.
+	(dist-mingwrt): Ditto.
+	(_dist-mingwrt-all_): Ditto.
+	(dist-mingwrt-mkdir): Ditto.
+	(dist-mingwrt-install): Ditto.
+	(dist-mingwrt-dll): Ditto.
+	(dist-mingwrt-dev): Ditto.
+	($(DESTDIR)$(prefix)/share/doc/mingwrt/DISCLAIMER): Ditto
+	(dist-mingwrt-lic): Ditto.
+	(dist-mingwrt-doc): Ditto.
+	(dist-mingwrt-src): Ditto.
+	(install-w32api-dirs): Ditto.
+	(install-w32api): Ditto.
+	(dist-w32api): Ditto.
+	(_dist-w32api-all_): Ditto.
+	(dist-w32api-mkdir): Ditto.
+	(dist-w32api-install): Ditto.
+	(dist-w32api-dev): Ditto.
+	(dist-w32api-lic): Ditto.
+	(dist-w32api-doc): Ditto.
+	(dist-w32api-src): Ditto.
+	(install-docs): Correct cp action.
+	(libmingex.a): Correct dependencies.
+	* configure.ac (AC_INIT): Correct the version.
+
 2012-08-14  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in: New file.

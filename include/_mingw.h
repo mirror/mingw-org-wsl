@@ -22,10 +22,10 @@
  */
 #define __MINGW_H
 
-#define __MINGW_VERSION		    4
-#define __MINGW_MAJOR_VERSION	    0
-#define __MINGW_MINOR_VERSION	    0
-#define __MINGW_PATCHLEVEL	    0
+#define __MINGW_VERSION             4.0
+#define __MINGW_MAJOR_VERSION       4
+#define __MINGW_MINOR_VERSION       0
+#define __MINGW_PATCHLEVEL          0
 
 // These four macros are deprecated and will be removed in the next major
 // version release.

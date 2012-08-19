@@ -4,6 +4,7 @@
 #if __GNUC__ >=3
 #pragma GCC system_header
 #endif
+#warning WARNING - The w32api.h header file is deprecated and will be removed.
 
 #define __W32API_VERSION 3.17
 #define __W32API_MAJOR_VERSION 3
