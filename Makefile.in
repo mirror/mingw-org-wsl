@@ -802,6 +802,9 @@ fail-DESTDIR-compatibility:
 	try 'make install $(REJECT)=$(shell echo '$($(REJECT))' | \
 	sed s,:,:$(DESTDIR),) ...' instead)
 
+check:
+	cd tests && $(MAKE) $@
+
 install-dirs: $(need-DESTDIR-compatibility)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
 	$(mkinstalldirs) $(DESTDIR)$(libdir)
@@ -915,7 +918,7 @@ dist-mingwrt-install: all
 
 dist-mingwrt-dll: dist-mingwrt-mkdir dist-mingwrt-install
 	cd ./dist/mingwrt/installed ; \
-	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dll.tar.lzma bin/*.dll ;\
+	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dll.tar.lzma bin/*.dll
 
 dist-mingwrt-dev: dist-mingwrt-mkdir dist-mingwrt-install
 	cd ./dist/mingwrt/installed ; \
@@ -1103,4 +1106,89 @@ dist-w32api-src:
 	mv mingw.org-wsl w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
 
-dist-wsl: all dist-wsl-bin dist-wsl-dll dist-wsl-doc dist-wsl-lic dist-wsl-src
+install-wsl-dirs: $(need-DESTDIR-compatibility)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	$(mkinstalldirs) $(DESTDIR)$(docdir)
+	$(mkinstalldirs) $(DESTDIR)$(includedir)
+	$(mkinstalldirs) $(DESTDIR)$(includedir)/sys
+	$(mkinstalldirs) $(DESTDIR)$(includedir)/ddk
+	$(mkinstalldirs) $(DESTDIR)$(includedir)/gdiplus
+	$(mkinstalldirs) $(DESTDIR)$(includedir)/GL
+
+install-wsl: install-wsl-dirs
+	for BIN in $(mingwrt_bin_LIBRARIES); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/include/,$(mingwrt_lib_INCLUDES)); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/include/sys/,$(mingwrt_lib_SYS_INCLUDES)); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/sys/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/include/,$(w32api_lib_INCLUDES)); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/include/ddk/,$(w32api_lib_DDK_INCLUDES)); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/include/gdiplus/,$(w32api_lib_GDIPLUS_INCLUDES)); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/GL/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/include/directx/,$(w32api_lib_DIRECTX_INCLUDES)); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	done
+	for LIB in $(mingwrt_lib_LIBRARIES) $(w32api_lib_LIBRARIES); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/ ; \
+	done
+	for OBJ in $(mingwrt_lib_OBJECTS); do \
+	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir)/ ; \
+	done
+	cp -af $(top_srcdir)/LICENSE $(DESTDIR)$(docdir)
+	cp -af $(top_srcdir)/README $(DESTDIR)$(docdir)
+	cp -af $(top_srcdir)/doc/historical $(DESTDIR)$(docdir)
+
+dist-wsl:
+	$(MAKE) prefix=./dist/wsl/installed _dist-wsl-all_
+
+_dist-wsl-all_: all dist-wsl-dll dist-wsl-dev dist-wsl-doc dist-wsl-lic dist-wsl-src
+
+dist-wsl-mkdir:
+	$(MKDIR_P) ./dist/wsl/packages
+
+dist-wsl-install: all dist-wsl-mkdir
+	$(MAKE) prefix=./dist/wsl/installed install-wsl
+
+dist-wsl-dll: dist-wsl-install
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dll.tar.lzma bin/*.dll ;
+
+dist-wsl-dev: dist-wsl-install
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dev.tar.lzma include/ lib/
+
+dist-wsl-lic: dist-wsl-install
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-lic.tar.lzma share/doc/mingw.org-wsl/LICENSE
+
+dist-wsl-doc: dist-wsl-install
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/mingw.org-wsl/README
+
+dist-wsl-src: dist-wsl-install
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)
+	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	rm -rf .git autom4te.cache ; \
+	rm -f config.log config.status config.cache config.h ; \
+	rm -f .gitignore core a.out Makefile ; \
+	find . -type f -name \*~ -delete ; \
+	find . -type f -name \*.log -delete ; \
+	find . -type f -name \*.bak -delete ; \
+	find . -type f -name .\*.swp -delete ; \
+	cd .. ; \
+	rm -rf mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
+	mv mingw.org-wsl mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src

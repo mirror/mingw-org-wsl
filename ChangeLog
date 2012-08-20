@@ -1,3 +1,19 @@
+2012-08-20  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in (check): Add target.
+	(install-wsl-dirs): Ditto.
+	(install-wsl): Ditto.
+	(dist-wsl): Ditto.
+	(_dist-wsl-all_): Ditto.
+	(dist-wsl-mkdir): Ditto.
+	(dist-wsl-install): Ditto.
+	(dist-wsl-dll): Ditto.
+	(dist-wsl-dev): Ditto.
+	(dist-wsl-lic): Ditto.
+	(dist-wsl-doc): Ditto.
+	(dist-wsl-src): Ditto.
+	(dist-mingwrt-dll): Correct typo in command.
+
 2012-08-19  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Needed to be able to make dist-mingwrt and dist-w32api to create these
