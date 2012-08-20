@@ -12,7 +12,8 @@
 	(dist-wsl-lic): Ditto.
 	(dist-wsl-doc): Ditto.
 	(dist-wsl-src): Ditto.
-	(dist-mingwrt-dll): Correct typo in command.
+	(dist-mingwrt-dll): Correct typo.
+	(libmingwex_a_SOURCES): Ditto.
 
 2012-08-19  Earnie Boyd  <earnie@users.sourceforge.net>
 

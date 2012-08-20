@@ -544,7 +544,7 @@ libmingwex_a_SOURCES := \
   $(ctype_SOURCES) \
   $(fenv_SOURCES) \
   $(gdtoa_SOURCES) \
-  $(inittypes_SOURCES) \
+  $(inttypes_SOURCES) \
   $(math_SOURCES) \
   $(misc_SOURCES) \
   $(posix_SOURCES) \
