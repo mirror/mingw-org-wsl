@@ -50,5 +50,5 @@ AC_FUNC_STRCOLL
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([atexit btowc bzero dup2 fesetround floor ftime ftruncate getcwd gethostbyaddr gethostbyname gethostname gettimeofday inet_ntoa isascii iswprint localeconv mblen mbrlen memchr memmove memset mkdir modf pow putenv rint rmdir select setlocale socket sqrt strcasecmp strchr strcspn strdup strerror strncasecmp strpbrk strrchr strspn strstr strtol strtoul strtoull strtoumax tzset utime])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile tests/Makefile])
 AC_OUTPUT

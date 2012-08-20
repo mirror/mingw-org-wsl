@@ -20,7 +20,7 @@ CFLAGS=@CFLAGS@
 RANLIB=@RANLIB@
 AS=@AS@
 DLLTOOL=@DLLTOOL@
-DLLTOOL_FLAGS := --as $(AS) -k -U --dllname
+DLLTOOL_FLAGS := --as $(AS) -k --dllname
 INSTALL=@INSTALL@
 MKDIR_P=@MKDIR_P@
 
@@ -638,6 +638,14 @@ $(notdir $(winapi_lib_DIRECTX_LIBRARIES)): $(addprefix lib/lib32/directx/,$(wina
 	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/directx/,$(subst lib,,$(@:.a=.def))) --output-lib $@
 	$(RANLIB) $@
 
+libmoldname%.a: moldname%.def
+	@echo Making library $@ from $?.
+	N=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\1|'`; \
+	V=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\2|'`; \
+	DLLNAME="$${N}$${V}.dll"; \
+	$(DLLTOOL) $(DLLTOOL_FLAGS) $${DLLNAME} -U --def $< --output-lib $@
+	$(RANLIB) $@
+
 lib%.a: %.def
 	@echo Making library $@ from $?.
 	N=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\1|'`; \
@@ -778,15 +786,15 @@ mingwm10.dll: $(mingwm10_dll_OBJECTS) mingwthrd.def libmingwex.a
 	  -o mingwm10.dll -L .
 
 clean:
-	rm -f *.def *.s *.a _libm_dummy.c stamp*
-	rm -rf .deps/
-	find . -type f -name \*.o -delete
-	find . -type f -name \*.dll -delete
-	test ! -f "Makefile.in" && find . -type d -delete
+	rm -f *.def *.s *.o *.dll *.a _libm_dummy.c stamp*
+	rm -rf .deps/ src/
+	cd tests && $(MAKE) $@
 
 distclean: clean
 	rm -f config.log config.status config.cache config.h
 	rm -f core a.out *~ Makefile
+	rm -rf dist/
+	cd tests && $(MAKE) $@
 
 need-DESTDIR-compatibility := prefix bindir includedir libdir mandir
 
