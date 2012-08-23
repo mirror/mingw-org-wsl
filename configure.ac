@@ -3,8 +3,11 @@
 
 AC_PREREQ([2.68])
 AC_INIT([MinGW.org WSL], [4.0], [http://www.mingw.org/report_bugs], [mingw.org-wsl], [http://www.mingw.org])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_PREFIX_DEFAULT([/mingw])
 AC_CONFIG_SRCDIR([include/_mingw.h])
 AC_CONFIG_HEADERS([config.h])
+AC_CANONICAL_SYSTEM
 
 # Checks for programs.
 AC_PROG_CC
