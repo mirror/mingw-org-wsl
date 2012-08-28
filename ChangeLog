@@ -1,3 +1,33 @@
+2012-08-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	We are going to assume that MinGW is using GCC version greater than or
+	equal to 3.5.4 and remove any filters related to earlier versions. We
+	are also going to remove any possibility of using a compiler other than
+	GCC.
+
+	* include/_mingw.h: Remove filters for __GNUC__ >=3, remove the
+	possibility of using a compiler other than GCC and remove any other
+	needless filters.
+	* include/acccrtl.h: Ditto.
+	* include/aclapi.h: Ditto.
+	* include/aclui.h: Ditto.
+	* include/adsprop.h: Ditto.
+	* include/afxres.h: Ditto.
+	* include/amaudio.h: Ditto.
+	* include/amvideo.h: Ditto.
+	* include/audevcod.h: Ditto.
+	* include/aygshell.h: Ditto.
+	* include/basetsd.h: Ditto.
+	* include/wtsapi32.h: Ditto.
+	* include/wtypes.h: Ditto.
+	* include/xprtdefs.h: Ditto.
+	* include/zmouse.h: Ditto.
+	* include/aviriff.h: Ditto.
+	* src/libcrt/crt/CRT_fp10.c: Ditto.
+	* src/libcrt/crt/CRT_fp8.c: Ditto.
+	* src/libcrt/crt/dllcrt1.c: Ditto.
+	* src/libcrt/crt/pseudo-reloc.c: Ditto.
+
 2012-08-23  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* configure.ac: Set AC_CONFIG_AUX_DIR, AC_PREFIX_DEFAULT and call

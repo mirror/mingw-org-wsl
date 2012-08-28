@@ -1,8 +1,6 @@
 #ifndef _AMAUDIO_H
 #define _AMAUDIO_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #include <dsound.h>
 

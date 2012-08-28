@@ -1,15 +1,9 @@
 #ifndef _AVIRIFF_H
 #define _AVIRIFF_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
-#ifndef _MMSYSTEM_H
 #include <mmsystem.h>
-#endif
-#ifndef _WINGDI_H
 #include <wingdi.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {

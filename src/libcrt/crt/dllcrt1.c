@@ -21,10 +21,8 @@ extern const PIMAGE_TLS_CALLBACK __dyn_tls_init_callback;
  * should have done that already. I also don't set the file handle modes,
  * because that would be rude. */
 
-#ifdef	__GNUC__
 extern void __main ();
 extern void __do_global_dtors ();
-#endif
 
 typedef void (* p_atexit_fn )(void);
 static p_atexit_fn* first_atexit;
@@ -75,14 +73,12 @@ DllMainCRTStartup (HANDLE hDll, DWORD dwReason, LPVOID lpReserved)
 	 that have non-zero offsets.  */ 
       _pei386_runtime_relocator ();
 
-#ifdef	__GNUC__
       /* From libgcc.a, __main calls global class constructors,
 	 __do_global_ctors, which registers __do_global_dtors
 	 as the first entry of the private atexit table we
 	 have just initialised  */
       __main ();
       	
-#endif
    }
 
   /*

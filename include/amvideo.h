@@ -1,8 +1,6 @@
 #ifndef _AMVIDEO_H
 #define _AMVIDEO_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #include <ddraw.h>
 #include <strmif.h>

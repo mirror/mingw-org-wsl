@@ -1,8 +1,6 @@
 #ifndef _AYGSHELL_H
 #define _AYGSHELL_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #if _WIN32_WCE >= 400
 

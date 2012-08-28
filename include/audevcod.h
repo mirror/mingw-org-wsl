@@ -1,8 +1,6 @@
 #ifndef _AUDEVCOD_H
 #define _AUDEVCOD_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

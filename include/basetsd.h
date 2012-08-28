@@ -1,13 +1,9 @@
 #ifndef _BASETSD_H
 #define _BASETSD_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
-#ifdef __GNUC__
 #ifndef __int64
 #define __int64 long long
-#endif
 #endif
 
 #if defined(_WIN64)
@@ -16,6 +12,8 @@
 #else /*  !_WIN64 */
 #define __int3264   __int32
 #define ADDRESS_TAG_BIT 0x80000000UL
+#endif /* !_WIN64 */
+
 #define HandleToUlong( h ) ((ULONG)(ULONG_PTR)(h) )
 #define HandleToLong( h ) ((LONG)(LONG_PTR) (h) )
 #define LongToHandle( h) ((HANDLE)(LONG_PTR) (h))
@@ -29,7 +27,6 @@
 #define UIntToPtr( ui )  ((VOID*)(UINT_PTR)((unsigned int)ui))
 #define LongToPtr( l )   ((VOID*)(LONG_PTR)((long)l))
 #define ULongToPtr( ul )  ((VOID*)(ULONG_PTR)((unsigned long)ul))
-#endif /* !_WIN64 */
 
 #define UlongToPtr(ul) ULongToPtr(ul)
 #define UintToPtr(ui) UIntToPtr(ui)
@@ -50,9 +47,7 @@ extern "C" {
 typedef signed char INT8;
 typedef signed short INT16;
 typedef int LONG32, *PLONG32;
-#ifndef XFree86Server
 typedef int INT32, *PINT32;
-#endif /* ndef XFree86Server */
 typedef unsigned char UINT8;
 typedef unsigned short UINT16;
 typedef unsigned int ULONG32, *PULONG32;

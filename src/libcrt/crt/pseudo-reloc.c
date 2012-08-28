@@ -34,11 +34,7 @@
 # define NO_COPY
 #endif
 
-#ifdef __GNUC__
 #define ATTRIBUTE_NORETURN __attribute__ ((noreturn))
-#else
-#define ATTRIBUTE_NORETURN
-#endif
 
 #ifndef __MINGW_LSYMBOL
 #define __MINGW_LSYMBOL(sym) sym

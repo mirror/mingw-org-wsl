@@ -14,9 +14,7 @@
  */
 #ifndef _ADSPROP_H
 #define _ADSPROP_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

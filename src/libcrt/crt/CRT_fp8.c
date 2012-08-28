@@ -15,8 +15,4 @@ extern void (*_imp___fpreset)(void) ;
 void _fpreset (void)
 {  (*_imp___fpreset)(); }
 
-#if defined(__PCC__)
-void _Pragma("alias _fpreset") fpreset(void);
-#else
 void __attribute__ ((alias ("_fpreset"))) fpreset(void);
-#endif

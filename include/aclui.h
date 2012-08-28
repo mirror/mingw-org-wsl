@@ -1,8 +1,6 @@
 #ifndef _ACLUI_H
 #define _ACLUI_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifndef _OBJC_NO_COM
 #include <objbase.h>
