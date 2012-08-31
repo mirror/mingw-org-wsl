@@ -1,8 +1,6 @@
 #ifndef _WINNLS_H
 #define _WINNLS_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifndef WINBASEAPI
 #ifdef __W32API_USE_DLLIMPORT__

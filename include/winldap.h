@@ -17,28 +17,17 @@
 
 #ifndef _WINLDAP_H
 #define _WINLDAP_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
-#ifndef _SCHANNEL_H
 #include <schannel.h>
-#endif
-
-#ifndef _WINBER_H
 #include <winber.h>
-#endif
 
 #ifndef WINLDAPAPI
 #define WINLDAPAPI DECLSPEC_IMPORT
 #endif
 
 #ifndef _WINLDAP_DEPRECATED
-#if (( __GNUC__ == 3 && __GNUC_MINOR__ > 0 ) || __GNUC__ > 3)
 #define _WINLDAP_DEPRECATED __attribute__((__deprecated__))
-#else
-#define _WINLDAP_DEPRECATED
-#endif
 #endif
 
 #include <pshpack4.h>

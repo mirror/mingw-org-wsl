@@ -21,6 +21,13 @@
 	* include/wsahelp.h: Ditto.
 	* include/wsipx.h: Ditto.
 	* include/wsnetbs.h: Ditto.
+	* include/wingdi.h: Ditto.
+	* include/wininet.h: Ditto.
+	* include/winocotl.h: Ditto.
+	* include/winldap.h:Ditto.
+	* include/winnls.h: Ditto.
+	* include/_mingw.h: Give an error if __GNUC__ isn't defined or isn't >=
+	version 3.4.5.
 
 2012-08-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
