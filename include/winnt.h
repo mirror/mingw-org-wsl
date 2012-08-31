@@ -1,8 +1,6 @@
 #ifndef _WINNT_H
 #define _WINNT_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 /* translate GCC target defines to MS equivalents. Keep this synchronized
    with windows.h. */
@@ -44,11 +42,7 @@ extern "C" {
 #endif
 
 #ifndef DECLSPEC_ALIGN
-#ifdef __GNUC__
 #define DECLSPEC_ALIGN(x) __attribute__((aligned(x)))
-#else
-#define DECLSPEC_ALIGN(x)
-#endif
 #endif
 
 #ifndef DECLSPEC_SELECTANY
@@ -60,11 +54,7 @@ extern "C" {
 #endif
 
 #ifndef FORCEINLINE
-#if (__GNUC__ >= 3)
 #define FORCEINLINE __inline  __attribute__((always_inline))
-#else
-#define FORCEINLINE __inline
-#endif
 #endif
 
 #ifndef C_ASSERT
@@ -155,31 +145,26 @@ typedef HANDLE *PHANDLE,*LPHANDLE;
 typedef DWORD LCID;
 typedef PDWORD PLCID;
 typedef WORD LANGID;
-#ifdef __GNUC__
+
 #define _HAVE_INT64
 #define _INTEGRAL_MAX_BITS 64
 #undef __int64
 #define __int64 long long
-#elif defined(__WATCOMC__) && (defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64 )
-#define _HAVE_INT64
-#endif /* __GNUC__/__WATCOMC */
-#if defined(_HAVE_INT64) || (defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64)
+
 typedef __int64 LONGLONG;
 typedef unsigned __int64 DWORDLONG;
-#else
-typedef double LONGLONG,DWORDLONG;
-#endif
+
 typedef LONGLONG *PLONGLONG;
 typedef DWORDLONG *PDWORDLONG;
 typedef DWORDLONG ULONGLONG,*PULONGLONG;
 typedef LONGLONG USN;
-#ifdef _HAVE_INT64
+
 #define Int32x32To64(a,b) ((LONGLONG)(a)*(LONGLONG)(b))
 #define UInt32x32To64(a,b) ((DWORDLONG)(a)*(DWORDLONG)(b))
 #define Int64ShllMod32(a,b) ((DWORDLONG)(a)<<(b))
 #define Int64ShraMod32(a,b) ((LONGLONG)(a)>>(b))
 #define Int64ShrlMod32(a,b) ((DWORDLONG)(a)>>(b))
-#endif
+
 #define ANSI_NULL '\0'
 #define UNICODE_NULL L'\0'
 typedef BYTE BOOLEAN,*PBOOLEAN;
@@ -3819,7 +3804,7 @@ typedef enum _POWER_INFORMATION_LEVEL {
 #if (_WIN32_WINNT >= 0x0500)
 typedef LONG (WINAPI *PVECTORED_EXCEPTION_HANDLER)(PEXCEPTION_POINTERS);
 #endif
-#if 1 /* (WIN32_WINNT >= 0x0500) */
+#if (WIN32_WINNT >= _WIN32_WINNT_WINXP)
 typedef struct _SYSTEM_POWER_INFORMATION {
 	ULONG  MaxIdlenessAllowed;
 	ULONG  Idleness;
@@ -3939,8 +3924,6 @@ ULONGLONG WINAPI VerSetConditionMask(ULONGLONG,DWORD,BYTE);
 #endif
 
 #ifdef _X86_
-#if defined(__GNUC__)
-#if (__GNUC__ >= 3)
 /* Support -masm=intel.  */
 static __inline__ PVOID GetCurrentFiber(void)
 {
@@ -3976,42 +3959,7 @@ static __inline__ struct _TEB * NtCurrentTeb(void)
     return ret;
 }
 
-#else /* __GNUC__ >= 3 */
-static __inline__ PVOID GetCurrentFiber(void)
-{
-    void* ret;
-    __asm__ __volatile__ (
-	"movl	%%fs:0x10,%0"
-	: "=r" (ret) /* allow use of reg eax,ebx,ecx,edx,esi,edi */
-	);
-    return ret;
-}
-
-static __inline__ PVOID GetFiberData(void)
-{
-    void* ret;
-    __asm__ __volatile__ (
-	"movl	%%fs:0x10,%0\n\t"
-	"movl	(%0),%0"
-	: "=r" (ret) /* allow use of reg eax,ebx,ecx,edx,esi,edi */
-	);
-    return ret;
-}
-
-static __inline__ struct _TEB * NtCurrentTeb(void)
-{
-    struct _TEB *ret;
-
-    __asm__ __volatile__ (
-        "movl %%fs:0x18, %0\n"
-        : "=r" (ret)
-        : /* no inputs */
-    );
-    return ret;
-}
-#endif /* __GNUC__ >= 3 */
-
-#else
+#else /* ! _X86_ */
 
 PVOID GetCurrentFiber(void);
 #pragma aux GetCurrentFiber = \
@@ -4032,7 +3980,6 @@ struct _TEB * NtCurrentTeb(void);
         value [eax] \
         modify [eax];
         
-#endif /* __GNUC__ */
 #endif /* _X86_ */
 
 #if _WIN32_WINNT >= _WIN32_WINNT_VISTA

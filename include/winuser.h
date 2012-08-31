@@ -1,8 +1,6 @@
 #ifndef _WINUSER_H
 #define _WINUSER_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -552,10 +550,8 @@ extern "C" {
 #define IS_INTRESOURCE(i) (((ULONG_PTR)(i) >> 16) == 0)
 #define MAKEINTRESOURCEA(i) (LPSTR)((DWORD)((WORD)(i)))
 #define MAKEINTRESOURCEW(i) (LPWSTR)((DWORD)((WORD)(i)))
-#ifndef XFree86Server
 # define RT_CURSOR MAKEINTRESOURCE(1)
 # define RT_FONT MAKEINTRESOURCE(8)
-#endif /* ndef XFree86Server */
 #define RT_BITMAP MAKEINTRESOURCE(2)
 #define RT_ICON MAKEINTRESOURCE(3)
 #define RT_MENU MAKEINTRESOURCE(4)

@@ -1,3 +1,27 @@
+2012-08-31  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	More on assuming GCC is greater than or equal to version 3.5.4 and that
+	GCC is the only compiler to be used for MinGW.org.
+
+	* include/winnt.h: Remove unneeded filters based on the assumptions.
+	(_SYSTEM_POWER_INFORMATION): Introduce filter for _WIN32_WINNT >=
+	Windows XP.
+	* include/winperf.h: Remove unneeded filters based on the assumptions.
+	* include/winreg.h: Ditto.
+	* include/winresrc.h: Ditto.
+	* include/winsnmp.h: Ditto.
+	* include/winsock.h: Ditto.
+	* include/winsock2.h: Ditto.
+	* include/winspool.h: Ditto.
+	* include/winsvc.h: Ditto.
+	* include/winuser.h: Ditto.
+	* include/winver.h: Ditto.
+	* include/ws2spi.h: Ditto.
+	* include/ws2tcpip.h: Ditto.
+	* include/wsahelp.h: Ditto.
+	* include/wsipx.h: Ditto.
+	* include/wsnetbs.h: Ditto.
+
 2012-08-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	We are going to assume that MinGW is using GCC version greater than or
