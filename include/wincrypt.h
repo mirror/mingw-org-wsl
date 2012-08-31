@@ -1,8 +1,6 @@
 #ifndef _WINCRYPT_H
 #define _WINCRYPT_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifndef WINADVAPI
 #define WINADVAPI

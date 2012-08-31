@@ -1,8 +1,6 @@
 #ifndef _WINCON_H
 #define _WINCON_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -102,12 +100,7 @@ typedef struct _KEY_EVENT_RECORD {
 		CHAR AsciiChar;
 	} uChar;
 	DWORD dwControlKeyState;
-}
-#ifdef __GNUC__
-/* gcc's alignment is not what win32 expects */
- __attribute__((packed))
-#endif
-KEY_EVENT_RECORD;
+} __attribute__((packed)) KEY_EVENT_RECORD;
 
 typedef struct _MOUSE_EVENT_RECORD {
 	COORD dwMousePosition;

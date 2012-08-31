@@ -1,16 +1,10 @@
 #ifndef _VFW_H
 #define _VFW_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
-#ifndef _WINDOWS_H
 #include <windows.h>
-#endif
-#ifndef _MMSYSTEM_H
 #include <mmsystem.h>
-#endif
-#if !defined  (_OLE2_H) && !defined (_OBJC_NO_COM)
+#ifndef _OBJC_NO_COM
 #include <ole2.h>
 #endif
 

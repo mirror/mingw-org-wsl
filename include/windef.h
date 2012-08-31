@@ -1,8 +1,6 @@
 #ifndef _WINDEF_H
 #define _WINDEF_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -67,7 +65,6 @@ extern "C" {
 #endif
 #endif
 
-#ifdef __GNUC__
 #ifndef _fastcall
 #define _fastcall __attribute__((fastcall))
 #endif
@@ -92,10 +89,6 @@ extern "C" {
 #ifndef _declspec
 #define _declspec(e) __attribute__((e))
 #endif
-#else
-#define _cdecl
-#define __cdecl
-#endif
 
 #undef pascal
 #undef _pascal
@@ -115,13 +108,9 @@ extern "C" {
 
 #define DECLSPEC_IMPORT __declspec(dllimport)
 #define DECLSPEC_EXPORT __declspec(dllexport)
-#ifdef __GNUC__
 #define DECLSPEC_NORETURN __declspec(noreturn)
 #define DECLARE_STDCALL_P( type ) __stdcall type
-#elif defined(__WATCOMC__)
-#define DECLSPEC_NORETURN
-#define DECLARE_STDCALL_P( type ) type __stdcall
-#endif /* __GNUC__/__WATCOMC__ */
+
 #define MAKEWORD(a,b)	((WORD)(((BYTE)(a))|(((WORD)((BYTE)(b)))<<8)))
 #define MAKELONG(a,b)	((LONG)(((WORD)(a))|(((DWORD)((WORD)(b)))<<16)))
 #define LOWORD(l)	((WORD)((DWORD)(l)))
@@ -129,13 +118,11 @@ extern "C" {
 #define LOBYTE(w)	((BYTE)(w))
 #define HIBYTE(w)	((BYTE)(((WORD)(w)>>8)&0xFF))
 
-#ifndef __WATCOMC__
 #ifndef _export
 #define _export
 #endif
 #ifndef __export
 #define __export
-#endif
 #endif
 
 #ifndef NOMINMAX
@@ -153,19 +140,8 @@ extern "C" {
 #define DBG_UNREFERENCED_LOCAL_VARIABLE(L)
 
 #ifndef NONAMELESSUNION
-#ifdef __GNUC__
-#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 95)
 #define _ANONYMOUS_UNION __extension__
 #define _ANONYMOUS_STRUCT __extension__
-#else
-#if defined(__cplusplus)
-#define _ANONYMOUS_UNION __extension__
-#endif /* __cplusplus */
-#endif /* __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 95) */
-#elif defined(__WATCOMC__)
-#define _ANONYMOUS_UNION
-#define _ANONYMOUS_STRUCT
-#endif /* __GNUC__/__WATCOMC__ */
 #endif /* NONAMELESSUNION */
 
 #ifndef _ANONYMOUS_UNION
@@ -212,7 +188,7 @@ extern "C" {
 /* FIXME: This will make some code compile. The programs will most
    likely crash when an exception is raised, but at least they will
    compile. */
-#if defined (__GNUC__) && defined (__SEH_NOOP)
+#if defined (__SEH_NOOP)
 #define __try
 #define __except(x) if (0) /* don't execute handler */
 #define __finally
@@ -225,14 +201,12 @@ extern "C" {
 typedef unsigned long DWORD;
 typedef int WINBOOL,*PWINBOOL,*LPWINBOOL;
 /* FIXME: Is there a good solution to this? */
-#ifndef XFree86Server
 #ifndef __OBJC__
 typedef WINBOOL BOOL;
 #else
 #define BOOL WINBOOL
 #endif
 typedef unsigned char BYTE;
-#endif /* ndef XFree86Server */
 typedef BOOL *PBOOL,*LPBOOL;
 typedef unsigned short WORD;
 typedef float FLOAT;
@@ -255,9 +229,7 @@ typedef LONG_PTR LRESULT;
 typedef LONG HRESULT;
 #define _HRESULT_DEFINED
 #endif
-#ifndef XFree86Server
 typedef WORD ATOM;
-#endif /* XFree86Server */
 typedef HANDLE HHOOK;
 typedef HANDLE HGLOBAL;
 typedef HANDLE HLOCAL;

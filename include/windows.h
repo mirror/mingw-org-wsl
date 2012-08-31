@@ -12,9 +12,7 @@
 */
 #ifndef _WINDOWS_H
 #define _WINDOWS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #include <sdkddkver.h>
 
@@ -50,27 +48,15 @@
 #include <windef.h>
 #include <wincon.h>
 #include <winbase.h>
-#if !(defined NOGDI || defined  _WINGDI_H)
+#ifndef NOGDI
 #include <wingdi.h>
 #endif
-#ifndef _WINUSER_H
 #include <winuser.h>
-#endif
-#ifndef _WINNLS_H
 #include <winnls.h>
-#endif
-#ifndef _WINVER_H
 #include <winver.h>
-#endif
-#ifndef _WINNETWK_H
 #include <winnetwk.h>
-#endif
-#ifndef _WINREG_H
 #include <winreg.h>
-#endif
-#ifndef _WINSVC_H
 #include <winsvc.h>
-#endif
 
 #ifndef WIN32_LEAN_AND_MEAN
 #include <cderr.h>
@@ -112,9 +98,7 @@
    because of conflicts with @interface directive.  Define _OBJC_NO_COM
    to keep this behaviour.  */ 
 #if !defined (_OBJC_NO_COM) 
-#if (__GNUC__ >= 3) || defined (__WATCOMC__)
 #include <ole2.h>
-#endif
 #endif /* _OBJC_NO_COM */
 #endif
 

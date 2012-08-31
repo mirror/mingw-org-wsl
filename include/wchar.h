@@ -13,6 +13,7 @@
 
 #ifndef	_WCHAR_H_
 #define	_WCHAR_H_
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -26,13 +27,9 @@
 #include <stddef.h>
 
 #ifndef __VALIST
-#if defined __GNUC__ && __GNUC__ >= 3
 #define __need___va_list
 #include <stdarg.h>
 #define __VALIST __builtin_va_list
-#else
-#define __VALIST char*
-#endif
 #endif
 
 #endif /* Not RC_INVOKED */

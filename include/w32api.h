@@ -1,9 +1,7 @@
 #ifndef _W32API_H
 #define _W32API_H
 #define _W32API_H_
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 #warning WARNING - The w32api.h header file is deprecated and will be removed.
 
 #define __W32API_VERSION 3.17

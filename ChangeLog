@@ -26,6 +26,24 @@
 	* include/winocotl.h: Ditto.
 	* include/winldap.h:Ditto.
 	* include/winnls.h: Ditto.
+	* include/userenv.h: Ditto.
+	* include/usp10.h: Ditto.
+	* include/uxtheme.h: Ditto.
+	* include/vidcap.h: Ditto.
+	* include/vmr9.h: Ditto.
+	* include/vptype.h: Ditto.
+	* include/w32api.h: Ditto.
+	* include/winable.h: Ditto.
+	* include/winbase.h: Ditto.
+	* include/winber.h: Ditto.
+	* include/wincon.h: Ditto.
+	* include/wincrypt.h: Ditto.
+	* include/windef.h: Ditto.
+	* include/windns.h: Ditto.
+	* include/windows.h: Ditto.
+	* include/windowsx.h: Ditto.
+	* include/winerror.h: Ditto.
+	* include/wchar.h: Ditto.  Add GCC system_header pragma.
 	* include/_mingw.h: Give an error if __GNUC__ isn't defined or isn't >=
 	version 3.4.5.
 

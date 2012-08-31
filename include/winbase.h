@@ -1,14 +1,8 @@
 #ifndef _WINBASE_H
 #define _WINBASE_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
-#ifdef __GNUC__
 #define __GNUC_EXTENSION __extension__
-#else
-#define __GNUC_EXTENSION
-#endif
 
 #ifndef WINBASEAPI
 #ifdef __W32API_USE_DLLIMPORT__
@@ -1544,9 +1538,7 @@ WINBASEAPI BOOL WINAPI FreeLibrary(HMODULE);
 DECLSPEC_NORETURN WINBASEAPI void WINAPI FreeLibraryAndExitThread(HMODULE,DWORD);
 #define FreeModule(m) FreeLibrary(m)
 #define FreeProcInstance(p) (void)(p)
-#ifndef XFree86Server
 WINBASEAPI BOOL WINAPI FreeResource(HGLOBAL);
-#endif /* ndef XFree86Server */
 WINBASEAPI PVOID WINAPI FreeSid(PSID);
 WINBASEAPI BOOL WINAPI GetAce(PACL,DWORD,LPVOID*);
 WINBASEAPI BOOL WINAPI GetAclInformation(PACL,PVOID,DWORD,ACL_INFORMATION_CLASS);

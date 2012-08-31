@@ -1,8 +1,6 @@
 #ifndef _USP10_H
 #define _USP10_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #include <windows.h>
 
