@@ -1,9 +1,6 @@
 #ifndef _SPECSTRINGS_H
 #define _SPECSTRINGS_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 /* These are built from primitives in Microsoft's Standard Annotation Language.
    Search for "Header Annotation" on MSDN site for their MS-specific meanings */

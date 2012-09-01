@@ -1,8 +1,6 @@
 #ifndef _SECURITY_H
 #define _SECURITY_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 
 #define SEC_E_OK 0

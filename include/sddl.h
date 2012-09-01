@@ -1,8 +1,6 @@
 #ifndef _SDDL_H
 #define _SDDL_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifndef WINADVAPI
 #define WINADVAPI

@@ -1,12 +1,11 @@
+#ifndef _UNKNWN_H
+#define _UNKNWN_H
+#pragma GCC system_header
+
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>
 #endif
 
-#ifndef _UNKNWN_H
-#define _UNKNWN_H
-#if __GNUC__ >=3
-#pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C"{

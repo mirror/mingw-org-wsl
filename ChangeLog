@@ -1,3 +1,48 @@
+2012-09-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	More on assuming GCC is greater than or equal to version 3.5.4 and that
+	GCC is the only compiler to be used for MinGW.org.
+
+	* include/routprot.h: Remove unneeded filters based on the assumptions.
+	* include/rpc.h: Ditto.
+	* include/rpcdce.h: Ditto.
+	* include/rpcdce2.h: Ditto.
+	* include/rpcdcep.h: Ditto.
+	* include/rpcndr.h: Ditto.
+	* include/rpcnsi.h: Ditto.
+	* include/rpcnsip.h: Ditto.
+	* include/rpcnterr.h: Ditto.
+	* include/rpcproxy.h: Ditto.
+	* include/rpcutils.h: Ditto.
+	* include/schannel.h: Ditto.
+	* include/schnlsp.h: Ditto.
+	* include/scrnsave.h: Ditto.
+	* include/sddl.h: Ditto.
+	* include/secext.h: Ditto.
+	* include/security.h: Ditto.
+	* include/servprov.h: Ditto.
+	* include/setupapi.h: Ditto.
+	* include/shell.api.h: Ditto.
+	* include/shldisp.h: Ditto.
+	* include/shlguid.h: Ditto.
+	* include/shlobj.h: Ditto.
+	* include/shlwapi.h: Ditto.
+	* include/shobjidl.h: Ditto.
+	* include/snmp.h: Ditto.
+	* include/specstrings.h: Ditto.
+	* include/sql.h: Ditto.
+	* include/sqlext.h: Ditto.
+	* include/sqltypes.h: Ditto.
+	* include/sqlucode.h: Ditto.
+	* include/sspi.h: Ditto.
+	* include/stm.h: Ditto.
+	* include/strmif.h: Ditto.
+	* include/subauth.h: Ditto.
+	* include/svcguid.h: Ditto.
+	* include/tlhelp32.h: Ditto.
+	* include/tmschema.h: Ditto.
+	* include/unknwn.h: Ditto.
+
 2012-08-31  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	More on assuming GCC is greater than or equal to version 3.5.4 and that

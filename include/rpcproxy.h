@@ -6,9 +6,7 @@
 */
 #ifndef _RPCPROXY_H
 #define _RPCPROXY_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #if defined  __cplusplus  && !defined CINTERFACE
 #warning "rpcproxy type definitions require CINTERFACE"
@@ -128,15 +126,9 @@ typedef struct tagCInterfaceProxyHeader {
 } CInterfaceProxyHeader;
 typedef struct tagCInterfaceProxyVtbl {
     CInterfaceProxyHeader header;
-#if defined(__WATCOMC__)
-    void *Vtbl[1];
-#else
-#ifdef __GNUC__
-__extension__
-#endif
-    void *Vtbl[0];
-#endif
+__extension__ void *Vtbl[0];
 } CInterfaceProxyVtbl;
+
 typedef void (__RPC_STUB *PRPC_STUB_FUNCTION)(IRpcStubBuffer*,IRpcChannelBuffer*,PRPC_MESSAGE,DWORD*);
 typedef struct tagCInterfaceStubHeader {
     const IID *piid;
