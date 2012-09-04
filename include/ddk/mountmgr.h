@@ -22,10 +22,7 @@
 
 #ifndef __MOUNTMGR_H
 #define __MOUNTMGR_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

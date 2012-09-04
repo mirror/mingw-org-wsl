@@ -1,12 +1,8 @@
 #ifndef _DVDMEDIA_H
 #define _DVDMEDIA_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
-#ifndef _STRMIF_H
 #include <strmif.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {

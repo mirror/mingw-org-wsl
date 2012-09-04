@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_GPSTUBS_H
 #define __GDIPLUS_GPSTUBS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 typedef Point GpPoint;
 typedef PointF GpPointF;

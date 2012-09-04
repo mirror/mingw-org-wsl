@@ -1,8 +1,6 @@
 #ifndef _BASETYPS_H
 #define _BASETYPS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef _OBJC_NO_COM_
 # ifdef __cplusplus
@@ -54,17 +52,8 @@
 #  define PURE	=0
 #  define THIS_
 #  define THIS	void
-/*
-  __attribute__((com_interface)) is obsolete in __GNUC__ >= 3
-  g++ vtables are now COM-compatible by default
-*/
-#  if defined(__GNUC__) &&  __GNUC__ < 3 && !defined(NOCOMATTRIBUTE)
-#   define DECLARE_INTERFACE(i) _COM_interface __attribute__((com_interface)) i
-#   define DECLARE_INTERFACE_(i,b) _COM_interface __attribute__((com_interface)) i : public b
-#  else
-#   define DECLARE_INTERFACE(i) _COM_interface i
-#   define DECLARE_INTERFACE_(i,b) _COM_interface i : public b
-#  endif
+#  define DECLARE_INTERFACE(i) _COM_interface i
+#  define DECLARE_INTERFACE_(i,b) _COM_interface i : public b
 # else
 #  define STDMETHOD(m)	HRESULT(STDMETHODCALLTYPE *m)
 #  define STDMETHOD_(t,m)	t(STDMETHODCALLTYPE *m)
@@ -156,17 +145,12 @@ typedef unsigned long PROPID;
 #define _REFCLSID_DEFINED
 #define _REFFMTID_DEFINED
 #endif
+/* FIXME: This shouldn't be needed.
 #ifndef GUID_SECTION
 #define GUID_SECTION ".text"
 #endif
-/* Explicit naming of .text section for readonly data is only
-   needed for older GGC (pre-2.95).
-   More recent (3.4) GCC puts readonly data in .rdata.  */
-#if defined (__GNUC__) && (__GNUC__ <= 2 && __GNUC_MINOR__ < 95) 
-#define GUID_SECT __attribute__ ((section (GUID_SECTION)))
-#else
+*/
 #define GUID_SECT
-#endif
 #if !defined(INITGUID) || (defined(INITGUID) && defined(__cplusplus))
 #define GUID_EXT EXTERN_C
 #else

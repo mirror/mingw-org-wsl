@@ -1,8 +1,6 @@
 #ifndef _OAIDL_H
 #define _OAIDL_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>
@@ -190,7 +188,7 @@ typedef struct tagSAFEARRAY {
 	PVOID pvData;
 	SAFEARRAYBOUND rgsabound[1];
 }SAFEARRAY,*LPSAFEARRAY;
-#if defined (__GNUC__) && !defined (NONAMELESSUNION)
+#if !defined (NONAMELESSUNION)
 __extension__   /* no named members  */
 #endif
 typedef struct tagVARIANT {

@@ -1,8 +1,6 @@
 #ifndef _MMREG_H
 #define _MMREG_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifndef _MMSYSTEM_H
 #include <mmsystem.h>

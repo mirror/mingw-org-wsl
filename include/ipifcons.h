@@ -9,9 +9,7 @@
 */
 #ifndef _IPIFCONS_H
 #define _IPIFCONS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #define MIN_IF_TYPE 1
 #define IF_TYPE_OTHER 1

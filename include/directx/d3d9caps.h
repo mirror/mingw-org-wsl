@@ -12,9 +12,7 @@
 
 #ifndef _D3D9_CAPS_H
 #define _D3D9_CAPS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef DIRECT3D_VERSION
 #define DIRECT3D_VERSION  0x0900

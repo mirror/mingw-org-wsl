@@ -22,10 +22,7 @@
 
 #ifndef __WINDDK_H
 #define __WINDDK_H
-
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -119,33 +116,19 @@ typedef ULONG LOGICAL;
 #define TAG(_a, _b, _c, _d) (ULONG) \
 	(((_a) << 0) + ((_b) << 8) + ((_c) << 16) + ((_d) << 24))
 
-#ifdef __GNUC__
 static __inline struct _KPCR * KeGetCurrentKPCR(
   VOID)
 {
   ULONG Value;
 
   __asm__ __volatile__ (
-#if (__GNUC__ >= 3)
     /* support -masm=intel */
     "mov{l} {%%fs:0x18, %0|%0, %%fs:0x18}\n\t"
-#else
-    "movl %%fs:0x18, %0\n\t"
-#endif
      : "=r" (Value)
      : /* no inputs */
   );
   return (struct _KPCR *) Value;
 }
-
-#elif defined( __WATCOMC__ )
-
-extern struct _KPCR * KeGetCurrentKPCR( void );
-#pragma aux KeGetCurrentKPCR = \
-  "mov eax, fs:[0x18]" \
-  value [ eax ];
-
-#endif
 
 /*
 ** Simple structures

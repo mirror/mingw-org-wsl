@@ -1,8 +1,6 @@
 #ifndef _EDEVDEFS_H
 #define _EDEVDEFS_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #define ED_TOP 0x00000001
 #define ED_MIDDLE 0x00000002

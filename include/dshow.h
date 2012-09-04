@@ -1,8 +1,6 @@
 #ifndef _DSHOW_H
 #define _DSHOW_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #include <strmif.h>
 #include <amaudio.h>
@@ -18,9 +16,7 @@
 #include <dvdmedia.h>
 #include <il21dec.h>
 #include <ddraw.h> /* DDSCAPS2, DDPIXELFORMAT */
-#ifndef _WINGDI_H
 #include <wingdi.h> /* BITMAPINFOHEADER */
-#endif
 
 #ifdef __cplusplus
 extern "C" {

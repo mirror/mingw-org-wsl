@@ -1,8 +1,6 @@
 #ifndef _COMMCTRL_H
 #define _COMMCTRL_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #include <prsht.h>
 #ifdef __cplusplus

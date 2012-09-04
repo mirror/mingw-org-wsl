@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_IMAGECODEC_H
 #define __GDIPLUS_IMAGECODEC_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 static __inline__ GpStatus GetImageDecoders(UINT numDecoders, UINT size,
 		ImageCodecInfo *decoders)

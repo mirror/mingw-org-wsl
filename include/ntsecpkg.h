@@ -1,8 +1,6 @@
 #ifndef _NTSECPKG_H
 #define _NTSECPKG_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #include "windef.h"
 #include "ntsecapi.h"

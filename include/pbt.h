@@ -1,8 +1,6 @@
 #ifndef _PBT_H
 #define _PBT_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 /* Also in winuser.h  */
 #define PBT_APMQUERYSUSPEND 0

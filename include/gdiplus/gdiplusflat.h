@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_FLAT_H
 #define __GDIPLUS_FLAT_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 namespace DllExports {

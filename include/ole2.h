@@ -1,8 +1,6 @@
 #ifndef _OLE2_H
 #define _OLE2_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #pragma pack(push,8)
 #include <winerror.h>

@@ -12,9 +12,7 @@
 #ifndef _MATH_H_
 #define _MATH_H_
 
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -864,8 +862,6 @@ extern long double __cdecl fmal (long double, long double, long double);
  *  which always returns true: yes, (NaN != NaN) is true).
  */
 
-#if __GNUC__ >= 3
-
 #define isgreater(x, y) __builtin_isgreater(x, y)
 #define isgreaterequal(x, y) __builtin_isgreaterequal(x, y)
 #define isless(x, y) __builtin_isless(x, y)
@@ -873,38 +869,8 @@ extern long double __cdecl fmal (long double, long double, long double);
 #define islessgreater(x, y) __builtin_islessgreater(x, y)
 #define isunordered(x, y) __builtin_isunordered(x, y)
 
-#else
-/*  helper  */
-extern int  __cdecl __fp_unordered_compare (long double, long double);
-#ifndef __NO_INLINE__
-__CRT_INLINE int  __cdecl
-__fp_unordered_compare (long double x, long double y){
-  unsigned short retval;
-  __asm__ ("fucom %%st(1);"
-	   "fnstsw;": "=a" (retval) : "t" (x), "u" (y));
-  return retval;
-}
-#endif
-
-#define isgreater(x, y) ((__fp_unordered_compare(x, y) \
-			   & 0x4500) == 0)
-#define isless(x, y) ((__fp_unordered_compare (y, x) \
-                       & 0x4500) == 0)
-#define isgreaterequal(x, y) ((__fp_unordered_compare (x, y) \
-                               & FP_INFINITE) == 0)
-#define islessequal(x, y) ((__fp_unordered_compare(y, x) \
-			    & FP_INFINITE) == 0)
-#define islessgreater(x, y) ((__fp_unordered_compare(x, y) \
-			      & FP_SUBNORMAL) == 0)
-#define isunordered(x, y) ((__fp_unordered_compare(x, y) \
-			    & 0x4500) == 0x4500)
-
-#endif
-
-
 #endif /* __STDC_VERSION__ >= 199901L */
 #endif /* __NO_ISOCEXT */
-
 
 #ifdef __cplusplus
 }

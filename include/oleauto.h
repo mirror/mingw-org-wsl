@@ -1,8 +1,6 @@
 #ifndef _OLEAUTO_H
 #define _OLEAUTO_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #pragma pack(push,8)
 #define WINOLEAUTAPI STDAPI

@@ -1,8 +1,6 @@
 #ifndef _COMCAT_H
 #define _COMCAT_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>

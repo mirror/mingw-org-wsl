@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_COLORMATRIX_H
 #define __GDIPLUS_COLORMATRIX_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 typedef enum ColorAdjustType {
 	ColorAdjustTypeDefault = 0,

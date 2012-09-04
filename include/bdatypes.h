@@ -1,8 +1,6 @@
 #ifndef _BDATYPES_H
 #define _BDATYPES_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

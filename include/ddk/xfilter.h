@@ -22,10 +22,7 @@
 
 #ifndef __XFILTER_H
 #define __XFILTER_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

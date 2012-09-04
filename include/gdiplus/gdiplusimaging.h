@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_IMAGING_H
 #define __GDIPLUS_IMAGING_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 typedef enum ImageCodecFlags {
 	ImageCodecFlagsEncoder = 0x00000001,

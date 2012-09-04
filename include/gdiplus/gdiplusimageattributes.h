@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_IMAGEATTRIBUTES_H
 #define __GDIPLUS_IMAGEATTRIBUTES_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef __cplusplus
 #error "A C++ compiler is required to include gdiplusimageattributes.h."

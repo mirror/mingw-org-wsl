@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_TYPES_H
 #define __GDIPLUS_TYPES_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #define WINGDIPAPI __stdcall
 #define GDIPCONST const

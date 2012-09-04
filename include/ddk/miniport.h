@@ -22,10 +22,7 @@
 
 #ifndef __MINIPORT_H
 #define __MINIPORT_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

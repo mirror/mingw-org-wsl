@@ -2,10 +2,7 @@
   written for MinGW*/
 #ifndef _MSACM_H
 #define _MSACM_H
-
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

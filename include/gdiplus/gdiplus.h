@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_H
 #define __GDIPLUS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef RC_INVOKED
 

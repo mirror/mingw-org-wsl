@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_STRINGFORMAT_H
 #define __GDIPLUS_STRINGFORMAT_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef __cplusplus
 #error "A C++ compiler is required to include gdiplusstringformat.h."

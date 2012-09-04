@@ -22,10 +22,7 @@
 
 #ifndef __SRB_H
 #define __SRB_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -278,9 +275,7 @@ typedef enum _SCSI_NOTIFICATION_TYPE {
 	WMIReregister
 } SCSI_NOTIFICATION_TYPE, *PSCSI_NOTIFICATION_TYPE;
 
-#ifdef __GNUC__
 __extension__ /* enums limited to range of integer */
-#endif
 typedef enum _SCSI_ADAPTER_CONTROL_TYPE {
 	ScsiQuerySupportedControlTypes = 0,
 	ScsiStopAdapter,

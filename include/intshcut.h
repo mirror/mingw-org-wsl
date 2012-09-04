@@ -1,8 +1,6 @@
 #ifndef _INTSHCUT_H
 #define _INTSHCUT_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #include <isguids.h>
 #ifdef __cplusplus

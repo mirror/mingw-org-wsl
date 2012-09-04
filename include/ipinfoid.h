@@ -14,9 +14,7 @@
  */
 #ifndef _IPINFOID_H
 #define _IPINFOID_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 /*--- Router Management Reference - Router Information Enumeration Types */
 #define IP_IN_FILTER_INFO 0xFFFF0001

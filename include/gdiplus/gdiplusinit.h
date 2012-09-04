@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_INIT_H
 #define __GDIPLUS_INIT_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 typedef struct GdiplusStartupInput {
 	UINT32 GdiplusVersion;

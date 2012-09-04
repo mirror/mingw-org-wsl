@@ -1,8 +1,6 @@
 #ifndef _IL21DEC_H
 #define _IL21DEC_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

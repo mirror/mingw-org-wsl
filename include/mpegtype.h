@@ -1,8 +1,6 @@
 #ifndef _MPEGTYPE_H
 #define _MPEGTYPE_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #include <strmif.h>
 

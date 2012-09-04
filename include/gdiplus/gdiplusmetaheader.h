@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_METAHEADER_H
 #define __GDIPLUS_METAHEADER_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 
 /*

@@ -22,10 +22,7 @@
 
 #ifndef __STORPORT_H
 #define __STORPORT_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

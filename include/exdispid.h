@@ -1,8 +1,6 @@
 #ifndef _EXDISPID_H
 #define _EXDISPID_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #define DISPID_BEFORENAVIGATE2 250
 #define DISPID_NEWWINDOW2 251

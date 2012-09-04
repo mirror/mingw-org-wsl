@@ -22,10 +22,7 @@
 
 #ifndef __NETEVENT_H
 #define __NETEVENT_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #define EVENT_TRANSPORT_REGISTER_FAILED  0xC000232CL
 

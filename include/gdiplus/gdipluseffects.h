@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_EFFECTS_H
 #define __GDIPLUS_EFFECTS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 typedef enum CurveAdjustments {
 	AdjustExposure = 0,

@@ -22,10 +22,7 @@
 
 #ifndef __WINNT4_H
 #define __WINNT4_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

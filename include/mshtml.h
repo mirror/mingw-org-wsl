@@ -1,8 +1,6 @@
 #ifndef _MSHTML_H
 #define _MSHTML_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

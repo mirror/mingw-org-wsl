@@ -1,8 +1,6 @@
 #ifndef _QEDIT_H
 #define _QEDIT_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef _STRMIF_H
 #include <strmif.h>

@@ -14,9 +14,7 @@
  */
 #ifndef _NTDSAPI_H
 #define _NTDSAPI_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

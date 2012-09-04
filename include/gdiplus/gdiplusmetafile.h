@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_METAFILE_H
 #define __GDIPLUS_METAFILE_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef __cplusplus
 #error "A C++ compiler is required to include gdiplusmetafile.h."

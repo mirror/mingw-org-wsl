@@ -14,9 +14,7 @@
  */
 #ifndef _MPRAPI_H
 #define _MPRAPI_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #include <ras.h>
 #include <lmcons.h>

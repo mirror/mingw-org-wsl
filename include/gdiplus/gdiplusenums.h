@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_ENUMS_H
 #define __GDIPLUS_ENUMS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 typedef enum BrushType {
 	BrushTypeSolidColor = 0,

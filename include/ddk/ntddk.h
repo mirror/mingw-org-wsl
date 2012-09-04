@@ -27,10 +27,7 @@
 
 #ifndef __NTDDK_H
 #define __NTDDK_H
-
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #ifndef __USE_NTOSKRNL__
 #define __USE_NTOSKRNL__ 1

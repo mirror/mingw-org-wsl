@@ -22,9 +22,7 @@
 
 #ifndef __GDIPLUS_COLOR_H
 #define __GDIPLUS_COLOR_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 typedef enum ColorChannelFlags {
 	ColorChannelFlagsC = 0,

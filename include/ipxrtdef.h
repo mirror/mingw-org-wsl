@@ -14,9 +14,7 @@
  */
 #ifndef _IPXRTDEF_H
 #define _IPXRTDEF_H
-#if __GNUC__ >= 3
 #pragma GCC system_header
-#endif
 
 #include <stm.h>
 #include <ipxconst.h>

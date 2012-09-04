@@ -1,8 +1,6 @@
 #ifndef _OLEIDL_H
 #define _OLEIDL_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,9 +52,7 @@ typedef enum tagUSERCLASSTYPE {
 	USERCLASSTYPE_APPNAME
 } USERCLASSTYPE;
 
-#ifdef __GNUC__
 __extension__  /* IS0 C says enums limited to range of int */ 
-#endif
 typedef enum tagDROPEFFECT {
 	DROPEFFECT_NONE=0,
 	DROPEFFECT_COPY=1,

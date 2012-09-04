@@ -12,9 +12,7 @@
 
 #ifndef _DXERR8_H
 #define _DXERR8_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __cplusplus
 extern "C" {

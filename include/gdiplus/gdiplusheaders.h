@@ -25,9 +25,7 @@
 
 #ifndef __GDIPLUS_HEADERS_H
 #define __GDIPLUS_HEADERS_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifndef __cplusplus
 #error "A C++ compiler is required to include gdiplusheaders.h."

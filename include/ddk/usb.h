@@ -22,10 +22,7 @@
 
 #ifndef __USB_H
 #define __USB_H
-
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #ifdef __USBDI_H
 #error usbdi.h cannot be included with usb.h

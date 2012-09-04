@@ -6,9 +6,7 @@
  */
 #ifndef _LARGEINT_H
 #define _LARGEINT_H
-#if __GNUC__ >=3
 #pragma GCC system_header
-#endif
 
 #include <windows.h>
 
