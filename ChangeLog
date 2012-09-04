@@ -3,7 +3,9 @@
 	More on assuming GCC is greater than or equal to version 3.5.4 and that
 	GCC is the only compiler to be used for MinGW.org.
 
-	* src/libcrt/math/cephes_mconf.h
+	* src/libcrt/math/cephes_mconf.h: Remove unneeded filters based on the
+	assumptions.
+	* include/_mingw.h: Fix typo.
 
 2012-09-04  Earnie Boyd  <earnie@users.sourceforge.net>
 

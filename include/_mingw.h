@@ -40,7 +40,7 @@
 #error ERROR: You must use a GNU Compiler.
 #endif
 
-#if (__GNUC__ < 3 || !defined(__GNUC__MINOR__) || (__GNUC__ = 3 && __GNUC_MINOR__ < 4) || (__GNUC__ = 3 && __GNUC_MINOR__ >= 4 && __GNUC_PATCHLEVEL__ < 5))
+#if (__GNUC__ < 3 || !defined(__GNUC__MINOR__) || (__GNUC__ == 3 && __GNUC_MINOR__ < 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4 && __GNUC_PATCHLEVEL__ < 5))
 #error ERROR: You must use a GNU Compiler version >= 3.4.5.
 #endif
 
