@@ -38,15 +38,8 @@ typedef union uD { const unsigned short sh[4]; double d; } uD;
 #define NEGZERO (-0.0)
 #undef NAN
 #undef INFINITY
-#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 2))
 #define INFINITY __builtin_huge_val()
 #define NAN __builtin_nan("")
-#else
-extern double __INF;
-#define INFINITY (__INF)
-extern double __QNAN;
-#define NAN (__QNAN)
-#endif
 
 /*long double*/
 #define MAXNUML 1.189731495357231765021263853E4932L
@@ -67,15 +60,8 @@ extern double __QNAN;
 
 #undef NANL
 #undef INFINITYL
-#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 2))
 #define INFINITYL __builtin_huge_vall()
 #define NANL __builtin_nanl("")
-#else
-extern long double __INFL;
-#define INFINITYL (__INFL)
-extern long double __QNANL;
-#define NANL (__QNANL)
-#endif
 
 /* float */
 
@@ -97,16 +83,8 @@ extern long double __QNANL;
 
 #undef NANF
 #undef INFINITYF
-#if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 2))
 #define INFINITYF __builtin_huge_valf()
 #define NANF __builtin_nanf("")
-#else
-extern float __INFF;
-#define INFINITYF (__INFF)
-extern float __QNANF;
-#define NANF (__QNANF)
-#endif
-
 
 /* double */
 

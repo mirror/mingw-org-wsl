@@ -3,6 +3,13 @@
 	More on assuming GCC is greater than or equal to version 3.5.4 and that
 	GCC is the only compiler to be used for MinGW.org.
 
+	* src/libcrt/math/cephes_mconf.h
+
+2012-09-04  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	More on assuming GCC is greater than or equal to version 3.5.4 and that
+	GCC is the only compiler to be used for MinGW.org.
+
 	* include/pbt.h: Remove unneeded filters based on the assumptions.
 	* include/powrprof.h: Ditto.
 	* include/prsht.h: Ditto.
