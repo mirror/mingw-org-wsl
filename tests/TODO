@@ -1,3 +1,4 @@
+* Apply LICENSE to files in this directory as appropriate or remove them.
 * We need a better test harness.
 * We need more extensive testing.
 ** It would be nice to be able to test each function but that would take too

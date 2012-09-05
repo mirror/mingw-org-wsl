@@ -1,5 +1,40 @@
 2012-09-05  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Apply LICENSE to all files as appropriate.
+
+	* Makefile.in: Add file preamble.
+	* README: Ditto.
+	* config.h.in: Ditto.
+	* configure.ac: Ditto.
+	* include/*.h: Ditto.
+	* include/ddk/*: Ditto.
+	* include/directx/*: Ditto.
+	* include/gdiplus/*: Ditto
+	* src/libcrt/complex/*: Ditto.
+	* src/libcrt/crt/*: Ditto.
+	* src/libcrt/ctype/*: Ditto.
+	* src/libcrt/fenv/*: Ditto.
+	* src/libcrt/include/*: Ditto.
+	* src/libcrt/inttypes/*: Ditto.
+	* src/libcrt/math/*: Ditto.
+	* src/libcrt/misc/*: Ditto.
+	* src/libcrt/posix/*: Ditto.
+	* src/libcrt/search/*: Ditto.
+	* src/libcrt/stdio/*: Ditto.
+	* src/libcrt/sys/time/*: Ditto.
+	* src/libcrt/tchar/*: Ditto.
+	* src/libcrt/wchar/*: Ditto.
+	* src/libgdiplus/*: Ditto.
+	* src/liblargeint/*: Ditto.
+	* src/libscrnsave/*: Ditto.
+	* src/libshell32/*: Ditto.
+	* src/libuuid/*: Ditto.
+	* src/libws2_32/*: Ditto.
+	* tests/TODO: Add an item to review the tests files for LICENSE
+	application.
+
+2012-09-05  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Segregate source that cannot take on the MinGW.org LICENSE.
 
 	* Makefile.in: Make changes based on moved files.
