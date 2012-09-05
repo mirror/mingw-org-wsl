@@ -40,6 +40,7 @@
 	* Makefile.in: Make changes based on moved files.
 	* gpl/*: Move to misc/gpl/*.
 	* include/GL/*: Move to misc/include/GL/*.
+	* include/profile.h: Move to misc/include/profile.h.
 	* src/libcrt/math/cephes_mconf.h: Move to 
 	misc/src/include/cephes_mconf.h.
 	* src/libcrt/include/gdtoa.h: Move to misc/src/include/gdtoa.h.
