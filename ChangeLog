@@ -1,3 +1,41 @@
+2012-09-05  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Segregate source that cannot take on the MinGW.org LICENSE.
+
+	* Makefile.in: Make changes based on moved files.
+	* gpl/*: Move to misc/gpl/*.
+	* include/GL/*: Move to misc/include/GL/*.
+	* src/libcrt/math/cephes_mconf.h: Move to 
+	misc/src/include/cephes_mconf.h.
+	* src/libcrt/include/gdtoa.h: Move to misc/src/include/gdtoa.h.
+	* src/libcrt/gdtoa/*: Move to misc/src/libcrt/gdtoa/*.
+	* src/libcrt/math/cbrt.c: Move to misc/src/libcrt/math/cbrt.c.
+	* src/libcrt/math/cbrtf.c: Move to misc/src/libcrt/math/cbrtf.c.
+	* src/libcrt/math/cbrtl.c: Move to misc/src/libcrt/math/cbrtl.c.
+	* src/libcrt/math/coshl.c: Move to misc/src/libcrt/math/coshl.c.
+	* src/libcrt/math/erfl.c: Move to misc/src/libcrt/math/erfl.c.
+	* src/libcrt/math/frexpl.S: Move to misc/src/libcrt/math/frexpl.S.
+	* src/libcrt/math/hypotl.c: Move to misc/src/libcrt/math/hypotl.c.
+	* src/libcrt/math/lgamma.c: Move to misc/src/libcrt/math/lgamma.c.
+	* src/libcrt/math/lgammaf.c: Move to misc/src/libcrt/math/lgammaf.c.
+	* src/libcrt/math/pow.c: Move to misc/src/libcrt/math/pow.c.
+	* src/libcrt/math/powi.c: Move to misc/src/libcrt/math/powi.c.
+	* src/libcrt/math/powif.c: Move to misc/src/libcrt/math/powif.c.
+	* src/libcrt/math/powil.c: Move to misc/src/libcrt/math/powil.c.
+	* src/libcrt/math/powl.c: Move to misc/src/libcrt/math/powl.c.
+	* src/libcrt/math/sinhl.c: Move to misc/src/libcrt/math/sinhl.c.
+	* src/libcrt/math/tanhl.c: Move to misc/src/libcrt/math/tanhl.c.
+	* src/libcrt/math/tgamma.c: Move to misc/src/libcrt/math/tgamma.c.
+	* src/libcrt/math/tgammaf.c: Move to misc/src/libcrt/math/tgammaf.c.
+	* src/libcrt/profile/*: Move to misc/src/libcrt/profile/*.
+	* src/libcrt/libdinput/*: Move to misc/src/libcrt/libdinput/*.
+	* src/libcrt/libdmoguids/*: Move to misc/src/libcrt/libdmoguids/*.
+	* src/libcrt/libdxerr8/*: Move to misc/src/libcrt/libdxerr8/*.
+	* src/libcrt/libdxerr9/*: Move to misc/src/libcrt/libdxerr9/*.
+	* src/libcrt/libdxguid/*: Move to misc/src/libcrt/libdxguid/*.
+	* src/libcrt/libksuser/*: Move to misc/src/libcrt/libksuser/*.
+	* src/libcrt/libstrmiids/*: Move to misc/src/libcrt/libstrmiids/*.
+
 2012-09-04  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	More on assuming GCC is greater than or equal to version 3.5.4 and that

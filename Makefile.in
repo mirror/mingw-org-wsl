@@ -1,3 +1,9 @@
+##
+# @file Makefile.in
+# @copy 2012 MinGW.org project
+# @see LICENSE
+# http://mingw.git.sourceforge.net/git/gitweb.cgi?p=mingw/mingw.org-wsl;a=blob_plain;f=LICENSE/
+##
 VPATH=$(srcdir)
 PACKAGE_TARNAME=@PACKAGE_TARNAME@
 PACKAGE_VERSION=@PACKAGE_VERSION@
@@ -25,8 +31,8 @@ INSTALL=@INSTALL@
 MKDIR_P=@MKDIR_P@
 
 INCLUDES=-I$(top_srcdir)/include -I$(srcdir)/include \
-  -I$(top_srcdir)/src/libcrt/include -nostdinc \
-  -iwithprefixbefore include
+  -I$(top_srcdir)/src/libcrt/include -I$(top_srcdir)/misc/src/include \
+  -nostdinc -iwithprefixbefore include
 ALL_CFLAGS=$(CFLAGS) $(INCLUDES) -DNTDDI_VERSION=0x04000000
 
 .SUFFIXES: .def.in .def
@@ -75,7 +81,7 @@ winapi_lib_DDK_LIBRARIES := $(addprefix lib,$(winapi_DDK_DEF:.def=.a))
 winapi_lib_DIRECTX_LIBRARIES := $(addprefix lib,$(winapi_DIRECTX_DEF:.def=.a))
 winapi_lib_DIRECTX_DINPUT_LIBRARIES := $(addprefix lib,$(winapi_DIRECTX_DINPUT_DEF:.def=.a))
 winapi_mri_LIBRARIES := $(addprefix lib,$(winapi_MRI:.mri=.a))
-winapi_lib_EXTRA_LIBRARIES := libuuid.a libscrnsave.a libscrnsavw.a liblargeint.a libdmoguids.a libdxguid.a libstrmiids.a
+winapi_lib_EXTRA_LIBRARIES := libuuid.a libscrnsave.a libscrnsavw.a liblargeint.a libdmoguids.a libdxguid.a libdxerr8.a libdxerr9.a libstrmiids.a
 
 lib_LIBRARIES := $(mingwrt_lib_LIBRARIES) $(winapi_lib_LIBRARIES) \
   $(winapi_lib_EXTRA_LIBRARIES) $(winapi_mri_LIBRARIES) \
@@ -114,7 +120,7 @@ mold_SOURCES := \
   $(SRCDIR)/wscmpi.c
 mold_OBJECTS := $(mode_SOURCES:.c=.o)
 
-SRCDIR := gpl/profile
+SRCDIR := misc/gpl/profile
 gcrt0_SOURCES := $(SRCDIR)/gcrt0.c
 gcrt0_OBJECTS := $(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o
 
@@ -138,13 +144,13 @@ scrnsavw_o_CFLAGS := -DUNICODE
 liblargeint_a_SOURCES := src/liblargeint/largeint.c
 liblargeint_a_OBJECTS := $(liblargeint_a_SOURCES:.c=.o)
 
-libdmoguids_a_SOURCES := src/libdmoguids/dmoguids.c
+libdmoguids_a_SOURCES := misc/src/libdmoguids/dmoguids.c
 libdmoguids_a_OBJECTS := $(libdmoguids_a_SOURCES:.c=.o)
 
-libdxguid_a_SOURCES := src/libdxguid/dxguid.c
+libdxguid_a_SOURCES := misc/src/libdxguid/dxguid.c
 libdxguid_a_OBJECTS := $(libdxguid_a_SOURCES:.c=.o)
 
-libstrmiids_a_SOURCES := src/libstrmiids/strmiids.c
+libstrmiids_a_SOURCES := misc/src/libstrmiids/strmiids.c
 libstrmiids_a_OBJECTS := $(libstrmiids_a_SOURCES:.c=.o)
 
 msvcrt_DEF = \
@@ -263,7 +269,7 @@ fenv_SOURCES := \
   $(SRCDIR)/feraiseexcept.c \
   $(SRCDIR)/fesetround.c
 
-SRCDIR := src/libcrt/gdtoa
+SRCDIR := misc/src/libcrt/gdtoa
 gdtoa_SOURCES := \
   $(SRCDIR)/g__fmt.c \
   $(SRCDIR)/gethex.c \
@@ -297,6 +303,7 @@ inttypes_SOURCES := \
   $(SRCDIR)/wcstoumax.c
 
 SRCDIR := src/libcrt/math
+MSRCDIR := misc/src/libcrt/math
 math_SOURCES := \
   $(SRCDIR)/acosf.c \
   $(SRCDIR)/acosh.c \
@@ -315,9 +322,9 @@ math_SOURCES := \
   $(SRCDIR)/atanhf.c \
   $(SRCDIR)/atanhl.c \
   $(SRCDIR)/atanl.c \
-  $(SRCDIR)/cbrt.c \
-  $(SRCDIR)/cbrtf.c \
-  $(SRCDIR)/cbrtl.c \
+  $(MSRCDIR)/cbrt.c \
+  $(MSRCDIR)/cbrtf.c \
+  $(MSRCDIR)/cbrtl.c \
   $(SRCDIR)/ceilf.S \
   $(SRCDIR)/ceill.S \
   $(SRCDIR)/copysign.S \
@@ -325,9 +332,9 @@ math_SOURCES := \
   $(SRCDIR)/copysignl.S \
   $(SRCDIR)/cosf.S \
   $(SRCDIR)/coshf.c \
-  $(SRCDIR)/coshl.c \
+  $(MSRCDIR)/coshl.c \
   $(SRCDIR)/cosl.S \
-  $(SRCDIR)/erfl.c \
+  $(MSRCDIR)/erfl.c \
   $(SRCDIR)/exp2.S \
   $(SRCDIR)/exp2f.S \
   $(SRCDIR)/exp2l.S \
@@ -362,10 +369,10 @@ math_SOURCES := \
   $(SRCDIR)/fpclassifyf.c \
   $(SRCDIR)/fpclassifyl.c \
   $(SRCDIR)/frexpf.c \
-  $(SRCDIR)/frexpl.S \
+  $(MSRCDIR)/frexpl.S \
   $(SRCDIR)/fucom.c \
   $(SRCDIR)/hypotf.c \
-  $(SRCDIR)/hypotl.c \
+  $(MSRCDIR)/hypotl.c \
   $(SRCDIR)/ilogb.S \
   $(SRCDIR)/ilogbf.S \
   $(SRCDIR)/ilogbl.S \
@@ -374,8 +381,8 @@ math_SOURCES := \
   $(SRCDIR)/isnanl.c \
   $(SRCDIR)/ldexpf.c \
   $(SRCDIR)/ldexpl.c \
-  $(SRCDIR)/lgamma.c \
-  $(SRCDIR)/lgammaf.c \
+  $(MSRCDIR)/lgamma.c \
+  $(MSRCDIR)/lgammaf.c \
   $(SRCDIR)/lgammal.c \
   $(SRCDIR)/llrint.c \
   $(SRCDIR)/llrintf.c \
@@ -406,12 +413,12 @@ math_SOURCES := \
   $(SRCDIR)/nextafterl.c \
   $(SRCDIR)/nexttoward.c \
   $(SRCDIR)/nexttowardf.c \
-  $(SRCDIR)/pow.c \
+  $(MSRCDIR)/pow.c \
   $(SRCDIR)/powf.c \
-  $(SRCDIR)/powi.c \
-  $(SRCDIR)/powif.c \
-  $(SRCDIR)/powil.c \
-  $(SRCDIR)/powl.c \
+  $(MSRCDIR)/powi.c \
+  $(MSRCDIR)/powif.c \
+  $(MSRCDIR)/powil.c \
+  $(MSRCDIR)/powl.c \
   $(SRCDIR)/remainder.S \
   $(SRCDIR)/remainderf.S \
   $(SRCDIR)/remainderl.S \
@@ -432,16 +439,16 @@ math_SOURCES := \
   $(SRCDIR)/signbitl.c \
   $(SRCDIR)/sinf.S \
   $(SRCDIR)/sinhf.c \
-  $(SRCDIR)/sinhl.c \
+  $(MSRCDIR)/sinhl.c \
   $(SRCDIR)/sinl.S \
   $(SRCDIR)/sqrtf.c \
   $(SRCDIR)/sqrtl.c \
   $(SRCDIR)/tanf.S \
   $(SRCDIR)/tanhf.c \
-  $(SRCDIR)/tanhl.c \
+  $(MSRCDIR)/tanhl.c \
   $(SRCDIR)/tanl.S \
-  $(SRCDIR)/tgamma.c \
-  $(SRCDIR)/tgammaf.c \
+  $(MSRCDIR)/tgamma.c \
+  $(MSRCDIR)/tgammaf.c \
   $(SRCDIR)/tgammal.c \
   $(SRCDIR)/trunc.c \
   $(SRCDIR)/truncf.c \
@@ -460,11 +467,11 @@ SRCDIR := src/libcrt/posix/unistd
 posix_unistd_SOURCES := $(SRCDIR)/ftruncate.c $(SRCDIR)/usleep.c
 posix_SOURCES := $(posix_libgen_SOURCES) $(posix_unistd_SOURCES)
 
-SRCDIR := src/libcrt/profile
+SRCDIR := misc/src/libcrt/profile
 profile_SOURCES := \
   $(SRCDIR)/gmon.c \
   $(SRCDIR)/mcount.c \
-  gpl/profile/profil.c \
+  misc/gpl/profile/profil.c \
 libgmon_a_SOURCES := $(profile_SOURCES)
 libgmon_a_OBJECTS := $(libgmon_a_SOURCES:.c=.o)
 
@@ -558,7 +565,7 @@ libmingwex_a_SOURCES := \
 libmingwex_a_OBJECTS := $(libmingwex_a_SOURCES:.c=.o)
 libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS:.S=.o)
 
-SRCDIR := src/libdinput
+SRCDIR := misc/src/libdinput
 libdinput_a_SOURCES := \
   $(SRCDIR)/dinput_joy.c \
   $(SRCDIR)/dinput_joy2.c \
@@ -567,11 +574,11 @@ libdinput_a_SOURCES := \
   $(SRCDIR)/dinput_mouse2.c
 libdinput_a_OBJECTS := $(libdinput_a_SOURCES:.c=.o)
 
-SRCDIR := src/libdxerr8
+SRCDIR := misc/src/libdxerr8
 libdxerr8_a_SOURCES := $(SRCDIR)/dxerr.c $(SRCDIR)/dxerr8.c $(SRCDIR)/dxerr8w.c
 libdxerr8_a_OBJECTS := $(libdxerr8_a_SOURCES:.c=.o)
 
-SRCDIR := src/libdxerr9
+SRCDIR := misc/src/libdxerr9
 libdxerr9_a_SOURCES := $(SRCDIR)/dxerr.c $(SRCDIR)/dxerr9.c $(SRCDIR)/dxerr9w.c
 libdxerr9_a_OBJECTS := $(libdxerr9_a_SOURCES:.c=.o)
 
@@ -686,7 +693,7 @@ $(libscrnsavw_a_OBJECTS): $(libscrnsavw_a_SOURCES)
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(scrnsavw_o_CFLAGS) -o $@ $<
 
-SRCDIR := gpl/profile
+SRCDIR := misc/gpl/profile
 $(SRCDIR)/gcrt1.o:
 	mkdir -p $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -U__MSVCRT__ -D__CRTDLL__ -o $@ $<
@@ -787,7 +794,7 @@ mingwm10.dll: $(mingwm10_dll_OBJECTS) mingwthrd.def libmingwex.a
 
 clean:
 	rm -f *.def *.s *.o *.dll *.a _libm_dummy.c stamp*
-	rm -rf .deps/ src/
+	rm -rf .deps/ src/ misc/
 	cd tests && $(MAKE) $@
 
 distclean: clean
@@ -1064,7 +1071,7 @@ install-w32api: install-w32api-dirs
 	for INC in $(addprefix $(top_srcdir)/include/gdiplus/,$(w32api_lib_GDIPLUS_INCLUDES)); do \
 	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
 	done
-	for INC in $(addprefix $(top_srcdir)/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
+	for INC in $(addprefix $(top_srcdir)/misc/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
 	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/GL/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/directx/,$(w32api_lib_DIRECTX_INCLUDES)); do \
@@ -1143,7 +1150,7 @@ install-wsl: install-wsl-dirs
 	for INC in $(addprefix $(top_srcdir)/include/gdiplus/,$(w32api_lib_GDIPLUS_INCLUDES)); do \
 	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
 	done
-	for INC in $(addprefix $(top_srcdir)/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
+	for INC in $(addprefix $(top_srcdir)/misc/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
 	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/GL/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/directx/,$(w32api_lib_DIRECTX_INCLUDES)); do \
