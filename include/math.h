@@ -21,20 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * math.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Mathematical functions.
- *
- */
-
-
 #ifndef _MATH_H_
 #define _MATH_H_
-
 #pragma GCC system_header
 
 /* All the headers include this file. */

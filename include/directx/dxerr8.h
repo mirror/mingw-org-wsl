@@ -21,18 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-
-	dxerr8.h - Header file for the DirectX 8 Error API
-
-	Written by Filip Navara <xnavara@volny.cz>
-
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-*/
-
 #ifndef _DXERR8_H
 #define _DXERR8_H
 #pragma GCC system_header

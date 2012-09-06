@@ -23,7 +23,6 @@
  */
 #ifndef _SECEXT_H
 #define _SECEXT_H
-
 #pragma GCC system_header
 
 #ifdef __cplusplus

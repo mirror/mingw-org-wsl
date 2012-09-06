@@ -21,26 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * ndis.h
- *
  * Network Device Interface Specification definitions
- *
- * This file is part of the w32api package.
- *
- * Contributors:
- *   Created by Casper S. Hornstrup <chorns@users.sourceforge.net>
- *
- * THIS SOFTWARE IS NOT COPYRIGHTED
- *
- * This source code is offered for use in the public domain. You may
- * use, modify or distribute it freely.
- *
- * This code is distributed in the hope that it will be useful but
- * WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- * DISCLAIMED. This includes but is not limited to warranties of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  * DEFINES: i386                 - Target platform is i386
  *          _NDIS_               - Define only for NDIS library
  *          NDIS_MINIPORT_DRIVER - Define only for NDIS miniport drivers

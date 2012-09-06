@@ -21,9 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* WSIPX.H - contributed by the WINE project
- */
-
 #ifndef _WSIPX_H
 #define _WSIPX_H
 #pragma GCC system_header

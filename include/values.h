@@ -21,7 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _VALUES_H
+#define _VALUES_H
+#pragma GCC system_header
+
 /*
  * TODO: Nothing here yet. Should provide UNIX compatibility constants
  * comparible to those in limits.h and float.h.
  */
+
+#endif

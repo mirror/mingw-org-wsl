@@ -21,18 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * direct.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Functions for manipulating paths and directories (included from io.h)
- * plus functions for setting the current drive.
- *
- */
 #ifndef	_DIRECT_H_
 #define	_DIRECT_H_
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>

@@ -21,22 +21,19 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-
-  Definitions for winsock 2
-
-  Contributed by the WINE project.
-
-  Portions Copyright (c) 1980, 1983, 1988, 1993
-  The Regents of the University of California.  All rights reserved.
-
-  Portions Copyright (c) 1993 by Digital Equipment Corporation.
- */
-
 #if !(defined _WINSOCK2_H || defined _WINSOCK_H)
 #define _WINSOCK2_H
 #define _WINSOCK_H /* to prevent later inclusion of winsock.h */
 #pragma GCC system_header
+
+/*
+ * Definitions for winsock 2
+ *
+ * Portions Copyright (c) 1980, 1983, 1988, 1993
+ * The Regents of the University of California.  All rights reserved.
+ *
+ * Portions Copyright (c) 1993 by Digital Equipment Corporation.
+ */
 
 #define _GNU_H_WINDOWS32_SOCKETS
 

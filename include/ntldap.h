@@ -21,23 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-  ntldap.h - Header file for the Windows LDAP API Extensions
-
-  Written by Filip Navara <xnavara@volny.cz>
-
-  References:
-    Lightweight Directory Access Protocol Reference
-    http://msdn.microsoft.com/library/en-us/netdir/ldap/ldap_reference.asp
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
-
 #ifndef _NTLDAP_H
 #define _NTLDAP_H
 #pragma GCC system_header
+
+/*
+ * LDAP API Extensions
+ */
 
 #define LDAP_SERVER_ASQ_OID	"1.2.840.113556.1.4.1504"
 #define LDAP_SERVER_ASQ_OID_W	L"1.2.840.113556.1.4.1504"

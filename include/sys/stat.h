@@ -21,17 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * stat.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Symbolic constants for opening and creating files, also stat, fstat and
- * chmod functions.
- *
- */
-
 #ifndef _STAT_H_
 #define _STAT_H_
 

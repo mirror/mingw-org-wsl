@@ -23,7 +23,6 @@
  */
 #ifndef _W32API_H
 #define _W32API_H
-#define _W32API_H_
 #pragma GCC system_header
 #warning WARNING - The w32api.h header file is deprecated and will be removed.
 

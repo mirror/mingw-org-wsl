@@ -21,19 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-  snmp.h - Header file for the Windows SNMP API
-
-  Written by Filip Navara <xnavara@volny.cz>
-
-  References (2003-08-25):
-    http://msdn.microsoft.com/library/en-us/snmp/snmp/snmp_reference.asp
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
-
 #ifndef _SNMP_H
 #define _SNMP_H
 #pragma GCC system_header

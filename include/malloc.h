@@ -21,21 +21,16 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _MALLOC_H
+#define _MALLOC_H
+#pragma GCC system_header
+
 /*
- * malloc.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
  * Support for programs which want to use malloc.h to get memory management
  * functions. Unless you absolutely need some of these functions and they are
  * not in the ANSI headers you should use the ANSI standard header files
  * instead.
- *
  */
-
-#ifndef _MALLOC_H_
-#define _MALLOC_H_
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -123,4 +118,4 @@ void __cdecl __MINGW_NOTHROW __mingw_aligned_free (void*);
 
 #endif	/* RC_INVOKED */
 
-#endif /* Not _MALLOC_H_ */
+#endif /* Not _MALLOC_H */

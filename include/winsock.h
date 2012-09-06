@@ -21,8 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
+#ifndef _WINSOCK_H
+#define _WINSOCK_H
+#pragma GCC system_header
 
+/*
   Definitions for winsock 1.1
   
   Portions Copyright (c) 1980, 1983, 1988, 1993
@@ -30,10 +33,6 @@
 
   Portions Copyright (c) 1993 by Digital Equipment Corporation.
  */
-
-#ifndef _WINSOCK_H
-#define _WINSOCK_H
-#pragma GCC system_header
 
 #define _GNU_H_WINDOWS32_SOCKETS
 

@@ -21,29 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * ntapi.h
- *
  * Windows NT Native API
- *
- * Most structures in this file is obtained from Windows NT/2000 Native API
- * Reference by Gary Nebbett, ISBN 1578701996.
- *
- * This file is part of the w32api package.
- *
- * Contributors:
- *   Created by Casper S. Hornstrup <chorns@users.sourceforge.net>
- *
- * THIS SOFTWARE IS NOT COPYRIGHTED
- *
- * This source code is offered for use in the public domain. You may
- * use, modify or distribute it freely.
- *
- * This code is distributed in the hope that it will be useful but
- * WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- * DISCLAIMED. This includes but is not limited to warranties of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
  */
 
 #ifndef __NTAPI_H

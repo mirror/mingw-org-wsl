@@ -21,18 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-	tlhelp32.h - Include file for Tool help functions.
-
-	Written by Mumit Khan <khan@nanotech.wisc.edu>
-
-	This file is part of a free library for the Win32 API. 
-
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-*/
 #ifndef _TLHELP32_H
 #define _TLHELP32_H
 #pragma GCC system_header

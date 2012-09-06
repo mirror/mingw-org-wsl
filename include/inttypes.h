@@ -21,10 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 7.8 Format conversion of integer types <inttypes.h> */
-
 #ifndef _INTTYPES_H_
 #define _INTTYPES_H_
+#pragma GCC system_header
+
+/* 7.8 Format conversion of integer types <inttypes.h> */
 
 #include <_mingw.h>
 #include <stdint.h>

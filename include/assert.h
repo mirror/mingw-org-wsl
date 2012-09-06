@@ -21,19 +21,17 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * assert.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Define the assert macro for debug output.
- *
- */
 
 /* We should be able to include this file multiple times to allow the assert
-   macro to be enabled/disabled for different parts of code.  So don't add a
-   header guard.  */ 
+ * macro to be enabled/disabled for different parts of code.  So don't add a
+ * header guard.
+ */ 
+#pragma GCC system_header
+
+/**
+ * Define the assert macro for debug output.
+ */
+
 
 #ifndef RC_INVOKED
 

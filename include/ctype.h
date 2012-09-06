@@ -21,18 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * ctype.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Functions for testing character types and converting characters.
- *
- */
-
 #ifndef _CTYPE_H_
 #define _CTYPE_H_
+#pragma GCC system_header
+
+/* 
+ * Functions for testing character types and converting characters.
+ */
 
 /* All the headers include this file. */
 #include <_mingw.h>

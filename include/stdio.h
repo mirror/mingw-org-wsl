@@ -21,22 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * stdio.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Definitions of types and prototypes of functions for standard input and
- * output.
- *
- * NOTE: The file manipulation functions provided by Microsoft seem to
- * work with either slash (/) or backslash (\) as the directory separator.
- *
- */
-
-#ifndef _STDIO_H_
-#define	_STDIO_H_
+#ifndef _STDIO_H
+#define	_STDIO_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -681,5 +668,4 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	putw (int, FILE*);
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif /* _STDIO_H_ */
+#endif /* _STDIO_H */

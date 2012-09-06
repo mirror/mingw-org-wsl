@@ -21,32 +21,25 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-  winsnmp.h - Header file for the Windows SNMP API
-
-  Written by Filip Navara <xnavara@volny.cz>
-
-  References (2003-08-25):
-    Windows SNMP
-    http://www.winsnmp.com/docs/winsnmp.doc
-
-    WinSNMP v2.0 Addendum
-    http://www.winsnmp.com/docs/winsnmp2.txt
-
-    WinSNMP v3.0 API Addendum
-    http://www.winsnmp.com/docs/winsnmp3.htm
-
-    WinSNMP Reference
-    http://msdn.microsoft.com/library/en-us/snmp/snmp/winsnmp_api_reference.asp
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
-
 #ifndef _WINSNMP_H
 #define _WINSNMP_H
 #pragma GCC system_header
+
+/*
+ * SNMP API
+ * References (2003-08-25):
+ *  Windows SNMP
+ *  http://www.winsnmp.com/docs/winsnmp.doc
+ *
+ *  WinSNMP v2.0 Addendum
+ *  http://www.winsnmp.com/docs/winsnmp2.txt
+ *
+ *  WinSNMP v3.0 API Addendum
+ *  http://www.winsnmp.com/docs/winsnmp3.htm
+ *
+ *  WinSNMP Reference
+ *  http://msdn.microsoft.com/library/en-us/snmp/snmp/winsnmp_api_reference.asp
+ */
 
 #ifndef _WINDOWS_H
 #include <windows.h>

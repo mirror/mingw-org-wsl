@@ -21,18 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * signal.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * A way to set handlers for exceptional conditions (also known as signals).
- *
- */
-
-#ifndef	_SIGNAL_H_
-#define	_SIGNAL_H_
+#ifndef	_SIGNAL_H
+#define	_SIGNAL_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -116,6 +107,4 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	raise (int);
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif	/* Not _SIGNAL_H_ */
-
+#endif	/* Not _SIGNAL_H */

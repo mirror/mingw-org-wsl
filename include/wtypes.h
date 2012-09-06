@@ -21,12 +21,12 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#include <rpc.h>
-#include <rpcndr.h>
-
 #ifndef _WTYPES_H
 #define _WTYPES_H
 #pragma GCC system_header
+
+#include <rpc.h>
+#include <rpcndr.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -21,17 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/**
-    sdkddkver.h - Versioning file for Windows SDK/DDK.
-
-    This file is part of a free library for the Windows API.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
 #ifndef _SDKDDKVER_H
 #define _SDKDDKVER_H
+#pragma GCC system_header
 
 /**
  * Define version masks

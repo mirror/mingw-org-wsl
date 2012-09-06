@@ -22,14 +22,14 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #ifndef _UNISTD_H
+#define _UNISTD_H
+#pragma GCC system_header
+
 /*
- * This file is part of the Mingw32 package.
- *
  * unistd.h maps (roughly) to io.h
  * Other headers included by unistd.h may be selectively processed;
  * __UNISTD_H_SOURCED__ enables such selective processing.
  */
-#define _UNISTD_H
 #define __UNISTD_H_SOURCED__ 1
 
 #include <io.h>

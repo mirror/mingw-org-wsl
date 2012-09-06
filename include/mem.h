@@ -21,9 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _MEM_H
+#define _MEM_H
+#pragma GCC system_header
+
 /*
- * This file is part of the Mingw32 package.
- *
  * mem.h maps to string.h
  */
 #include <string.h>
+
+#endif /* _MEM_H */

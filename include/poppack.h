@@ -21,6 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+/* CAUTION: Missing file guard is intentional. */
 #ifndef RC_INVOKED
 #pragma pack(pop)
 #endif

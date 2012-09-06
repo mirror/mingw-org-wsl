@@ -21,29 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#ifndef __MINGW_H
+#ifndef _MINGW_H
+#define _MINGW_H
+#pragma GCC system_header
+
 /*
- * _mingw.h
- *
- * Mingw specific macros included by ALL include files.
- *
- * This file is part of the Mingw32 package.
- *
- * Contributors:
- *  Created by Mumit Khan  <khan@xraylith.wisc.edu>
- *
- *  THIS SOFTWARE IS NOT COPYRIGHTED
- *
- *  This source code is offered for use in the public domain. You may
- *  use, modify or distribute it freely.
- *
- *  This code is distributed in the hope that it will be useful but
- *  WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- *  DISCLAIMED. This includes but is not limited to warranties of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
+ * Mingw specific macros.
  */
-#define __MINGW_H
 
 #define __MINGW_VERSION             4.0
 #define __MINGW_MAJOR_VERSION       4
@@ -56,8 +40,6 @@
 #define __MINGW32_MAJOR_VERSION     3
 #define __MINGW32_MINOR_VERSION     20
 #define __MINGW32_PATCHLEVEL        0
-
-#pragma GCC system_header
 
 #ifndef __GNUC__
 #error ERROR: You must use a GNU Compiler.

@@ -21,18 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * share.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Constants for file sharing functions.
- *
- */
-
-#ifndef	_SHARE_H_
-#define	_SHARE_H_
+#ifndef	_SHARE_H
+#define	_SHARE_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -52,5 +43,4 @@
 #define SH_DENYNO _SH_DENYNO
 
 #endif	/* Not _NO_OLDNAMES */
-
-#endif	/* Not _SHARE_H_ */
+#endif	/* Not _SHARE_H */

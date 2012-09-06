@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _OBJBASE_H
+#define _OBJBASE_H
+#pragma GCC system_header
+
 /* Include here to prevent circular dependencies if windows.h
    not already included */
 #include <rpc.h>
 #include <rpcndr.h>
-
-#ifndef _OBJBASE_H
-#define _OBJBASE_H
-#pragma GCC system_header
 
 #include <stdlib.h>
 #pragma pack(push,8)

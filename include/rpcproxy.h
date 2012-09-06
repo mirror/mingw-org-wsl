@@ -22,10 +22,11 @@
  * DEALINGS IN THE SOFTWARE.
  */
 /*
-    -DREGISTER_PROXY_DLL Generates DllMain, DllRegisterServer, and DllUnregisterServer
-    -DPROXY_CLSID=clsid Specifies a class ID to be used by the proxy DLL.
-    -DPROXY_CLSID_IS={..} Specifies the class ID to be used by the proxy DLL.
-    -DNT35_STRICT No new features
+ *  -DREGISTER_PROXY_DLL Generates DllMain, DllRegisterServer, and
+ *    DllUnregisterServer
+ *  -DPROXY_CLSID=clsid Specifies a class ID to be used by the proxy DLL.
+ *  -DPROXY_CLSID_IS={..} Specifies the class ID to be used by the proxy DLL.
+ *  -DNT35_STRICT No new features
 */
 #ifndef _RPCPROXY_H
 #define _RPCPROXY_H

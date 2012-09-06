@@ -21,15 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * DIRENT.H (formerly DIRLIB.H)
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- */
 #ifndef _DIRENT_H_
 #define _DIRENT_H_
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>

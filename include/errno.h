@@ -21,18 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * errno.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Error numbers and access to error reporting.
- *
- */
-
 #ifndef _ERRNO_H_
 #define	_ERRNO_H_
+#pragma GCC system_header
+
+/* 
+ * Error numbers and access to error reporting.
+ */
 
 /* All the headers include this file. */
 #include <_mingw.h>

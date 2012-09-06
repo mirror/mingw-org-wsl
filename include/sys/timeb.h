@@ -21,18 +21,12 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * timeb.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Support for the UNIX System V ftime system call.
- *
- */
-
 #ifndef	_TIMEB_H_
 #define	_TIMEB_H_
+
+/*
+ * Support for the UNIX System V ftime system call.
+ */
 
 /* All the headers include this file. */
 #include <_mingw.h>

@@ -21,18 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
-  mgmtapi.h - Header file for the SNMP Management API
-
-  Written by Filip Navara <xnavara@volny.cz>
-
-  References (2003-08-25):
-    http://msdn.microsoft.com/library/en-us/snmp/snmp/snmp_reference.asp
-
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+ * SNMP Management API
+ */
 
 #ifndef _MGMTAPI_H
 #define _MGMTAPI_H

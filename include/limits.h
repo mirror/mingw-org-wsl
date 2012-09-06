@@ -21,12 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _LIMITS_H
+#define _LIMITS_H
+#pragma GCC system_header
+
 /* 
- * limits.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
  * Functions for manipulating paths and directories (included from io.h)
  * plus functions for setting the current drive.
  *
@@ -34,11 +33,7 @@
  *
  * NOTE: GCC should supply a version of this header and it should be safe to
  *       use that version instead of this one (maybe safer).
- *
  */
-
-#ifndef _LIMITS_H_
-#define _LIMITS_H_
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -135,4 +130,4 @@
 #endif /* Not Strict ANSI and GNU C compiler */
 
 
-#endif /* not _LIMITS_H_ */
+#endif /* not _LIMITS_H */

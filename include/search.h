@@ -21,30 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * search.h
- *
- * Functions for searching and sorting.
- *
- * This file is part of the Mingw32 package.
- *
- * Contributors:
- *  Created by Danny Smith  <dannysmith@users.sourceforge.net>
- *
- *  THIS SOFTWARE IS NOT COPYRIGHTED
- *
- *  This source code is offered for use in the public domain. You may
- *  use, modify or distribute it freely.
- *
- *  This code is distributed in the hope that it will be useful but
- *  WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- *  DISCLAIMED. This includes but is not limited to warranties of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
-
-#ifndef _SEARCH_H_
-#define _SEARCH_H_
+#ifndef _SEARCH_H
+#define _SEARCH_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -125,5 +104,4 @@ _CRTIMP void* __cdecl lsearch (const void*, void*, unsigned int*, unsigned int,
 #endif
 
 #endif /* RC_INVOKED */
-
-#endif /*  _SEARCH_H_ */
+#endif /*  _SEARCH_H */

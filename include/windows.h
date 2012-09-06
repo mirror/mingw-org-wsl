@@ -21,18 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-	windows.h - main header file for the Win32 API
-
-	Written by Anders Norlander <anorland@hem2.passagen.se>
-
-	This file is part of a free library for the Win32 API.
-
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-*/
 #ifndef _WINDOWS_H
 #define _WINDOWS_H
 #pragma GCC system_header

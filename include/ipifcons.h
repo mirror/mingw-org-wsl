@@ -21,18 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-	ipifcons.h - Routing and Remote Access Services
-
-	This file is part of a free library for the Win32 API.
-
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
 #ifndef _IPIFCONS_H
 #define _IPIFCONS_H
 #pragma GCC system_header
+
+/*
+ * Routing and Remote Access Services
+ */
 
 #define MIN_IF_TYPE 1
 #define IF_TYPE_OTHER 1

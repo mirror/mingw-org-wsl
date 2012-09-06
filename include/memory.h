@@ -21,10 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _MEMORY_H
+#define _MEMORY_H
+#pragma GCC system_header
+
 /*
- * This file is part of the Mingw32 package.
- *
  * memory.h maps to the standard string.h header.
  */
-
 #include	<string.h>
+
+#endif /* _MEMORY_H */

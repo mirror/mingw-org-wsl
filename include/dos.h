@@ -21,18 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * dos.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * DOS-specific functions and structures.
- *
- */
-
 #ifndef	_DOS_H_
 #define	_DOS_H_
+#pragma GCC system_header
+
+/*
+ * DOS-specific functions and structures.
+ */
 
 /* All the headers include this file. */
 #include <_mingw.h>

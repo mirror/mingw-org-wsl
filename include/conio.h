@@ -21,19 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * conio.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Low level console I/O functions. Pretty please try to use the ANSI
- * standard ones if you are writing new code.
- *
- */
-
 #ifndef	_CONIO_H_
 #define	_CONIO_H_
+#pragma GCC system_header
+
+/*
+ * Low level console I/O functions. Pretty please try to use the ANSI
+ * standard ones if you are writing new code.
+ */
 
 /* All the headers include this file. */
 #include <_mingw.h>

@@ -21,18 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * fcntl.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Access constants for _open. Note that the permissions constants are
- * in sys/stat.h (ick).
- *
- */
 #ifndef _FCNTL_H_
 #define _FCNTL_H_
+#pragma GCC system_header
+
+/*
+ * Access constants for _open. Note that the permissions constants are
+ * in sys/stat.h (ick).
+ */
 
 /* All the headers include this file. */
 #include <_mingw.h>

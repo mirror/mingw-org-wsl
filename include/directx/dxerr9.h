@@ -21,18 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-
-	dxerr9.h - Header file for the DirectX 9 Error API
-
-	Written by Filip Navara <xnavara@volny.cz>
-
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-*/
-
 #ifndef _DXERR9_H
 #define _DXERR9_H
 #pragma GCC system_header

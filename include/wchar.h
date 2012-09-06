@@ -21,19 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * wchar.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Defines of all functions for supporting wide characters. Actually it
- * just includes all those headers, which is not a good thing to do from a
- * processing time point of view, but it does mean that everything will be
- * in sync.
- *
- */
-
 #ifndef	_WCHAR_H_
 #define	_WCHAR_H_
 #pragma GCC system_header

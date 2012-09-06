@@ -21,18 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * process.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Function calls for spawning child processes.
- *
- */
-
 #ifndef	_PROCESS_H_
 #define	_PROCESS_H_
+#pragma GCC system_header
+
+/* 
+ * Function calls for spawning child processes.
+ */
 
 /* All the headers include this file. */
 #include <_mingw.h>

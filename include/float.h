@@ -22,21 +22,15 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #ifndef _MINGW_FLOAT_H_
+#define _MINGW_FLOAT_H_
+#pragma GCC system_header
+
 /* 
- * float.h
- *
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
  * Constants related to floating point arithmetic.
  *
  * Also included here are some non-ANSI bits for accessing the floating
  * point controller.
  *
- */
-#define _MINGW_FLOAT_H_
-/*
  * NOTE:
  *
  * GCC provides float.h, but it doesn't include the non-standard stuff for

@@ -21,19 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-       httpext.h - Header for ISAPI extensions.
-
-       This file is part of a free library for the Win32 API.
-
-       This library is distributed in the hope that it will be useful,
-       but WITHOUT ANY WARRANTY; without even the implied warranty of
-       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
-
 #ifndef _HTTPEXT_H
 #define _HTTPEXT_H
 #pragma GCC system_header
+
+/*
+ * ISAPI extensions.
+ */
 
 #include <windows.h>
 

@@ -22,7 +22,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #ifndef _RICHOLE_H
-#define	_RICHOLE_H
+#define _RICHOLE_H
 #pragma GCC system_header
 
 #ifdef __cplusplus

@@ -21,12 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef	_TCHAR_H
+#define _TCHAR_H
+#pragma GCC system_header
+
 /* 
- * tchar.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
  * Unicode mapping layer for the standard C library. By including this
  * file and using the 't' names for string functions
  * (eg. _tprintf) you can make code which can be easily adapted to both
@@ -41,9 +40,6 @@
  * names).
  *
  */
-
-#ifndef	_TCHAR_H_
-#define _TCHAR_H_
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -503,5 +499,4 @@ typedef char	_TCHAR;
 #define _TEXT(x)	__TEXT(x)
 #define	_T(x)		__TEXT(x)
 
-#endif	/* Not _TCHAR_H_ */
-
+#endif	/* Not _TCHAR_H */

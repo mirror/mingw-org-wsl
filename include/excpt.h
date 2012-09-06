@@ -21,21 +21,16 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * excpt.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
+#ifndef	_EXCPT_H_
+#define	_EXCPT_H_
+#pragma GCC system_header
+
+/*
  * Support for operating system level structured exception handling.
  *
  * NOTE: This is very preliminary stuff. I am also pretty sure it is
  *       completely Intel specific.
- *
  */
-
-#ifndef	_EXCPT_H_
-#define	_EXCPT_H_
 
 /* All the headers include this file. */
 #include <_mingw.h>

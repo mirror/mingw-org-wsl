@@ -21,19 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * setjmp.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Declarations supporting setjmp and longjump, a method for avoiding
- * the normal function call return sequence. (Bleah!)
- *
- */
-
-#ifndef _SETJMP_H_
-#define _SETJMP_H_
+#ifndef _SETJMP_H
+#define _SETJMP_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -74,6 +64,4 @@ _CRTIMP void __cdecl __MINGW_NOTHROW longjmp (jmp_buf, int) __MINGW_ATTRIB_NORET
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif	/* Not _SETJMP_H_ */
-
+#endif	/* Not _SETJMP_H */

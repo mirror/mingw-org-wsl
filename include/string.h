@@ -21,18 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * string.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Definitions for memory and string functions.
- *
- */
-
-#ifndef _STRING_H_
-#define	_STRING_H_
+#ifndef _STRING_H
+#define	_STRING_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -220,5 +211,4 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsupr (wchar_t*);
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif	/* Not _STRING_H_ */
+#endif	/* Not _STRING_H */

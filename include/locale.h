@@ -21,19 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef	_LOCALE_H
+#define	_LOCALE_H
+#pragma GCC system_header
+
 /* 
- * locale.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
  * Functions and types for localization (ie. changing the appearance of
  * output based on the standards of a certain country).
- *
  */
-
-#ifndef	_LOCALE_H_
-#define	_LOCALE_H_
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -107,5 +102,5 @@ _CRTIMP struct lconv* __cdecl __MINGW_NOTHROW localeconv (void);
 
 #endif	/* Not RC_INVOKED */
 
-#endif	/* Not _LOCALE_H_ */
+#endif	/* Not _LOCALE_H */
 

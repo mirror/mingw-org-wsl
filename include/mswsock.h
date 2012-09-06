@@ -21,21 +21,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * mswsock.h
- * MS-specific extensions to Windows Sockets, exported from mswsock.dll.
- * These functions are N/A on Windows9x.
- *
- * This file is part of a free library for the Win32 API.
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- */
-         
 #ifndef _MSWSOCK_H
 #define _MSWSOCK_H
 #pragma GCC system_header
 
+/*
+ * MS-specific extensions to Windows Sockets, exported from mswsock.dll.
+ * These functions are N/A on Windows9x.
+ */
+         
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -21,23 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-	imagehlp.h - Include file for IMAGEHLP.DLL APIs
-
-	Written by Mumit Khan <khan@nanotech.wisc.edu>
-
-	This file is part of a free library for the Win32 API. 
-
-	NOTE: This strictly does not belong in the Win32 API since it's
-	really part of Platform SDK. However,GDB needs it and we might
-	as well provide it here.
-
-	This library is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-*/
-
 #ifndef _IMAGEHLP_H
 #define _IMAGEHLP_H
 #pragma GCC system_header

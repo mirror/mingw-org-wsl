@@ -21,4 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _UTIME_H
+#define _UTIME_H
+#pragma GCC system_header
+
 #include <sys/utime.h>
+
+#endif

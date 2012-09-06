@@ -21,17 +21,17 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _WS2TCPIP_H
+#define _WS2TCPIP_H
+#pragma GCC system_header
+
 /*
- *  ws2tcpip.h : TCP/IP specific extensions in Windows Sockets 2
+ * TCP/IP specific extensions in Windows Sockets 2
  *
  * Portions Copyright (c) 1980, 1983, 1988, 1993
  * The Regents of the University of California.  All rights reserved.
  *
  */
-
-#ifndef _WS2TCPIP_H
-#define _WS2TCPIP_H
-#pragma GCC system_header
 
 #if (defined _WINSOCK_H && !defined _WINSOCK2_H)
 #error "ws2tcpip.h is not compatible with winsock.h. Include winsock2.h instead."

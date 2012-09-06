@@ -21,30 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * wctype.h
- *
- * Functions for testing wide character types and converting characters.
- *
- * This file is part of the Mingw32 package.
- *
- * Contributors:
- *  Created by Mumit Khan <khan@xraylith.wisc.edu>
- *
- *  THIS SOFTWARE IS NOT COPYRIGHTED
- *
- *  This source code is offered for use in the public domain. You may
- *  use, modify or distribute it freely.
- *
- *  This code is distributed in the hope that it will be useful but
- *  WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- *  DISCLAIMED. This includes but is not limited to warranties of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- */
-
-#ifndef _WCTYPE_H_
-#define _WCTYPE_H_
+#ifndef _WCTYPE_H
+#define _WCTYPE_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -186,6 +165,4 @@ wctype_t __cdecl __MINGW_NOTHROW	wctype(const char*);
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif	/* Not _WCTYPE_H_ */
-
+#endif	/* Not _WCTYPE_H */

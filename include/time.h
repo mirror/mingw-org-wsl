@@ -21,18 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* 
- * time.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Date and time functions and types.
- *
- */
-
-#ifndef	_TIME_H_
-#define	_TIME_H_
+#ifndef	_TIME_H
+#define	_TIME_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -298,6 +289,4 @@ _CRTIMP size_t __cdecl __MINGW_NOTHROW		wcsftime (wchar_t*, size_t, const wchar_
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif	/* Not _TIME_H_ */
-
+#endif	/* Not _TIME_H */

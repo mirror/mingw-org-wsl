@@ -21,8 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*author: Adrian Sandor
-  written for MinGW*/
 #ifndef _MSACM_H
 #define _MSACM_H
 #pragma GCC system_header

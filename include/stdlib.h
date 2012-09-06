@@ -21,18 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * stdlib.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Definitions for common types, variables, and functions.
- *
- */
-
-#ifndef _STDLIB_H_
-#define _STDLIB_H_
+#ifndef _STDLIB_H
+#define _STDLIB_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -582,6 +573,4 @@ __CRT_INLINE wchar_t*  __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wc
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif	/* Not _STDLIB_H_ */
-
+#endif	/* Not _STDLIB_H */

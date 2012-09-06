@@ -21,13 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* rapi.h - main header file for the RAPI API
-
-        NOTE: This strictly does not belong in the Win32 API since it's
-        really part of Platform SDK.
-
-*/
-
 #ifndef _RAPI_H
 #define _RAPI_H
 #pragma GCC system_header
