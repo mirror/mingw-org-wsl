@@ -1,5 +1,29 @@
 2012-09-06  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Miscellaneous changes discovered during manual audit.
+
+	* src/libcrt/math/lgammal.c: Remove generated file preamble and move to
+	misc/src/libcrt/math/.
+	* src/libcrt/math/s_erf.c: Ditto.
+	* src/libcrt/math/sf_erf.c: Ditto.
+	* src/libcrt/math/tgammal.c: Ditto.
+	* src/libcrt/stdio/pformat.c: Ditto.
+	Define __MSVCRT_VERSION__ as 0x0800 before including headers.
+	* src/libcrt/stdio/pformat.h: Move to src/libcrt/include.
+	* src/libcrt/crt/test_headers.c: Move to tests/libcrt/.
+	* src/libcrt/math/lround.c: New file.
+	* src/libcrt/math/lroundf.c: Ditto.
+	* src/libcrt/math/lroundl.c: Ditto.
+	* src/libcrt/math/round.c: Ditto.
+	* src/libcrt/math/roundf.c: Ditto.
+	* src/libcrt/math/roundl.c: Ditto.
+	* Makefile.in: Modify source directory for lgammal.c, s_erf.c, sf_erf.c
+	and tgammal.c.
+	Add lround.c, lroundf.c, lroundl.c, round.c, roundf.c and roundl.c.
+	Remove lround_generic.c and round_generic.c.
+
+2012-09-06  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Manual resolution for LICENSE for files already containing a file
 	preamble as appropriate.
 

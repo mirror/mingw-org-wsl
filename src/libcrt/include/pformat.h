@@ -22,27 +22,12 @@
  * DEALINGS IN THE SOFTWARE.
  */
 #ifndef PFORMAT_H
+#define PFORMAT_H
 /*
- * pformat.h
- *
- * $Id: pformat.h,v 1.1 2008/07/28 23:24:20 keithmarshall Exp $
- *
  * A private header, defining the `pformat' API; it is to be included
  * in each compilation unit implementing any of the `printf' family of
  * functions, but serves no useful purpose elsewhere.
- *
- * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- *
- * This is free software.  You may redistribute and/or modify it as you
- * see fit, without restriction of copyright.
- *
- * This software is provided "as is", in the hope that it may be useful,
- * but WITHOUT WARRANTY OF ANY KIND, not even any implied warranty of
- * MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.  At no
- * time will the author accept any form of liability for any damages,
- * however caused, resulting from the use of this software.
  */
-#define PFORMAT_H
 
 /* The following macros reproduce definitions from _mingw.h,
  * so that compilation will not choke, if using any compiler

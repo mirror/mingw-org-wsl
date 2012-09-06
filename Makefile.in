@@ -400,7 +400,7 @@ math_SOURCES := \
   $(SRCDIR)/ldexpl.c \
   $(MSRCDIR)/lgamma.c \
   $(MSRCDIR)/lgammaf.c \
-  $(SRCDIR)/lgammal.c \
+  $(MSRCDIR)/lgammal.c \
   $(SRCDIR)/llrint.c \
   $(SRCDIR)/llrintf.c \
   $(SRCDIR)/llrintl.c \
@@ -420,7 +420,9 @@ math_SOURCES := \
   $(SRCDIR)/lrint.c \
   $(SRCDIR)/lrintf.c \
   $(SRCDIR)/lrintl.c \
-  $(SRCDIR)/lround_generic.c \
+  $(SRCDIR)/lround.c \
+  $(SRCDIR)/lroundl.c \
+  $(SRCDIR)/lroundf.c \
   $(SRCDIR)/modff.c \
   $(SRCDIR)/modfl.c \
   $(SRCDIR)/nearbyint.S \
@@ -445,12 +447,14 @@ math_SOURCES := \
   $(SRCDIR)/rint.c \
   $(SRCDIR)/rintf.c \
   $(SRCDIR)/rintl.c \
-  $(SRCDIR)/round_generic.c \
-  $(SRCDIR)/s_erf.c \
+  $(SRCDIR)/round.c \
+  $(SRCDIR)/roundf.c \
+  $(SRCDIR)/roundl.c \
+  $(MSRCDIR)/s_erf.c \
   $(SRCDIR)/scalbn.S \
   $(SRCDIR)/scalbnf.S \
   $(SRCDIR)/scalbnl.S \
-  $(SRCDIR)/sf_erf.c \
+  $(MSRCDIR)/sf_erf.c \
   $(SRCDIR)/signbit.c \
   $(SRCDIR)/signbitf.c \
   $(SRCDIR)/signbitl.c \
@@ -466,7 +470,7 @@ math_SOURCES := \
   $(SRCDIR)/tanl.S \
   $(MSRCDIR)/tgamma.c \
   $(MSRCDIR)/tgammaf.c \
-  $(SRCDIR)/tgammal.c \
+  $(MSRCDIR)/tgammal.c \
   $(SRCDIR)/trunc.c \
   $(SRCDIR)/truncf.c \
   $(SRCDIR)/truncl.c
@@ -500,6 +504,7 @@ search_SOURCES := \
   $(SRCDIR)/twalk.c
 
 SRCDIR := src/libcrt/stdio
+MSRCDIR := misc/src/libcrt/stdio
 stdio_SOURCES := \
   $(SRCDIR)/btowc.c \
   $(SRCDIR)/fopen64.c \
@@ -507,7 +512,7 @@ stdio_SOURCES := \
   $(SRCDIR)/fseeko64.c \
   $(SRCDIR)/ftello64.c \
   $(SRCDIR)/lseek64.c \
-  $(SRCDIR)/pformat.c \
+  $(MSRCDIR)/pformat.c \
   $(SRCDIR)/printf.c \
   $(SRCDIR)/snprintf.c \
   $(SRCDIR)/snwprintf.c \
