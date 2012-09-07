@@ -179,9 +179,7 @@ typedef wchar_t _TCHAR;
 #define _wcsncnt(_wcs, _cnt) ((wcslen(_wcs)>_cnt) ? _count : wcslen(_wcs))
 #define _wcsspnp(_wcs1, _wcs2) ((*((_wcs1)+wcsspn(_wcs1,_wcs2))) ? ((_wcs1)+wcsspn(_wcs1,_wcs2)) : NULL)
 
-#if 1  /* defined __MSVCRT__ */
 /*
- *   These wide functions not in crtdll.dll.
  *   Define macros anyway so that _wfoo rather than _tfoo is undefined
  */
 #define _ttoi64     _wtoi64
@@ -262,7 +260,6 @@ typedef wchar_t _TCHAR;
 #define _tstat32i64	_wstat32i64
 #define _tstat64i32	_wstat64i32
 #endif /* __MSVCRT_VERSION__ > 0x0800 */
-#endif  /* __MSVCRT__ */
 
 /* dirent structures and functions */
 #define _tdirent	_wdirent
@@ -447,8 +444,6 @@ typedef char	_TCHAR;
 #define _trmdir	    _rmdir
 #define _tstat      _stat
 
-#if 1  /* defined __MSVCRT__ */
-/* Not in crtdll.dll. Define macros anyway? */
 #define _ttoi64     _atoi64
 #define _i64tot     _i64toa
 #define _ui64tot    _ui64toa
@@ -478,7 +473,6 @@ typedef char	_TCHAR;
 #define _tstat32i64	_stat32i64
 #define _tstat64i32	_stat64i32
 #endif /* __MSVCRT_VERSION__ > 0x0800 */
-#endif  /* __MSVCRT__ */
 
 /* dirent structures and functions */
 #define _tdirent	dirent

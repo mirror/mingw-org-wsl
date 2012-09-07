@@ -106,8 +106,6 @@ extern "C" {
  * __imp__HUGE is a pointer to the actual variable _HUGE in
  * MSVCRT.DLL. If we used _HUGE directly we would get a pointer
  * to a thunk function.
- *
- * NOTE: The CRTDLL version uses _HUGE_dll instead.
  */
 
 #if __MINGW_GNUC_PREREQ(3, 3)
@@ -116,25 +114,13 @@ extern "C" {
 
 #ifndef __DECLSPEC_SUPPORTED
 
-#ifdef __MSVCRT__
 extern double*	_imp___HUGE;
 #define	HUGE_VAL	(*_imp___HUGE)
-#else
-/* CRTDLL */
-extern double*	_imp___HUGE_dll;
-#define	HUGE_VAL	(*_imp___HUGE_dll)
-#endif
 
 #else /* __DECLSPEC_SUPPORTED */
 
-#ifdef __MSVCRT__
 __MINGW_IMPORT double	_HUGE;
 #define	HUGE_VAL	_HUGE
-#else
-/* CRTDLL */
-__MINGW_IMPORT double	_HUGE_dll;
-#define	HUGE_VAL	_HUGE_dll
-#endif
 
 #endif /* __DECLSPEC_SUPPORTED */
 #endif /* __MINGW_GNUC_PREREQ(3, 3) */

@@ -46,7 +46,7 @@ extern "C" {
 typedef _JBTYPE jmp_buf[_JBLEN];
 
 /*
- * The function provided by CRTDLL which appears to do the actual work
+ * The function provided by MSVCRT.DLL which appears to do the actual work
  * of setjmp.
  */
 _CRTIMP int __cdecl __MINGW_NOTHROW _setjmp (jmp_buf);

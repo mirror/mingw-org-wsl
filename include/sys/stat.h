@@ -130,7 +130,6 @@ struct stat
 };
 #endif /* _NO_OLDNAMES */
 
-#if defined (__MSVCRT__)
 struct _stati64 {
     _dev_t st_dev;
     _ino_t st_ino;
@@ -202,7 +201,6 @@ struct _stat64i32 {
 	__time64_t	st_ctime;
 };
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
-#endif /* __MSVCRT__ */
 #define _STAT_DEFINED
 #endif /* _STAT_DEFINED */
 
@@ -227,7 +225,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	stat (const char*, struct stat*);
 
 #endif	/* Not _NO_OLDNAMES */
 
-#if defined (__MSVCRT__)
 #if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP int __cdecl __MINGW_NOTHROW  _fstati64(int, struct _stati64 *);
 _CRTIMP int __cdecl __MINGW_NOTHROW  _stati64(const char *, struct _stati64 *);
@@ -280,7 +277,6 @@ _CRTALIAS int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t* _v1, struct _sta
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
 #define _WSTAT_DEFINED
 #endif /* _WSTAT_DEFIND */
-#endif /* __MSVCRT__ */
 
 #ifdef	__cplusplus
 }

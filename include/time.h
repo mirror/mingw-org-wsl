@@ -194,7 +194,6 @@ _CRTALIAS struct tm*	   __cdecl __MINGW_NOTHROW	localtime (const time_t* _v)	  {
  * _tzname: standard/daylight savings time zone names (an array with two
  *          elements).
  */
-#ifdef __MSVCRT__
 
 /* These are for compatibility with pre-VC 5.0 suppied MSVCRT. */
 extern _CRTIMP int* __cdecl __MINGW_NOTHROW	__p__daylight (void);
@@ -205,62 +204,18 @@ __MINGW_IMPORT int	_daylight;
 __MINGW_IMPORT long	_timezone;
 __MINGW_IMPORT char 	*_tzname[2];
 
-#else /* not __MSVCRT (ie. crtdll) */
-
-#ifndef __DECLSPEC_SUPPORTED
-
-extern int*	_imp___daylight_dll;
-extern long*	_imp___timezone_dll;
-extern char**	_imp___tzname;
-
-#define _daylight	(*_imp___daylight_dll)
-#define _timezone	(*_imp___timezone_dll)
-#define _tzname		(*_imp___tzname)
-
-#else /* __DECLSPEC_SUPPORTED */
-
-__MINGW_IMPORT int	_daylight_dll;
-__MINGW_IMPORT long	_timezone_dll;
-__MINGW_IMPORT char*	_tzname[2];
-
-#define _daylight	_daylight_dll
-#define _timezone	_timezone_dll
-
-#endif /* __DECLSPEC_SUPPORTED */
-
-#endif /* not __MSVCRT__ */
-
 #endif	/* Not __STRICT_ANSI__ */
 
 #ifndef _NO_OLDNAMES
-
-#ifdef __MSVCRT__
-
 /* These go in the oldnames import library for MSVCRT. */
 __MINGW_IMPORT int	daylight;
 __MINGW_IMPORT long	timezone;
 __MINGW_IMPORT char 	*tzname[2];
-
-#else /* not __MSVCRT__ */
-
-/* CRTDLL is royally messed up when it comes to these macros.
-   TODO: import and alias these via oldnames import library instead 
-   of macros.  */
-
-#define daylight        _daylight
-/* NOTE: timezone not defined as macro because it would conflict with
-   struct timezone in sys/time.h.
-   Also, tzname used to a be macro, but now it's in moldname. */
-__MINGW_IMPORT char 	*tzname[2];
-
-#endif /* not __MSVCRT__ */
-
 #endif	/* Not _NO_OLDNAMES */
 
 #ifndef _WTIME_DEFINED
 /* wide function prototypes, also declared in wchar.h */
 #ifndef __STRICT_ANSI__
-#ifdef __MSVCRT__
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wasctime(const struct tm*);
 #if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime(const time_t*);
@@ -278,7 +233,6 @@ _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v) { return(_
 _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v) { return(_wctime32 (_v)); }
 #endif
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
-#endif /*  __MSVCRT__ */
 #endif /* __STRICT_ANSI__ */
 _CRTIMP size_t __cdecl __MINGW_NOTHROW		wcsftime (wchar_t*, size_t, const wchar_t*, const struct tm*);
 #define _WTIME_DEFINED

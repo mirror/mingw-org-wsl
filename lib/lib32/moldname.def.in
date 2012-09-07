@@ -31,9 +31,7 @@ chsize
 close
 creat
 cwait
-#if !(__CRTDLL__)
 daylight DATA
-#endif
 dup
 dup2
 ecvt
@@ -110,9 +108,7 @@ strupr
 swab
 tell
 tempnam
-#if  !(__CRTDLL__)
 timezone DATA
-#endif
 ; export tzname for both. See <time.h>
 tzname DATA
 tzset
@@ -129,9 +125,7 @@ wcsnset
 wcsrev
 wcsset
 wcsupr
-#if  !(__CRTDLL__)
 wpopen
-#endif
 write
 ; non-ANSI functions declared in math.h
 j0

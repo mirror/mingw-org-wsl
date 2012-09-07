@@ -73,7 +73,7 @@ _CRTIMP size_t __cdecl __MINGW_NOTHROW	strxfrm (char*, const char*, size_t);
 
 #ifndef __STRICT_ANSI__
 /*
- * Extra non-ANSI functions provided by the CRTDLL library
+ * Extra non-ANSI functions provided by the runtime library
  */
 _CRTIMP char* __cdecl __MINGW_NOTHROW	_strerror (const char *);
 _CRTIMP void* __cdecl __MINGW_NOTHROW	_memccpy (void*, const void*, int, size_t);
@@ -90,10 +90,8 @@ _CRTIMP char* __cdecl __MINGW_NOTHROW	_strset (char*, int);
 _CRTIMP char* __cdecl __MINGW_NOTHROW	_strupr (char*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_swab (const char*, char*, size_t);
 
-#ifdef __MSVCRT__
 _CRTIMP int __cdecl __MINGW_NOTHROW  _strncoll(const char*, const char*, size_t);
 _CRTIMP int __cdecl __MINGW_NOTHROW  _strnicoll(const char*, const char*, size_t);
-#endif
 
 #ifndef	_NO_OLDNAMES
 /*
@@ -156,11 +154,8 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcstok(wchar_t*, const wchar_t*);
 _CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsxfrm(wchar_t*, const wchar_t*, size_t);
 
 #ifndef	__STRICT_ANSI__
-/*
- * Unicode versions of non-ANSI string functions provided by CRTDLL.
- */
 
-/* NOTE: _wcscmpi not provided by CRTDLL, this define is for portability */
+/* NOTE: _wcscmpi not provided by MSVCRT.DLL, this define is for portability */
 #define		_wcscmpi	_wcsicmp
 
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsdup (const wchar_t*);
@@ -173,13 +168,11 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsrev (wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsset (wchar_t*, wchar_t);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsupr (wchar_t*);
 
-#ifdef __MSVCRT__
 _CRTIMP int __cdecl __MINGW_NOTHROW  _wcsncoll(const wchar_t*, const wchar_t*, size_t);
 _CRTIMP int   __cdecl __MINGW_NOTHROW _wcsnicoll(const wchar_t*, const wchar_t*, size_t);
 #if __MSVCRT_VERSION__ >= 0x0700
 _CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW _wcserror(int);
 _CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW __wcserror(const wchar_t*);
-#endif
 #endif
 
 #ifndef	_NO_OLDNAMES

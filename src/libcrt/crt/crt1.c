@@ -59,21 +59,17 @@ extern const PIMAGE_TLS_CALLBACK __dyn_tls_init_callback;
  * Must have the correct app type for MSVCRT. 
  */
 
-#ifdef __MSVCRT__
 #define __UNKNOWN_APP    0
 #define __CONSOLE_APP    1
 #define __GUI_APP        2
 __MINGW_IMPORT void __set_app_type(int);
-#endif /* __MSVCRT__ */
 
 /*  Global _fmode for this .exe, not the one in msvcrt.dll,
     The default is set in txtmode.o in libmingw32.a */
 /* Override the dllimport'd declarations in stdlib.h */
 #undef _fmode 
 extern int _fmode; 
-#ifdef __MSVCRT__
 extern int* __p__fmode(void); /* To access the dll _fmode */
-#endif
 
 /*
  * Setup the default file handles to have the _CRT_fmode mode, as well as
@@ -111,11 +107,7 @@ _mingw32_init_fmode (void)
     }
 
     /*  Now sync  the dll _fmode to the  one for this .exe.  */
-#ifdef __MSVCRT__
     *__p__fmode() = _fmode;	
-#else
-    *_imp___fmode_dll = _fmode;
-#endif
 }
 
 /* This function will be called when a trap occurs. Thanks to Jacob
@@ -276,9 +268,7 @@ __mingw_CRTStartup (void)
 void
 mainCRTStartup (void)
 {
-#ifdef __MSVCRT__
   __set_app_type (__CONSOLE_APP);
-#endif
   __mingw_CRTStartup ();
 }
 
@@ -290,9 +280,7 @@ mainCRTStartup (void)
 void
 WinMainCRTStartup (void)
 {
-#ifdef __MSVCRT__
   __set_app_type (__GUI_APP);
-#endif
   __mingw_CRTStartup ();
 }
 

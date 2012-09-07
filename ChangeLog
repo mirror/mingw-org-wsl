@@ -1,5 +1,38 @@
 2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Remove filters for CRTDLL and __MSVCRT__.
+
+	* Makefile.in: Remove -[DU]__MSVCRT__ and -[DU]__CRTDLL__.
+	* crt1.o: Remove CRTDLL specific target.
+	* dllcrt1.o: Ditto.
+	* gcrt1.o: Ditto.
+	* include/assert.h: Modify documentation to remove the use of CRTDLL.
+	* include/setjmp.h: Ditto.
+	* src/libcrt/crt/ofmt_stub.s: Ditto.
+	* include/ctype.h: Ditto.
+	Remove filters for __MSVCRT__ and unneeded #else coding.
+	* include/dirent.h: Ditto.
+	* include/dos.h: Ditto.
+	* include/io.h: Ditto.
+	* include/math.h: Ditto.
+	* include/process.h: Ditto.
+	* include/stdio.h: Ditto.
+	* include/stdlib.h: Ditto.
+	* include/string.h: Ditto.
+	* include/sys/stat.h: Ditto.
+	* include/sys/types.h: Ditto.
+	* include/sys/utime.h: Ditto.
+	* include/tchar.h: Ditto.
+	* include/time.h: Ditto.
+	* include/wchar.h: Ditto.
+	* include/wctype.h: Ditto.
+	* src/libcrt/crt/crt1.c: Ditto.
+	* src/libcrt/crt/init.c: Ditto.
+	* lib/lib32/moldname.def.in: Remove filters for __CRTDLL__.
+	* src/libcrt/tlssup.c: Remove filter for CRTDLL.
+
+2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Apply LICENSE to all files as appropriate.
 
 	* tests/Makefile.in: Add file preamble.

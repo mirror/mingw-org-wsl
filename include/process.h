@@ -121,9 +121,6 @@ _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnvpe	(int, const wchar_t*, const 
 #endif
 
 /*
- * The functions _beginthreadex and _endthreadex are not provided by CRTDLL.
- * They are provided by MSVCRT.
- *
  * NOTE: Apparently _endthread calls CloseHandle on the handle of the thread,
  * making for race conditions if you are not careful. Basically you have to
  * make sure that no-one is going to do *anything* with the thread handle
@@ -135,13 +132,10 @@ _CRTIMP unsigned long __cdecl __MINGW_NOTHROW
 	_beginthread	(void (*)(void *), unsigned, void*);
 _CRTIMP void __cdecl __MINGW_NOTHROW _endthread	(void);
 
-#ifdef	__MSVCRT__
 _CRTIMP unsigned long __cdecl __MINGW_NOTHROW
 	_beginthreadex	(void *, unsigned, unsigned (__stdcall *) (void *), 
 			 void*, unsigned, unsigned*);
 _CRTIMP void __cdecl __MINGW_NOTHROW _endthreadex (unsigned);
-#endif
-
 
 #ifndef	_NO_OLDNAMES
 /*

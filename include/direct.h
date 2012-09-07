@@ -68,13 +68,11 @@ _CRTIMP unsigned __cdecl __MINGW_NOTHROW _getdiskfree (unsigned, struct _diskfre
 
 #ifndef _WDIRECT_DEFINED
 /* wide character versions. Also in wchar.h */
-#ifdef __MSVCRT__ 
 _CRTIMP int __cdecl __MINGW_NOTHROW _wchdir(const wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wgetcwd(wchar_t*, int);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wgetdcwd(int, wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wmkdir(const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wrmdir(const wchar_t*);
-#endif	/* __MSVCRT__ */
 #define _WDIRECT_DEFINED
 #endif
 

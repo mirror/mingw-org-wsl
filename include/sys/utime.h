@@ -81,11 +81,9 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_futime (int, struct _utimbuf*);
 
 /* The wide character version, only available for MSVCRT versions of the
  * C runtime library. */
-#ifdef __MSVCRT__
 #if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wutime (const wchar_t*, struct _utimbuf*);
 #endif
-#endif /* MSVCRT runtime */
 
 /* These require newer versions of msvcrt.dll (6.10 or higher).  */ 
 #if __MSVCRT_VERSION__ >= 0x0601

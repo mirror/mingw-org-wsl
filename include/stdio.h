@@ -461,15 +461,10 @@ size_t __cdecl __MINGW_NOTHROW __mingw_fwrite (const void*, size_t, size_t, FILE
  * this type are unknown, but we (the compiler) need to know the size
  * because the programmer using fgetpos and fsetpos will be setting aside
  * storage for fpos_t structres. Actually I tested using a byte array and
- * it is fairly evident that the fpos_t type is a long (in CRTDLL.DLL).
- * Perhaps an unsigned long? TODO? It's definitely a 64-bit number in
+ * it is fairly evident that the fpos_t it's a 64-bit number in
  * MSVCRT however, and for now `long long' will do.
  */
-#ifdef __MSVCRT__
 typedef long long fpos_t;
-#else
-typedef long	fpos_t;
-#endif
 
 _CRTIMP int __cdecl __MINGW_NOTHROW	fgetpos	(FILE*, fpos_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	fsetpos (FILE*, const fpos_t*);
@@ -517,10 +512,8 @@ _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_fdopen (int, const char*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_fileno (FILE*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_fcloseall (void);
 _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_fsopen (const char*, const char*, int);
-#ifdef __MSVCRT__
 _CRTIMP int __cdecl __MINGW_NOTHROW	_getmaxstdio (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_setmaxstdio (int);
-#endif
 
 #if __MSVCRT_VERSION__ >= 0x800
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _get_output_format (void);
@@ -544,7 +537,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	fileno (FILE*);
 #define fileno(__F) ((__F)->_file)
 #endif
 
-#if defined (__MSVCRT__) && !defined (__NO_MINGW_LFS)
+#if !defined (__NO_MINGW_LFS)
 #include <sys/types.h>
 __CRT_INLINE FILE* __cdecl __MINGW_NOTHROW fopen64 (const char*, const char*);
 __CRT_INLINE FILE* __cdecl __MINGW_NOTHROW fopen64 (const char* filename, const char* mode)
@@ -557,7 +550,7 @@ int __cdecl __MINGW_NOTHROW fseeko64 (FILE*, off64_t, int);
 #ifdef __USE_MINGW_FSEEK
 int __cdecl __MINGW_NOTHROW __mingw_fseeko64 (FILE *, off64_t, int);
 #define fseeko64(fp, offset, whence)  __mingw_fseeko64(fp, offset, whence)
-#endif
+#endif /* __USER_MINGW_FSEEK */
 
 __CRT_INLINE off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE *);
 __CRT_INLINE off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE * stream)
@@ -596,7 +589,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	swprintf (wchar_t*, const wchar_t*, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW	vswprintf (wchar_t*, const wchar_t*, __VALIST);
 #endif
 
-#ifdef __MSVCRT__ 
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW fgetws (wchar_t*, int, FILE*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	fputws (const wchar_t*, FILE*);
 _CRTIMP wint_t __cdecl __MINGW_NOTHROW	getwc (FILE*);
@@ -619,7 +611,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_wremove (const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_wperror (const wchar_t*);
 _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wpopen (const wchar_t*, const wchar_t*);
 #endif  /* __STRICT_ANSI__ */
-#endif	/* __MSVCRT__ */
 
 #ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
 int __cdecl __MINGW_NOTHROW snwprintf (wchar_t* s, size_t n, const wchar_t*  format, ...);
@@ -640,11 +631,9 @@ int __cdecl __MINGW_NOTHROW vswscanf (const wchar_t * __restrict__,
 #endif /* _WSTDIO_DEFINED */
 
 #ifndef __STRICT_ANSI__
-#ifdef __MSVCRT__
 #ifndef NO_OLDNAMES
 _CRTIMP FILE* __cdecl __MINGW_NOTHROW	wpopen (const wchar_t*, const wchar_t*);
 #endif /* not NO_OLDNAMES */
-#endif /* MSVCRT runtime */
 
 /*
  * Other Non ANSI wide functions

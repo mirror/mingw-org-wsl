@@ -626,7 +626,7 @@ $(msvcrt_DEF): lib/lib32/msvcrt.def.in
 	$(CC) -DRUNTIME=$(basename $(notdir $@)) \
 		-D__FILENAME__=$@ \
 		-D__$(basename $(notdir $@))__=1 \
-		-D__MSVCRT__ -C -E -P -xc-header \
+		-C -E -P -xc-header \
 		$? > $@
 
 
@@ -641,7 +641,7 @@ $(moldname_DEF): lib/lib32/moldname.def.in
 	$(CC) -DRUNTIME=$(basename $(notdir $@)) \
 		-D__FILENAME__=$$F \
 		-D__$(basename $(notdir $@))__=1 \
-		-D__MSVCRT__ -C -E -P -xc-header \
+		-C -E -P -xc-header \
 		$? > $@
 
 SRCDIR := lib/lib32
@@ -693,13 +693,9 @@ lib%.a: %.o
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
 SRCDIR := src/libcrt/crt
-$(SRCDIR)/crt1.o $(SRCDIR)/dllcrt1.o:
-	$(MKDIR_P) $(@D)
-	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -U__MSVCRT__ -D__CRTDLL__ -o $@ $<
-
 $(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o:
 	$(MKDIR_P) $(@D)
-	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -D__MSVCRT__ -U__CRTDLL__ -o $@ $<
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
 $(SRCDIR)/crt1.o: $(SRCDIR)/crt1.c
 $(SRCDIR)/dllcrt1.o: $(SRCDIR)/dllcrt1.c
@@ -716,13 +712,9 @@ $(libscrnsavw_a_OBJECTS): $(libscrnsavw_a_SOURCES)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(scrnsavw_o_CFLAGS) -o $@ $<
 
 SRCDIR := misc/gpl/profile
-$(SRCDIR)/gcrt1.o:
-	mkdir -p $(@D)
-	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -U__MSVCRT__ -D__CRTDLL__ -o $@ $<
-
 $(SRCDIR)/gcrt2.o:
 	mkdir -p $(@D)
-	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -D__MSVCRT__ -U__CRTDLL__ -o $@ $<
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
 $(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o: $(SRCDIR)/gcrt0.c
 

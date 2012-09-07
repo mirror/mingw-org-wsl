@@ -267,7 +267,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _mkdir (const char*);
 _CRTIMP char* __cdecl __MINGW_NOTHROW _mktemp (char*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _rmdir (const char*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _chmod (const char*, int);
-#ifdef __MSVCRT__
 _CRTIMP __int64 __cdecl __MINGW_NOTHROW _filelengthi64(int);
 #if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _findfirsti64(const char*, struct _finddatai64_t*);
@@ -305,8 +304,6 @@ __CRT_INLINE off64_t lseek64 (int fd, off64_t offset, int whence)
   return _lseeki64(fd, (__int64) offset, whence);
 }
 #endif
-
-#endif /* __MSVCRT__ */
 
 #ifndef _NO_OLDNAMES
 
@@ -398,9 +395,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _unlink (const char*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _write (int, const void*, unsigned int);
 
 /* Wide character versions. Also declared in wchar.h. */
-/* Not in crtdll.dll */
 #if !defined (_WIO_DEFINED)
-#if defined (__MSVCRT__)
 _CRTIMP int __cdecl __MINGW_NOTHROW _waccess(const wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wchmod(const wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wcreat(const wchar_t*, int);
@@ -441,7 +436,6 @@ _CRTALIAS intptr_t __cdecl __MINGW_NOTHROW _wfindfirsti64 (const wchar_t* _v1, s
 _CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (intptr_t _v1, struct _wfinddatai64_t* _v2)	 { return(_wfindnext32i64  (_v1,(struct _wfinddata32i64_t*)_v2)); }
 #endif /* !_USE_32BIT_TIME_T */
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
-#endif /* defined (__MSVCRT__) */
 #define _WIO_DEFINED
 #endif /* _WIO_DEFINED */
 

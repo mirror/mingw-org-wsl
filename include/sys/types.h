@@ -72,11 +72,7 @@ typedef _off_t	off_t;
 
 #ifndef _DEV_T_
 #define	_DEV_T_
-#ifdef __MSVCRT__
 typedef unsigned int _dev_t;
-#else
-typedef short _dev_t;
-#endif
 
 #ifndef	_NO_OLDNAMES
 typedef _dev_t	dev_t;

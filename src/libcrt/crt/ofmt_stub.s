@@ -30,7 +30,6 @@
  * versions of MSVCRT, (those which do not already advertise availability of
  * any exported _get_output_format() function); this will permit _pformat()
  * to transparently interoperate with all supported versions of MSVCRT.
- * (Likewise for CRTDLL).
  */
 	.text
 	.p2align 1,,4

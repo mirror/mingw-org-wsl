@@ -90,7 +90,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW toupper(int);
 
 /*
  * NOTE: The above are not old name type wrappers, but functions exported
- * explicitly by MSVCRT/CRTDLL. However, underscored versions are also
+ * explicitly by MSVCRT.DLL. However, underscored versions are also
  * exported.
  */
 #ifndef	__STRICT_ANSI__
@@ -105,22 +105,11 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _toupper(int);
 /* Also defined in stdlib.h */
 #ifndef MB_CUR_MAX
 #ifdef __DECLSPEC_SUPPORTED
-# ifdef __MSVCRT__
-#  define MB_CUR_MAX __mb_cur_max
    __MINGW_IMPORT int __mb_cur_max;
-# else	/* not __MSVCRT */
-#  define MB_CUR_MAX __mb_cur_max_dll
-   __MINGW_IMPORT int __mb_cur_max_dll;
-# endif	/* not __MSVCRT */
-
+#  define MB_CUR_MAX __mb_cur_max
 #else		/* ! __DECLSPEC_SUPPORTED */
-# ifdef __MSVCRT__
    extern int* _imp____mb_cur_max;
 #  define MB_CUR_MAX (*_imp____mb_cur_max)
-# else		/* not __MSVCRT */
-   extern int*  _imp____mb_cur_max_dll;
-#  define MB_CUR_MAX (*_imp____mb_cur_max_dll)
-# endif 	/* not __MSVCRT */
 #endif  	/*  __DECLSPEC_SUPPORTED */
 #endif  /* MB_CUR_MAX */
 
@@ -129,25 +118,15 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _toupper(int);
 # if __MSVCRT_VERSION__ <= 0x0700
   __MINGW_IMPORT unsigned short _ctype[];
 # endif
-# ifdef __MSVCRT__
   __MINGW_IMPORT unsigned short* _pctype;
-# else /* CRTDLL */
-  __MINGW_IMPORT unsigned short* _pctype_dll;
-# define  _pctype _pctype_dll
-# endif 
 
 #else		/*  __DECLSPEC_SUPPORTED */
 # if __MSVCRT_VERSION__ <= 0x0700
   extern unsigned short** _imp___ctype;
 # define _ctype (*_imp___ctype)
 # endif
-# ifdef __MSVCRT__
   extern unsigned short** _imp___pctype;
 # define _pctype (*_imp___pctype)
-# else /* CRTDLL */
-  extern unsigned short** _imp___pctype_dll;
-# define _pctype (*_imp___pctype_dll)
-# endif /* CRTDLL */
 #endif		/*  __DECLSPEC_SUPPORTED */
 
 /*

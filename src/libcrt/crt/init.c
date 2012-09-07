@@ -48,14 +48,10 @@ char **_argv = 0;
  */
 extern int _CRT_glob;
 
-#ifdef __MSVCRT__
 typedef struct {
   int newmode;
 } _startupinfo;
 extern void __getmainargs (int *, char ***, char ***, int, _startupinfo *);
-#else
-extern void __GetMainArgs (int *, char ***, char ***, int);
-#endif
 
 /*
  * Initialize the _argc, _argv and environ variables.
@@ -66,20 +62,13 @@ _mingw32_init_mainargs ()
   /* The environ variable is provided directly in stdlib.h through
    * a dll function call. */
   char **dummy_environ;
-#ifdef __MSVCRT__
   _startupinfo start_info;
   start_info.newmode = 0;
-#endif
 
   /*
    * Microsoft's runtime provides a function for doing just that.
    */
-#ifdef __MSVCRT__
   (void) __getmainargs (&_argc, &_argv, &dummy_environ, _CRT_glob, 
                         &start_info);
-#else
-  /* CRTDLL version */
-  (void) __GetMainArgs (&_argc, &_argv, &dummy_environ, _CRT_glob);
-#endif
 }
 

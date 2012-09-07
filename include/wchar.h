@@ -126,7 +126,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	swprintf (wchar_t*, const wchar_t*, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW	vswprintf (wchar_t*, const wchar_t*, __VALIST);
 #endif
 
-#ifdef __MSVCRT__
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW fgetws (wchar_t*, int, FILE*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	fputws (const wchar_t*, FILE*);
 _CRTIMP wint_t __cdecl __MINGW_NOTHROW	getwc (FILE*);
@@ -147,7 +146,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_wremove (const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_wperror (const wchar_t*);
 _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wpopen (const wchar_t*, const wchar_t*);
 #endif  /* __STRICT_ANSI__ */
-#endif	/* __MSVCRT__ */
 
 #ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
 int __cdecl __MINGW_NOTHROW snwprintf (wchar_t*, size_t, const wchar_t*, ...);
@@ -175,7 +173,6 @@ _CRTIMP double __cdecl __MINGW_NOTHROW	wcstod (const wchar_t*, wchar_t**);
 float __cdecl __MINGW_NOTHROW wcstof (const wchar_t * __restrict__, wchar_t ** __restrict__);
 long double __cdecl __MINGW_NOTHROW wcstold (const wchar_t * __restrict__, wchar_t ** __restrict__);
 #endif /* __NO_ISOCEXT */
-#ifdef __MSVCRT__ 
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wgetenv(const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wputenv(const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_wsearchenv(const wchar_t*, const wchar_t*, wchar_t*);
@@ -183,7 +180,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_wsystem(const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_wmakepath(wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_wsplitpath (const wchar_t*, wchar_t*, wchar_t*, wchar_t*, wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, size_t);
-#endif
 _CRTIMP __int64 __cdecl _wcstoi64(const wchar_t *, wchar_t **, int);
 _CRTIMP __int64 __cdecl _wcstoi64_l(const wchar_t *, wchar_t **, int, _locale_t);
 _CRTIMP unsigned __int64 __cdecl _wcstoui64(const wchar_t *, wchar_t **, int);
@@ -193,7 +189,6 @@ _CRTIMP unsigned __int64 __cdecl _wcstoui64_l(const wchar_t *, wchar_t **, int, 
 
 #ifndef _WTIME_DEFINED
 #ifndef __STRICT_ANSI__
-#ifdef __MSVCRT__
 /* wide function prototypes, also declared in time.h */
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wasctime (const struct tm*);
 #if __MSVCRT_VERSION__ < 0x0800
@@ -213,7 +208,6 @@ _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_
 #endif
 #endif
 
-#endif /* __MSVCRT__ */
 #endif /* __STRICT_ANSI__ */
 _CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsftime (wchar_t*, size_t, const wchar_t*, const struct tm*);
 #define _WTIME_DEFINED
@@ -244,11 +238,7 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcstok(wchar_t*, const wchar_t*);
 _CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsxfrm(wchar_t*, const wchar_t*, size_t);
 
 #ifndef	__STRICT_ANSI__
-/*
- * Unicode versions of non-ANSI functions provided by CRTDLL.
- */
-
-/* NOTE: _wcscmpi not provided by CRTDLL, this define is for portability */
+/* NOTE: _wcscmpi not provided by runtime dll, this define is for portability */
 #define		_wcscmpi	_wcsicmp
 
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsdup (const wchar_t*);
@@ -261,13 +251,11 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsrev (wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsset (wchar_t*, wchar_t);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsupr (wchar_t*);
 
-#ifdef __MSVCRT__
 _CRTIMP int __cdecl __MINGW_NOTHROW  _wcsncoll(const wchar_t*, const wchar_t*, size_t);
 _CRTIMP int   __cdecl __MINGW_NOTHROW _wcsnicoll(const wchar_t*, const wchar_t*, size_t);
 #if __MSVCRT_VERSION__ >= 0x0700
 _CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW _wcserror(int);
 _CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW __wcserror(const wchar_t*);
-#endif
 #endif
 
 #ifndef	_NO_OLDNAMES
@@ -410,10 +398,7 @@ struct _wfinddata64i32_t {
 #endif
 
 /* Wide character versions. Also defined in io.h. */
-/* CHECK: I believe these only exist in MSVCRT, and not in CRTDLL. Also
-   applies to other wide character versions? */
 #if !defined (_WIO_DEFINED)
-#if defined (__MSVCRT__)
 #include <stdint.h>  /* For intptr_t.  */
 _CRTIMP int __cdecl __MINGW_NOTHROW	_waccess (const wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wchmod (const wchar_t*, int);
@@ -455,19 +440,16 @@ _CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddat
 #endif /* !_USE_32BIT_TIME_T*/
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
 
-#endif /* defined (__MSVCRT__) */
 #define _WIO_DEFINED
 #endif /* _WIO_DEFINED */
 
 #ifndef _WDIRECT_DEFINED
 /* Also in direct.h */
-#ifdef __MSVCRT__
 _CRTIMP int __cdecl __MINGW_NOTHROW	  _wchdir (const wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW  _wgetcwd (wchar_t*, int);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW  _wgetdcwd (int, wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW	  _wmkdir (const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	  _wrmdir (const wchar_t*);
-#endif	/* __MSVCRT__ */
 #define _WDIRECT_DEFINED
 #endif /* _WDIRECT_DEFINED */
 
@@ -514,7 +496,6 @@ struct stat
 };
 #endif /* _NO_OLDNAMES */
 
-#if defined (__MSVCRT__)
 struct _stati64 {
     _dev_t st_dev;
     _ino_t st_ino;
@@ -589,13 +570,11 @@ struct _stat64i32 {
 };
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
 
-#endif  /* __MSVCRT__ */
 #define _STAT_DEFINED
 #endif /* _STAT_DEFINED */
 
 #if !defined ( _WSTAT_DEFINED)
 /* also declared in sys/stat.h */
-#if defined __MSVCRT__
 #if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t*, struct _stat*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t*, struct _stati64*);
@@ -615,7 +594,6 @@ _CRTALIAS int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t* _v1, struct _stat* 
 _CRTALIAS int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t* _v1, struct _stati64* _v2) { return(_wstat32i64 (_v1,(struct _stat32i64*)_v2)); }
 #endif /* !_USE_32BIT_TIME_T */
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
-#endif  /* __MSVCRT__ */
 #define _WSTAT_DEFINED
 #endif /* ! _WSTAT_DEFIND  */
 

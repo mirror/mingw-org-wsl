@@ -86,7 +86,6 @@ extern int	_argc;
 extern char**	_argv;
 
 /* imports from runtime dll of the above variables */
-#ifdef __MSVCRT__
 
 extern int*  __cdecl __MINGW_NOTHROW   __p___argc(void);
 extern char*** __cdecl __MINGW_NOTHROW  __p___argv(void);
@@ -96,47 +95,17 @@ extern wchar_t***  __cdecl __MINGW_NOTHROW __p___wargv(void);
 #define __argv (*__p___argv())
 #define __wargv (*__p___wargv())
 
-#else /* !MSVCRT */
-
-#ifndef __DECLSPEC_SUPPORTED
-
-extern int*    _imp____argc_dll;
-extern char***  _imp____argv_dll;
-#define __argc (*_imp____argc_dll)
-#define __argv (*_imp____argv_dll)
-
-#else /* __DECLSPEC_SUPPORTED */
-
-__MINGW_IMPORT int    __argc_dll;
-__MINGW_IMPORT char**  __argv_dll;
-#define __argc __argc_dll
-#define __argv __argv_dll
-
-#endif /* __DECLSPEC_SUPPORTED */
-
-#endif /* __MSVCRT */
 #endif /* __STRICT_ANSI__ */
 /*
  * Also defined in ctype.h.
  */
 #ifndef MB_CUR_MAX
 #ifdef __DECLSPEC_SUPPORTED
-# ifdef __MSVCRT__
 #  define MB_CUR_MAX __mb_cur_max
    __MINGW_IMPORT int __mb_cur_max;
-# else		/* not __MSVCRT */
-#  define MB_CUR_MAX __mb_cur_max_dll
-   __MINGW_IMPORT int __mb_cur_max_dll;
-# endif		/* not __MSVCRT */
-
 #else		/* ! __DECLSPEC_SUPPORTED */
-# ifdef __MSVCRT__
    extern int* _imp____mb_cur_max;
 #  define MB_CUR_MAX (*_imp____mb_cur_max)
-# else		/* not __MSVCRT */
-   extern int*  _imp____mb_cur_max_dll;
-#  define MB_CUR_MAX (*_imp____mb_cur_max_dll)
-# endif 	/* not __MSVCRT */
 #endif  	/*  __DECLSPEC_SUPPORTED */
 #endif  /* MB_CUR_MAX */
 
@@ -159,24 +128,13 @@ extern int errno;
  * Use environ from the DLL, not as a global. 
  */
 
-#ifdef __MSVCRT__
   extern _CRTIMP char *** __cdecl __MINGW_NOTHROW __p__environ(void);
   extern _CRTIMP wchar_t *** __cdecl __MINGW_NOTHROW  __p__wenviron(void);
 # define _environ (*__p__environ())
 # define _wenviron (*__p__wenviron())
-#else /* ! __MSVCRT__ */
-# ifndef __DECLSPEC_SUPPORTED
-    extern char *** _imp___environ_dll;
-#   define _environ (*_imp___environ_dll)
-# else /* __DECLSPEC_SUPPORTED */
-    __MINGW_IMPORT char ** _environ_dll;
-#   define _environ _environ_dll
-# endif /* __DECLSPEC_SUPPORTED */
-#endif /* ! __MSVCRT__ */
 
 #define environ _environ
 
-#ifdef	__MSVCRT__
 /* One of the MSVCRTxx libraries */
 
 #ifndef __DECLSPEC_SUPPORTED
@@ -188,20 +146,6 @@ extern int errno;
 #   define	sys_nerr	_sys_nerr
 # endif /* _UWIN */
 #endif /* __DECLSPEC_SUPPORTED */
-
-#else /* ! __MSVCRT__ */
-
-/* CRTDLL run time library */
-
-#ifndef __DECLSPEC_SUPPORTED
-  extern int*	_imp___sys_nerr_dll;
-# define sys_nerr	(*_imp___sys_nerr_dll)
-#else /* __DECLSPEC_SUPPORTED */
-  __MINGW_IMPORT int	_sys_nerr_dll;
-# define sys_nerr	_sys_nerr_dll
-#endif /* __DECLSPEC_SUPPORTED */
-
-#endif /* ! __MSVCRT__ */
 
 #ifndef __DECLSPEC_SUPPORTED
 extern char***	_imp__sys_errlist;
@@ -216,9 +160,6 @@ __MINGW_IMPORT char*	_sys_errlist[];
 /*
  * OS version and such constants.
  */
-
-#ifdef	__MSVCRT__
-/* msvcrtxx.dll */
 
 extern _CRTIMP unsigned __cdecl __MINGW_NOTHROW int*	__p__osver(void);
 extern _CRTIMP unsigned __cdecl __MINGW_NOTHROW int*	__p__winver(void);
@@ -237,54 +178,13 @@ __MINGW_IMPORT unsigned int _winmajor;
 __MINGW_IMPORT unsigned int _winminor;
 #endif /* __DECLSPEC_SUPPORTED */
 
-#else
-/* Not msvcrtxx.dll, thus crtdll.dll */
 
-#ifndef __DECLSPEC_SUPPORTED
-
-extern unsigned int*	_imp___osver_dll;
-extern unsigned int*	_imp___winver_dll;
-extern unsigned int*	_imp___winmajor_dll;
-extern unsigned int*	_imp___winminor_dll;
-
-#define _osver		(*_imp___osver_dll)
-#define _winver		(*_imp___winver_dll)
-#define _winmajor	(*_imp___winmajor_dll)
-#define _winminor	(*_imp___winminor_dll)
-
-#else /* __DECLSPEC_SUPPORTED */
-
-__MINGW_IMPORT unsigned int	_osver_dll;
-__MINGW_IMPORT unsigned int	_winver_dll;
-__MINGW_IMPORT unsigned int	_winmajor_dll;
-__MINGW_IMPORT unsigned int	_winminor_dll;
-
-#define _osver		_osver_dll
-#define _winver		_winver_dll
-#define _winmajor	_winmajor_dll
-#define _winminor	_winminor_dll
-
-#endif /* __DECLSPEC_SUPPORTED */
-
-#endif
-
-#if defined  __MSVCRT__
 /* although the _pgmptr is exported as DATA,
  * be safe and use the access function __p__pgmptr() to get it. */
 _CRTIMP char** __cdecl __MINGW_NOTHROW __p__pgmptr(void);
 #define _pgmptr     (*__p__pgmptr())
 _CRTIMP wchar_t** __cdecl __MINGW_NOTHROW __p__wpgmptr(void);
 #define _wpgmptr    (*__p__wpgmptr())
-#else /* ! __MSVCRT__ */
-# ifndef __DECLSPEC_SUPPORTED
-  extern char** __imp__pgmptr_dll;
-# define _pgmptr (*_imp___pgmptr_dll)
-# else /* __DECLSPEC_SUPPORTED */
- __MINGW_IMPORT char* _pgmptr_dll;
-# define _pgmptr _pgmptr_dll
-# endif /* __DECLSPEC_SUPPORTED */
-/* no wide version in CRTDLL */
-#endif /* __MSVCRT__ */
 
 /*
  * This variable determines the default file mode.
@@ -292,23 +192,12 @@ _CRTIMP wchar_t** __cdecl __MINGW_NOTHROW __p__wpgmptr(void);
  */
 #if !defined (__DECLSPEC_SUPPORTED) || defined (__IN_MINGW_RUNTIME)
 
-#ifdef __MSVCRT__
 extern int* _imp___fmode;
 #define	_fmode	(*_imp___fmode)
-#else
-/* CRTDLL */
-extern int* _imp___fmode_dll;
-#define	_fmode	(*_imp___fmode_dll)
-#endif
 
 #else /* __DECLSPEC_SUPPORTED */
 
-#ifdef __MSVCRT__
 __MINGW_IMPORT  int _fmode;
-#else /* ! __MSVCRT__ */
-__MINGW_IMPORT  int _fmode_dll;
-#define	_fmode	_fmode_dll
-#endif /* ! __MSVCRT__ */
 
 #endif /* __DECLSPEC_SUPPORTED */
 
@@ -353,7 +242,6 @@ _CRTIMP double __cdecl __MINGW_NOTHROW	wcstod	(const wchar_t*, wchar_t**);
 float __cdecl __MINGW_NOTHROW wcstof( const wchar_t * __restrict__, wchar_t ** __restrict__);
 long double __cdecl __MINGW_NOTHROW wcstold (const wchar_t * __restrict__, wchar_t ** __restrict__);
 #endif /* __NO_ISOCEXT */
-#ifdef __MSVCRT__ 
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wgetenv(const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wputenv(const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_wsearchenv(const wchar_t*, const wchar_t*, wchar_t*);
@@ -361,7 +249,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW   	_wsystem(const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW    _wmakepath(wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_wsplitpath (const wchar_t*, wchar_t*, wchar_t*, wchar_t*, wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW   _wfullpath (wchar_t*, const wchar_t*, size_t);
-#endif
 #define _WSTDLIB_DEFINED
 #endif
 
@@ -447,7 +334,6 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW  _itow (int, wchar_t*, int);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW  _ltow (long, wchar_t*, int);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW  _ultow (unsigned long, wchar_t*, int);
 
-#ifdef __MSVCRT__
 _CRTIMP __int64 __cdecl __MINGW_NOTHROW	_atoi64(const char *);
 _CRTIMP char* __cdecl __MINGW_NOTHROW	_i64toa(__int64, char *, int);
 _CRTIMP char* __cdecl __MINGW_NOTHROW	_ui64toa(unsigned __int64, char *, int);
@@ -493,7 +379,6 @@ typedef void
 _invalid_parameter_handler _set_invalid_parameter_handler (_invalid_parameter_handler);
 
 # endif /* __MSVCRT_VERSION__ >= 0x800 */
-#endif /* __MSVCRT__ */
 
 #ifndef	_NO_OLDNAMES
 
@@ -536,7 +421,6 @@ __CRT_INLINE long long __cdecl __MINGW_NOTHROW llabs(long long _j)
 long long  __cdecl __MINGW_NOTHROW strtoll (const char* __restrict__, char** __restrict, int);
 unsigned long long  __cdecl __MINGW_NOTHROW strtoull (const char* __restrict__, char** __restrict__, int);
 
-#if defined (__MSVCRT__) /* these are stubs for MS _i64 versions */ 
 long long  __cdecl __MINGW_NOTHROW atoll (const char *);
 
 #if !defined (__STRICT_ANSI__)
@@ -562,8 +446,6 @@ __CRT_INLINE wchar_t*  __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wc
 	{ return _ui64tow (_n, _w, _i); } 
 #endif /* (__NO_INLINE__) */
 #endif /* (__STRICT_ANSI__)  */
-
-#endif /* __MSVCRT__ */
 
 #endif /* !__NO_ISOCEXT */
 
