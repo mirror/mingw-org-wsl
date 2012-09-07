@@ -1,5 +1,16 @@
 2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Apply LICENSE to all files as appropriate.
+
+	* tests/Makefile.in: Add file preamble.
+	* tests/headers/directx.c: Ditto.
+	* tests/headers/test.c: Ditto.
+	* tests/libcrt/sitest.c: Ditto.
+	* tests/libcrt/testwmem.c: Ditto.
+	* tests/libcrt/tst-aligned-malloc.c: Ditto.
+
+2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Manual resolution for LICENSE for files already containing a file
 	preamble as appropriate.
 
