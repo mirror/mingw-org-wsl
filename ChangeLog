@@ -17,6 +17,11 @@
 	* include/math.h (__DECLSPEC_SUPPORTED): Ditto.
 	(HUGE_VAL): Always use GCC's builin value.
 	* include/stdlib.h: Modify whitespace.
+	* include/_mingw.h: Remove __cdecl and __stdcall defines since they will
+	always be defined.
+	* include/windef.h: Remove definitions for _cdecl, __cdecl, _stdcall,
+	__stdcall, _fastcall, __fastcall, WIN32, _WIN32 since they will always
+	be defined.
 
 2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
 

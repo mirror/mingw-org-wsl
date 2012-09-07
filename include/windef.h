@@ -46,12 +46,6 @@ extern "C" {
  * including windows.h or any other method of including the windef.h header.
  */
 #endif
-#ifndef WIN32
-#define WIN32
-#endif
-#ifndef _WIN32
-#define _WIN32
-#endif
 #define FAR
 #define far
 #define NEAR
@@ -88,24 +82,6 @@ extern "C" {
 #endif
 #endif
 
-#ifndef _fastcall
-#define _fastcall __attribute__((fastcall))
-#endif
-#ifndef __fastcall
-#define __fastcall __attribute__((fastcall))
-#endif
-#ifndef _stdcall
-#define _stdcall __attribute__((stdcall))
-#endif
-#ifndef __stdcall
-#define __stdcall __attribute__((stdcall))
-#endif
-#ifndef _cdecl
-#define _cdecl __attribute__((cdecl))
-#endif
-#ifndef __cdecl
-#define __cdecl __attribute__((cdecl))
-#endif
 #ifndef _declspec
 #define _declspec(e) __declspec(e)
 #endif

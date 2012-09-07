@@ -101,17 +101,6 @@
 # endif
 #endif
 
-/*
- * The next two defines can cause problems if user code adds the
- * __cdecl attribute like so:
- * void __attribute__ ((__cdecl)) foo(void); 
- */
-#ifndef __cdecl 
-# define __cdecl  __attribute__ ((__cdecl__))
-#endif
-#ifndef __stdcall
-# define __stdcall __attribute__ ((__stdcall__))
-#endif
 #ifndef __int64
 # define __int64 long long
 #endif
