@@ -21,14 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* catanf.c */
 
 /*
-   Contributed by Danny Smith
-   2004-12-24
-
-   FIXME: This needs some serious numerical analysis.
-*/
+ * FIXME: This needs some serious numerical analysis.
+ */
 
 #include <math.h>
 #include <complex.h>

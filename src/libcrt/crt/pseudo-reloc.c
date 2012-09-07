@@ -21,23 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* pseudo-reloc.c
-
-   Contributed by Egor Duda  <deo@logos-m.ru>
-   Modified by addition of runtime_pseudo_reloc version 2
-   by Kai Tietz  <kai.tietz@onevision.com>
-	
-   THIS SOFTWARE IS NOT COPYRIGHTED
-
-   This source code is offered for use in the public domain. You may
-   use, modify or distribute it freely.
-
-   This code is distributed in the hope that it will be useful but
-   WITHOUT ANY WARRANTY. ALL WARRENTIES, EXPRESS OR IMPLIED ARE HEREBY
-   DISCLAMED. This includes but is not limited to warrenties of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
-
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -21,11 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
  * Workaround for limitations on win9x where a file contents are
  * not zero'd out if you seek past the end and then write.
- * Copied from ming local-patch to binutils/bfd/libbfd.c written by
- * Mumit Khan  <khan@xraylith.wisc.edu> 
  */
 
 #include <windows.h>

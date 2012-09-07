@@ -21,28 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * gettimeofday
- * Implementation according to:
- * The Open Group Base Specifications Issue 6
- * IEEE Std 1003.1, 2004 Edition
- */
-  
-/*
- *  THIS SOFTWARE IS NOT COPYRIGHTED
- *
- *  This source code is offered for use in the public domain. You may
- *  use, modify or distribute it freely.
- *
- *  This code is distributed in the hope that it will be useful but
- *  WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- *  DISCLAIMED. This includes but is not limited to warranties of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- *  Contributed by:
- *  Danny Smith <dannysmith@users.sourceforge.net>
- */
-
 #include <sys/time.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

@@ -21,12 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-   cacosf.c
-   Contributed by Danny Smith
-   2004-12-24
-*/
-
 #include <math.h>
 #include <complex.h>
 

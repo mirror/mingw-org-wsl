@@ -21,15 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* catan.c */
-
-/*
-   Contributed by Danny Smith
-   2003-10-17
-
-   FIXME: This needs some serious numerical analysis.
-*/
-
 #include <math.h>
 #include <complex.h>
 #include <errno.h>

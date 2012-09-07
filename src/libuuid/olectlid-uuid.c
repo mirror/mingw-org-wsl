@@ -21,7 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* olectlid-uuid.c */
+
 /* Generate GUIDs for OLECTLID interfaces */
 
 /* All IIDs defined in this file were extracted from

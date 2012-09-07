@@ -21,13 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * Written by Ulrich Drepper <drepper@cygnus.com>.
- * Based on e_remainder by J.T. Conklin <jtc@netbsd.org>.
- * Removed header file dependency for use in libmingwex.a by
- *   Danny Smith <dannysmith@users.sourceforge.ne
- * Public domain.
- */
 
 	.file	"remquo.S"
         .text

@@ -21,7 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* msxml-uuid.c */
+
 /* Generate GUIDs for MSXML interfaces */
 
 #define INITGUID

@@ -21,16 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * main.c
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
  * Extra startup code for applications which do not have a main function
  * of their own (but do have a WinMain). Generally these are GUI
  * applications, but they don't *have* to be.
- *
  */
 
 #include <stdlib.h>

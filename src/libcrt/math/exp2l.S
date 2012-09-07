@@ -21,11 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * Written by J.T. Conklin <jtc@netbsd.org>.
- * Adapted for exp2 by Ulrich Drepper <drepper@cygnus.com>.
- * Public domain.
- */
 
 	.file	"exp2l.S"
 	.text

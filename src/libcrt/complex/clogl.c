@@ -21,16 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-   clogl.c
-   Contributed by Danny Smith
-   2005-01-04
-*/
-
-/* clog (x + I * y) = log (hypot (x, y)) + I * atan2 (y, x) */
-
 #include <math.h>
 #include <complex.h>
+
+/* clog (x + I * y) = log (hypot (x, y)) + I * atan2 (y, x) */
 
 long double complex clogl (long double complex Z)
 {

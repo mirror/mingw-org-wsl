@@ -21,13 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * CRT_FP8.c
- *
  * This forces calls of _fpreset to the MSVCRT function
  * exported from dll.  Effectively it make default
  * precison same as apps built with MSVC (53-bit mantissa).
-
  *
  * To change to 64-bit mantissa, link in CRT_FP10.o before libmingw.a. 
  */

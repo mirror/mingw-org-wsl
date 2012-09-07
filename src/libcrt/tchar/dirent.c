@@ -21,26 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * dirent.c
- *
- * This file has no copyright assigned and is placed in the Public Domain.
- *
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Derived from DIRLIB.C by Matt J. Weinstein 
- * This note appears in the DIRLIB.H
- * DIRLIB.H by M. J. Weinstein   Released to public domain 1-Jan-89
- *
- * Updated by Jeremy Bettis <jeremy@hksys.com>
- * Significantly revised and rewinddir, seekdir and telldir added
- * by Colin Peters <colin@fu.is.saga-u.ac.jp>
- * Further significantly revised for improved memory utilisation,
- * efficiency in operation, and better POSIX standards compliance
- * by Keith Marshall <keithmarshall@users.sourceforge.net>
- *	
- */
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>

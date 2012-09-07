@@ -21,13 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * Written by J.T. Conklin <jtc@netbsd.org>.
- * Public domain.
- *
- * Removed glibc header dependancy by Danny Smith
- *  <dannysmith@users.sourceforge.net>
- */
 	.file	"cosf.S"
 	.text
 	.align 4

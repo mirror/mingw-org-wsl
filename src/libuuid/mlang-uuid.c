@@ -21,7 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* mlang-uuid.c */
+
 /* Generate GUIDs for Object Multi Language interfaces */
 
 /* All IIDs defined in this file were extracted from

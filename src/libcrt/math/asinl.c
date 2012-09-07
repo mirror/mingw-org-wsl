@@ -21,11 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * Written by J.T. Conklin <jtc@netbsd.org>.
- * Public domain.
- * Adapted for long double type by Danny Smith <dannysmith@users.sourceforge.net>.
- */
 
 /* asin = atan (x / sqrt(1 - x^2)) */
 

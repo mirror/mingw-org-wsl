@@ -21,28 +21,13 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * lround_generic.c
- *
- * $Id: lround_generic.c,v 1.1 2008/06/03 18:42:21 keithmarshall Exp $
- *
  * Provides a generic implementation for the `lround()', `lroundf()',
  * `lroundl()', `llround()', `llroundf()' and `llroundl()' functions;
  * compile with `-D FUNCTION=name', with `name' set to each of these
  * six in turn, to create separate object files for each of the six
  * functions.
- *
- * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- *
- * This is free software.  You may redistribute and/or modify it as you
- * see fit, without restriction of copyright.
- *
- * This software is provided "as is", in the hope that it may be useful,
- * but WITHOUT WARRANTY OF ANY KIND, not even any implied warranty of
- * MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.  At no
- * time will the author accept any form of liability for any damages,
- * however caused, resulting from the use of this software.
- *
  */
 #ifndef FUNCTION
 /*

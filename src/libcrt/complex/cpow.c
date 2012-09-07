@@ -21,16 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*  cpow.c */
-/*
-   Contributed by Danny Smith
-   2003-10-20
-*/
-
-/* cpow(X, Y) = cexp(X * clog(Y)) */
-
 #include <math.h>
 #include <complex.h>
+
+/* cpow(X, Y) = cexp(X * clog(Y)) */
 
 /* Use dll version of pow */
 extern double  (*_imp__pow) (double, double);

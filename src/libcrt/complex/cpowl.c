@@ -21,16 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*  cpowl.c */
-/*
-   Contributed by Danny Smith
-   2005-01-04
-*/
-
-/* cpow(X, Y) = cexp(X * clog(Y)) */
-
 #include <math.h>
 #include <complex.h>
+
+/* cpow(X, Y) = cexp(X * clog(Y)) */
 
 long double complex cpowl (long double complex X, long double complex Y)
 {

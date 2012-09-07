@@ -21,16 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
-  wctype.c
-  7.25.2.2.2 The wctype function
-
-  Contributed by: Danny Smith  <dannysmith@usesr.sourcefoge.net>
-		  2005-02-24
-   
-  This source code is placed in the PUBLIC DOMAIN. It is modified
-  from the Q8 package created by Doug Gwyn <gwyn@arl.mil>  
-
   The wctype function constructs a value with type wctype_t that
   describes a class of wide characters identified by the string
   argument property.
@@ -48,7 +40,6 @@
   iswctype(wc, wctype("space")) == iswspace(wc)
   iswctype(wc, wctype("upper")) == iswupper(wc)
   iswctype(wc, wctype("xdigit")) == iswxdigit(wc)
-
 */
 
 #include	<string.h>

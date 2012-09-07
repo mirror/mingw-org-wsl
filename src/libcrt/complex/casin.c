@@ -21,12 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-   casin.c
-   Contributed by Danny Smith
-   2003-10-20
-*/
-
 #include <math.h>
 #include <complex.h>
 

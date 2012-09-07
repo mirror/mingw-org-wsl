@@ -21,9 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+/* FIXME - Is this still used by GCC? */
+
 /*
- * mthr_init.c
- *
  * Do the thread-support DLL initialization.
  *
  * This file is used iff the following conditions are met:
@@ -38,9 +39,6 @@
  * thread.
  * 
  * See mthr.c for all the magic.
- *  
- * Created by Mumit Khan  <khan@nanotech.wisc.edu>
- *
  */
 
 #define WIN32_LEAN_AND_MEAN

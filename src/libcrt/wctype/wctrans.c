@@ -21,18 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-   wctrans.c 
-   7.25.3.2 Extensible wide-character case mapping functions
-
-   Contributed by: Danny Smith  <dannysmith@usesr.sourcefoge.net>
-   		   2005-02-24
-   
-  This source code is placed in the PUBLIC DOMAIN. It is modified
-  from the Q8 package created by Doug Gwyn <gwyn@arl.mil>  
-
- */
-
 #include <string.h>
 #include <wctype.h>
 

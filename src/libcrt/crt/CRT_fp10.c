@@ -21,9 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * CRT_FP10.c
- *
  * This defines _fpreset as asm ("fnint"). Calls to _fpreset
  * will set default floating point precesion to 64-bit mantissa
  * at app startup.

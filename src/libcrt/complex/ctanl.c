@@ -21,13 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* ctanl.c */
-
-/*
-   Contributed by Danny Smith
-   2005-01-04
-*/
-
 #include <math.h>
 #include <complex.h>
 #include <errno.h>

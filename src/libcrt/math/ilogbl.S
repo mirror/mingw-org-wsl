@@ -21,11 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * Written by J.T. Conklin <jtc@netbsd.org>.
- * Changes for long double by Ulrich Drepper <drepper@cygnus.com>
- * Public domain.
- */
 
 	.file	"ilogbl.S"
 	.text

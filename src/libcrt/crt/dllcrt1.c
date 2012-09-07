@@ -21,21 +21,16 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * dllcrt1.c
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
- * Initialization code for DLLs.
- *
- */
 #include <stdlib.h>
 #include <stdio.h>
 #include <io.h>
 #include <process.h>
 #include <errno.h>
 #include <windows.h>
+
+/*
+ * Initialization code for DLLs.
+ */
 
 /* TLS initialization hook. */
 extern const PIMAGE_TLS_CALLBACK __dyn_tls_init_callback;

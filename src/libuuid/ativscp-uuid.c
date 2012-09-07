@@ -21,8 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* ativscp-uuid.c */
-/* Generate GUIDs for ActiveScript interfaces */
 
 /* All IIDs defined in this file were extracted from
  * HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Interface\ */

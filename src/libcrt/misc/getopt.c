@@ -21,33 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /* 
- * getopt.c
- *
- * $Id: getopt.c,v 1.10 2011/05/31 20:24:51 keithmarshall Exp $
- *
  * Implementation of the `getopt', `getopt_long' and `getopt_long_only'
  * APIs, for inclusion in the MinGW runtime library.
- *
- * This file is part of the MinGW32 package set.
- *
- * Contributed by Keith Marshall <keithmarshall@users.sourceforge.net>
- *
- *
- * THIS SOFTWARE IS NOT COPYRIGHTED
- *
- * This source code is offered for use in the public domain. You may
- * use, modify or distribute it freely.
- *
- * This code is distributed in the hope that it will be useful but
- * WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- * DISCLAIMED. This includes but is not limited to warranties of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- *
- * $Revision: 1.10 $
- * $Author: keithmarshall $
- * $Date: 2011/05/31 20:24:51 $
- *
  */
 
 #include <stdio.h>

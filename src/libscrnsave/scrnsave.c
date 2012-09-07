@@ -21,15 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-  Screen saver library by Anders Norlander <anorland@hem2.passagen.se>
-
-  This library is (hopefully) compatible with Microsoft's
-  screen saver library.
-
-  This is public domain software.
-
- */
 #include <windows.h>
 #include <scrnsave.h>
 #include <regstr.h>

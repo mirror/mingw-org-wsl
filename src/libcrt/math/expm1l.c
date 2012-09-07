@@ -21,11 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * Written 2005 by Gregory W. Chicares <chicares@cox.net> with
- * help from Danny Smith. dannysmith@users.sourceforge.net>.
- * Public domain.
- *
  * F2XM1's input is constrained to (-1, +1), so the domain of
  * 'x * LOG2EL' is (-LOGE2L, +LOGE2L). Outside that domain,
  * delegating to expl() handles C99 7.12.6.3/2 range errors.

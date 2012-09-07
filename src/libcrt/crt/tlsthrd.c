@@ -21,17 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/**
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is part of the w64 mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within this package.
- *
- * Written by Kai Tietz  <kai.tietz@onevision.com>
- *
+
+/*
  * This file is used by if gcc is built with --enable-threads=win32.
- *
- * Based on version created by Mumit Khan  <khan@nanotech.wisc.edu>
- *
  */
 
 #ifndef WIN32_LEAN_AND_MEAN
@@ -168,4 +160,3 @@ __mingw_TLScallback (HANDLE hDllHandle __attribute__ ((__unused__)),
     }
   return TRUE;
 }
-

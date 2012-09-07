@@ -21,7 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* hlguids-uuid.c */
+
 /* Generate GUIDs for HyperLink GUID interfaces */
 
 /* All IIDs defined in this file were extracted from

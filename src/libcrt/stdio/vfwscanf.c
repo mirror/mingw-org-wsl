@@ -21,9 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-//  By aaronwl 2003-01-28 for mingw-msvcrt.
-//  Public domain: all copyrights disclaimed, absolutely no warranties.
-
 #include <stdarg.h>
 #include <wchar.h>
 

@@ -21,9 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
+/* @FIXME - Is this used by current GCC? */
+
 /*
- * mthr.c
- *
  * Implement Mingw thread-support DLL .
  *
  * This file is used iff the following conditions are met:
@@ -36,9 +37,6 @@
  * but win32 TLS keys do not, hence the magic. Without this, there's at 
  * least `6 * sizeof (void*)' bytes leaks for each catch/throw in each
  * thread. The only public interface is __mingwthr_key_dtor(). 
- *
- * Created by Mumit Khan  <khan@nanotech.wisc.edu>
- *
  */
 
 #define WIN32_LEAN_AND_MEAN

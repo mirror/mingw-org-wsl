@@ -21,7 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* mshtml-uuid.c */
+
 /* Generate GUIDs for MSHTML interfaces */
 
 #define INITGUID

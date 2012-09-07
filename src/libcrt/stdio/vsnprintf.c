@@ -21,10 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* vsnprintf.c
- *
- * $Id: vsnprintf.c,v 1.3 2008/07/28 23:24:20 keithmarshall Exp $
- *
+
+/*
  * Provides an implementation of the "vsnprintf" function, conforming
  * generally to C99 and SUSv3/POSIX specifications, with extensions
  * to support Microsoft's non-standard format specifications.  This
@@ -32,18 +30,6 @@
  * libmoldnames.a, to the MSVCRT standard "_vsnprintf" function; (the
  * standard MSVCRT function remains available, and may  be invoked
  * directly, using this fully qualified form of its name).
- *
- * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- *
- * This is free software.  You may redistribute and/or modify it as you
- * see fit, without restriction of copyright.
- *
- * This software is provided "as is", in the hope that it may be useful,
- * but WITHOUT WARRANTY OF ANY KIND, not even any implied warranty of
- * MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.  At no
- * time will the author accept any form of liability for any damages,
- * however caused, resulting from the use of this software.
- *
  */
 
 #include <stdio.h>

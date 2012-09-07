@@ -21,15 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-  __mingw_aligned_malloc and friends, implemented using Microsoft's public
-  interfaces and with the help of the algorithm description provided
-  by Wu Yongwei: http://sourceforge.net/mailarchive/message.php?msg_id=3847075
-
-  I hereby place this implementation in the public domain.
-               -- Steven G. Johnson (stevenj@alum.mit.edu)
-*/
-
 #include <stdlib.h>
 #include <errno.h>
 #include <stddef.h>		/* ptrdiff_t */

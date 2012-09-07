@@ -21,15 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 /*
- * crt1.c
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
- *
  * Source code for the startup proceedures used by all programs. This code
  * is compiled to make crt1.o, which should be located in the library path.
- *
  */
 
 /* Hide the declaration of _fmode with dllimport attribute in stdlib.h to

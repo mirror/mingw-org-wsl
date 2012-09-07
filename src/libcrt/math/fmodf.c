@@ -21,14 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
- * Written by J.T. Conklin <jtc@netbsd.org>.
- * Public domain.
- *
- * Adapted for float type by Danny Smith
- *  <dannysmith@users.sourceforge.net>.
- */
-
 #include <math.h>
 
 float

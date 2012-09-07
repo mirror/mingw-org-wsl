@@ -21,14 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-   nexttoward.c
-   Contributed by Danny Smith <dannysmith@users.sourceforge.net>
-   No copyright claimed, absolutely no warranties.
-
-   2005-05-10
-*/
-
 #include <math.h>
 
 double

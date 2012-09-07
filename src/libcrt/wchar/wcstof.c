@@ -21,15 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*  Wide char wrapper for strtof
- *  Revision history:
- *  25 Aug 2006 Initial version.
- *
- *  Contributor:   Danny Smith <dannysmith@users.sourceforege.net>
- */
-
- /* This routine has been placed in the public domain.*/
-
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <locale.h>

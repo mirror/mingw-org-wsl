@@ -21,17 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/*
-    This source code was extracted from the Q8 package created and
-    placed in the PUBLIC DOMAIN by Doug Gwyn <gwyn@arl.mil>
-    last edit:	1999/11/05	gwyn@arl.mil
-
-	Implements subclause 7.8.2 of ISO/IEC 9899:1999 (E).
-
-	This particular implementation requires the matching <inttypes.h>.
-	It also assumes that character codes for A..Z and a..z are in
-	contiguous ascending order; this is true for ASCII but not EBCDIC.
-*/
 #include <stdlib.h>
 #include <errno.h>
 #include <ctype.h>

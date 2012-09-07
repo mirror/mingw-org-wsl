@@ -21,10 +21,8 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-/* ofmt_stub.s
- *
- * $Id: ofmt_stub.s,v 1.1 2008/07/28 22:57:43 keithmarshall Exp $
- *
+
+/*
  * A trivial stub, to replace the _get_output_format() function.
  *
  * _pformat() requires this function, which is provided by MSVCRT runtimes
@@ -33,14 +31,6 @@
  * any exported _get_output_format() function); this will permit _pformat()
  * to transparently interoperate with all supported versions of MSVCRT.
  * (Likewise for CRTDLL).
- *
- * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Contributed to the MinGW Project, and hereby assigned to the public domain.
- *
- * This is free software.  It is provided AS IS, in the hope that it may be
- * useful.  There is NO WARRANTY OF ANY KIND, not even an implied warranty of
- * merchantability, nor of fitness for any particular purpose.
- *
  */
 	.text
 	.p2align 1,,4
