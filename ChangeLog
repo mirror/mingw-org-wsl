@@ -1,5 +1,25 @@
 2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/_mingw.h: Remove #ifdef __declspec filter since it will always
+	be defined.
+	(__DECLSPEC_SUPPORTED): Remove definition and documentation.
+	* include/windef.h (__declspec): No need to define it since it will
+	always be defined.
+	(_declspec): Modify the definition.
+	* include/ctype.h (__DECLSPEC_SUPPORTED): Remove filters since
+	__declspec is always supported.
+	* include/mbctype.h (__DECLSPEC_SUPPORTED): Ditto.
+	* include/stdio.h (__DECLSPEC_SUPPORTED): Ditto.
+	* include/stdlib.h (__DECLSPEC_SUPPORTED): Ditto.
+	* include/wctype.h (__DECLSPEC_SUPPORTED): Ditto.
+	* include/math.h (__DECLSPEC_SUPPORTED): Ditto.
+	(HUGE_VAL): Always use GCC's builin value.
+	* include/stdlib.h: Modify whitespace.
+
+2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Remove filters for CRTDLL and __MSVCRT__.
 
 	* Makefile.in: Remove -[DU]__MSVCRT__ and -[DU]__CRTDLL__.

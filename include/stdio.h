@@ -153,17 +153,7 @@ typedef struct _iobuf
 /*
  * The standard file handles
  */
-#ifndef __DECLSPEC_SUPPORTED
-
-extern FILE (*_imp___iob)[];	/* A pointer to an array of FILE */
-
-#define _iob	(*_imp___iob)	/* An array of FILE */
-
-#else /* __DECLSPEC_SUPPORTED */
-
 __MINGW_IMPORT FILE _iob[];	/* An array of FILE imported from DLL. */
-
-#endif /* __DECLSPEC_SUPPORTED */
 
 #define stdin	(&_iob[STDIN_FILENO])
 #define stdout	(&_iob[STDOUT_FILENO])

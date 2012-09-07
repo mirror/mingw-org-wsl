@@ -108,23 +108,7 @@ extern "C" {
  * to a thunk function.
  */
 
-#if __MINGW_GNUC_PREREQ(3, 3)
 #define	HUGE_VAL __builtin_huge_val()
-#else
-
-#ifndef __DECLSPEC_SUPPORTED
-
-extern double*	_imp___HUGE;
-#define	HUGE_VAL	(*_imp___HUGE)
-
-#else /* __DECLSPEC_SUPPORTED */
-
-__MINGW_IMPORT double	_HUGE;
-#define	HUGE_VAL	_HUGE
-
-#endif /* __DECLSPEC_SUPPORTED */
-#endif /* __MINGW_GNUC_PREREQ(3, 3) */
-
 
 struct _exception
 {

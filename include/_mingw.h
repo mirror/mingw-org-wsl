@@ -52,7 +52,6 @@
 /* These are defined by the user (or the compiler)
    to specify how identifiers are imported from a DLL.
 
-   __DECLSPEC_SUPPORTED            Defined if dllimport attribute is supported.
    __MINGW_IMPORT                  The attribute definition to specify imported
                                    variables/functions.
    _CRTIMP                         As above.  For MS compatibility.
@@ -74,11 +73,6 @@
    __int64                         define to be long long.  Using a typedef
                                    doesn't work for "unsigned __int64"
 
-   All headers should include this first, and then use __DECLSPEC_SUPPORTED
-   to choose between the old ``__imp__name'' style or __MINGW_IMPORT
-   style declarations.  */
-
-
 /* Manifest definitions identifying the flag bits, controlling activation
  * of MinGW features, as specified by the user in __MINGW_FEATURES__.
  */
@@ -94,27 +88,19 @@
 /* Try to avoid problems with outdated checks for GCC __attribute__ support.  */
 #undef __attribute__
 
-#ifdef __declspec
-# ifndef __MINGW_IMPORT
+#ifndef __MINGW_IMPORT
   /* Note the extern. This is needed to work around GCC's
      limitations in handling dllimport attribute.  */
-#  define __MINGW_IMPORT  extern __attribute__ ((__dllimport__))
-# endif
-# ifndef _CRTIMP
-#  ifdef __USE_CRTIMP
-#   define _CRTIMP  __attribute__ ((dllimport))
-#  else
-#   define _CRTIMP
-#  endif
-# endif
-# define __DECLSPEC_SUPPORTED
-#else /* __declspec */
-# undef __DECLSPEC_SUPPORTED
-# undef __MINGW_IMPORT
-# ifndef _CRTIMP
+# define __MINGW_IMPORT  extern __attribute__ ((__dllimport__))
+#endif
+#ifndef _CRTIMP
+# ifdef __USE_CRTIMP
+#  define _CRTIMP  __attribute__ ((dllimport))
+# else
 #  define _CRTIMP
 # endif
-#endif /* __declspec */
+#endif
+
 /*
  * The next two defines can cause problems if user code adds the
  * __cdecl attribute like so:

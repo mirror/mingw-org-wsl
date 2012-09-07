@@ -104,30 +104,15 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _toupper(int);
 
 /* Also defined in stdlib.h */
 #ifndef MB_CUR_MAX
-#ifdef __DECLSPEC_SUPPORTED
    __MINGW_IMPORT int __mb_cur_max;
 #  define MB_CUR_MAX __mb_cur_max
-#else		/* ! __DECLSPEC_SUPPORTED */
-   extern int* _imp____mb_cur_max;
-#  define MB_CUR_MAX (*_imp____mb_cur_max)
-#endif  	/*  __DECLSPEC_SUPPORTED */
 #endif  /* MB_CUR_MAX */
 
 
-#ifdef __DECLSPEC_SUPPORTED
 # if __MSVCRT_VERSION__ <= 0x0700
   __MINGW_IMPORT unsigned short _ctype[];
 # endif
   __MINGW_IMPORT unsigned short* _pctype;
-
-#else		/*  __DECLSPEC_SUPPORTED */
-# if __MSVCRT_VERSION__ <= 0x0700
-  extern unsigned short** _imp___ctype;
-# define _ctype (*_imp___ctype)
-# endif
-  extern unsigned short** _imp___pctype;
-# define _pctype (*_imp___pctype)
-#endif		/*  __DECLSPEC_SUPPORTED */
 
 /*
  * Use inlines here rather than macros, because macros will upset 

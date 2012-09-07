@@ -86,10 +86,8 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _ismbbtrail (unsigned int);
 _CRTIMP int __cdecl __MINGW_NOTHROW _ismbslead (const unsigned char*, const unsigned char*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _ismbstrail (const unsigned char*, const unsigned char*);
 
-#ifdef __DECLSPEC_SUPPORTED
 __MINGW_IMPORT unsigned char _mbctype[];
 __MINGW_IMPORT unsigned char _mbcasemap[];
-#endif
 
 /* TODO : _MBCS_ mappings go in tchar.h */
 

@@ -106,11 +106,8 @@ extern "C" {
 #ifndef __cdecl
 #define __cdecl __attribute__((cdecl))
 #endif
-#ifndef __declspec
-#define __declspec(e) __attribute__((e))
-#endif
 #ifndef _declspec
-#define _declspec(e) __attribute__((e))
+#define _declspec(e) __declspec(e)
 #endif
 
 #undef pascal
