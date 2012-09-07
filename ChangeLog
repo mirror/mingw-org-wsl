@@ -22,6 +22,11 @@
 	* include/windef.h: Remove definitions for _cdecl, __cdecl, _stdcall,
 	__stdcall, _fastcall, __fastcall, WIN32, _WIN32 since they will always
 	be defined.
+	* include/_mingw.h (__AW): New macro.
+	(__AW__): Ditto.
+	* include/accctrl.h: Include _mingw.h.
+	Move #if _WIN32_WINNT filters to the end.
+	Rework the UNICODE definition mappings to the non-specific types.
 
 2012-09-07  Earnie Boyd  <earnie@users.sourceforge.net>
 

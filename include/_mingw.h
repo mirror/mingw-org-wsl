@@ -193,4 +193,15 @@ typedef struct localeinfo_struct {
   pthreadmbcinfo mbcinfo;
 } _locale_tstruct, *_locale_t;
 
+/* The __AW() definition will be used for mapping UNICODE versus ASCII versions
+ * to the non represented names.  This is accomplished by macro expansion of
+ * the symbol passed and concantenating either A or W to the symbol.
+ */
+#define __AW__(AW, AW_) AW ## AW_
+#if (defined(UNICODE) || defined(_UNICODE))
+#define __AW(AW) __AW__(AW, W)
+#else
+#define __AW(AW) __AW__(AW, A)
+#endif
+
 #endif /* __MINGW_H */
