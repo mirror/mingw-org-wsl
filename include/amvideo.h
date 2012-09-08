@@ -24,6 +24,7 @@
 #ifndef _AMVIDEO_H
 #define _AMVIDEO_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <ddraw.h>
 #include <strmif.h>

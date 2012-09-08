@@ -24,6 +24,7 @@
 #ifndef _ADSPROP_H
 #define _ADSPROP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,17 +40,7 @@ extern "C" {
 #define WM_ADSPROP_NOTIFY_PAGEINIT (WM_USER+1101)
 #define WM_ADSPROP_NOTIFY_SETFOCUS (WM_USER+1105)
 /*--- Active Directory Reference - Active Directory Structures - Active Directory MMC Property Page Structures */
-#if (_WIN32_WINNT >= 0x0501)
-typedef struct {
-	HWND hwndPage;
-	PWSTR pszPageTitle;
-	PWSTR pszObjPath;
-	PWSTR pszObjClass;
-	HRESULT hr;
-	PWSTR pszError;
-} ADSPROPERROR,*PADSPROPERROR;
-#endif /* (_WIN32_WINNT >= 0x0501) */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef struct {
 	DWORD dwSize;
 	DWORD dwFlags;
@@ -58,7 +49,17 @@ typedef struct {
 	LPWSTR pwzCN;
 	PADS_ATTR_INFO pWritableAttrs;
 } ADSPROPINITPARAMS,*PADSPROPINITPARAMS;
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+typedef struct {
+	HWND hwndPage;
+	PWSTR pszPageTitle;
+	PWSTR pszObjPath;
+	PWSTR pszObjClass;
+	HRESULT hr;
+	PWSTR pszError;
+} ADSPROPERROR,*PADSPROPERROR;
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
 
 #ifdef __cplusplus
 }

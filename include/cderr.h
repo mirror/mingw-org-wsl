@@ -24,6 +24,7 @@
 #ifndef _CDERR_H
 #define _CDERR_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define CDERR_DIALOGFAILURE	0xFFFF
 #define CDERR_GENERALCODES	0x0000

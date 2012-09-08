@@ -24,6 +24,7 @@
 #ifndef _MINGW_H
 #define _MINGW_H
 #pragma GCC system_header
+#include <sdkddkver.h>
 
 /*
  * Mingw specific macros.

@@ -24,6 +24,7 @@
 #ifndef _COMCAT_H
 #define _COMCAT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>

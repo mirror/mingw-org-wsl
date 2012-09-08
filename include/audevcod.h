@@ -24,6 +24,7 @@
 #ifndef _AUDEVCOD_H
 #define _AUDEVCOD_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

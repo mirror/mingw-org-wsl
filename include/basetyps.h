@@ -24,6 +24,7 @@
 #ifndef _BASETYPS_H
 #define _BASETYPS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef _OBJC_NO_COM_
 # ifdef __cplusplus

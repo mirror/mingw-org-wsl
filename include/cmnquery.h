@@ -24,13 +24,14 @@
 #ifndef _CMNQUERY_H
 #define _CMNQUERY_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*--- Active Directory Reference - Active Directory Structures - Active Directory Display Structures */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef struct {
 	DWORD cbStruct;
 	DWORD dwFlags;
@@ -80,7 +81,7 @@ typedef struct {
 typedef HRESULT (CALLBACK* CQAddFormsProc)(LPARAM,LPCQFORM);
 typedef HRESULT (CALLBACK* CQAddPagesProc)(LPARAM,REFCLSID,LPCQPAGE);
 typedef HRESULT (CALLBACK* CQPageProc)(LPCQPAGE,HWND,UINT,WPARAM,LPARAM);
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

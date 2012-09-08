@@ -24,6 +24,7 @@
 #ifndef _ACLUI_H
 #define _ACLUI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef _OBJC_NO_COM
 #include <objbase.h>

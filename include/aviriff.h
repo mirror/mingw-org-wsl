@@ -24,6 +24,7 @@
 #ifndef _AVIRIFF_H
 #define _AVIRIFF_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <mmsystem.h>
 #include <wingdi.h>

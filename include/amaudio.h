@@ -24,6 +24,7 @@
 #ifndef _AMAUDIO_H
 #define _AMAUDIO_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <dsound.h>
 

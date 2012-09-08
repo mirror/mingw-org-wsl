@@ -24,6 +24,7 @@
 #ifndef _BASETSD_H
 #define _BASETSD_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef __int64
 #define __int64 long long

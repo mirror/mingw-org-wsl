@@ -24,6 +24,7 @@
 #ifndef _AYGSHELL_H
 #define _AYGSHELL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #if _WIN32_WCE >= 400
 

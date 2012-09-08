@@ -24,6 +24,7 @@
 #ifndef _ACLAPI_H
 #define _ACLAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <windows.h>
 #include <accctrl.h>
@@ -54,10 +55,6 @@ WINADVAPI DWORD WINAPI GetEffectiveRightsFromAclA(PACL,PTRUSTEE_A,PACCESS_MASK);
 WINADVAPI DWORD WINAPI GetEffectiveRightsFromAclW(PACL,PTRUSTEE_W,PACCESS_MASK);
 WINADVAPI DWORD WINAPI GetExplicitEntriesFromAclA(PACL,PULONG,PEXPLICIT_ACCESS_A*);
 WINADVAPI DWORD WINAPI GetExplicitEntriesFromAclW(PACL,PULONG,PEXPLICIT_ACCESS_W*);
-#if (_WIN32_WINNT >= 0x0501)
-WINADVAPI DWORD WINAPI GetInheritanceSourceA(LPSTR,SE_OBJECT_TYPE,SECURITY_INFORMATION,BOOL,GUID**,DWORD,PACL,void*,PGENERIC_MAPPING,PINHERITED_FROMA);
-WINADVAPI DWORD WINAPI GetInheritanceSourceW(LPWSTR,SE_OBJECT_TYPE,SECURITY_INFORMATION,BOOL,GUID**,DWORD,PACL,void*,PGENERIC_MAPPING,PINHERITED_FROMW);
-#endif
 WINADVAPI DWORD WINAPI GetNamedSecurityInfoA(LPSTR,SE_OBJECT_TYPE,SECURITY_INFORMATION,
   PSID*,PSID*,PACL*,PACL*,PSECURITY_DESCRIPTOR*);
 WINADVAPI DWORD WINAPI GetNamedSecurityInfoW(LPWSTR,SE_OBJECT_TYPE,SECURITY_INFORMATION,
@@ -88,49 +85,31 @@ WINADVAPI PTRUSTEE_W WINAPI GetMultipleTrusteeW(PTRUSTEE_W);
 WINADVAPI MULTIPLE_TRUSTEE_OPERATION WINAPI GetMultipleTrusteeOperationA(PTRUSTEE_A);
 WINADVAPI MULTIPLE_TRUSTEE_OPERATION WINAPI GetMultipleTrusteeOperationW(PTRUSTEE_W);
 
-#ifdef UNICODE
-#define BuildExplicitAccessWithName  BuildExplicitAccessWithNameW
-#define BuildSecurityDescriptor  BuildSecurityDescriptorW
-#define BuildTrusteeWithName  BuildTrusteeWithNameW
-#define BuildTrusteeWithObjectsAndName  BuildTrusteeWithObjectsAndNameW
-#define BuildTrusteeWithObjectsAndSid  BuildTrusteeWithObjectsAndSidW
-#define BuildTrusteeWithSid  BuildTrusteeWithSidW
-#define GetAuditedPermissionsFromAcl  GetAuditedPermissionsFromAclW
-#define GetEffectiveRightsFromAcl  GetEffectiveRightsFromAclW
-#define GetExplicitEntriesFromAcl  GetExplicitEntriesFromAclW
-#define GetNamedSecurityInfo  GetNamedSecurityInfoW
-#define GetTrusteeForm  GetTrusteeFormW
-#define GetTrusteeName  GetTrusteeNameW
-#define GetTrusteeType  GetTrusteeTypeW
-#define LookupSecurityDescriptorParts  LookupSecurityDescriptorPartsW
-#define SetEntriesInAcl  SetEntriesInAclW
-#define SetNamedSecurityInfo  SetNamedSecurityInfoW
-#define BuildImpersonateExplicitAccessWithName  BuildImpersonateExplicitAccessWithNameW
-#define BuildImpersonateTrustee  BuildImpersonateTrusteeW
-#define GetMultipleTrustee  GetMultipleTrusteeW
-#define GetMultipleTrusteeOperation  GetMultipleTrusteeOperationW
-#else
-#define BuildExplicitAccessWithName  BuildExplicitAccessWithNameA
-#define BuildSecurityDescriptor  BuildSecurityDescriptorA
-#define BuildTrusteeWithName  BuildTrusteeWithNameA
-#define BuildTrusteeWithObjectsAndName  BuildTrusteeWithObjectsAndNameA
-#define BuildTrusteeWithObjectsAndSid  BuildTrusteeWithObjectsAndSidA
-#define BuildTrusteeWithSid  BuildTrusteeWithSidA
-#define GetAuditedPermissionsFromAcl  GetAuditedPermissionsFromAclA
-#define GetEffectiveRightsFromAcl  GetEffectiveRightsFromAclA
-#define GetExplicitEntriesFromAcl  GetExplicitEntriesFromAclA
-#define GetNamedSecurityInfo  GetNamedSecurityInfoA
-#define GetTrusteeForm  GetTrusteeFormA
-#define GetTrusteeName  GetTrusteeNameA
-#define GetTrusteeType  GetTrusteeTypeA
-#define LookupSecurityDescriptorParts  LookupSecurityDescriptorPartsA
-#define SetEntriesInAcl  SetEntriesInAclA
-#define SetNamedSecurityInfo  SetNamedSecurityInfoA
-#define BuildImpersonateExplicitAccessWithName  BuildImpersonateExplicitAccessWithNameA
-#define BuildImpersonateTrustee  BuildImpersonateTrusteeA
-#define GetMultipleTrustee  GetMultipleTrusteeA
-#define GetMultipleTrusteeOperation  GetMultipleTrusteeOperationA
-#endif /* UNICODE */
+#define BuildExplicitAccessWithName  __AW(BuildExplicitAccessWithName)
+#define BuildSecurityDescriptor  __AW(BuildSecurityDescriptor)
+#define BuildTrusteeWithName  __AW(BuildTrusteeWithName)
+#define BuildTrusteeWithObjectsAndName  __AW(BuildTrusteeWithObjectsAndName)
+#define BuildTrusteeWithObjectsAndSid  __AW(BuildTrusteeWithObjectsAndSid)
+#define BuildTrusteeWithSid  __AW(BuildTrusteeWithSid)
+#define GetAuditedPermissionsFromAcl  __AW(GetAuditedPermissionsFromAcl)
+#define GetEffectiveRightsFromAcl  __AW(GetEffectiveRightsFromAcl)
+#define GetExplicitEntriesFromAcl  __AW(GetExplicitEntriesFromAcl)
+#define GetNamedSecurityInfo  __AW(GetNamedSecurityInfo)
+#define GetTrusteeForm  __AW(GetTrusteeForm)
+#define GetTrusteeName  __AW(GetTrusteeName)
+#define GetTrusteeType  __AW(GetTrusteeType)
+#define LookupSecurityDescriptorParts  __AW(LookupSecurityDescriptorParts)
+#define SetEntriesInAcl  __AW(SetEntriesInAcl)
+#define SetNamedSecurityInfo  __AW(SetNamedSecurityInfo)
+#define BuildImpersonateExplicitAccessWithName  __AW(BuildImpersonateExplicitAccessWithName)
+#define BuildImpersonateTrustee  __AW(BuildImpersonateTrustee)
+#define GetMultipleTrustee  __AW(GetMultipleTrustee)
+#define GetMultipleTrusteeOperation  __AW(GetMultipleTrusteeOperation)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+WINADVAPI DWORD WINAPI GetInheritanceSourceA(LPSTR,SE_OBJECT_TYPE,SECURITY_INFORMATION,BOOL,GUID**,DWORD,PACL,void*,PGENERIC_MAPPING,PINHERITED_FROMA);
+WINADVAPI DWORD WINAPI GetInheritanceSourceW(LPWSTR,SE_OBJECT_TYPE,SECURITY_INFORMATION,BOOL,GUID**,DWORD,PACL,void*,PGENERIC_MAPPING,PINHERITED_FROMW);
+#endif
 
 #ifdef __cplusplus
 }
