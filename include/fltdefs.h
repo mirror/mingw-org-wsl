@@ -24,6 +24,7 @@
 #ifndef _FLTDEFS_H
 #define _FLTDEFS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Routing and Remote Access Services
@@ -34,7 +35,7 @@ extern "C" {
 #endif
 
 /*--- Packet Filtering Reference - Packet Filtering Enumerated Types */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef enum _GlobalFilter {
 	GF_FRAGMENTS = 2,
 	GF_STRONGHOST = 8,
@@ -53,7 +54,7 @@ typedef enum _PfFrameType {
 	PFFT_FRAG = 2,
 	PFFT_SPOOF = 3
 } PFFRAMETYPE,*PPFFRAMETYPE;
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

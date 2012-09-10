@@ -24,13 +24,11 @@
 #ifndef _CTYPE_H_
 #define _CTYPE_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Functions for testing character types and converting characters.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #define	__need_wchar_t
 #define	__need_wint_t

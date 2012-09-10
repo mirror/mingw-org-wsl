@@ -24,6 +24,7 @@
 #ifndef _EXDISP_H
 #define _EXDISP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

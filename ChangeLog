@@ -1,3 +1,70 @@
+2012-09-10  Earnie Boyd  <earnie@users.sourceforge.ent>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/commdlg.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/dbt.h: Ditto.
+	* include/dsclient.h: Ditto.
+	* include/dsgetdc.h: Ditto.
+	* include/errorrep.h: Ditto.
+
+	* include/complex.h (_mingw.h): Remove comment and move to top of file.
+	(__GNUC__): Remove filter since only GCC is used.
+
+	* include/conio.h (_mingw.h): Remove comment and move to top of file.
+	* include/ctype.h: Ditto.
+	* include/direct.h: Ditto.
+	* include/dirent.h: Ditto.
+	* include/dos.h: Ditto.
+	* include/errno.h: Ditto.
+	* include/excpt.h: Ditto.
+	* include/float.h: Ditto.
+	* include/getopt.h: Ditto.
+
+	* include/control.h (_mingw.h): Include.
+	* include/cplext.h: Ditto.
+	* include/dde.h: Ditto.
+	* include/devguid.h: Ditto.
+	* include/dlgs.h: Ditto.
+	* include/docobj.h: Ditto.
+	* include/dshow.h: Ditto.
+	* include/dvdevcod.h: Ditto.
+	* include/dvdmedia.h: Ditto.
+	* include/edevdefs.h: Ditto.
+	* include/evcode.h: Ditto.
+	* include/exdisp.h: Ditto.
+	* include/exdispid.h: Ditto.
+	* include/httpext.h: Ditto.
+
+	* include/cpl.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/custcntl.h: Ditto.
+	* include/ddeml.h: Ditto.
+	* include/errors.h: Ditto.
+
+	* include/dsadmin.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	* include/dhcpcsdk.h: Ditto.
+	* include/dsquery.h: Ditto.
+	* include/dsrole.h: Ditto.
+	* include/fltdefs.h: Ditto.
+
+	* incldue/fcntl.h (_mingw.h): Include.
+	(__MSVCRT_VERSION__): Rename to _WIN32_WINNT and compare to
+	_WIN32_WINNT_WIN98.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+
+	* include/_mingw.h (__STR): Add macro for L"string" or "string".
+
+	* include/sdkddkver.h (_WIN32_WINNT_WIN95): Add constant definition.
+	(_WIN32_WINNT_WIN98): Ditto.
+	(_WIN32_WINNT_WINME): Ditto.
+
 2012-09-08  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.

@@ -24,6 +24,7 @@
 #ifndef _DVDEVCOD_H
 #define _DVDEVCOD_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

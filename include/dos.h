@@ -24,13 +24,11 @@
 #ifndef	_DOS_H_
 #define	_DOS_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * DOS-specific functions and structures.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #define __need_wchar_t
 #ifndef RC_INVOKED

@@ -24,6 +24,7 @@
 #ifndef	_EXCPT_H_
 #define	_EXCPT_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Support for operating system level structured exception handling.
@@ -31,9 +32,6 @@
  * NOTE: This is very preliminary stuff. I am also pretty sure it is
  *       completely Intel specific.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #include <windef.h>
 

@@ -24,6 +24,7 @@
 #ifndef _DDEML_H
 #define _DDEML_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -304,31 +305,18 @@ BOOL WINAPI DdeSetUserHandle(HCONV,DWORD,DWORD);
 BOOL WINAPI DdeUnaccessData(HDDEDATA);
 BOOL WINAPI DdeUninitialize(DWORD);
 
-#ifdef UNICODE
-#define SZDDESYS_TOPIC	L"System"
-#define SZDDESYS_ITEM_TOPICS	L"Topics"
-#define SZDDESYS_ITEM_SYSITEMS	L"SysItems"
-#define SZDDESYS_ITEM_RTNMSG	L"ReturnMessage"
-#define SZDDESYS_ITEM_STATUS	L"Status"
-#define SZDDESYS_ITEM_FORMATS	L"Formats"
-#define SZDDESYS_ITEM_HELP	L"Help"
-#define SZDDE_ITEM_ITEMLIST	L"TopicItemList"
-#define DdeCreateStringHandle DdeCreateStringHandleW
-#define DdeInitialize DdeInitializeW
-#define DdeQueryString DdeQueryStringW
-#else
-#define SZDDESYS_TOPIC	"System"
-#define SZDDESYS_ITEM_TOPICS	"Topics"
-#define SZDDESYS_ITEM_SYSITEMS	"SysItems"
-#define SZDDESYS_ITEM_RTNMSG	"ReturnMessage"
-#define SZDDESYS_ITEM_STATUS	"Status"
-#define SZDDESYS_ITEM_FORMATS	"Formats"
-#define SZDDESYS_ITEM_HELP	"Help"
-#define SZDDE_ITEM_ITEMLIST	"TopicItemList"
-#define DdeCreateStringHandle DdeCreateStringHandleA
-#define DdeInitialize DdeInitializeA
-#define DdeQueryString DdeQueryStringA
-#endif
+#define SZDDESYS_TOPIC	__STR("System")
+#define SZDDESYS_ITEM_TOPICS	__STR("Topics")
+#define SZDDESYS_ITEM_SYSITEMS	__STR("SysItems")
+#define SZDDESYS_ITEM_RTNMSG	__STR("ReturnMessage")
+#define SZDDESYS_ITEM_STATUS	__STR("Status")
+#define SZDDESYS_ITEM_FORMATS	__STR("Formats")
+#define SZDDESYS_ITEM_HELP	__STR("Help")
+#define SZDDE_ITEM_ITEMLIST	__STR("TopicItemList")
+#define DdeCreateStringHandle __AW(DdeCreateStringHandle)
+#define DdeInitialize __AW(DdeInitialize)
+#define DdeQueryString __AW(DdeQueryString)
+
 #ifdef __cplusplus
 }
 #endif

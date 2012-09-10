@@ -24,6 +24,7 @@
 #ifndef _EDEVDEFS_H
 #define _EDEVDEFS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define ED_TOP 0x00000001
 #define ED_MIDDLE 0x00000002

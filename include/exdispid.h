@@ -24,6 +24,7 @@
 #ifndef _EXDISPID_H
 #define _EXDISPID_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define DISPID_BEFORENAVIGATE2 250
 #define DISPID_NEWWINDOW2 251

@@ -24,6 +24,7 @@
 #ifndef _CPLEXT_H
 #define _CPLEXT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define CPLPAGE_MOUSE_BUTTONS 1
 #define CPLPAGE_MOUSE_PTRMOTION 2

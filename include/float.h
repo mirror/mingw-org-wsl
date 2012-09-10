@@ -24,6 +24,7 @@
 #ifndef _MINGW_FLOAT_H_
 #define _MINGW_FLOAT_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Constants related to floating point arithmetic.
@@ -54,9 +55,6 @@
   */
 # include_next <float.h>
 #endif
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 /*
  * Functions and definitions for controlling the FPU.

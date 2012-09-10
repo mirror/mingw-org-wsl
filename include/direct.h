@@ -24,8 +24,6 @@
 #ifndef	_DIRECT_H_
 #define	_DIRECT_H_
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 #define __need_wchar_t

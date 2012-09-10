@@ -24,14 +24,12 @@
 #ifndef	_CONIO_H_
 #define	_CONIO_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Low level console I/O functions. Pretty please try to use the ANSI
  * standard ones if you are writing new code.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #ifndef RC_INVOKED
 

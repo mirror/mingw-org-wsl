@@ -24,12 +24,13 @@
 #ifndef _DHCPCDSK_H
 #define _DHCPCDSK_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 #define DHCPCAPI_REGISTER_HANDLE_EVENT 0x00000001
 #define DHCPCAPI_REQUEST_PERSISTENT  0x00000001
 #define DHCPCAPI_REQUEST_SYNCHRONOUS 0x00000002
@@ -55,7 +56,7 @@ DWORD WINAPI DhcpDeRegisterParamChange(DWORD,LPVOID,LPVOID);
 DWORD WINAPI DhcpRegisterParamChange(DWORD,LPVOID,PWSTR,LPDHCPCAPI_CLASSID,DHCPCAPI_PARAMS_ARRAY,LPVOID);
 DWORD WINAPI DhcpRemoveDNSRegistrations(void);
 DWORD WINAPI DhcpUndoRequestParams(DWORD,LPVOID,LPWSTR,LPWSTR);
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

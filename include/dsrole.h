@@ -24,12 +24,13 @@
 #ifndef _DSROLE_H
 #define _DSROLE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 /*--- Active Directory Reference - Active Directory Enumerations */
 typedef enum {
 	DsRole_RoleStandaloneWorkstation,
@@ -74,7 +75,7 @@ typedef struct _DSROLE_UPGRADE_STATUS_INFO {
 	ULONG OperationState;
 	DSROLE_SERVER_STATE PreviousServerState;
 } DSROLE_UPGRADE_STATUS_INFO,*PDSROLE_UPGRADE_STATUS_INFO;
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

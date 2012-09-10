@@ -24,13 +24,11 @@
 #ifndef _ERRNO_H_
 #define	_ERRNO_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Error numbers and access to error reporting.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 /*
  * Error numbers.

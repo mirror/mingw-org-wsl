@@ -201,8 +201,10 @@ typedef struct localeinfo_struct {
 #define __AW__(AW, AW_) AW ## AW_
 #if (defined(UNICODE) || defined(_UNICODE))
 #define __AW(AW) __AW__(AW, W)
+#define __STR(AW) __AW__(L, AW)
 #else
 #define __AW(AW) __AW__(AW, A)
+#define __STR(AW) __AW__(, AW)
 #endif
 
 #endif /* __MINGW_H */

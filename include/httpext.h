@@ -24,6 +24,7 @@
 #ifndef _HTTPEXT_H
 #define _HTTPEXT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * ISAPI extensions.

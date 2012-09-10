@@ -24,7 +24,6 @@
 #ifndef _FENV_H_
 #define _FENV_H_
 #pragma GCC system_header
-
 #include <_mingw.h>
 
 /* FPU status word exception flags */

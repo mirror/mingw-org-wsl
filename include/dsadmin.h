@@ -24,20 +24,21 @@
 #ifndef _DSADMIN_H
 #define _DSADMIN_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*--- Active Directory Reference - Active Directory Structures - Active Directory Admin Structures */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef struct {
 	DWORD dwSize;
 	HICON hObjClassIcon;
 	LPWSTR lpszWizTitle;
 	LPWSTR lpszContDisplayName;
 } DSA_NEWOBJ_DISPINFO,*LPDSA_NEWOBJ_DISPINFO;
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

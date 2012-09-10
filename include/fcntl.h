@@ -24,14 +24,12 @@
 #ifndef _FCNTL_H_
 #define _FCNTL_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Access constants for _open. Note that the permissions constants are
  * in sys/stat.h (ick).
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 /*
  * It appears that fcntl.h should include io.h for compatibility...
@@ -65,12 +63,6 @@
 #define	_O_BINARY	0x8000	/* Input and output is not translated. */
 #define	_O_RAW		_O_BINARY
 
-#if (__MSVCRT_VERSION__ >= 0x0800)
-#define _O_WTEXT	0x10000
-#define _O_U16TEXT	0x20000
-#define _O_U8TEXT	0x40000
-#endif
-
 #ifndef	_NO_OLDNAMES
 
 /* POSIX/Non-ANSI names for increased portability */
@@ -90,5 +82,11 @@
 #define	O_RANDOM	_O_RANDOM
 
 #endif	/* Not _NO_OLDNAMES */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN98)
+#define _O_WTEXT	0x10000
+#define _O_U16TEXT	0x20000
+#define _O_U8TEXT	0x40000
+#endif
 
 #endif	/* Not _FCNTL_H_ */

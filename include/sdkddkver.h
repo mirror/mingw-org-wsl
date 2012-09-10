@@ -53,6 +53,9 @@
  * http://msdn.microsoft.com/en-us/library/windows/desktop/aa383745(v=vs.85).aspx
  */
 #define _WIN32_WINNT_NT4          0x0400
+#define _WIN32_WINNT_WIN95	  0x0400
+#define _WIN32_WINNT_WIN98	  0x0401
+#define _WIN32_WINNT_WINME	  0x0402
 #define _WIN32_WINNT_WIN2K        0x0500
 #define _WIN32_WINNT_WINXP        0x0501
 #define _WIN32_WINNT_WS03         0x0502

@@ -24,13 +24,14 @@
 #ifndef _DSQUERY_H
 #define _DSQUERY_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*--- Active Directory Reference - Active Directory Structures - Active Directory Display Structures */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef struct {
 	DWORD dwFlags;
 	INT fmt;
@@ -71,7 +72,7 @@ typedef struct {
 	DWORD dwReserved;
 	DSCOLUMN aColumns[1];
 } DSQUERYPARAMS,*LPDSQUERYPARAMS;
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

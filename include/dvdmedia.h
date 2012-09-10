@@ -24,6 +24,7 @@
 #ifndef _DVDMEDIA_H
 #define _DVDMEDIA_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <strmif.h>
 

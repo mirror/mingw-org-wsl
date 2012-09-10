@@ -24,6 +24,7 @@
 #ifndef _DLGS_H
 #define _DLGS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

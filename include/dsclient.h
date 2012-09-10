@@ -24,23 +24,20 @@
 #ifndef _DSCLIENT_H
 #define _DSCLIENT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 /*--- Active Directory Reference - Active Directory Functions - Active Directory Display Functions - BFFCallBack */
 #define DSBM_QUERYINSERTW 0x0064
 #define DSBM_QUERYINSERTA 0x0065
 #define DSBM_CHANGEIMAGESTATE 0x0066
 #define DSBM_HELP 0x0067
 #define DSBM_CONTEXTMENU 0x0068
-#ifdef UNICODE
-#define DSBM_QUERYINSERT DSBM_QUERYINSERTW
-#else
-#define DSBM_QUERYINSERT DSBM_QUERYINSERTA
-#endif
+#define DSBM_QUERYINSERT __AW(DSBM_QUERYINSERT)
 /*--- Active Directory Reference - Active Directory Structures - Active Directory Display Structures */
 typedef struct _DOMAINDESC {
 	LPWSTR pszName;
@@ -178,14 +175,9 @@ typedef struct {
 typedef struct {
 	DWORD offsetString;
 } DSPROPERTYPAGEINFO,*LPDSPROPERTYPAGEINFO;
-#ifdef UNICODE
-typedef DSBITEMW DSBITEM,*PDSBITEM;
-typedef DSBROWSEINFOW DSBROWSEINFO,*PDSBROWSEINFO;
-#else
-typedef DSBITEMA DSBITEM,*PDSBITEM;
-typedef DSBROWSEINFOA DSBROWSEINFO,*PDSBROWSEINFO;
-#endif
-#endif /* (_WIN32_WINNT >= 0x0500) */
+typedef __AW(DSBITEM) DSBITEM,*PDSBITEM;
+typedef __AW(DSBROWSEINFO) DSBROWSEINFO,*PDSBROWSEINFO;
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

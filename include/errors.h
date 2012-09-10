@@ -24,6 +24,7 @@
 #ifndef _ERRORS_H
 #define _ERRORS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -178,11 +179,7 @@ extern "C" {
 /*--- DirectShow Reference - Functions */
 DWORD WINAPI AMGetErrorTextA(HRESULT,CHAR*,DWORD);
 DWORD WINAPI AMGetErrorTextW(HRESULT,WCHAR*,DWORD);
-#ifdef UNICODE
-#define AMGetErrorText AMGetErrorTextW
-#else
-#define AMGetErrorText AMGetErrorTextA
-#endif
+#define AMGetErrorText __AW(AMGetErrorText)
 
 #ifdef __cplusplus
 }

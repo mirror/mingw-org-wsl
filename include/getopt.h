@@ -24,14 +24,12 @@
 #ifndef _GETOPT_H
 #define _GETOPT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Defines constants and function prototypes required to implement
  * the `getopt', `getopt_long' and `getopt_long_only' APIs.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

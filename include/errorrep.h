@@ -24,12 +24,13 @@
 #ifndef _ERRORREP_H
 #define _ERRORREP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0501)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 typedef enum {
 	frrvErr = 3,
 	frrvErrNoDW = 4,
@@ -43,16 +44,7 @@ typedef enum {
 BOOL WINAPI AddERExcludedApplicationA(LPCSTR);
 BOOL WINAPI AddERExcludedApplicationW(LPCWSTR);
 EFaultRepRetVal WINAPI ReportFault(LPEXCEPTION_POINTERS,DWORD);
-#endif
-
-#ifdef UNICODE
-#if (_WIN32_WINNT >= 0x0501)
-#define AddERExcludedApplication AddERExcludedApplicationW
-#endif
-#else
-#if (_WIN32_WINNT >= 0x0501)
-#define AddERExcludedApplication AddERExcludedApplicationA
-#endif
+#define AddERExcludedApplication __AW(AddERExcludedApplication)
 #endif
 
 #ifdef __cplusplus

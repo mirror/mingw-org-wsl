@@ -24,8 +24,6 @@
 #ifndef _DIRENT_H_
 #define _DIRENT_H_
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 #include <io.h>

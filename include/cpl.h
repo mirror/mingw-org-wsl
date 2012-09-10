@@ -24,10 +24,12 @@
 #ifndef _CPL_H
 #define _CPL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define WM_CPL_LAUNCH (WM_USER+1000)
 #define WM_CPL_LAUNCHED (WM_USER+1001)
 #define CPL_DYNAMIC_RES 0
@@ -69,14 +71,11 @@ typedef struct tagNEWCPLINFOW {
 	WCHAR szInfo[64];
 	WCHAR szHelpFile[128];
 } NEWCPLINFOW,*LPNEWCPLINFOW;
-#ifdef UNICODE
-#define CPL_STARTWPARMS CPL_STARTWPARMSW
-typedef NEWCPLINFOW NEWCPLINFO,*LPNEWCPLINFO;
-#else
-#define CPL_STARTWPARMS CPL_STARTWPARMSA
-typedef NEWCPLINFOA NEWCPLINFO,*LPNEWCPLINFO;
-#endif
+#define CPL_STARTWPARMS __AW(CPL_STARTWPARMS)
+typedef __AW(NEWCPLINFO) NEWCPLINFO,*LPNEWCPLINFO;
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif
