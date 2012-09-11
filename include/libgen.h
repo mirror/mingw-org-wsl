@@ -24,13 +24,11 @@
 #ifndef _LIBGEN_H
 #define _LIBGEN_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Functions for splitting pathnames into dirname and basename components.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -1,4 +1,61 @@
-2012-09-10  Earnie Boyd  <earnie@users.sourceforge.ent>
+2012-09-11  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/icm.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/imm.h: Ditto.
+
+	* include/iphlpapi.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	* include/iptypes.h: Ditto.
+	* include/ipxconst.h: Ditto.
+	* include/ipxrtdef.h: Ditto.
+
+	* include/imagehlp.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/intshcut.h: Ditto.
+
+	* include/inttypes.h (_mingw.h): Remove comment and move to top of file.
+	* include/libgen.h: Ditto.
+
+	* include/idispids.h (_mingw.h): Include.
+	* include/il21dec.h: Ditto.
+	* include/initguid.h: Ditto.
+	* include/ipexport.h: Ditto.
+	* include/ipifcons.h: Ditto.
+	* include/ipinfoid.h: Ditto.
+	* include/iprtrmib.h: Ditto.
+	* include/isguids.h: Ditto.
+	* include/ks.h: Ditto.
+	* include/ksmedia.h: Ditto.
+	* include/largeint.h: Ditto.
+
+	* include/io.h (_mingw.h): Remove comment and move to top of file.
+	(_findfirst*): What a mess.  Reworked.
+	(_wfindfirst*): Ditto.
+	(_findnext*): Ditto.
+	(_wfindnext*): Ditto.
+	(_finddata*_t): Ditto.
+	(_wfinddata*_t): Ditto.
+	(_FINDDATA_T_DEFINED): Add filter.
+	(__MSVCRT_VERSION__): Removed throughout.
+
+	* include/ipxtfflt.h (_mingw.h): Include.
+	(_IPX_TRAFFIC_FILTER_INFO): Add structure.
+	(_IPX_TRAFFIC_FILTER_GLOBAL_INFO): Ditto.
+
+	* include/limits.h (_mingw.h): Remove comment and move to top of file.
+	(__STRICT_ANSI__): Remove filters as unneeded.
+	(_CHAR_UNSIGNED): Add as a user defined filter for unsigned char.
+
+	* include/sdkddkver.h (_WIN32_WINNT_WIN98): Correct value.
+	(_WIN32_WINNT_WINME): Ditto.
+
+2012-09-10  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.
 

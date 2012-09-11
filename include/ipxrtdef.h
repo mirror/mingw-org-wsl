@@ -24,6 +24,7 @@
 #ifndef _IPXRTDEF_H
 #define _IPXRTDEF_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Routing and Remote Access Services
@@ -50,8 +51,9 @@ extern "C" {
 #define IPX_IN_TRAFFIC_FILTER_GLOBAL_INFO_TYPE 0x000B
 #define IPX_OUT_TRAFFIC_FILTER_INFO_TYPE 0x000C
 #define IPX_OUT_TRAFFIC_FILTER_GLOBAL_INFO_TYPE 0x000D
+
 /*--- Router Management Reference - Router Information Structures - IPX Information Structures */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 typedef struct _IPX_IF_INFO {
 	ULONG AdminState;
 	ULONG NetbiosAccept;

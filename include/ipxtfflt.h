@@ -24,6 +24,7 @@
 #ifndef _IPXTFFLT_H
 #define _IPXTFFLT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Routing and Remote Access Services
@@ -34,14 +35,21 @@ extern "C" {
 #endif
 
 /*--- Router Management Reference - Router Information Structures - IPX Information Structures */
-#if 0
-typedef struct {
-	???
-} IPX_TRAFFIC_FILTER_INFO,*PIPX_TRAFFIC_FILTER_INFO;
-typedef struct {
-	???
-} IPX_TRAFFIC_FILTER_GLOBAL_INFO,*PIPX_TRAFFIC_FILTER_GLOBAL_INFO;
-#endif
+typedef struct _IPX_TRAFFIC_FILTER_INFO {
+  ULONG FilterDefinition;
+  UCHAR DestinationNetwork[4];
+  UCHAR DestinationNetworkMask[4];
+  UCHAR DestinationNode[6];
+  UCHAR DestinationSocket[2];
+  UCHAR SourceNetwork[4];
+  UCHAR SourceNetworkMask[4];
+  UCHAR SourceNode[6];
+  UCHAR SourceSocket[2];
+  ULONG PacketType;
+} IPX_TRAFFIC_FILTER_INFO, *PIPX_TRAFFIC_FILTER_INFO;
+typedef struct _IPX_TRAFFIC_FILTER_GLOBAL_INFO {
+  ULONG FilterAction;
+} IPX_TRAFFIC_FILTER_GLOBAL_INFO, *PIPX_TRAFFIC_FILTER_GLOBAL_INFO;
 
 #ifdef __cplusplus
 }

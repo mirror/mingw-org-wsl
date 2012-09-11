@@ -24,6 +24,7 @@
 #ifndef _IL21DEC_H
 #define _IL21DEC_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

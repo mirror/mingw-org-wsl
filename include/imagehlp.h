@@ -24,6 +24,7 @@
 #ifndef _IMAGEHLP_H
 #define _IMAGEHLP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -319,11 +320,7 @@ BOOL _IMAGEHLPAPI RemovePrivateCvSymbolicEx(PCHAR,ULONG,PCHAR*,ULONG*);
 
 #endif /* RC_INVOKED */
 
-#ifdef UNICODE
-#define MapFileAndCheckSum MapFileAndCheckSumW
-#else
-#define MapFileAndCheckSum MapFileAndCheckSumA
-#endif 
+#define MapFileAndCheckSum __AW(MapFileAndCheckSum)
 
 #ifdef __cplusplus
 }

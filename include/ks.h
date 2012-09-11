@@ -24,6 +24,7 @@
 #ifndef _KS_H
 #define _KS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

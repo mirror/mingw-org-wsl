@@ -24,6 +24,7 @@
 #ifndef _IMM_H
 #define _IMM_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,9 +42,6 @@ extern "C" {
 #define WM_IME_CHAR 0x286
 #define WM_IME_KEYDOWN 0x290
 #define WM_IME_KEYUP 0x291
-#if (_WIN32_WINNT >= 0x0500)
-#define WM_IME_REQUEST 0x0288
-#endif
 #define IMC_GETCANDIDATEPOS 7
 #define IMC_SETCANDIDATEPOS 8
 #define IMC_GETCOMPOSITIONFONT 9
@@ -347,17 +345,10 @@ typedef struct tagIMEMENUITEMINFOW {
 } IMEMENUITEMINFOW,*PIMEMENUITEMINFOW,*LPIMEMENUITEMINFOW;
 typedef int (CALLBACK *REGISTERWORDENUMPROCA)(LPCSTR, DWORD, LPCSTR, LPVOID);
 typedef int (CALLBACK *REGISTERWORDENUMPROCW)(LPCWSTR, DWORD, LPCWSTR, LPVOID);
-#ifdef UNICODE
-#define REGISTERWORDENUMPROC REGISTERWORDENUMPROCW
-typedef REGISTERWORDW REGISTERWORD,*PREGISTERWORD,*LPREGISTERWORD;
-typedef STYLEBUFW STYLEBUF,*PSTYLEBUF,*LPSTYLEBUF;
-typedef IMEMENUITEMINFOW IMEMENUITEMINFO,*PIMEMENUITEMINFO,*LPIMEMENUITEMINFO;
-#else
-#define REGISTERWORDENUMPROC REGISTERWORDENUMPROCA
-typedef REGISTERWORDA REGISTERWORD,*PREGISTERWORD,*LPREGISTERWORD;
-typedef STYLEBUFA STYLEBUF,*PSTYLEBUF,*LPSTYLEBUF;
-typedef IMEMENUITEMINFOA IMEMENUITEMINFO,*PIMEMENUITEMINFO,*LPIMEMENUITEMINFO;
-#endif
+#define REGISTERWORDENUMPROC __AW(REGISTERWORDENUMPROC)
+typedef __AW(REGISTERWORD) REGISTERWORD,*PREGISTERWORD,*LPREGISTERWORD;
+typedef __AW(STYLEBUF) STYLEBUF,*PSTYLEBUF,*LPSTYLEBUF;
+typedef __AW(IMEMENUITEMINFO) IMEMENUITEMINFO,*PIMEMENUITEMINFO,*LPIMEMENUITEMINFO;
 HKL WINAPI ImmInstallIMEA(LPCSTR,LPCSTR);
 HKL WINAPI ImmInstallIMEW(LPCWSTR,LPCWSTR);
 HWND WINAPI ImmGetDefaultIMEWnd(HWND);
@@ -422,51 +413,32 @@ BOOL WINAPI ImmDisableIME(DWORD);
 DWORD WINAPI ImmGetImeMenuItemsA(HIMC,DWORD,DWORD,LPIMEMENUITEMINFOA,LPIMEMENUITEMINFOA,DWORD);
 DWORD WINAPI ImmGetImeMenuItemsW(HIMC,DWORD,DWORD,LPIMEMENUITEMINFOW,LPIMEMENUITEMINFOW,DWORD);
 
-#ifdef UNICODE
-#define ImmEnumRegisterWord ImmEnumRegisterWordW
-#define ImmGetRegisterWordStyle ImmGetRegisterWordStyleW
-#define ImmUnregisterWord ImmUnregisterWordW
-#define ImmRegisterWord ImmRegisterWordW
-#define ImmInstallIME ImmInstallIMEW
-#define ImmIsUIMessage ImmIsUIMessageW
-#define ImmGetConversionList ImmGetConversionListW
-#define ImmEscape ImmEscapeW
-#define ImmConfigureIME ImmConfigureIMEW
+#define ImmEnumRegisterWord __AW(ImmEnumRegisterWord)
+#define ImmGetRegisterWordStyle __AW(ImmGetRegisterWordStyle)
+#define ImmUnregisterWord __AW(ImmUnregisterWord)
+#define ImmRegisterWord __AW(ImmRegisterWord)
+#define ImmInstallIME __AW(ImmInstallIME)
+#define ImmIsUIMessage __AW(ImmIsUIMessage)
+#define ImmGetConversionList __AW(ImmGetConversionList)
+#define ImmEscape __AW(ImmEscape)
+#define ImmConfigureIME __AW(ImmConfigureIME)
 #ifndef NOGDI
-#define ImmSetCompositionFont ImmSetCompositionFontW
-#define ImmGetCompositionFont ImmGetCompositionFontW
+#define ImmSetCompositionFont __AW(ImmSetCompositionFont)
+#define ImmGetCompositionFont __AW(ImmGetCompositionFont)
 #endif
-#define ImmGetGuideLine ImmGetGuideLineW
-#define ImmGetCandidateList ImmGetCandidateListW
-#define ImmGetCandidateListCount ImmGetCandidateListCountW
-#define ImmSetCompositionString ImmSetCompositionStringW
-#define ImmGetCompositionString ImmGetCompositionStringW
-#define ImmGetDescription ImmGetDescriptionW
-#define ImmGetIMEFileName ImmGetIMEFileNameW
-#define ImmGetImeMenuItems ImmGetImeMenuItemsW
-#else
-#define ImmEnumRegisterWord ImmEnumRegisterWordA
-#define ImmGetRegisterWordStyle ImmGetRegisterWordStyleA
-#define ImmUnregisterWord ImmUnregisterWordA
-#define ImmRegisterWord ImmRegisterWordA
-#define ImmInstallIME ImmInstallIMEA
-#define ImmIsUIMessage ImmIsUIMessageA
-#define ImmGetConversionList ImmGetConversionListA
-#define ImmEscape ImmEscapeA
-#define ImmConfigureIME ImmConfigureIMEA
-#ifndef NOGDI
-#define ImmSetCompositionFont ImmSetCompositionFontA
-#define ImmGetCompositionFont ImmGetCompositionFontA
+#define ImmGetGuideLine __AW(ImmGetGuideLine)
+#define ImmGetCandidateList __AW(ImmGetCandidateList)
+#define ImmGetCandidateListCount __AW(ImmGetCandidateListCount)
+#define ImmSetCompositionString __AW(ImmSetCompositionString)
+#define ImmGetCompositionString __AW(ImmGetCompositionString)
+#define ImmGetDescription __AW(ImmGetDescription)
+#define ImmGetIMEFileName __AW(ImmGetIMEFileName)
+#define ImmGetImeMenuItems __AW(ImmGetImeMenuItems)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+#define WM_IME_REQUEST 0x0288
 #endif
-#define ImmGetGuideLine ImmGetGuideLineA
-#define ImmGetCandidateList ImmGetCandidateListA
-#define ImmGetCandidateListCount ImmGetCandidateListCountA
-#define ImmSetCompositionString ImmSetCompositionStringA
-#define ImmGetCompositionString ImmGetCompositionStringA
-#define ImmGetDescription ImmGetDescriptionA
-#define ImmGetIMEFileName ImmGetIMEFileNameA
-#define ImmGetImeMenuItems ImmGetImeMenuItemsW
-#endif
+
 #ifdef __cplusplus
 }
 #endif

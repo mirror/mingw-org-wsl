@@ -24,11 +24,14 @@
 #ifndef _INTSHCUT_H
 #define _INTSHCUT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <isguids.h>
+
 #ifdef __cplusplus
 extern "C" { 
 #endif 
+
 #define INTSHCUTAPI DECLSPEC_IMPORT
 #define E_FLAGS MAKE_SCODE(SEVERITY_ERROR,FACILITY_ITF,0x1000)
 #define IS_E_EXEC_FAILED MAKE_SCODE(SEVERITY_ERROR,FACILITY_ITF,0x2002)
@@ -88,16 +91,12 @@ HRESULT WINAPI TranslateURLA(PCSTR,DWORD,PSTR*);
 HRESULT WINAPI TranslateURLW(PCWSTR,DWORD,PWSTR*);
 HRESULT WINAPI URLAssociationDialogA(HWND,DWORD,PCSTR,PCSTR,PSTR,UINT);
 HRESULT WINAPI URLAssociationDialogW(HWND,DWORD,PCWSTR,PCWSTR,PWSTR,UINT);
-#ifdef UNICODE
-#define TranslateURL TranslateURLW
-#define MIMEAssociationDialog MIMEAssociationDialogW
-#define URLAssociationDialog URLAssociationDialogW
-#else
-#define TranslateURL TranslateURLA
-#define MIMEAssociationDialog MIMEAssociationDialogA
-#define URLAssociationDialog URLAssociationDialogA
-#endif 
+#define TranslateURL __AW(TranslateURL)
+#define MIMEAssociationDialog __AW(MIMEAssociationDialog)
+#define URLAssociationDialog __AW(URLAssociationDialog)
+
 #ifdef __cplusplus
 } 
 #endif 
+
 #endif 

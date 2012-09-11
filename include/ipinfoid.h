@@ -24,6 +24,7 @@
 #ifndef _IPINFOID_H
 #define _IPINFOID_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Routing and Remote Access Services

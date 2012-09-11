@@ -21,13 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _LARGEINT_H
+#define _LARGEINT_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Header for 64 bit integer arithmetics library
  */
-#ifndef _LARGEINT_H
-#define _LARGEINT_H
-#pragma GCC system_header
 
 #include <windows.h>
 

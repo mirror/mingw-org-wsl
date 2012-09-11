@@ -24,6 +24,7 @@
 #ifndef _IPRTRMIB_H
 #define _IPRTRMIB_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <ipifcons.h>
 #ifdef __cplusplus

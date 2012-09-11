@@ -24,10 +24,10 @@
 #ifndef _INTTYPES_H_
 #define _INTTYPES_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 7.8 Format conversion of integer types <inttypes.h> */
 
-#include <_mingw.h>
 #include <stdint.h>
 #define __need_wchar_t
 #include <stddef.h>

@@ -24,12 +24,13 @@
 #ifndef _ICM_H
 #define _ICM_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if (_WIN32_WINDOWS >= 0x0410 || _WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN98)
 #define MAX_COLOR_CHANNELS 8
 #define PROFILE_FILENAME 1
 #define PROFILE_MEMBUFFER 2
@@ -373,45 +374,25 @@ BOOL WINAPI UninstallColorProfileW(PCWSTR,PCWSTR,BOOL);
 BOOL WINAPI UnregisterCMMA(PCSTR,DWORD);
 BOOL WINAPI UnregisterCMMW(PCWSTR,DWORD);
 
-#ifdef UNICODE
-typedef PCMSCALLBACKW PCMSCALLBACK;
-typedef COLORMATCHSETUPW COLORMATCHSETUP,*PCOLORMATCHSETUP,*LPCOLORMATCHSETUP;
-typedef ENUMTYPEW ENUMTYPE,*PENUMTYPE,*LPENUMTYPE;
-#define AssociateColorProfileWithDevice AssociateColorProfileWithDeviceW
-#define CreateColorTransform CreateColorTransformW
-#define CreateProfileFromLogColorSpace CreateProfileFromLogColorSpaceW
-#define DisassociateColorProfileFromDevice DisassociateColorProfileFromDeviceW
-#define EnumColorProfiles EnumColorProfilesW
-#define GetColorDirectory GetColorDirectoryW
-#define GetStandardColorSpaceProfile GetStandardColorSpaceProfileW
-#define InstallColorProfile InstallColorProfileW
-#define OpenColorProfile OpenColorProfileW
-#define RegisterCMM RegisterCMMW
-#define SetStandardColorSpaceProfile SetStandardColorSpaceProfileW
-#define SetupColorMatching SetupColorMatchingW
-#define UninstallColorProfile UninstallColorProfileW
-#define UnregisterCMM UnregisterCMMW
-#else /* UNICODE */
-typedef PCMSCALLBACKA PCMSCALLBACK;
-typedef COLORMATCHSETUPA COLORMATCHSETUP,*PCOLORMATCHSETUP,*LPCOLORMATCHSETUP;
-typedef ENUMTYPEA ENUMTYPE,*PENUMTYPE,*LPENUMTYPE;
-#define AssociateColorProfileWithDevice AssociateColorProfileWithDeviceA
-#define CreateColorTransform CreateColorTransformA
-#define CreateProfileFromLogColorSpace CreateProfileFromLogColorSpaceA
-#define DisassociateColorProfileFromDevice DisassociateColorProfileFromDeviceA
-#define EnumColorProfiles EnumColorProfilesA
-#define GetColorDirectory GetColorDirectoryA
-#define GetStandardColorSpaceProfile GetStandardColorSpaceProfileA
-#define InstallColorProfile InstallColorProfileA
-#define OpenColorProfile OpenColorProfileA
-#define RegisterCMM RegisterCMMA
-#define SetStandardColorSpaceProfile SetStandardColorSpaceProfileA
-#define SetupColorMatching SetupColorMatchingA
-#define UninstallColorProfile UninstallColorProfileA
-#define UnregisterCMM UnregisterCMMA
-#endif /* !UNICODE */
+typedef __AW(PCMSCALLBACK) PCMSCALLBACK;
+typedef __AW(COLORMATCHSETUP) COLORMATCHSETUP,*PCOLORMATCHSETUP,*LPCOLORMATCHSETUP;
+typedef __AW(ENUMTYPE) ENUMTYPE,*PENUMTYPE,*LPENUMTYPE;
+#define AssociateColorProfileWithDevice __AW(AssociateColorProfileWithDevice)
+#define CreateColorTransform __AW(CreateColorTransform)
+#define CreateProfileFromLogColorSpace __AW(CreateProfileFromLogColorSpace)
+#define DisassociateColorProfileFromDevice __AW(DisassociateColorProfileFromDevice)
+#define EnumColorProfiles __AW(EnumColorProfiles)
+#define GetColorDirectory __AW(GetColorDirectory)
+#define GetStandardColorSpaceProfile __AW(GetStandardColorSpaceProfile)
+#define InstallColorProfile __AW(InstallColorProfile)
+#define OpenColorProfile __AW(OpenColorProfile)
+#define RegisterCMM __AW(RegisterCMM)
+#define SetStandardColorSpaceProfile __AW(SetStandardColorSpaceProfile)
+#define SetupColorMatching __AW(SetupColorMatching)
+#define UninstallColorProfile __AW(UninstallColorProfile)
+#define UnregisterCMM __AW(UnregisterCMM)
 
-#endif /* (_WIN32_WINDOWS >= 0x0410 || _WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN98) */
 
 #ifdef __cplusplus
 }

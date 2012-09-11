@@ -24,6 +24,7 @@
 #ifndef _IPXCONST_H
 #define _IPXCONST_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Routing and Remote Access Services
@@ -34,12 +35,12 @@ extern "C" {
 #endif
 
 /*--- Router Management Reference - Router Information Structures - IPX Information Structures */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 #define ADMIN_STATE_DISABLED 0x00000001
 #define ADMIN_STATE_ENABLED 0x00000002
 #define ADMIN_STATE_ENABLED_ONLY_FOR_NETBIOS_STATIC_ROUTING 0x00000003
 #define ADMIN_STATE_ENABLED_ONLY_FOR_OPER_STATE_UP 0x00000004
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

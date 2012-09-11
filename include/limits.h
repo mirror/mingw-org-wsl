@@ -24,6 +24,7 @@
 #ifndef _LIMITS_H
 #define _LIMITS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Functions for manipulating paths and directories (included from io.h)
@@ -35,9 +36,6 @@
  *       use that version instead of this one (maybe safer).
  */
 
-/* All the headers include this file. */
-#include <_mingw.h>
-
 /*
  * File system limits
  *
@@ -47,9 +45,7 @@
  *       are semantically identical, with a limit of 259 characters for the
  *       path name, plus one for a terminating NUL, for a total of 260.
  */
-#ifndef __STRICT_ANSI__
 # define PATH_MAX	260
-#endif
 
 /*
  * Characteristics of the char data type.
@@ -64,9 +60,7 @@
 
 #define UCHAR_MAX	255
 
-/* TODO: Is this safe? I think it might just be testing the preprocessor,
- *       not the compiler itself... */
-#if	('\x80' < 0)
+#ifndef _CHAR_UNSIGNED
 #define CHAR_MIN	SCHAR_MIN
 #define CHAR_MAX	SCHAR_MAX
 #else
@@ -92,31 +86,16 @@
 
 /*
  * Maximum and minimum values for longs and unsigned longs.
- *
- * TODO: This is not correct for Alphas, which have 64 bit longs.
  */
 #define LONG_MAX	2147483647L
 #define LONG_MIN	(-LONG_MAX-1)
-
 #define ULONG_MAX	0xffffffffUL
 
-#ifndef __STRICT_ANSI__
-/* POSIX wants this.  */ 
 #define SSIZE_MAX LONG_MAX
-#endif
 
-#if (defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) \
-     || !defined(__STRICT_ANSI__)
-/* ISO C9x macro names */
 #define LLONG_MAX 9223372036854775807LL
 #define LLONG_MIN (-LLONG_MAX - 1)
 #define ULLONG_MAX (2ULL * LLONG_MAX + 1)
-#endif
-
-/*
- * The GNU C compiler also allows 'long long int'
- */
-#if !defined(__STRICT_ANSI__) && defined(__GNUC__)
 
 #define LONG_LONG_MAX	9223372036854775807LL
 #define LONG_LONG_MIN	(-LONG_LONG_MAX-1)
@@ -126,8 +105,5 @@
 #define _I64_MIN LONG_LONG_MIN
 #define _I64_MAX LONG_LONG_MAX
 #define _UI64_MAX ULONG_LONG_MAX
-
-#endif /* Not Strict ANSI and GNU C compiler */
-
 
 #endif /* not _LIMITS_H */

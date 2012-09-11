@@ -24,6 +24,7 @@
 #ifndef _IPIFCONS_H
 #define _IPIFCONS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Routing and Remote Access Services
