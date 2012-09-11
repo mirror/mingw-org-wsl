@@ -24,10 +24,12 @@
 #ifndef _LMSVC_H
 #define _LMSVC_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <lmsname.h>
 #define SERVICE_DOS_ENCRYPTION TEXT("ENCRYPT")
 #define SERVICE_UNINSTALLED 0
@@ -149,7 +151,9 @@ NET_API_STATUS WINAPI NetServiceInstall(LPCWSTR,LPCWSTR,DWORD,LPCWSTR*,PBYTE*);
 #define SERVICE_UIC_CODE(c,m) ((long)(((long)c<<16)|(long)(USHORT)m))
 #define SERVICE_NT_CCP_CODE(t,n) (((long)SERVICE_CCP_QUERY_HINT)|((long)(n))|(((t)&LOWER_HINT_MASK)<<SERVICE_IP_WAITTIME_SHIFT)|(((t)&UPPER_HINT_MASK)<<SERVICE_NTIP_WAITTIME_SHIFT))
 #define SERVICE_NT_WAIT_GET(c) ((((c)&UPPER_GET_HINT_MASK)>>SERVICE_NTIP_WAITTIME_SHIFT)|(((c)&LOWER_GET_HINT_MASK)>>SERVICE_IP_WAITTIME_SHIFT))
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

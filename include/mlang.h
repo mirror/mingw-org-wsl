@@ -24,12 +24,14 @@
 #ifndef _MLANG_H
 #define _MLANG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #pragma pack(push,1)
 
 #define MAX_MIMECP_NAME   64
@@ -362,9 +364,10 @@ DECLARE_INTERFACE_(IMultiLanguage2,IUnknown)
 };
 #undef INTERFACE
 
-  
 #pragma pack(pop)
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

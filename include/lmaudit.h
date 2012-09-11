@@ -24,10 +24,12 @@
 #ifndef _LMAUDIT_H
 #define _LMAUDIT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define REVISED_AUDIT_ENTRY_STRUCT
 #define LOGFLAGS_FORWARD 0
 #define LOGFLAGS_BACKWARD 1
@@ -265,7 +267,9 @@ NET_API_STATUS WINAPI NetAuditWrite(DWORD,PBYTE,DWORD,LPTSTR,PBYTE);
 #define AE_SRVPAUSED 1
 #define AE_SRVCONT 2
 #define AE_SRVSTOP 3
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,6 +24,7 @@
 #ifndef _LMSNAME_H
 #define _LMSNAME_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define SERVICE_WORKSTATION TEXT("LanmanWorkstation")
 #define SERVICE_LM20_WORKSTATION TEXT("WORKSTATION")
@@ -76,4 +77,5 @@
 #define SERVICE_LM20_NWSAP SERVICE_NWSAP
 #define NWSAP_DISPLAY_NAME TEXT("NW Sap Agent")
 #define SERVICE_NWCS TEXT("NWCWorkstation")
+
 #endif

@@ -24,8 +24,6 @@
 #ifndef _MATH_H_
 #define _MATH_H_
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 /*
@@ -263,9 +261,7 @@ _CRTIMP int __cdecl fpclass (double);
 #endif /* Not _NO_OLDNAMES */
 
 /* This require msvcr70.dll or higher. */ 
-#if __MSVCRT_VERSION__ >= 0x0700
 _CRTIMP int __cdecl _set_SSE2_enable (int);
-#endif /* __MSVCRT_VERSION__ >= 0x0700 */
 
 
 #endif /* __STRICT_ANSI__ */
@@ -275,20 +271,10 @@ _CRTIMP int __cdecl _set_SSE2_enable (int);
 #if (defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) \
 	|| !defined __STRICT_ANSI__ || defined __cplusplus
 
-#if __MINGW_GNUC_PREREQ(3, 3)
 #define HUGE_VALF	__builtin_huge_valf()
 #define HUGE_VALL	__builtin_huge_vall()
 #define INFINITY	__builtin_inf()
 #define NAN		__builtin_nan("")
-#else
-extern const float __INFF;
-#define HUGE_VALF __INFF
-extern const long double  __INFL;
-#define HUGE_VALL __INFL
-#define INFINITY HUGE_VALF
-extern const double __QNAN;
-#define NAN __QNAN
-#endif /* __MINGW_GNUC_PREREQ(3, 3) */
 
 /* Use the compiler's builtin define for FLT_EVAL_METHOD to
    set float_t and double_t.  */

@@ -24,6 +24,7 @@
 #ifndef _MEM_H
 #define _MEM_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * mem.h maps to string.h

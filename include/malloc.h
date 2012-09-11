@@ -24,6 +24,7 @@
 #ifndef _MALLOC_H
 #define _MALLOC_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Support for programs which want to use malloc.h to get memory management
@@ -31,9 +32,6 @@
  * not in the ANSI headers you should use the ANSI standard header files
  * instead.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #include <stdlib.h>
 
@@ -72,15 +70,11 @@ extern "C" {
    but not W9x. On latter, they always set errno to ENOSYS.
 */
 _CRTIMP int __cdecl __MINGW_NOTHROW _heapwalk (_HEAPINFO*);
-#ifdef __GNUC__
 #define _alloca(x) __builtin_alloca((x))
-#endif
 
 #ifndef	_NO_OLDNAMES
 _CRTIMP int __cdecl __MINGW_NOTHROW heapwalk (_HEAPINFO*);
-#ifdef __GNUC__
 #define alloca(x) __builtin_alloca((x))
-#endif
 #endif	/* Not _NO_OLDNAMES */
 
 _CRTIMP int __cdecl __MINGW_NOTHROW _heapchk (void);	/* Verify heap integrety. */
@@ -92,8 +86,6 @@ _CRTIMP size_t __cdecl __MINGW_NOTHROW _get_sbh_threshold (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW _set_sbh_threshold (size_t);
 _CRTIMP void* __cdecl __MINGW_NOTHROW _expand (void*, size_t); 
 
-/* These require msvcr70.dll or higher. */ 
-#if __MSVCRT_VERSION__ >= 0x0700
 _CRTIMP void * __cdecl __MINGW_NOTHROW _aligned_offset_malloc(size_t, size_t, size_t);
 _CRTIMP void * __cdecl __MINGW_NOTHROW _aligned_offset_realloc(void*, size_t, size_t, size_t);
 _CRTIMP void * __cdecl __MINGW_NOTHROW _aligned_offset_recalloc(void*, size_t, size_t, size_t, size_t);
@@ -102,7 +94,6 @@ _CRTIMP void * __cdecl __MINGW_NOTHROW _aligned_malloc (size_t, size_t);
 _CRTIMP void * __cdecl __MINGW_NOTHROW _aligned_realloc (void*, size_t, size_t);
 _CRTIMP void* __cdecl __MINGW_NOTHROW _aligned_recalloc(void*, size_t, size_t, size_t);
 _CRTIMP void __cdecl __MINGW_NOTHROW _aligned_free (void*);
-#endif /* __MSVCRT_VERSION__ >= 0x0700 */
 
 /* These require libmingwex.a. */ 
 void * __cdecl __MINGW_NOTHROW __mingw_aligned_offset_malloc (size_t, size_t, size_t);

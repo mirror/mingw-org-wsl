@@ -24,6 +24,7 @@
 #ifndef _MCIAVI_H
 #define _MCIAVI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define MCI_MCIAVI_PLAY_WINDOW 0x1000000
 #define	MCI_MCIAVI_PLAY_FULLSCREEN 0x2000000

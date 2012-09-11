@@ -21,18 +21,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _MGMTAPI_H
+#define _MGMTAPI_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * SNMP Management API
  */
-
-#ifndef _MGMTAPI_H
-#define _MGMTAPI_H
-#pragma GCC system_header
-
-#ifndef _SNMP_H
 #include <snmp.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -68,4 +65,5 @@ BOOL WINSNMPAPI SnmpMgrTrapListen(HANDLE*);
 #ifdef __cplusplus
 }
 #endif
+
 #endif

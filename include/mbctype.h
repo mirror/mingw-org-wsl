@@ -24,13 +24,11 @@
 #ifndef _MBCTYPE_H
 #define _MBCTYPE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Functions for testing multibyte character types and converting characters.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 /* return values for _mbsbtype  and  _mbbtype in mbstring.h */
 #define _MBC_SINGLE 0 

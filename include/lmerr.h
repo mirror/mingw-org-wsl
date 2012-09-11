@@ -24,6 +24,7 @@
 #ifndef _LMERR_H
 #define _LMERR_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <winerror.h>
 #define NERR_Success 0 

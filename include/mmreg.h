@@ -24,10 +24,9 @@
 #ifndef _MMREG_H
 #define _MMREG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
-#ifndef _MMSYSTEM_H
 #include <mmsystem.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -244,4 +243,5 @@ typedef struct mpeglayer3waveformat_tag {
 #ifdef __cplusplus
 }
 #endif
+
 #endif

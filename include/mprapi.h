@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _MPRAPI_H
+#define _MPRAPI_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Routing and Remote Access Services
  */
-#ifndef _MPRAPI_H
-#define _MPRAPI_H
-#pragma GCC system_header
-
 #include <ras.h>
 #include <lmcons.h>
 
@@ -36,7 +36,7 @@
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 /*--- Router Management Reference - Router Management Enumerated Types */
 typedef enum _ROUTER_CONNECTION_STATE {
 	ROUTER_IF_STATE_UNREACHABLE,
@@ -252,12 +252,6 @@ typedef struct _MPR_CREDENTIALSEX_0 {
 	DWORD  dwSize;
 	LPBYTE lpbCredentialsInfo;
 } MPR_CREDENTIALSEX_0,*PMPR_CREDENTIALSEX_0;
-#if (_WIN32_WINNT >= 0x0502)
-typedef struct _MPR_CREDENTIALSEX_1 {
-	DWORD  dwSize;
-	LPBYTE lpbCredentialsInfo;
-} MPR_CREDENTIALSEX_1,*PMPR_CREDENTIALSEX_1;
-#endif
 #define MPR_MaxDeviceType RAS_MaxDeviceType
 #define MPR_MaxDeviceName RAS_MaxDeviceName
 #define MPR_MaxPadType RAS_MaxPadType
@@ -390,67 +384,12 @@ typedef struct _MPR_INTERFACE_2 {
 #define MPR_VS_PptpFirst VS_PptpFirst
 #define MPR_VS_L2tpOnly VS_L2tpOnly
 #define MPR_VS_L2tpFirst VS_L2tpFirst
-#if (_WIN32_WINNT>=0x0600)
-typedef struct _MPR_INTERFACE_3 {
-	WCHAR wszInterfaceName[MAX_INTERFACE_NAME_LEN+1];
-	HANDLE hInterface;
-	BOOL fEnabled;
-	ROUTER_INTERFACE_TYPE dwIfType;
-	ROUTER_CONNECTION_STATE dwConnectionState;
-	DWORD fUnReachabilityReasons;
-	DWORD dwLastError;
-	DWORD dwfOptions;
-	WCHAR szLocalPhoneNumber[RAS_MaxPhoneNumber+1];
-	PWCHAR szAlternates;
-	DWORD ipaddr;
-	DWORD ipaddrDns;
-	DWORD ipaddrDnsAlt;
-	DWORD ipaddrWins;
-	DWORD ipaddrWinsAlt;
-	DWORD dwfNetProtocols;
-	WCHAR szDeviceType[MPR_MaxDeviceType+1];
-	WCHAR szDeviceName[MPR_MaxDeviceName+1];
-	WCHAR szX25PadType[MPR_MaxPadType+1];
-	WCHAR szX25Address[MPR_MaxX25Address+1];
-	WCHAR szX25Facilities[MPR_MaxFacilities+1];
-	WCHAR szX25UserData[MPR_MaxUserData+1];
-	DWORD dwChannels;
-	DWORD dwSubEntries;
-	DWORD dwDialMode;
-	DWORD dwDialExtraPercent;
-	DWORD dwDialExtraSampleSeconds;
-	DWORD dwHangUpExtraPercent;
-	DWORD dwHangUpExtraSampleSeconds;
-	DWORD dwIdleDisconnectSeconds;
-	DWORD dwType;
-	DWORD dwEncryptionType;
-	DWORD dwCustomAuthKey;
-	DWORD dwCustomAuthDataSize;
-	LPBYTE lpbCustomAuthData;
-	GUID guidId;
-	DWORD dwVpnStrategy;
-	ULONG AddressCount;
-	IN6_ADDR ipv6addrDns;
-	IN6_ADDR ipv6addrDnsAlt;
-	IN6_ADDR* ipv6addr;
-} MPR_INTERFACE_3,*PMPR_INTERFACE_3;
-#endif
 typedef struct _MPR_SERVER_0 {
 	BOOL fLanOnlyMode;
 	DWORD dwUpTime;
 	DWORD dwTotalPorts;
 	DWORD dwPortsInUse;
 } MPR_SERVER_0,*PMPR_SERVER_0;
-#if (_WIN32_WINNT >= 0x0502)
-typedef struct _MPR_SERVER_1 {
-	DWORD dwNumPptpPorts;
-	DWORD dwPptpPortFlags;
-	DWORD dwNumL2tpPorts;
-	DWORD dwL2tpPortFlags;
-} MPR_SERVER_1,*PMPR_SERVER_1;
-#define MPR_ENABLE_RAS_ON_DEVICE 0x00000001
-#define MPR_ENABLE_ROUTING_ON_DEVICE 0x00000002
-#endif
 typedef struct _MPR_TRANSPORT_0 {
 	DWORD dwTransportId;
 	HANDLE hTransport;
@@ -472,16 +411,9 @@ DWORD WINAPI MprAdminPortReset(RAS_SERVER_HANDLE,HANDLE);
 BOOL WINAPI MprAdminAcceptNewConnection(RAS_CONNECTION_0*,RAS_CONNECTION_1*);
 BOOL WINAPI MprAdminAcceptNewConnection2(RAS_CONNECTION_0*,RAS_CONNECTION_1*,RAS_CONNECTION_2*);
 BOOL WINAPI MprAdminAcceptNewLink(RAS_PORT_0*,RAS_PORT_1*);
-#if (_WIN32_WINNT >= 0x0600)
-BOOL WINAPI MprAdminAcceptReauthentication(RAS_CONNECTION_0*,RAS_CONNECTION_1*,RAS_CONNECTION_2*,RAS_CONNECTION_3*);
-#endif
 void WINAPI MprAdminConnectionHangupNotification(RAS_CONNECTION_0*,RAS_CONNECTION_1*);
 void WINAPI MprAdminConnectionHangupNotification2(RAS_CONNECTION_0*,RAS_CONNECTION_1*,RAS_CONNECTION_2*);
 DWORD WINAPI MprAdminGetIpAddressForUser(WCHAR*,WCHAR*,DWORD*,BOOL*);
-#if (_WIN32_WINNT >= 0x0502)
-DWORD WINAPI MprAdminInitializeDll(void);
-DWORD WINAPI MprAdminTerminateDll(void);
-#endif
 void WINAPI MprAdminLinkHangupNotification(RAS_PORT_0*,RAS_PORT_1*);
 void WINAPI MprAdminReleaseIpAddress(WCHAR*,WCHAR*,DWORD*);
 /*--- Remote Access Service Administration Reference - RAS Administration Functions - RAS User Administration Functions */
@@ -579,9 +511,74 @@ DWORD WINAPI MprAdminMIBGetTrapInfo(MIB_SERVER_HANDLE,DWORD,DWORD,LPVOID,DWORD,L
 DWORD WINAPI MprAdminMIBServerConnect(LPWSTR,MIB_SERVER_HANDLE*);
 void WINAPI MprAdminMIBServerDisconnect(MIB_SERVER_HANDLE);
 DWORD WINAPI MprAdminMIBSetTrapInfo(DWORD,DWORD,HANDLE,LPVOID,DWORD,LPVOID*,LPDWORD);
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WS03)
+typedef struct _MPR_CREDENTIALSEX_1 {
+	DWORD  dwSize;
+	LPBYTE lpbCredentialsInfo;
+} MPR_CREDENTIALSEX_1,*PMPR_CREDENTIALSEX_1;
+typedef struct _MPR_SERVER_1 {
+	DWORD dwNumPptpPorts;
+	DWORD dwPptpPortFlags;
+	DWORD dwNumL2tpPorts;
+	DWORD dwL2tpPortFlags;
+} MPR_SERVER_1,*PMPR_SERVER_1;
+#define MPR_ENABLE_RAS_ON_DEVICE 0x00000001
+#define MPR_ENABLE_ROUTING_ON_DEVICE 0x00000002
+DWORD WINAPI MprAdminInitializeDll(void);
+DWORD WINAPI MprAdminTerminateDll(void);
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WS03 */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+typedef struct _MPR_INTERFACE_3 {
+	WCHAR wszInterfaceName[MAX_INTERFACE_NAME_LEN+1];
+	HANDLE hInterface;
+	BOOL fEnabled;
+	ROUTER_INTERFACE_TYPE dwIfType;
+	ROUTER_CONNECTION_STATE dwConnectionState;
+	DWORD fUnReachabilityReasons;
+	DWORD dwLastError;
+	DWORD dwfOptions;
+	WCHAR szLocalPhoneNumber[RAS_MaxPhoneNumber+1];
+	PWCHAR szAlternates;
+	DWORD ipaddr;
+	DWORD ipaddrDns;
+	DWORD ipaddrDnsAlt;
+	DWORD ipaddrWins;
+	DWORD ipaddrWinsAlt;
+	DWORD dwfNetProtocols;
+	WCHAR szDeviceType[MPR_MaxDeviceType+1];
+	WCHAR szDeviceName[MPR_MaxDeviceName+1];
+	WCHAR szX25PadType[MPR_MaxPadType+1];
+	WCHAR szX25Address[MPR_MaxX25Address+1];
+	WCHAR szX25Facilities[MPR_MaxFacilities+1];
+	WCHAR szX25UserData[MPR_MaxUserData+1];
+	DWORD dwChannels;
+	DWORD dwSubEntries;
+	DWORD dwDialMode;
+	DWORD dwDialExtraPercent;
+	DWORD dwDialExtraSampleSeconds;
+	DWORD dwHangUpExtraPercent;
+	DWORD dwHangUpExtraSampleSeconds;
+	DWORD dwIdleDisconnectSeconds;
+	DWORD dwType;
+	DWORD dwEncryptionType;
+	DWORD dwCustomAuthKey;
+	DWORD dwCustomAuthDataSize;
+	LPBYTE lpbCustomAuthData;
+	GUID guidId;
+	DWORD dwVpnStrategy;
+	ULONG AddressCount;
+	IN6_ADDR ipv6addrDns;
+	IN6_ADDR ipv6addrDnsAlt;
+	IN6_ADDR* ipv6addr;
+} MPR_INTERFACE_3,*PMPR_INTERFACE_3;
+BOOL WINAPI MprAdminAcceptReauthentication(RAS_CONNECTION_0*,RAS_CONNECTION_1*,RAS_CONNECTION_2*,RAS_CONNECTION_3*);
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_VISTA */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

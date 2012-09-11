@@ -24,10 +24,12 @@
 #ifndef _LMREPL_H
 #define _LMREPL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define REPL_ROLE_EXPORT 1
 #define REPL_ROLE_IMPORT 2
 #define REPL_ROLE_BOTH 3
@@ -109,7 +111,9 @@ NET_API_STATUS WINAPI NetReplImportDirEnum(LPCWSTR,DWORD,PBYTE*,DWORD,PDWORD,PDW
 NET_API_STATUS WINAPI NetReplImportDirGetInfo(LPCWSTR,LPCWSTR,DWORD,PBYTE*);
 NET_API_STATUS WINAPI NetReplImportDirLock(LPCWSTR,LPCWSTR);
 NET_API_STATUS WINAPI NetReplImportDirUnlock(LPCWSTR,LPCWSTR,DWORD);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

@@ -24,10 +24,12 @@
 #ifndef _LMWKSTA_H
 #define _LMWKSTA_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <lmuseflg.h> 
 #define WKSTA_PLATFORM_ID_PARMNUM 100
 #define WKSTA_COMPUTERNAME_PARMNUM 1
@@ -251,4 +253,5 @@ NET_API_STATUS WINAPI NetWkstaTransportEnum(LPWSTR,DWORD,PBYTE*,DWORD,PDWORD,PDW
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

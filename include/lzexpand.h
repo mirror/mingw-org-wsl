@@ -24,10 +24,12 @@
 #ifndef _LZEXPAND_H
 #define _LZEXPAND_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define LZERROR_BADINHANDLE	(-1)
 #define LZERROR_BADOUTHANDLE	(-2)
 #define LZERROR_READ	(-3)
@@ -48,14 +50,11 @@ INT WINAPI LZOpenFileW(LPWSTR,LPOFSTRUCT,WORD);
 INT WINAPI LZRead(INT,LPSTR,INT);
 LONG WINAPI LZSeek(INT,LONG,INT);
 INT WINAPI LZStart(VOID);
-#ifdef UNICODE
-#define GetExpandedName GetExpandedNameW
-#define LZOpenFile  LZOpenFileW
-#else
-#define GetExpandedName GetExpandedNameA
-#define LZOpenFile  LZOpenFileA
-#endif
+#define GetExpandedName __AW(GetExpandedName)
+#define LZOpenFile  __AW(LZOpenFile)
+
 #ifdef __cplusplus
 }
+
 #endif
 #endif

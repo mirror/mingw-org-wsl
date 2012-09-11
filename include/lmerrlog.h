@@ -24,10 +24,12 @@
 #ifndef _LMERRLOG_H
 #define _LMERRLOG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define ERRLOG_BASE 3100
 #define ERRLOG2_BASE 5700 
 #define LOGFLAGS_FORWARD 0
@@ -226,7 +228,9 @@ typedef struct _ERROR_LOG {
 NET_API_STATUS WINAPI NetErrorLogClear(LPCWSTR,LPCWSTR,LPBYTE);
 NET_API_STATUS WINAPI NetErrorLogRead(LPCWSTR,LPWSTR,LPHLOG,DWORD,LPDWORD,DWORD,DWORD,LPBYTE*,DWORD,LPDWORD,LPDWORD);
 NET_API_STATUS WINAPI NetErrorLogWrite(LPBYTE,DWORD,LPCWSTR,LPBYTE,DWORD,LPBYTE,DWORD,LPBYTE);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

@@ -24,14 +24,12 @@
 #ifndef	_LOCALE_H
 #define	_LOCALE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Functions and types for localization (ie. changing the appearance of
  * output based on the standards of a certain country).
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 /*
  * NOTE: I have tried to test this, but I am limited by my knowledge of

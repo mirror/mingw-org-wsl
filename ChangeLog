@@ -2,6 +2,76 @@
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.
 
+	* include/lm.h (_mingw.h): Include.
+	* include/lmaccess.h: Ditto.
+	* include/lmalert.h: Ditto.
+	* include/lmapibuf.h: Ditto.
+	* include/lmat.h: Ditto.
+	* include/lmaudit.h: Ditto.
+	* include/lmbrowsr.h: Ditto.
+	* include/lmchdev.h: Ditto.
+	* include/lmconfig.h: Ditto.
+	* include/lmerr.h: Ditto.
+	* include/lmerrlog.h: Ditto.
+	* include/lmmsg.h: Ditto.
+	* include/lmremutl.h: Ditto.
+	* include/lmrepl.h: Ditto.
+	* include/lmserver.h: Ditto.
+	* include/lmshare.h: Ditto.
+	* include/lmsname.h: Ditto.
+	* include/lmstats.h: Ditto.
+	* include/lmsvc.h: Ditto.
+	* include/lmuse.h: Ditto.
+	* include/lmuseflg.h: Ditto.
+	* include/lmwksta.h: Ditto.
+	* include/mapi.h: Ditto.
+	* include/mbctype.h: Ditto.
+	* include/mbstring.h: Ditto.
+	* include/mciavi.h: Ditto.
+	* include/mcx.h: Ditto.
+	* include/mem.h: Ditto.
+	* include/memory.h: Ditto.
+	* include/mgmtapi.h: Ditto.
+	* include/mlang.h: Ditto.
+	* include/mmreg.h: Ditto.
+	* include/mpegtype.h: Ditto.
+
+	* include/mgm.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	* include/mprapi.h: Ditto.
+
+	* include/locale.h (_mingw.h): Remove comment and move to top of file.
+
+	* include/malloc.h (_mingw.h): Remove comment and move to top of file.
+	(__MSVCRT_VERSION__): Remove as unneeded.
+
+	* include/math.h (_mingw.h): Remove comment and move to top of file.
+	(__MSVCRT_VERSION__): Remove as unneeded.
+	(__GNUC__): Assume we are using a version >= 3.4.5
+
+	* include/lzexpand.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+
+	* include/lmcons.h (_mingw.h): Include.
+	(LMSTR): Correct filter for definition determination.
+	(LMCSTR): Ditto.
+
+	* include/mmsystem.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	(WINVER): Use _WIN32_WINNT instead.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+
+	* include/_mingw.h (FORCE_UNICODE): Another filter for determining
+	UNICODE for __AW and __STR.
+
+	* TODO: New file.
+
+2012-09-11  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
 	* include/icm.h (_mingw.h): Include.
 	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
 	and move filters to the end of the file.

@@ -24,13 +24,11 @@
 #ifndef _MBSTRING_H
 #define _MBSTRING_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Protototypes for string functions supporting multibyte characters. 
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #ifndef RC_INVOKED
 

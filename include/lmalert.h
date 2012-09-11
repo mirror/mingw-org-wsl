@@ -24,6 +24,7 @@
 #ifndef _LMALERT_H
 #define _LMALERT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define ALERTER_MAILSLOT TEXT("\\\\.\\MAILSLOT\\Alerter")
 #define ALERT_PRINT_EVENT TEXT("PRINTING")
@@ -47,9 +48,11 @@
 #define PRJOB_QS_PAUSED 1
 #define PRJOB_QS_SPOOLING 2
 #define PRJOB_QS_PRINTING 3
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 typedef struct _ADMIN_OTHER_INFO {
 	DWORD alrtad_errcode;
 	DWORD alrtad_numstrings;
@@ -75,7 +78,9 @@ typedef struct _USER_OTHER_INFO {
 }USER_OTHER_INFO,*PUSER_OTHER_INFO,*LPUSER_OTHER_INFO;
 NET_API_STATUS WINAPI NetAlertRaise(LPCWSTR,PVOID,DWORD);
 NET_API_STATUS WINAPI NetAlertRaiseEx(LPCWSTR,PVOID,DWORD,LPCWSTR);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,10 +24,12 @@
 #ifndef _LMSHARE_H
 #define _LMSHARE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <lmcons.h> 
 #define SHARE_NETNAME_PARMNUM 1
 #define SHARE_TYPE_PARMNUM 3
@@ -162,7 +164,9 @@ NET_API_STATUS WINAPI NetConnectionEnum(LPWSTR,LPWSTR,DWORD,PBYTE*,DWORD,PDWORD,
 NET_API_STATUS WINAPI NetFileClose(LPWSTR,DWORD);
 NET_API_STATUS WINAPI NetFileEnum(LPWSTR,LPWSTR,LPWSTR,DWORD,PBYTE*,DWORD,PDWORD,PDWORD,PDWORD);
 NET_API_STATUS WINAPI NetFileGetInfo(LPWSTR,DWORD,DWORD,PBYTE*);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

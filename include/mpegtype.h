@@ -24,6 +24,7 @@
 #ifndef _MPEGTYPE_H
 #define _MPEGTYPE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <strmif.h>
 
@@ -47,4 +48,5 @@ typedef struct tagAM_MPEGSYSTEMTYPE {
 #ifdef __cplusplus
 }
 #endif
+
 #endif

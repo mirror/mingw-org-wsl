@@ -24,10 +24,12 @@
 #ifndef _LMREMUTL_H
 #define _LMREMUTL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define SUPPORTS_REMOTE_ADMIN_PROTOCOL 2
 #define SUPPORTS_RPC 4
 #define SUPPORTS_SAM_PROTOCOL 8
@@ -60,7 +62,9 @@ typedef struct _TIME_OF_DAY_INFO {
 NET_API_STATUS WINAPI NetRemoteTOD(LPCWSTR,PBYTE*);
 NET_API_STATUS WINAPI NetRemoteComputerSupports(LPCWSTR,DWORD,PDWORD);
 NET_API_STATUS RxRemoteApi(DWORD,LPCWSTR,LPDESC,LPDESC,LPDESC,LPDESC,LPDESC,LPDESC,LPDESC,DWORD,... );
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

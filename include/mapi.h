@@ -24,6 +24,7 @@
 #ifndef _MAPI_H
 #define _MAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

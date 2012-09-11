@@ -24,10 +24,12 @@
 #ifndef _LMCHDEV_H
 #define _LMCHDEV_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define CHARDEVQ_NO_REQUESTS (-1)
 #define CHARDEV_CLOSE 0
 #define CHARDEVQ_MAX_PRIORITY 1
@@ -76,7 +78,9 @@ NET_API_STATUS WINAPI NetCharDevQPurge(LPCWSTR,LPCWSTR);
 NET_API_STATUS WINAPI NetCharDevQPurgeSelf(LPCWSTR,LPCWSTR,LPCWSTR);
 NET_API_STATUS WINAPI NetHandleGetInfo(HANDLE,DWORD,PBYTE*);
 NET_API_STATUS WINAPI NetHandleSetInfo(HANDLE,DWORD,PBYTE,DWORD,PDWORD);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

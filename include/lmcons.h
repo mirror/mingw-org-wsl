@@ -24,6 +24,7 @@
 #ifndef _LMCONS_H
 #define _LMCONS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define MESSAGE_FILENAME TEXT("NETMSG")
 #define OS2MSG_FILENAME TEXT("BASE")
@@ -85,7 +86,7 @@
 #define PLATFORM_ID_OSF 600
 #define PLATFORM_ID_VMS 700
 /* new typedef in W2K */
-#if defined( _WIN32_WINNT ) || defined( WINNT ) || defined( FORCE_UNICODE )
+#if defined(_WIN32_WINNT >= _WIN32_WINNT_WIN2K) || defined(FORCE_UNICODE)
 #define LMSTR   LPWSTR
 #define LMCSTR  LPCWSTR
 #else

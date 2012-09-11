@@ -24,10 +24,12 @@
 #ifndef _LMAT_H
 #define _LMAT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define JOB_RUN_PERIODICALLY	1
 #define JOB_EXEC_ERROR	2
 #define JOB_RUNS_TODAY	4
@@ -54,7 +56,9 @@ NET_API_STATUS WINAPI NetScheduleJobAdd(LPWSTR,PBYTE,LPDWORD);
 NET_API_STATUS WINAPI NetScheduleJobDel(LPWSTR,DWORD,DWORD);
 NET_API_STATUS WINAPI NetScheduleJobEnum(LPWSTR,PBYTE*,DWORD,PDWORD,PDWORD,PDWORD);
 NET_API_STATUS WINAPI NetScheduleJobGetInfo(LPWSTR,DWORD,PBYTE*);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

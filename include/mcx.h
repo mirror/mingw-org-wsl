@@ -24,10 +24,12 @@
 #ifndef _MCX_H
 #define _MCX_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define DIALOPTION_BILLING 64
 #define DIALOPTION_QUIET 128
 #define DIALOPTION_DIALTONE 256
@@ -92,7 +94,9 @@ typedef struct _MODEMSETTINGS {
 	DWORD dwNegotiatedDCERate;
 	BYTE abVariablePortion[1];
 } MODEMSETTINGS,*PMODEMSETTINGS,*LPMODEMSETTINGS;
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _MCX_H */

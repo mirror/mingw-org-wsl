@@ -24,10 +24,12 @@
 #ifndef _LMBROWSR_H
 #define _LMBROWSR_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define BROWSER_ROLE_PDC 1
 #define BROWSER_ROLE_BDC 2
 typedef struct _BROWSER_STATISTICS {
@@ -89,7 +91,9 @@ NET_API_STATUS I_BrowserQueryStatistics(LPCWSTR,LPBROWSER_STATISTICS*);
 NET_API_STATUS I_BrowserResetStatistics(LPCWSTR);
 WORD I_BrowserServerEnumForXactsrv(LPCWSTR,LPCWSTR,ULONG,USHORT,PVOID,WORD,DWORD,PDWORD,PDWORD,DWORD,LPCWSTR,LPCWSTR,PWORD);
 NET_API_STATUS I_BrowserDebugTrace(PWCHAR,PCHAR);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

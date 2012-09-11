@@ -24,10 +24,12 @@
 #ifndef _LMMSG_H
 #define _LMMSG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define MSGNAME_NOT_FORWARDED 0
 #define MSGNAME_FORWARDED_TO 4
 #define MSGNAME_FORWARDED_FROM 16
@@ -42,7 +44,9 @@ NET_API_STATUS WINAPI NetMessageNameAdd(LPCWSTR,LPCWSTR);
 NET_API_STATUS WINAPI NetMessageNameDel(LPCWSTR,LPCWSTR);
 NET_API_STATUS WINAPI NetMessageNameEnum(LPCWSTR,DWORD,PBYTE*,DWORD,PDWORD,PDWORD,PDWORD);
 NET_API_STATUS WINAPI NetMessageNameGetInfo(LPCWSTR,LPCWSTR,DWORD,PBYTE*);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

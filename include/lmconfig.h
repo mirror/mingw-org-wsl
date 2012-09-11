@@ -24,10 +24,12 @@
 #ifndef _LMCONFIG_H
 #define _LMCONFIG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define REVISED_CONFIG_APIS
 typedef struct _CONFIG_INFO_0 {
 	LPWSTR cfgi0_key;
@@ -36,7 +38,9 @@ typedef struct _CONFIG_INFO_0 {
 NET_API_STATUS WINAPI NetConfigGet(LPCWSTR,LPCWSTR,LPCWSTR,PBYTE*);
 NET_API_STATUS WINAPI NetConfigGetAll(LPCWSTR,LPCWSTR,PBYTE*);
 NET_API_STATUS WINAPI NetConfigSet(LPCWSTR,LPCWSTR,LPCWSTR,DWORD,DWORD,PBYTE,DWORD);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

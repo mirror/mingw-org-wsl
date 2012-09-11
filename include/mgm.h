@@ -24,12 +24,13 @@
 #ifndef _MGM_H
 #define _MGM_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 #define MGM_JOIN_STATE_FLAG 0x00000001
 #define MGM_FORWARD_STATE_FLAG 0x00000002
 #define MGM_MFE_STATS_0 0x00000001
@@ -88,9 +89,10 @@ DWORD WINAPI MgmRegisterMProtocol(PROUTING_PROTOCOL_CONFIG,DWORD,DWORD,HANDLE*);
 DWORD WINAPI MgmReleaseInterfaceOwnership(HANDLE,DWORD,DWORD);
 DWORD WINAPI MgmSetMfe(HANDLE,PMIB_IPMCAST_MFE);
 DWORD WINAPI MgmTakeInterfaceOwnership(HANDLE,DWORD,DWORD);
-#endif
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WIN2K */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

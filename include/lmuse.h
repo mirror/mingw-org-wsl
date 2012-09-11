@@ -24,10 +24,12 @@
 #ifndef _LMUSE_H
 #define _LMUSE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <lmuseflg.h>
 #define USE_LOCAL_PARMNUM 1
 #define USE_REMOTE_PARMNUM 2
@@ -75,7 +77,9 @@ NET_API_STATUS WINAPI NetUseAdd(LPWSTR,DWORD,PBYTE,PDWORD);
 NET_API_STATUS WINAPI NetUseDel(LPWSTR,LPWSTR,DWORD);
 NET_API_STATUS WINAPI NetUseEnum(LPWSTR,DWORD,PBYTE*,DWORD,PDWORD,PDWORD,PDWORD);
 NET_API_STATUS WINAPI NetUseGetInfo(LPWSTR,LPWSTR,DWORD,PBYTE*);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

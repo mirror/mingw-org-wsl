@@ -24,10 +24,12 @@
 #ifndef _LMSTATS_H
 #define _LMSTATS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define STATSOPT_CLR 1
 #define STATS_NO_VALUE ((ULONG)-1)
 #define STATS_OVERFLOW ((ULONG)-2)
@@ -129,7 +131,9 @@ typedef struct _STAT_WORKSTATION_0 {
 #endif
 
 NET_API_STATUS WINAPI NetStatisticsGet(LPWSTR,LPWSTR,DWORD,DWORD,PBYTE*);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

@@ -24,6 +24,7 @@
 #ifndef _LM_H
 #define _LM_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <lmcons.h>
 #include <lmaccess.h>

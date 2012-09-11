@@ -24,6 +24,7 @@
 #ifndef _MEMORY_H
 #define _MEMORY_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * memory.h maps to the standard string.h header.
