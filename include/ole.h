@@ -24,10 +24,12 @@
 #ifndef _OLE_H
 #define _OLE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #ifdef STRICT
 #define OLE_LPCSTR LPCSTR
 #define OLE_CONST const
@@ -35,6 +37,7 @@ extern "C" {
 #define OLE_LPCSTR LPSTR
 #define OLE_CONST
 #endif
+
 #define LRESULT LONG
 #define HGLOBAL HANDLE
 #define OT_LINK 1L
@@ -216,9 +219,11 @@ typedef struct _OLEOBJECTVTBL {
 #endif
 } OLEOBJECTVTBL;
 typedef OLEOBJECTVTBL*LPOLEOBJECTVTBL;
+
 #ifndef OLE_INTERNAL
 typedef struct _OLEOBJECT { LPOLEOBJECTVTBL lpvtbl; } OLEOBJECT;
 #endif
+
 typedef struct _OLECLIENTVTBL { int (CALLBACK* CallBack)(LPOLECLIENT,OLE_NOTIFICATION,LPOLEOBJECT); } OLECLIENTVTBL;
 typedef OLECLIENTVTBL *LPOLECLIENTVTBL;
 typedef struct _OLECLIENT { LPOLECLIENTVTBL lpvtbl; } OLECLIENT;
@@ -323,7 +328,9 @@ OLESTATUS WINAPI OleRevokeServerDoc(LHSERVERDOC);
 OLESTATUS WINAPI OleRenameServerDoc(LHSERVERDOC,LPCSTR);
 OLESTATUS WINAPI OleRevertServerDoc(LHSERVERDOC);
 OLESTATUS WINAPI OleSavedServerDoc(LHSERVERDOC);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

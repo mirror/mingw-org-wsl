@@ -24,10 +24,12 @@
 #ifndef _NTSECAPI_H
 #define _NTSECAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define KERB_WRAP_NO_ENCRYPT 0x80000001
 #define LOGON_GUEST 1
 #define LOGON_NOENCRYPTION 2
@@ -143,6 +145,7 @@ extern "C" {
 #define TRUST_TYPE_UPLEVEL 2
 #define TRUST_TYPE_MIT 3
 #define TRUST_TYPE_DCE 4
+
 #if !defined(_NTDEF_H) && !defined(_SUBAUTH_H)
 typedef LONG NTSTATUS, *PNTSTATUS;
 typedef struct _UNICODE_STRING {
@@ -157,6 +160,7 @@ typedef struct _STRING {
   PCHAR Buffer;
 } STRING, *PSTRING;
 #endif
+
 typedef UNICODE_STRING LSA_UNICODE_STRING, *PLSA_UNICODE_STRING;
 typedef STRING LSA_STRING, *PLSA_STRING;
 typedef enum _MSV1_0_LOGON_SUBMIT_TYPE {
@@ -280,6 +284,7 @@ typedef struct _LSA_ENUMERATION_INFORMATION {
   PSID Sid;
 } LSA_ENUMERATION_INFORMATION, *PLSA_ENUMERATION_INFORMATION;
 typedef ULONG LSA_OPERATIONAL_MODE, *PLSA_OPERATIONAL_MODE;
+
 #if !defined(_NTDEF_H)
 typedef struct _LSA_OBJECT_ATTRIBUTES {
   ULONG Length;
@@ -290,6 +295,7 @@ typedef struct _LSA_OBJECT_ATTRIBUTES {
   PVOID SecurityQualityOfService;
 } OBJECT_ATTRIBUTES, *POBJECT_ATTRIBUTES;
 #endif
+
 typedef OBJECT_ATTRIBUTES LSA_OBJECT_ATTRIBUTES, *PLSA_OBJECT_ATTRIBUTES;
 typedef struct _LSA_TRUST_INFORMATION {
   LSA_UNICODE_STRING Name;
@@ -630,4 +636,5 @@ typedef BOOLEAN (*PSAM_PASSWORD_FILTER_ROUTINE)(PUNICODE_STRING,PUNICODE_STRING,
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _NTSECAPI_H */

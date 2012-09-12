@@ -24,6 +24,7 @@
 #ifndef _OLEAUTO_H
 #define _OLEAUTO_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #pragma pack(push,8)
 #define WINOLEAUTAPI STDAPI
@@ -58,6 +59,7 @@
 #define IsHashValCompatible(h1,h2) ((BOOL)((0x00ff0000&(h1))==(0x00ff0000&(h2))))
 #define ACTIVEOBJECT_STRONG 0
 #define ACTIVEOBJECT_WEAK 1
+
 #ifdef NONAMELESSUNION
 #define V_UNION(X,Y) ((X)->__VARIANT_NAME_1.__VARIANT_NAME_2.__VARIANT_NAME_3.Y)
 #define V_VT(X) ((X)->__VARIANT_NAME_1.__VARIANT_NAME_2.vt)
@@ -65,6 +67,7 @@
 #define V_UNION(X,Y) ((X)->Y)
 #define V_VT(X) ((X)->vt)
 #endif
+
 #define V_BOOL(X) V_UNION(X,boolVal)
 #define V_ISBYREF(X) (V_VT(X)&VT_BYREF)
 #define V_ISARRAY(X) (V_VT(X)&VT_ARRAY)
@@ -113,11 +116,13 @@
 #define V_ARRAY(X) V_UNION(X,parray)
 #define V_ARRAYREF(X) V_UNION(X,pparray)
 #define V_BYREF(X) V_UNION(X,byref)
+
 #if defined(NONAMELESSUNION)
 #define V_DECIMAL(X) ((X)->__VARIANT_NAME_1.decVal)
 #else
 #define V_DECIMAL(X) ((X)->decVal)
 #endif
+
 #define V_DECIMALREF(X) V_UNION(X,pdecVal)
 #define V_I1(X) V_UNION(X,cVal)
 

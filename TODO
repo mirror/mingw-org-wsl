@@ -6,3 +6,6 @@
 ** lmstats.h - What is LM20_WORKSTATION_STATISTICS?
 ** malloc.h - What about calloc, free, malloc, realloc and _recalloc?
 ** math.h - Commented out code.
+** objbase.h - DBG, how does MS set this macro?
+** objidl.h - Commented out code in PROVARIANT struct.
+** odbcinst.h - UNICODE??

@@ -199,7 +199,12 @@ typedef struct localeinfo_struct {
  * the symbol passed and concantenating either A or W to the symbol.
  */
 #define __AW__(AW, AW_) AW ## AW_
-#if (defined(UNICODE) || defined(_UNICODE) || defined(FORCE_UNICODE))
+#if ( \
+ (!defined(_ODBCINST_H) && defined(UNICODE)) || \
+ (!defined(_ODBCINST_H) && defined(_UNICODE)) || \
+ defined(FORCE_UNICODE) \
+ (defined _ODBCINST_H && !defined(SQL_NOUNICODEMAP) && defined(UNICODE)) \
+)
 #define __AW(AW) __AW__(AW, W)
 #define __STR(AW) __AW__(L, AW)
 #else

@@ -24,6 +24,7 @@
 #ifndef _OBJIDL_H
 #define _OBJIDL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <objfwd.h>
 

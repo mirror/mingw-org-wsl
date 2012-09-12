@@ -24,20 +24,14 @@
 #ifndef _NTDSAPI_H
 #define _NTDSAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*--- Active Directory Reference - Active Directory Enumerations */
-#if (_WIN32_WINNT >= 0x0501)
-typedef enum _DS_MANGLE_FOR {
-	DS_MANGLE_UNKNOWN = 0,
-	DS_MANGLE_OBJECT_RDN_FOR_DELETION = 1,
-	DS_MANGLE_OBJECT_RDN_FOR_NAME_CONFLICT = 2
-} DS_MANGLE_FOR;
-#endif /* (_WIN32_WINNT >= 0x0501) */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef enum {
 	DS_NAME_NO_ERROR = 0,
 	DS_NAME_ERROR_RESOLVING = 1,
@@ -112,9 +106,15 @@ typedef enum {
 	DS_SPN_REPLACE_SPN_OP = 1,
 	DS_SPN_DELETE_SPN_OP = 2
 } DS_SPN_WRITE_OP;
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
-
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+typedef enum _DS_MANGLE_FOR {
+	DS_MANGLE_UNKNOWN = 0,
+	DS_MANGLE_OBJECT_RDN_FOR_DELETION = 1,
+	DS_MANGLE_OBJECT_RDN_FOR_NAME_CONFLICT = 2
+} DS_MANGLE_FOR;
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
 
 #ifdef __cplusplus
 }

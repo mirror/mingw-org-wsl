@@ -24,6 +24,7 @@
 #ifndef _PBT_H
 #define _PBT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* Also in winuser.h  */
 #define PBT_APMQUERYSUSPEND 0

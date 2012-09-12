@@ -24,6 +24,7 @@
 #ifndef _NTLDAP_H
 #define _NTLDAP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * LDAP API Extensions

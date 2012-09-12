@@ -24,6 +24,7 @@
 #ifndef _MSWSOCK_H
 #define _MSWSOCK_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * MS-specific extensions to Windows Sockets, exported from mswsock.dll.

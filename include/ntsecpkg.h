@@ -24,6 +24,7 @@
 #ifndef _NTSECPKG_H
 #define _NTSECPKG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include "windef.h"
 #include "ntsecapi.h"
@@ -449,4 +450,5 @@ typedef NTSTATUS (WINAPI *SpUserModeInitializeFn)(ULONG, PULONG,
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _NTSECPKG_H */

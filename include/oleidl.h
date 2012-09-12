@@ -24,6 +24,7 @@
 #ifndef _OLEIDL_H
 #define _OLEIDL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -590,5 +591,6 @@ DECLARE_INTERFACE_(IOleCacheControl,IUnknown)
 #ifdef __cplusplus
 }
 #endif
+
 #endif
 

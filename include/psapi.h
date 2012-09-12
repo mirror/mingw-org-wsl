@@ -24,6 +24,7 @@
 #ifndef _PSAPI_H
 #define _PSAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -123,32 +124,20 @@ DWORD WINAPI GetDeviceDriverFileNameA(LPVOID,LPSTR,DWORD);
 DWORD WINAPI GetDeviceDriverFileNameW(LPVOID,LPWSTR,DWORD);
 BOOL WINAPI GetProcessMemoryInfo(HANDLE,PPROCESS_MEMORY_COUNTERS,DWORD);
 BOOL WINAPI GetPerformanceInfo(PPERFORMANCE_INFORMATION,DWORD);
-#if (_WIN32_WINNT >= 0x0501)
+
+#define GetModuleBaseName __AW(GetModuleBaseName)
+#define GetModuleFileNameEx __AW(GetModuleFileNameEx)
+#define GetMappedFileName __AW(GetMappedFileName)
+#define GetDeviceDriverBaseName __AW(GetDeviceDriverBaseName)
+#define GetDeviceDriverFileName __AW(GetDeviceDriverFileName)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 DWORD WINAPI GetProcessImageFileNameA(HANDLE,LPSTR,DWORD);
 DWORD WINAPI GetProcessImageFileNameW(HANDLE,LPWSTR,DWORD);
-#endif
+#define GetProcessImageFileName __AW(GetProcessImageFileName)
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WINXP */
 
 #endif /* not RC_INVOKED */
-
-#ifdef UNICODE
-#define GetModuleBaseName GetModuleBaseNameW
-#define GetModuleFileNameEx GetModuleFileNameExW
-#define GetMappedFileName GetMappedFileNameW
-#define GetDeviceDriverBaseName GetDeviceDriverBaseNameW
-#define GetDeviceDriverFileName GetDeviceDriverFileNameW
-#if (_WIN32_WINNT >= 0x0501)
-#define GetProcessImageFileName GetProcessImageFileNameW
-#endif
-#else
-#define GetModuleBaseName GetModuleBaseNameA
-#define GetModuleFileNameEx GetModuleFileNameExA
-#define GetMappedFileName GetMappedFileNameA
-#define GetDeviceDriverBaseName GetDeviceDriverBaseNameA
-#define GetDeviceDriverFileName GetDeviceDriverFileNameA
-#if (_WIN32_WINNT >= 0x0501)
-#define GetProcessImageFileName GetProcessImageFileNameA
-#endif
-#endif
 
 #ifdef __cplusplus
 }

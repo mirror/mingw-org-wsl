@@ -24,13 +24,14 @@
 #ifndef _NTDSBCLI_H
 #define _NTDSBCLI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*--- Active Directory Reference - Active Directory Structures - Directory Backup Structures */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef struct {
 	LPSTR szDatabaseName;
 	LPSTR szNewDatabaseName;
@@ -39,12 +40,8 @@ typedef struct {
 	LPWSTR szDatabaseName;
 	LPWSTR szNewDatabaseName;
 } EDB_RSTMAPW,*PEDB_RSTMAPW;
-#ifdef UNICODE
-typedef EDB_RSTMAPW EDB_RSTMAP,*PEDB_RSTMAP;
-#else
-typedef EDB_RSTMAPA EDB_RSTMAP,*PEDB_RSTMAP;
-#endif
-#endif /* (_WIN32_WINNT >= 0x0500) */
+typedef __AW(EDB_RSTMAP) EDB_RSTMAP,*PEDB_RSTMAP;
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

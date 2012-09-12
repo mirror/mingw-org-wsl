@@ -24,6 +24,7 @@
 #ifndef _OAIDL_H
 #define _OAIDL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>
@@ -33,6 +34,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #ifdef NONAMELESSUNION
 #define __VARIANT_NAME_1 n1
 #define __VARIANT_NAME_2 n2
@@ -45,6 +47,7 @@ extern "C" {
 #define __VARIANT_NAME_3
 #define __VARIANT_NAME_4
 #endif
+
 #define DISPID_UNKNOWN (-1)
 #define DISPID_VALUE (0)
 #define DISPID_PROPERTYPUT (-3)
@@ -211,9 +214,11 @@ typedef struct tagSAFEARRAY {
 	PVOID pvData;
 	SAFEARRAYBOUND rgsabound[1];
 }SAFEARRAY,*LPSAFEARRAY;
+
 #if !defined (NONAMELESSUNION)
 __extension__   /* no named members  */
 #endif
+
 typedef struct tagVARIANT {
   _ANONYMOUS_UNION union {
 	struct __tagVARIANT {
@@ -796,4 +801,5 @@ DECLARE_INTERFACE_(ITypeMarshal, IUnknown)
 #ifdef __cplusplus
 }
 #endif
+
 #endif

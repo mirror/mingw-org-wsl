@@ -24,13 +24,14 @@
 #ifndef _OBJSEL_H
 #define _OBJSEL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*--- Active Directory Reference - Active Directory Structures - Object Picker Dialog Box Structures */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef struct _DS_SELECTION {
 	PWSTR pwzName;
 	PWSTR pwzADsPath;
@@ -117,9 +118,10 @@ typedef struct _DSOP_INIT_INFO {
 } DSOP_INIT_INFO,*PDSOP_INIT_INFO;
 #define DSOP_FLAG_MULTISELECT 0x00000001
 #define DSOP_FLAG_SKIP_TARGET_COMPUTER_DC_CHECK 0x00000002
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

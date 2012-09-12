@@ -24,12 +24,14 @@
 #ifndef _OBJFWD_H
 #define _OBJFWD_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <basetyps.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 typedef _COM_interface IMoniker *LPMONIKER;
 typedef _COM_interface IStream *LPSTREAM;
 typedef _COM_interface IMarshal *LPMARSHAL;
@@ -72,7 +74,9 @@ typedef _COM_interface IClassActivator *LPCLASSACTIVATOR;
 typedef _COM_interface IFillLockBytes *LPFILLLOCKBYTES;
 typedef _COM_interface IProgressNotify *LPPROGRESSNOTIFY;
 typedef _COM_interface ILayoutStorage *LPLAYOUTSTORAGE;
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

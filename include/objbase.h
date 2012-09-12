@@ -24,6 +24,7 @@
 #ifndef _OBJBASE_H
 #define _OBJBASE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* Include here to prevent circular dependencies if windows.h
    not already included */
@@ -103,6 +104,7 @@ inline BOOL operator!=(const GUID& g1, const GUID& g2)
 #else
 #define IsEqualGUID(rguid1, rguid2) (!memcmp(rguid1, rguid2, sizeof(GUID)))
 #endif
+
 #define IsEqualIID(id1,id2) IsEqualGUID(id1,id2)
 #define IsEqualCLSID(id1,id2) IsEqualGUID(id1,id2)
 #include <cguid.h>
@@ -127,10 +129,12 @@ WINOLEAPI_(DWORD) CoGetCurrentProcess(void);
 WINOLEAPI CoRegisterMallocSpy(LPMALLOCSPY);
 WINOLEAPI CoRevokeMallocSpy(void);
 WINOLEAPI CoCreateStandardMalloc(DWORD,IMalloc**);
+
 #ifdef DBG
 WINOLEAPI_(ULONG) DebugCoGetRpcFault(void);
 WINOLEAPI_(void) DebugCoSetRpcFault(ULONG);
 #endif
+
 WINOLEAPI CoGetClassObject(REFCLSID,DWORD,COSERVERINFO*,REFIID,PVOID*);
 WINOLEAPI CoRegisterClassObject(REFCLSID,LPUNKNOWN,DWORD,DWORD,PDWORD);
 WINOLEAPI CoRevokeClassObject(DWORD);
@@ -221,4 +225,5 @@ WINOLEAPI CoGetPSClsid(REFIID,CLSID*);
 WINOLEAPI CoRegisterPSClsid(REFIID,REFCLSID);
 
 #pragma pack(pop)
+
 #endif

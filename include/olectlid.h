@@ -24,6 +24,7 @@
 #ifndef _OLECTLID_H
 #define _OLECTLID_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -132,4 +133,5 @@ extern const GUID CLSID_Picture_Dib;
 #ifdef __cplusplus
 }
 #endif
+
 #endif

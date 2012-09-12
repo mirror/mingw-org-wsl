@@ -24,6 +24,7 @@
 #ifndef _OLE2_H
 #define _OLE2_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #pragma pack(push,8)
 #include <winerror.h>
@@ -34,6 +35,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define E_DRAW VIEW_E_DRAW
 #define DATA_E_FORMATETC DV_E_FORMATETC
 #define OLEIVERB_PRIMARY (0L)
@@ -124,8 +126,11 @@ WINOLEAPI GetConvertStg(LPSTORAGE);
 WINOLEAPI SetConvertStg(LPSTORAGE,BOOL);
 WINOLEAPI OleConvertIStorageToOLESTREAMEx(LPSTORAGE,CLIPFORMAT,LONG,LONG,DWORD,LPSTGMEDIUM,LPOLESTREAM);
 WINOLEAPI OleConvertOLESTREAMToIStorageEx(LPOLESTREAM,LPSTORAGE,CLIPFORMAT*,LONG*,LONG*,DWORD*,LPSTGMEDIUM);
+
 #ifdef __cplusplus
 }
 #endif
+
 #pragma pack(pop)
+
 #endif

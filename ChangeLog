@@ -1,3 +1,54 @@
+2012-09-12  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/mshtml.h (_mingw.h): Include.
+	* include/mswsock.h: Ditto.
+	* include/mb30.h: Ditto.
+	* include/ntdef.h: Ditto.
+	* include/ntdll.h: Ditto.
+	* include/ntldap.h: Ditto.
+	* include/ntsecapi.h: Ditto.
+	* include/ntsecpkg.h: Ditto.
+	* include/oaidl.h: Ditto.
+	* include/objbase.h: Ditto.
+	* include/objfwd.h: Ditto.
+	* include/objidl.h: Ditto.
+	* include/objsafe.h: Ditto.
+	* include/ocidlh.: Ditto.
+	* include/odbcinst.h: Ditto.
+	* include/ole.h: Ditto.
+	* include/ole2.h: Ditto.
+	* include/ole2ver.h: Ditto.
+	* include/oleauto.h: Ditto.
+	* include/olectl.h: Ditto.
+	* include/olectlid.h: Ditto.
+	* include/oleidl.h: Ditto.
+	* include/pbt.h: Ditto.
+	* include/powrprof.h: Ditto.
+	* include/qedit.h: Ditto.
+
+	* include/process.h (_mingw.h): Remove comment and move to top of file.
+
+	* include/mq.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	* include/ntdsapi.h: Ditto.
+	* include/ntdsbcli.h: Ditto.
+	* include/objsel.h: Ditto.
+
+	* include/msacm.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/nddeapi.h: Ditto.
+	* include/nspapi.h: Ditto.
+	* include/oleacc.h: Ditto.
+	* include/oledlg.h: Ditto.
+	* include/prsht.h: Ditto.
+
+	* include/_mingw.h (__AW): Add filters for SQL_NOUNICODEMAP.
+
+	* TODO: Add items to the list as needed.
+
 2012-09-11  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.

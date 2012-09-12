@@ -24,10 +24,12 @@
 #ifndef _NDDEAPI_H
 #define _NDDEAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #ifndef CNLEN /* also in lmcons.h */
 #define CNLEN 15
 #define UNCLEN (CNLEN + 2)
@@ -121,34 +123,20 @@ UINT WINAPI NDdeShareSetInfoA(LPSTR,LPSTR,UINT,PBYTE,DWORD,WORD);
 UINT WINAPI NDdeShareSetInfoW(LPWSTR,LPWSTR,UINT,PBYTE,DWORD,WORD);
 UINT WINAPI NDdeTrustedShareEnumA(LPSTR,UINT,PBYTE,DWORD,PDWORD,PDWORD);
 UINT WINAPI NDdeTrustedShareEnumW(LPWSTR,UINT,PBYTE,DWORD,PDWORD,PDWORD);
-#ifdef UNICODE
-#define NDdeShareAdd NDdeShareAddW
-#define NDdeShareDel NDdeShareDelW
-#define NDdeSetShareSecurity NDdeSetShareSecurityW
-#define NDdeGetShareSecurity NDdeGetShareSecurityW
-#define NDdeShareEnum NDdeShareEnumW
-#define NDdeShareGetInfo NDdeShareGetInfoW
-#define NDdeShareSetInfo NDdeShareSetInfoW
-#define NDdeGetErrorString NDdeGetErrorStringW
-#define NDdeSetTrustedShare NDdeSetTrustedShareW
-#define NDdeGetTrustedShare NDdeGetTrustedShareW
-#define NDdeTrustedShareEnum NDdeTrustedShareEnumW
-#else
-#define NDdeShareAdd NDdeShareAddA
-#define NDdeShareDel NDdeShareDelA
-#define NDdeSetShareSecurity NDdeSetShareSecurityA
-#define NDdeGetShareSecurity NDdeGetShareSecurityA
-#define NDdeShareEnum NDdeShareEnumA
-#define NDdeShareGetInfo NDdeShareGetInfoA
-#define NDdeShareSetInfo NDdeShareSetInfoA
-#define NDdeGetErrorString NDdeGetErrorStringA
-#define NDdeIsValidShareName NDdeIsValidShareNameA
-#define NDdeIsValidAppTopicList NDdeIsValidAppTopicListA
-#define NDdeSetTrustedShare NDdeSetTrustedShareA
-#define NDdeGetTrustedShare NDdeGetTrustedShareA
-#define NDdeTrustedShareEnum NDdeTrustedShareEnumA
-#endif
+#define NDdeShareAdd __AW(NDdeShareAdd)
+#define NDdeShareDel __AW(NDdeShareDel)
+#define NDdeSetShareSecurity __AW(NDdeSetShareSecurity)
+#define NDdeGetShareSecurity __AW(NDdeGetShareSecurity)
+#define NDdeShareEnum __AW(NDdeShareEnum)
+#define NDdeShareGetInfo __AW(NDdeShareGetInfo)
+#define NDdeShareSetInfo __AW(NDdeShareSetInfo)
+#define NDdeGetErrorString __AW(NDdeGetErrorString)
+#define NDdeSetTrustedShare __AW(NDdeSetTrustedShare)
+#define NDdeGetTrustedShare __AW(NDdeGetTrustedShare)
+#define NDdeTrustedShareEnum __AW(NDdeTrustedShareEnum)
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

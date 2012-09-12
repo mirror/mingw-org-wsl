@@ -24,6 +24,7 @@
 #ifndef _MSHTML_H
 #define _MSHTML_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

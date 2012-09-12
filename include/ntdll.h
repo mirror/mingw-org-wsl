@@ -24,6 +24,7 @@
 #ifndef _NTDLL_H
 #define _NTDLL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 typedef enum _SHUTDOWN_ACTION {
      ShutdownNoReboot,

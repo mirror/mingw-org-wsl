@@ -24,6 +24,7 @@
 #ifndef _OLEACC_H
 #define _OLEACC_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -228,17 +229,12 @@ LRESULT WINAPI LresultFromObject(REFIID,WPARAM,LPUNKNOWN);
 STDAPI ObjectFromLresult(LRESULT,REFIID,WPARAM,void**);
 STDAPI WindowFromAccessibleObject(IAccessible*,HWND*);
 
-#ifdef UNICODE
-#define CreateStdAccessibleProxy CreateStdAccessibleProxyW
-#define GetRoleText GetRoleTextW
-#define GetStateText GetStateTextW
-#else
-#define CreateStdAccessibleProxy CreateStdAccessibleProxyA
-#define GetRoleText GetRoleTextA
-#define GetStateText GetStateTextA
-#endif
+#define CreateStdAccessibleProxy __AW(CreateStdAccessibleProxy)
+#define GetRoleText __AW(GetRoleText)
+#define GetStateText __AW(GetStateText)
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _OLEACC_H */

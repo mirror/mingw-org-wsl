@@ -24,6 +24,7 @@
 #ifndef _NTDEF_H
 #define _NTDEF_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define NTAPI __stdcall
 #define OBJ_INHERIT 2L
@@ -41,10 +42,12 @@
   (p)->SecurityDescriptor = (s); \
   (p)->SecurityQualityOfService = NULL; \
 }
+
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(x) ((x)>=0)
 #define STATUS_SUCCESS ((NTSTATUS)0)
 #endif
+
 #if !defined(_NTSECAPI_H) && !defined(_SUBAUTH_H)
 typedef LONG NTSTATUS, *PNTSTATUS;
 typedef struct _UNICODE_STRING {
@@ -59,6 +62,7 @@ typedef struct _STRING {
   PCHAR  Buffer;
 } STRING, *PSTRING;
 #endif
+
 typedef STRING ANSI_STRING;
 typedef PSTRING PANSI_STRING;
 typedef STRING OEM_STRING;
@@ -68,6 +72,7 @@ typedef enum _SECTION_INHERIT {
   ViewShare = 1,
   ViewUnmap = 2
 } SECTION_INHERIT;
+
 #if !defined(_NTSECAPI_H)
 typedef struct _OBJECT_ATTRIBUTES {
   ULONG Length;
@@ -78,4 +83,5 @@ typedef struct _OBJECT_ATTRIBUTES {
   PVOID SecurityQualityOfService;
 } OBJECT_ATTRIBUTES, *POBJECT_ATTRIBUTES;
 #endif
+
 #endif /* _NTDEF_H */

@@ -24,10 +24,12 @@
 #ifndef _NB30_H
 #define _NB30_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define NCBNAMSZ 16
 #define MAX_LANA 254
 #define NAME_FLAGS_MASK 0x87
@@ -201,7 +203,9 @@ typedef struct _SESSION_HEADER {
 	UCHAR rcv_any_outstanding;
 } SESSION_HEADER,*PSESSION_HEADER;
 UCHAR WINAPI Netbios(PNCB);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

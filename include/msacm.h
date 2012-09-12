@@ -24,6 +24,7 @@
 #ifndef _MSACM_H
 #define _MSACM_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -240,31 +241,15 @@ MMRESULT WINAPI acmStreamClose(HACMSTREAM has, DWORD fdwClose);
 /*msdn.microsoft.com/en-us/library/dd742924%28VS.85%29.aspx*/
 MMRESULT WINAPI acmStreamConvert(HACMSTREAM has, LPACMSTREAMHEADER pash, DWORD fdwConvert);
 
-#ifdef UNICODE
-
-typedef ACMFORMATDETAILSW ACMFORMATDETAILS, *LPACMFORMATDETAILS;
-typedef ACMFORMATTAGDETAILSW ACMFORMATTAGDETAILS, *LPACMFORMATTAGDETAILS;
-typedef ACMDRIVERDETAILSW ACMDRIVERDETAILS, *LPACMDRIVERDETAILS;
-typedef ACMFORMATENUMCBW ACMFORMATENUMCB;
-typedef ACMFORMATTAGENUMCBW ACMFORMATTAGENUMCB;
-#define acmFormatEnum acmFormatEnumW
-#define acmDriverDetails acmDriverDetailsW
-#define acmFormatTagEnum acmFormatTagEnumW
-#define acmDriverAdd acmDriverAddW
-
-#else /*ifdef UNICODE*/
-
-typedef ACMFORMATDETAILSA ACMFORMATDETAILS, *LPACMFORMATDETAILS;
-typedef ACMFORMATTAGDETAILSA ACMFORMATTAGDETAILS, *LPACMFORMATTAGDETAILS;
-typedef ACMDRIVERDETAILSA ACMDRIVERDETAILS, *LPACMDRIVERDETAILS;
-typedef ACMFORMATENUMCBA ACMFORMATENUMCB;
-typedef ACMFORMATTAGENUMCBA ACMFORMATTAGENUMCB;
-#define acmFormatEnum acmFormatEnumA
-#define acmDriverDetails acmDriverDetailsA
-#define acmFormatTagEnum acmFormatTagEnumA
-#define acmDriverAdd acmDriverAddA
-
-#endif /*ifdef UNICODE*/
+typedef __AW(ACMFORMATDETAILS) ACMFORMATDETAILS, *LPACMFORMATDETAILS;
+typedef __AW(ACMFORMATTAGDETAILS) ACMFORMATTAGDETAILS, *LPACMFORMATTAGDETAILS;
+typedef __AW(ACMDRIVERDETAILS) ACMDRIVERDETAILS, *LPACMDRIVERDETAILS;
+typedef __AW(ACMFORMATENUMCB) ACMFORMATENUMCB;
+typedef __AW(ACMFORMATTAGENUMCB) ACMFORMATTAGENUMCB;
+#define acmFormatEnum __AW(acmFormatEnum)
+#define acmDriverDetails __AW(acmDriverDetails)
+#define acmFormatTagEnum __AW(acmFormatTagEnum)
+#define acmDriverAdd __AW(acmDriverAdd)
 
 #ifdef __cplusplus
 }

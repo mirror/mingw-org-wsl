@@ -24,6 +24,7 @@
 #ifndef _NSPAPI_H
 #define _NSPAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -127,21 +128,15 @@ INT WINAPI SetServiceW(DWORD,DWORD,DWORD,LPSERVICE_INFOW,LPSERVICE_ASYNC_INFO,LP
 INT WINAPI GetAddressByNameA(DWORD,LPGUID,LPSTR,LPINT,DWORD,LPSERVICE_ASYNC_INFO,LPVOID,LPDWORD,LPSTR,LPDWORD);
 INT WINAPI GetAddressByNameW(DWORD,LPGUID,LPWSTR,LPINT,DWORD,LPSERVICE_ASYNC_INFO,LPVOID,LPDWORD,LPWSTR,LPDWORD);
 
-#ifdef UNICODE
-typedef SERVICE_INFOW SERVICE_INFO, *LPSERVICE_INFO;
-#define _SERVICE_INFO SERVICE_INFOW
-#define SetService SetServiceW
-#define GetAddressByName GetAddressByNameW
-#else
-typedef SERVICE_INFOA SERVICE_INFO, *LPSERVICE_INFO;
-#define _SERVICE_INFO SERVICE_INFOA
-#define SetService SetServiceA
-#define GetAddressByName GetAddressByNameA
-#endif
+typedef __AW(SERVICE_INFO) SERVICE_INFO, *LPSERVICE_INFO;
+#define _SERVICE_INFO __AW(SERVICE_INFO)
+#define SetService __AW(SetService)
+#define GetAddressByName __AW(GetAddressByName)
 
 #endif /* RC_INVOKED */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _NSPAPI_H */

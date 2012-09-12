@@ -24,6 +24,7 @@
 #ifndef _OCIDL_H
 #define _OCIDL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -874,4 +875,5 @@ DECLARE_INTERFACE_(IQuickActivate,IUnknown)
 #ifdef __cplusplus
 }
 #endif
+
 #endif

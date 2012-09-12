@@ -24,6 +24,7 @@
 #ifndef _OLECTL_H
 #define _OLECTL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -338,7 +339,9 @@ STDAPI OleLoadPictureFile(VARIANT,LPDISPATCH*);
 STDAPI OleLoadPictureFileEx(VARIANT,DWORD,DWORD,DWORD,LPDISPATCH*);
 STDAPI OleSavePictureFile(LPDISPATCH,BSTR);
 STDAPI OleTranslateColor(OLE_COLOR,HPALETTE,COLORREF*);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif 

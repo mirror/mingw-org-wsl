@@ -24,17 +24,23 @@
 #ifndef _ODBCINST_H
 #define _ODBCINST_H
 #pragma GCC system_header
+#include <_mingw.h>
+
 #include <sql.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #ifndef ODBCVER
 #define ODBCVER 0x0351
 #endif
+
 #define INSTAPI __stdcall
 #define  ODBC_ADD_DSN     1
 #define  ODBC_CONFIG_DSN  2
 #define  ODBC_REMOVE_DSN  3
+
 #if (ODBCVER >= 0x0250)
 #define ODBC_ADD_SYS_DSN 4
 #define ODBC_CONFIG_SYS_DSN 5
@@ -46,6 +52,7 @@ extern "C" {
 #define ODBC_CONFIG_DRIVER 3
 #define ODBC_CONFIG_DRIVER_MAX 100
 #endif /* (ODBCVER >= 0x0250) */
+
 #if (ODBCVER >= 0x0300)
 #define ODBC_REMOVE_DEFAULT_DSN 7
 #define ODBC_BOTH_DSN 0
@@ -107,6 +114,7 @@ BOOL INSTAPI SQLWriteDSNToIni(LPCSTR,LPCSTR);
 BOOL INSTAPI SQLWriteDSNToIniW(LPCWSTR,LPCWSTR);
 BOOL INSTAPI SQLWritePrivateProfileString(LPCSTR,LPCSTR,LPCSTR,LPCSTR);
 BOOL INSTAPI SQLWritePrivateProfileStringW(LPCWSTR,LPCWSTR,LPCWSTR,LPCWSTR);
+
 #if(ODBCVER >= 0x0250) 
 BOOL INSTAPI ConfigDriver(HWND,WORD,LPCSTR,LPCSTR,LPSTR,WORD,WORD*);
 BOOL INSTAPI ConfigDriverW(HWND,WORD,LPCWSTR,LPCWSTR,LPWSTR,WORD,WORD*);
@@ -120,6 +128,7 @@ BOOL INSTAPI SQLRemoveDriverW(LPCWSTR,BOOL,LPDWORD);
 BOOL INSTAPI SQLRemoveTranslator(LPCSTR,LPDWORD);
 BOOL INSTAPI SQLRemoveTranslatorW(LPCWSTR,LPDWORD);
 #endif /* ODBCVER >= 0x0250 */  
+
 #if (ODBCVER >= 0x0300) 
 BOOL INSTAPI SQLGetConfigMode(UWORD*);
 BOOL INSTAPI SQLInstallDriverEx(LPCSTR,LPCSTR,LPSTR,WORD,WORD*,WORD,LPDWORD);
@@ -137,6 +146,7 @@ BOOL INSTAPI SQLWriteFileDSN(LPCSTR,LPCSTR,LPCSTR,LPCSTR);
 BOOL INSTAPI SQLWriteFileDSNW(LPCWSTR,LPCWSTR,LPCWSTR,LPCWSTR);
 #endif /* ODBCVER >= 0x0300 */  
 
+/* Cannot use __AW() since the A version does not exist. */
 #if defined (UNICODE) && !defined (SQL_NOUNICODEMAP)
 #define SQLConfigDataSource SQLConfigDataSourceW
 #define SQLConfigDriver SQLConfigDriverW
@@ -162,8 +172,11 @@ BOOL INSTAPI SQLWriteFileDSNW(LPCWSTR,LPCWSTR,LPCWSTR,LPCWSTR);
 #define SQLWriteFileDSN SQLWriteFileDSNW
 #define SQLWritePrivateProfileString SQLWritePrivateProfileStringW
 #endif /* UNICODE && !SQL_NOUNICODEMAP */
+
 #endif /* RC_INVOKED */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _ODBCINST_H */

@@ -24,13 +24,11 @@
 #ifndef	_PROCESS_H_
 #define	_PROCESS_H_
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* 
  * Function calls for spawning child processes.
  */
-
-/* All the headers include this file. */
-#include <_mingw.h>
 
 #include <sys/types.h> /* For _pid_t and pid_t. */
 #include <stdint.h>  /* For intptr_t. */

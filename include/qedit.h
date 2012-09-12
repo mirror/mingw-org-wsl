@@ -24,10 +24,9 @@
 #ifndef _QEDIT_H
 #define _QEDIT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
-#ifndef _STRMIF_H
 #include <strmif.h>
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -88,4 +87,5 @@ typedef enum {
 #ifdef __cplusplus
 }
 #endif
+
 #endif
