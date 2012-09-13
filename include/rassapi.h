@@ -24,13 +24,16 @@
 #ifndef _RASSAPI_H
 #define _RASSAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #ifndef UNLEN
 #include <lmcons.h>
 #endif
+
 #define RASSAPI_MAX_PHONENUMBER_SIZE    128
 #define RASSAPI_MAX_MEDIA_NAME	        16
 #define RASSAPI_MAX_PORT_NAME	        16

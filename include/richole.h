@@ -24,11 +24,14 @@
 #ifndef _RICHOLE_H
 #define _RICHOLE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #pragma pack(push,4)
+
 #define REO_GETOBJ_NO_INTERFACES	0
 #define REO_GETOBJ_POLEOBJ	1
 #define REO_GETOBJ_PSTG	2
@@ -61,6 +64,7 @@ extern "C" {
 
 extern const GUID IID_IRichEditOle;
 extern const GUID IID_IRichEditOleCallback;
+
 #ifndef INITGUID
 typedef struct _reobject {
 	DWORD cbStruct;
@@ -121,7 +125,9 @@ DECLARE_INTERFACE_(IRichEditOleCallback, IUnknown)
 #undef INTERFACE
 typedef IRichEditOleCallback FAR * LPRICHEDITOLECALLBACK;
 #endif
+
 #pragma pack(pop)
+
 #ifdef __cplusplus
 }
 #endif

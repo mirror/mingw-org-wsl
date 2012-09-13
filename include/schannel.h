@@ -24,6 +24,7 @@
 #ifndef _SCHANNEL_H
 #define _SCHANNEL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <wincrypt.h>
 

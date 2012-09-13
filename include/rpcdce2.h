@@ -24,6 +24,7 @@
 #ifndef _RPCDCE2_H
 #define _RPCDCE2_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,27 +52,28 @@ RPC_STATUS RPC_ENTRY UuidCreateNil(UUID*);
 int RPC_ENTRY UuidEqual(UUID*,UUID*,RPC_STATUS*);
 unsigned short RPC_ENTRY UuidHash(UUID*,RPC_STATUS*);
 int RPC_ENTRY UuidIsNil(UUID*,RPC_STATUS*);
+
 #ifdef RPC_UNICODE_SUPPORTED
 RPC_STATUS RPC_ENTRY DceErrorInqTextA(RPC_STATUS,unsigned char*);
 RPC_STATUS RPC_ENTRY DceErrorInqTextW(RPC_STATUS,unsigned short*);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqNextA(RPC_EP_INQ_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE*,UUID*,unsigned char**);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqNextW(RPC_EP_INQ_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE*,UUID*,unsigned short**);
-#ifdef UNICODE
-#define RpcMgmtEpEltInqNext RpcMgmtEpEltInqNextW
-#define DceErrorInqText DceErrorInqTextW
-#else
-#define RpcMgmtEpEltInqNext RpcMgmtEpEltInqNextA
-#define DceErrorInqText DceErrorInqTextA
-#endif /* UNICODE */
+
+#define RpcMgmtEpEltInqNext __AW(RpcMgmtEpEltInqNext)
+#define DceErrorInqText __AW(DceErrorInqText)
+
 #else /* RPC_UNICODE_SUPPORTED */
 RPC_STATUS RPC_ENTRY DceErrorInqText(RPC_STATUS,unsigned char*);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqNext(RPC_EP_INQ_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE*,UUID*,unsigned char**);
 #endif
+
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqBegin(RPC_BINDING_HANDLE,unsigned long,RPC_IF_ID*,unsigned long,UUID*,RPC_EP_INQ_HANDLE*);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqDone(RPC_EP_INQ_HANDLE*);
 RPC_STATUS RPC_ENTRY RpcMgmtEpUnregister(RPC_BINDING_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE,UUID*);
 RPC_STATUS RPC_ENTRY RpcMgmtSetAuthorizationFn(RPC_MGMT_AUTHORIZATION_FN);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

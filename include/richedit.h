@@ -24,17 +24,21 @@
 #ifndef _RICHEDIT_H
 #define _RICHEDIT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #pragma pack(push,4)
 
+/* Impossible to use __STR() */
 #ifdef UNICODE 
 #define RICHEDIT_CLASS L"RichEdit20W"
 #else
 #define RICHEDIT_CLASS "RichEdit20A"
 #endif
+
 #define RICHEDIT_CLASS10A    "RICHEDIT"
 #define CF_RTF TEXT("Rich Text Format")
 #define CF_RTFNOOBJS TEXT("Rich Text Format Without Objects")
@@ -524,21 +528,16 @@ typedef struct _gettextlengthex {
 	DWORD flags;
 	UINT codepage;
 } GETTEXTLENGTHEX;
-#ifdef UNICODE
-typedef CHARFORMATW CHARFORMAT;
-typedef CHARFORMAT2W CHARFORMAT2;
-typedef FINDTEXTW FINDTEXT;
-typedef FINDTEXTEXW FINDTEXTEX;
-typedef TEXTRANGEW TEXTRANGE;
-#else
-typedef CHARFORMATA CHARFORMAT;
-typedef CHARFORMAT2A CHARFORMAT2;
-typedef FINDTEXTA FINDTEXT;
-typedef FINDTEXTEXA FINDTEXTEX;
-typedef TEXTRANGEA TEXTRANGE;
-#endif
+typedef __AW(CHARFORMAT) CHARFORMAT;
+typedef __AW(CHARFORMAT2) CHARFORMAT2;
+typedef __AW(FINDTEXT) FINDTEXT;
+typedef __AW(FINDTEXTEX) FINDTEXTEX;
+typedef __AW(TEXTRANGE) TEXTRANGE;
+
 #pragma pack(pop)
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

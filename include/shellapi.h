@@ -24,10 +24,12 @@
 #ifndef _SHELLAPI_H
 #define _SHELLAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define WINSHELLAPI DECLSPEC_IMPORT
 #define ABE_LEFT	0
 #define ABE_TOP	1
@@ -50,10 +52,12 @@ extern "C" {
 #define SEE_MASK_UNICODE           0x10000
 #define SEE_MASK_ASYNCOK           0x100000
 #define SEE_MASK_HMONITOR          0x200000
+
 #if (_WIN32_IE >= 0x0600)
 #define SEE_MASK_NOZONECHECKS      0x800000
 #define SEE_MASK_FLAG_LOG_USAGE    0x4000000
 #endif
+
 #define ABM_NEW	0
 #define ABM_REMOVE	1
 #define ABM_QUERYPOS	2
@@ -71,40 +75,50 @@ extern "C" {
 #define NIM_ADD	0
 #define NIM_MODIFY	1
 #define NIM_DELETE	2
+
 #if (_WIN32_IE >= 0x0500)
 #define NOTIFYICON_VERSION 3
-#if (_WIN32_WINNT >= 0x600)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
 #define NOTIFYICON_VERSION_4  4
 #endif
+
 #define NIM_SETFOCUS	3
 #define NIM_SETVERSION	4
 #define NIN_POPUPOPEN WM_USER+6
 #define NIN_POPUPCLOSE WM_USER+7
 #endif
+
 #define NIF_MESSAGE	0x00000001
 #define NIF_ICON	0x00000002
 #define NIF_TIP		0x00000004
 #define NIF_STATE	0x00000008
+
 #if (_WIN32_IE >= 0x0500)
 #define NIF_INFO	0x00000010
 #endif
+
 #if (_WIN32_IE >= 0x0600)
 #define NIF_GUID	0x00000020
 #endif
+
 #if (_WIN32_IE >= 0x0500)
 #define NIIF_NONE	0x00000000
 #define NIIF_INFO	0x00000001
 #define NIIF_WARNING	0x00000002
 #define NIIF_ERROR	0x00000003
 #endif
+
 #if (_WIN32_IE >= 0x0600)
 #define NIIF_ICON_MASK	0x0000000F
 #define NIIF_NOSOUND	0x00000010
 #endif
+
 #if (_WIN32_IE >= 0x0500)
 #define NIS_HIDDEN	0x00000001
 #define NIS_SHAREDICON	0x00000002
 #endif
+
 #define SE_ERR_FNF	2
 #define SE_ERR_PNF	3
 #define SE_ERR_ACCESSDENIED	5
@@ -155,6 +169,7 @@ extern "C" {
 #define SHERB_NOCONFIRMATION 1
 #define SHERB_NOPROGRESSUI 2
 #define SHERB_NOSOUND 4
+
 #ifdef UNICODE
 #define NOTIFYICONDATA_V2_SIZE 936
 #define NOTIFYICONDATA_V1_SIZE 152
@@ -183,6 +198,7 @@ typedef struct _NOTIFYICONDATAA {
   UINT uFlags;
   UINT uCallbackMessage;
   HICON hIcon;
+
 #if _WIN32_IE >= 0x0500
   CHAR szTip[128];
   DWORD dwState;
@@ -197,10 +213,12 @@ typedef struct _NOTIFYICONDATAA {
 #else
   CHAR szTip[64];
 #endif
+
 #if _WIN32_IE >= 0x600
   GUID guidItem;
 #endif
-#if _WIN32_WINNT >= 0x600
+
+#if _WIN32_WINNT >= _WIN32_WINNT_VISTA
   HICON hBalloonIcon;
 #endif
 } NOTIFYICONDATAA,*PNOTIFYICONDATAA;
@@ -212,6 +230,7 @@ typedef struct _NOTIFYICONDATAW {
   UINT uFlags;
   UINT uCallbackMessage;
   HICON hIcon;
+
 #if _WIN32_IE >= 0x0500
   WCHAR szTip[128];
   DWORD dwState;
@@ -226,10 +245,12 @@ typedef struct _NOTIFYICONDATAW {
 #else
   WCHAR szTip[64];
 #endif
+
 #if _WIN32_IE >= 0x600
   GUID guidItem;
 #endif
-#if _WIN32_WINNT >= 0x600
+
+#if _WIN32_WINNT >= _WIN32_WINNT_VISTA
   HICON hBalloonIcon;
 #endif
 } NOTIFYICONDATAW,*PNOTIFYICONDATAW;
@@ -343,7 +364,7 @@ HRESULT WINAPI SHQueryRecycleBinW(LPCWSTR, LPSHQUERYRBINFO);
 HRESULT WINAPI SHEmptyRecycleBinA(HWND,LPCSTR,DWORD);
 HRESULT WINAPI SHEmptyRecycleBinW(HWND,LPCWSTR,DWORD);
 
-#if (_WIN32_WINNT >= 0x600)
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
 #define SHIL_LARGE 0x0
 #define SHIL_SMALL 0x1
 #define SHIL_EXTRALARGE 0x2
@@ -353,45 +374,26 @@ HRESULT WINAPI SHEmptyRecycleBinW(HWND,LPCWSTR,DWORD);
 HRESULT WINAPI SHGetImageList(int,REFIID,void**);
 #endif
 
-#ifdef UNICODE
-typedef NOTIFYICONDATAW NOTIFYICONDATA,*PNOTIFYICONDATA;
-typedef SHELLEXECUTEINFOW SHELLEXECUTEINFO,*LPSHELLEXECUTEINFO;
-typedef SHFILEOPSTRUCTW SHFILEOPSTRUCT,*LPSHFILEOPSTRUCT;
-typedef SHFILEINFOW SHFILEINFO;
-#define DragQueryFile DragQueryFileW
-#define ExtractAssociatedIcon ExtractAssociatedIconW
-#define ExtractIcon ExtractIconW
-#define ExtractIconEx ExtractIconExW
-#define FindExecutable FindExecutableW
-#define Shell_NotifyIcon Shell_NotifyIconW
-#define ShellAbout ShellAboutW
-#define ShellExecute ShellExecuteW
-#define ShellExecuteEx ShellExecuteExW
-#define SHFileOperation SHFileOperationW
-#define SHGetFileInfo SHGetFileInfoW
-#define SHQueryRecycleBin SHQueryRecycleBinW
-#define SHEmptyRecycleBin SHEmptyRecycleBinW
+typedef __AW(NOTIFYICONDATA) NOTIFYICONDATA,*PNOTIFYICONDATA;
+typedef __AW(SHELLEXECUTEINFO) SHELLEXECUTEINFO,*LPSHELLEXECUTEINFO;
+typedef __AW(SHFILEOPSTRUCT) SHFILEOPSTRUCT,*LPSHFILEOPSTRUCT;
+typedef __AW(SHFILEINFO) SHFILEINFO;
+#define DragQueryFile __AW(DragQueryFile)
+#define ExtractAssociatedIcon __AW(ExtractAssociatedIcon)
+#define ExtractIcon __AW(ExtractIcon)
+#define ExtractIconEx __AW(ExtractIconEx)
+#define FindExecutable __AW(FindExecutable)
+#define Shell_NotifyIcon __AW(Shell_NotifyIcon)
+#define ShellAbout __AW(ShellAbout)
+#define ShellExecute __AW(ShellExecute)
+#define ShellExecuteEx __AW(ShellExecuteEx)
+#define SHFileOperation __AW(SHFileOperation)
+#define SHGetFileInfo __AW(SHGetFileInfo)
+#define SHQueryRecycleBin __AW(SHQueryRecycleBin)
+#define SHEmptyRecycleBin __AW(SHEmptyRecycleBin)
 
-#else
-typedef NOTIFYICONDATAA NOTIFYICONDATA,*PNOTIFYICONDATA;
-typedef SHELLEXECUTEINFOA SHELLEXECUTEINFO,*LPSHELLEXECUTEINFO;
-typedef SHFILEOPSTRUCTA SHFILEOPSTRUCT,*LPSHFILEOPSTRUCT;
-typedef SHFILEINFOA SHFILEINFO;
-#define DragQueryFile DragQueryFileA
-#define ExtractAssociatedIcon ExtractAssociatedIconA
-#define ExtractIcon ExtractIconA
-#define ExtractIconEx ExtractIconExA
-#define FindExecutable FindExecutableA
-#define Shell_NotifyIcon Shell_NotifyIconA
-#define ShellAbout ShellAboutA
-#define ShellExecute ShellExecuteA
-#define ShellExecuteEx ShellExecuteExA
-#define SHFileOperation SHFileOperationA
-#define SHGetFileInfo SHGetFileInfoA
-#define SHQueryRecycleBin SHQueryRecycleBinA
-#define SHEmptyRecycleBin SHEmptyRecycleBinA
-#endif
 #ifdef __cplusplus
 }
 #endif
+
 #endif

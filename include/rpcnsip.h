@@ -24,10 +24,12 @@
 #ifndef _RPCNSIP_H
 #define _RPCNSIP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 typedef struct {
 	RPC_NS_HANDLE LookupContext;
 	RPC_BINDING_HANDLE ProposedHandle;
@@ -40,7 +42,9 @@ RPC_STATUS RPC_ENTRY I_RpcReBindBuffer(/*IN*/ PRPC_MESSAGE);
 RPC_STATUS RPC_ENTRY I_NsServerBindSearch(void);
 RPC_STATUS RPC_ENTRY I_NsClientBindSearch(void);
 void RPC_ENTRY I_NsClientBindDone(void);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,10 +24,12 @@
 #ifndef _RPCDCEP_H
 #define _RPCDCEP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define RPC_NCA_FLAGS_DEFAULT 0
 #define RPC_NCA_FLAGS_IDEMPOTENT 1
 #define RPC_NCA_FLAGS_BROADCAST 2
@@ -116,6 +118,7 @@ long __stdcall I_RpcStopMonitorAssociation(HANDLE);
 HANDLE __stdcall I_RpcGetCurrentCallHandle(void);
 long __stdcall I_RpcGetAssociationContext(void**);
 long __stdcall I_RpcSetAssociationContext(void*);
+
 #ifdef __RPC_NT__
 long __stdcall I_RpcNsBindingSetEntryName(HANDLE,unsigned long,unsigned short*);
 long __stdcall I_RpcBindingInqDynamicEndpoint(HANDLE, unsigned short**);
@@ -123,6 +126,7 @@ long __stdcall I_RpcBindingInqDynamicEndpoint(HANDLE, unsigned short**);
 long __stdcall I_RpcNsBindingSetEntryName(HANDLE,unsigned long,unsigned char*);
 long __stdcall I_RpcBindingInqDynamicEndpoint(HANDLE,unsigned char**);
 #endif
+
 long __stdcall I_RpcBindingInqTransportType(HANDLE,unsigned int*);
 long __stdcall I_RpcIfInqTransferSyntaxes(HANDLE,RPC_TRANSFER_SYNTAX*,unsigned int,unsigned int*);
 long __stdcall I_UuidCreate(GUID*);
@@ -139,12 +143,11 @@ long __stdcall I_RpcServerThreadPauseListening(void);
 long __stdcall I_RpcServerThreadContinueListening(void);
 long __stdcall I_RpcServerUnregisterEndpointA(unsigned char*,unsigned char*);
 long __stdcall I_RpcServerUnregisterEndpointW(unsigned short*,unsigned short*);
-#ifdef UNICODE
-#define I_RpcServerUnregisterEndpoint I_RpcServerUnregisterEndpointW
-#else
-#define I_RpcServerUnregisterEndpoint I_RpcServerUnregisterEndpointA
-#endif
+
+#define I_RpcServerUnregisterEndpoint __AW(I_RpcServerUnregisterEndpoint)
+
 #ifdef __cplusplus
 }
+
 #endif
 #endif

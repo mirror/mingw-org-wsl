@@ -24,6 +24,7 @@
 #ifndef _SHLDISP_H
 #define _SHLDISP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -38,7 +39,7 @@ typedef enum tagAUTOCOMPLETEOPTIONS {
     ACO_USETAB = 0x10,
     ACO_UPDOWNKEYDROPSLIST = 0x20,
     ACO_RTLREADING = 0x40,
-#if (_WIN32_WINNT >= 0x0600)
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
     ACO_WORD_FILTER = 0x80,
     ACO_NOPREFIXFILTERING = 0x100
 #endif

@@ -25,15 +25,20 @@
 #define _RPCNDR_H
 #define __RPCNDR_H__
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef __RPCNDR_H_VERSION__
 #define __RPCNDR_H_VERSION__        ( 450 )
 #endif /* __RPCNDR_H_VERSION__ */
+
 #include <rpcnsip.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <objfwd.h>
+
 #define DECLSPEC_UUID(x)
 #define MIDL_INTERFACE(x) struct
 #define NDR_CHAR_REP_MASK (unsigned long)0xFL
@@ -48,12 +53,15 @@ extern "C" {
 #define NDR_LOCAL_DATA_REPRESENTATION (unsigned long)0x10L
 #define NDR_LOCAL_ENDIAN NDR_LITTLE_ENDIAN
 #define __RPC_CALLEE __stdcall
+
 #ifndef __MIDL_USER_DEFINED
 #define midl_user_allocate MIDL_user_allocate
 #define midl_user_free MIDL_user_free
 #define __MIDL_USER_DEFINED
 #endif
+
 #define RPC_VAR_ENTRY __cdecl
+
 #ifdef _M_IX86
 #define __MIDL_DECLSPEC_DLLIMPORT __declspec(dllimport)
 #define __MIDL_DECLSPEC_DLLEXPORT __declspec(dllexport)
@@ -61,6 +69,7 @@ extern "C" {
 #define __MIDL_DECLSPEC_DLLIMPORT
 #define __MIDL_DECLSPEC_DLLEXPORT
 #endif
+
 #if defined(_HAVE_INT64) || (defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64)
 #define hyper __int64
 #define MIDL_uhyper unsigned __int64
@@ -68,6 +77,7 @@ extern "C" {
 #define hyper double
 #define MIDL_uhyper double
 #endif
+
 #define small char
 typedef unsigned char byte;
 typedef unsigned char boolean;
@@ -109,11 +119,13 @@ typedef unsigned char boolean;
 #define NdrFieldPad(s,f,p,t) (NdrFieldOffset(s,f) - NdrFieldOffset(s,p) - sizeof(t))
 #define NdrFcShort(s) (unsigned char)(s & 0xff), (unsigned char)(s >> 8)
 #define NdrFcLong(s) (unsigned char)(s & 0xff), (unsigned char)((s & 0x0000ff00) >> 8), (unsigned char)((s & 0x00ff0000) >> 16), (unsigned char)(s >> 24)
+
 #ifdef CONST_VTABLE
 #define CONST_VTBL const
 #else
 #define CONST_VTBL
 #endif
+
 typedef void *NDR_CCONTEXT;
 typedef struct {
 	void *pad[2];
@@ -533,7 +545,9 @@ unsigned char*RPC_ENTRY NdrUserMarshalUnmarshall(PMIDL_STUB_MESSAGE,unsigned cha
 void RPC_ENTRY NdrUserMarshalBufferSize(PMIDL_STUB_MESSAGE,unsigned char*,PFORMAT_STRING);
 unsigned long RPC_ENTRY NdrUserMarshalMemorySize(PMIDL_STUB_MESSAGE,PFORMAT_STRING);
 void RPC_ENTRY NdrUserMarshalFree(PMIDL_STUB_MESSAGE,unsigned char*,PFORMAT_STRING);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

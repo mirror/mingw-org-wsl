@@ -24,15 +24,16 @@
 #ifndef _RPC_H
 #define _RPC_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef RPC_NO_WINDOWS_H
 #include <windows.h>
 #endif
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define __RPC_WIN32__
 #ifndef _WIN95
 #define __RPC_NT__
@@ -81,7 +82,9 @@ typedef long RPC_STATUS;
 RPC_STATUS RPC_ENTRY RpcImpersonateClient(RPC_BINDING_HANDLE);
 RPC_STATUS RPC_ENTRY RpcRevertToSelf(void);
 long RPC_ENTRY I_RpcMapWin32Status(RPC_STATUS);
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

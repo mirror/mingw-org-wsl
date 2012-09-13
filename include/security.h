@@ -24,7 +24,7 @@
 #ifndef _SECURITY_H
 #define _SECURITY_H
 #pragma GCC system_header
-
+#include <_mingw.h>
 
 #define SEC_E_OK 0
 #define SEC_E_CERT_EXPIRED (-2146893016)

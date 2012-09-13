@@ -24,10 +24,12 @@
 #ifndef _RPCNSI_H
 #define _RPCNSI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 typedef void *RPC_NS_HANDLE;
 #define RPC_C_NS_SYNTAX_DEFAULT 0
 #define RPC_C_NS_SYNTAX_DCE 3
@@ -94,50 +96,30 @@ RPC_STATUS RPC_ENTRY RpcNsMgmtEntryDeleteW(unsigned long,unsigned short*);
 RPC_STATUS RPC_ENTRY RpcNsMgmtEntryInqIfIdsW(unsigned long,unsigned short , RPC_IF_ID_VECTOR**);
 RPC_STATUS RPC_ENTRY RpcNsBindingImportBeginW(unsigned long,unsigned short*,RPC_IF_HANDLE,UUID*,RPC_NS_HANDLE*);
 #endif /* RPC_UNICODE_SUPPORTED */
-#ifdef UNICODE
-#define RpcNsBindingLookupBegin RpcNsBindingLookupBeginW
-#define RpcNsBindingImportBegin RpcNsBindingImportBeginW
-#define RpcNsBindingExport RpcNsBindingExportW
-#define RpcNsBindingUnexport RpcNsBindingUnexportW
-#define RpcNsGroupDelete RpcNsGroupDeleteW
-#define RpcNsGroupMbrAdd RpcNsGroupMbrAddW
-#define RpcNsGroupMbrRemove RpcNsGroupMbrRemoveW
-#define RpcNsGroupMbrInqBegin RpcNsGroupMbrInqBeginW
-#define RpcNsGroupMbrInqNext RpcNsGroupMbrInqNextW
-#define RpcNsEntryExpandName RpcNsEntryExpandNameW
-#define RpcNsEntryObjectInqBegin RpcNsEntryObjectInqBeginW
-#define RpcNsMgmtBindingUnexport RpcNsMgmtBindingUnexportW
-#define RpcNsMgmtEntryCreate RpcNsMgmtEntryCreateW
-#define RpcNsMgmtEntryDelete RpcNsMgmtEntryDeleteW
-#define RpcNsMgmtEntryInqIfIds RpcNsMgmtEntryInqIfIdsW
-#define RpcNsProfileDelete RpcNsProfileDeleteW
-#define RpcNsProfileEltAdd RpcNsProfileEltAddW
-#define RpcNsProfileEltRemove RpcNsProfileEltRemoveW
-#define RpcNsProfileEltInqBegin RpcNsProfileEltInqBeginW
-#define RpcNsProfileEltInqNext RpcNsProfileEltInqNextW
-#else
-#define RpcNsBindingLookupBegin RpcNsBindingLookupBeginA
-#define RpcNsBindingImportBegin RpcNsBindingImportBeginA
-#define RpcNsBindingExport RpcNsBindingExportA
-#define RpcNsBindingUnexport RpcNsBindingUnexportA
-#define RpcNsGroupDelete RpcNsGroupDeleteA
-#define RpcNsGroupMbrAdd RpcNsGroupMbrAddA
-#define RpcNsGroupMbrRemove RpcNsGroupMbrRemoveA
-#define RpcNsGroupMbrInqBegin RpcNsGroupMbrInqBeginA
-#define RpcNsGroupMbrInqNext RpcNsGroupMbrInqNextA
-#define RpcNsEntryExpandName RpcNsEntryExpandNameA
-#define RpcNsEntryObjectInqBegin RpcNsEntryObjectInqBeginA
-#define RpcNsMgmtBindingUnexport RpcNsMgmtBindingUnexportA
-#define RpcNsMgmtEntryCreate RpcNsMgmtEntryCreateA
-#define RpcNsMgmtEntryDelete RpcNsMgmtEntryDeleteA
-#define RpcNsMgmtEntryInqIfIds RpcNsMgmtEntryInqIfIdsA
-#define RpcNsProfileDelete RpcNsProfileDeleteA
-#define RpcNsProfileEltAdd RpcNsProfileEltAddA
-#define RpcNsProfileEltRemove RpcNsProfileEltRemoveA
-#define RpcNsProfileEltInqBegin RpcNsProfileEltInqBeginA
-#define RpcNsProfileEltInqNext RpcNsProfileEltInqNextA
-#endif
+
+#define RpcNsBindingLookupBegin __AW(RpcNsBindingLookupBegin)
+#define RpcNsBindingImportBegin __AW(RpcNsBindingImportBegin)
+#define RpcNsBindingExport __AW(RpcNsBindingExport)
+#define RpcNsBindingUnexport __AW(RpcNsBindingUnexport)
+#define RpcNsGroupDelete __AW(RpcNsGroupDelete)
+#define RpcNsGroupMbrAdd __AW(RpcNsGroupMbrAdd)
+#define RpcNsGroupMbrRemove __AW(RpcNsGroupMbrRemove)
+#define RpcNsGroupMbrInqBegin __AW(RpcNsGroupMbrInqBegin)
+#define RpcNsGroupMbrInqNext __AW(RpcNsGroupMbrInqNext)
+#define RpcNsEntryExpandName __AW(RpcNsEntryExpandName)
+#define RpcNsEntryObjectInqBegin __AW(RpcNsEntryObjectInqBegin)
+#define RpcNsMgmtBindingUnexport __AW(RpcNsMgmtBindingUnexport)
+#define RpcNsMgmtEntryCreate __AW(RpcNsMgmtEntryCreate)
+#define RpcNsMgmtEntryDelete __AW(RpcNsMgmtEntryDelete)
+#define RpcNsMgmtEntryInqIfIds __AW(RpcNsMgmtEntryInqIfIds)
+#define RpcNsProfileDelete __AW(RpcNsProfileDelete)
+#define RpcNsProfileEltAdd __AW(RpcNsProfileEltAdd)
+#define RpcNsProfileEltRemove __AW(RpcNsProfileEltRemove)
+#define RpcNsProfileEltInqBegin __AW(RpcNsProfileEltInqBegin)
+#define RpcNsProfileEltInqNext __AW(RpcNsProfileEltInqNext)
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

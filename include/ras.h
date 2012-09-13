@@ -24,15 +24,14 @@
 #ifndef _RAS_H
 #define _RAS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-#ifndef _LMCONS_H
 #include <lmcons.h>
-#endif
 
 /* TODO
 include <basetsd.h> from winnt.h so that this typedef is not necessary
@@ -94,18 +93,6 @@ typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #define RASEO_NetworkLogon              0x00002000
 #define RASEO_UseLogonCredentials       0x00004000
 #define RASEO_PromoteAlternates         0x00008000
-#if (WINVER >= 0x501)
-#define RASEO2_SecureFileAndPrint       0x00000001
-#define RASEO2_SecureClientForMSNet     0x00000002
-#define RASEO2_DontNegotiateMultilink   0x00000004
-#define RASEO2_DontUseRasCredentials    0x00000008
-#define RASEO2_UsePreSharedKey          0x00000010
-#define RASEO2_Internet                 0x00000020
-#define RASEO2_DisableNbtOverIP         0x00000040
-#define RASEO2_UseGlobalDeviceSettings  0x00000080
-#define RASEO2_ReconnectIfDropped       0x00000100
-#define RASEO2_SharePhoneNumbers        0x00000200
-#endif		
 #define RASNP_NetBEUI                   0x00000001
 #define RASNP_Ipx                       0x00000002
 #define RASNP_Ip                        0x00000004
@@ -129,75 +116,6 @@ typedef unsigned long ULONG_PTR, *PULONG_PTR;
 #define RASET_Vpn       2
 #define RASET_Direct    3
 #define RASET_Internet  4
-#if (WINVER >= 0x401)
-#define RASEO_SecureLocalFiles  0x00010000
-#define RASCN_Connection        0x00000001
-#define RASCN_Disconnection     0x00000002
-#define RASCN_BandwidthAdded    0x00000004
-#define RASCN_BandwidthRemoved  0x00000008
-#define RASEDM_DialAll          1
-#define RASEDM_DialAsNeeded     2
-#define RASIDS_Disabled         0xffffffff
-#define RASIDS_UseGlobalValue   0
-#define RASADFLG_PositionDlg    0x00000001
-#define RASCM_UserName       0x00000001
-#define RASCM_Password       0x00000002
-#define RASCM_Domain         0x00000004
-#define RASADP_DisableConnectionQuery   0
-#define RASADP_LoginSessionDisable      1
-#define RASADP_SavedAddressesLimit      2
-#define RASADP_FailedConnectionTimeout  3
-#define RASADP_ConnectionQueryTimeout   4
-#endif  /* (WINVER >= 0x401) */
-#if (WINVER >= 0x500)
-#define RDEOPT_CustomDial   0x00001000
-#define RASLCPAP_PAP        0xC023
-#define RASLCPAP_SPAP       0xC027
-#define RASLCPAP_CHAP       0xC223
-#define RASLCPAP_EAP        0xC227
-#define RASLCPAD_CHAP_MD5   0x05
-#define RASLCPAD_CHAP_MS    0x80
-#define RASLCPAD_CHAP_MSV2  0x81
-#define RASLCPO_PFC         0x00000001
-#define RASLCPO_ACFC        0x00000002
-#define RASLCPO_SSHF        0x00000004
-#define RASLCPO_DES_56      0x00000008
-#define RASLCPO_3_DES       0x00000010
-#define RASCCPCA_MPPC       0x00000006
-#define RASCCPCA_STAC       0x00000005
-#define RASCCPO_Compression         0x00000001
-#define RASCCPO_HistoryLess         0x00000002
-#define RASCCPO_Encryption56bit     0x00000010
-#define RASCCPO_Encryption40bit     0x00000020
-#define RASCCPO_Encryption128bit    0x00000040
-#define RASEO_RequireEAP            0x00020000
-#define RASEO_RequirePAP            0x00040000
-#define RASEO_RequireSPAP           0x00080000
-#define RASEO_Custom                0x00100000
-#define RASEO_PreviewPhoneNumber    0x00200000
-#define RASEO_SharedPhoneNumbers    0x00800000
-#define RASEO_PreviewUserPw         0x01000000
-#define RASEO_PreviewDomain         0x02000000
-#define RASEO_ShowDialingProgress   0x04000000
-#define RASEO_RequireCHAP           0x08000000
-#define RASEO_RequireMsCHAP         0x10000000
-#define RASEO_RequireMsCHAP2        0x20000000
-#define RASEO_RequireW95MSCHAP      0x40000000
-#define RASEO_CustomScript          0x80000000
-#define RASIPO_VJ                   0x00000001
-#define RCD_SingleUser              0
-#define RCD_AllUsers                0x00000001
-#define RCD_Eap                     0x00000002
-#define RASEAPF_NonInteractive      0x00000002
-#define RASEAPF_Logon               0x00000004
-#define RASEAPF_Preview             0x00000008
-#define ET_40Bit        1
-#define ET_128Bit       2
-#define ET_None         0
-#define ET_Require      1
-#define ET_RequireMax   2
-#define ET_Optional     3
-#endif /* (WINVER >= 0x500) */
 
 #define RASCS_PAUSED 0x1000
 #define RASCS_DONE   0x2000
@@ -230,7 +148,7 @@ typedef enum tagRASCONNSTATE {
       RASCS_RetryAuthentication,
       RASCS_CallbackSetByCaller,
       RASCS_PasswordExpired,
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
       RASCS_InvokeEapUI,
 #endif
       RASCS_Connected = RASCS_DONE,
@@ -242,7 +160,7 @@ typedef enum tagRASPROJECTION {
     RASP_PppNbf =   0x803F,
     RASP_PppIpx =   0x802B,
     RASP_PppIp =    0x8021,
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     RASP_PppCcp =   0x80FD,
 #endif
     RASP_PppLcp =   0xC021,
@@ -256,18 +174,16 @@ typedef struct tagRASCONNW {
     DWORD dwSize;
     HRASCONN hrasconn;
     WCHAR szEntryName[RAS_MaxEntryName + 1];
-#if (WINVER >= 0x400) 
     WCHAR szDeviceType[RAS_MaxDeviceType + 1];
     WCHAR szDeviceName[RAS_MaxDeviceName + 1];
-#endif
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     WCHAR szPhonebook[MAX_PATH];
     DWORD dwSubEntry;
 #endif
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     GUID guidEntry;
 #endif
-#if (WINVER >= 0x501)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
     DWORD dwFlags;
     LUID luid;
 #endif
@@ -277,18 +193,16 @@ typedef struct tagRASCONNA {
     DWORD dwSize;
     HRASCONN hrasconn;
     CHAR szEntryName[RAS_MaxEntryName + 1];
-#if (WINVER >= 0x400) 
     CHAR szDeviceType[RAS_MaxDeviceType + 1];
     CHAR szDeviceName[RAS_MaxDeviceName + 1];
-#endif
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     CHAR szPhonebook[MAX_PATH];
     DWORD dwSubEntry;
 #endif
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     GUID guidEntry;
 #endif
-#if (WINVER >= 0x501)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
     DWORD dwFlags;
     LUID luid;
 #endif
@@ -300,7 +214,7 @@ typedef struct tagRASCONNSTATUSW {
     DWORD dwError;
     WCHAR szDeviceType[RAS_MaxDeviceType + 1];
     WCHAR szDeviceName[RAS_MaxDeviceName + 1];
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     WCHAR szPhoneNumber[RAS_MaxPhoneNumber + 1];
 #endif
 } RASCONNSTATUSW, *LPRASCONNSTATUSW;
@@ -311,7 +225,7 @@ typedef struct tagRASCONNSTATUSA {
     DWORD dwError;
     CHAR szDeviceType[RAS_MaxDeviceType + 1];
     CHAR szDeviceName[RAS_MaxDeviceName + 1];
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     CHAR szPhoneNumber[RAS_MaxPhoneNumber + 1];
 #endif
 } RASCONNSTATUSA, *LPRASCONNSTATUSA;
@@ -324,7 +238,7 @@ typedef struct tagRASDIALPARAMSW {
     WCHAR szUserName[UNLEN + 1];
     WCHAR szPassword[PWLEN + 1];
     WCHAR szDomain[DNLEN + 1];
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     DWORD dwSubEntry;
     ULONG_PTR dwCallbackId;
 #endif
@@ -338,25 +252,18 @@ typedef struct tagRASDIALPARAMSA {
     CHAR szUserName[UNLEN + 1];
     CHAR szPassword[PWLEN + 1];
     CHAR szDomain[DNLEN + 1];
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     DWORD dwSubEntry;
     ULONG_PTR dwCallbackId;
 #endif
 } RASDIALPARAMSA, *LPRASDIALPARAMSA;
-
-#if (WINVER >= 0x500)
-typedef struct tagRASEAPINFO {
-    DWORD dwSizeofEapInfo;
-    BYTE *pbEapInfo;
-} RASEAPINFO;
-#endif
 
 typedef struct tagRASDIALEXTENSIONS {
     DWORD dwSize;
     DWORD dwfOptions;
     HWND hwndParent;
     ULONG_PTR reserved;
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     ULONG_PTR reserved1;
     RASEAPINFO RasEapInfo;
 #endif
@@ -365,7 +272,7 @@ typedef struct tagRASDIALEXTENSIONS {
 typedef struct tagRASENTRYNAMEW {
     DWORD dwSize;
     WCHAR szEntryName[RAS_MaxEntryName + 1];
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwFlags;
     WCHAR szPhonebookPath[MAX_PATH + 1];
 #endif
@@ -374,7 +281,7 @@ typedef struct tagRASENTRYNAMEW {
 typedef struct tagRASENTRYNAMEA {
     DWORD dwSize;
     CHAR szEntryName[RAS_MaxEntryName + 1];
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwFlags;
     CHAR szPhonebookPath[MAX_PATH + 1];
 #endif
@@ -431,7 +338,7 @@ typedef struct tagRASPPPIPW {
 #ifndef WINNT35COMPATIBLE
     WCHAR szServerIpAddress[RAS_MaxIpAddress + 1];
 #endif
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwOptions;
     DWORD dwServerOptions;
 #endif
@@ -444,7 +351,7 @@ typedef struct tagRASPPPIPA {
 #ifndef WINNT35COMPATIBLE
     CHAR szServerIpAddress[RAS_MaxIpAddress + 1];
 #endif
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwOptions;
     DWORD dwServerOptions;
 #endif
@@ -453,7 +360,7 @@ typedef struct tagRASPPPIPA {
 typedef struct tagRASPPPLCPW {
     DWORD dwSize;
     BOOL fBundled;
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwError;
     DWORD dwAuthenticationProtocol;
     DWORD dwAuthenticationData;
@@ -473,7 +380,7 @@ typedef struct tagRASPPPLCPW {
 typedef struct tagRASPPPLCPA {
     DWORD dwSize;
     BOOL fBundled;
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwError;
     DWORD dwAuthenticationProtocol;
     DWORD dwAuthenticationData;
@@ -561,7 +468,7 @@ typedef struct tagRASENTRYW {
     DWORD dwChannels;
     DWORD dwReserved1;
     DWORD dwReserved2;
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     DWORD dwSubEntries;
     DWORD dwDialMode;
     DWORD dwDialExtraPercent;
@@ -570,7 +477,7 @@ typedef struct tagRASENTRYW {
     DWORD dwHangUpExtraSampleSeconds;
     DWORD dwIdleDisconnectSeconds;
 #endif
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwType;
     DWORD dwEncryptionType;
     DWORD dwCustomAuthKey;
@@ -578,7 +485,7 @@ typedef struct tagRASENTRYW {
     WCHAR szCustomDialDll[MAX_PATH];
     DWORD dwVpnStrategy;
 #endif
-#if (WINVER >= 0x501)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 	DWORD dwfOptions2;
 	DWORD dwfOptions3;
 	WCHAR szDnsSuffix[RAS_MaxDnsSuffix];
@@ -618,7 +525,7 @@ typedef struct tagRASENTRYA {
     DWORD dwChannels;
     DWORD dwReserved1;
     DWORD dwReserved2;
-#if (WINVER >= 0x401)
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
     DWORD dwSubEntries;
     DWORD dwDialMode;
     DWORD dwDialExtraPercent;
@@ -627,7 +534,7 @@ typedef struct tagRASENTRYA {
     DWORD dwHangUpExtraSampleSeconds;
     DWORD dwIdleDisconnectSeconds;
 #endif
-#if (WINVER >= 0x500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
     DWORD dwType;
     DWORD dwEncryptionType;
     DWORD dwCustomAuthKey;
@@ -635,7 +542,7 @@ typedef struct tagRASENTRYA {
     CHAR szCustomDialDll[MAX_PATH];
     DWORD dwVpnStrategy;
 #endif
-#if (WINVER >= 0x501)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 	DWORD dwfOptions2;
 	DWORD dwfOptions3;
 	CHAR szDnsSuffix[RAS_MaxDnsSuffix];
@@ -648,154 +555,21 @@ typedef struct tagRASENTRYA {
 } RASENTRYA, *LPRASENTRYA;
 
 
-#if (WINVER >= 0x401)
-typedef struct tagRASADPARAMS {
-    DWORD dwSize;
-    HWND hwndOwner;
-    DWORD dwFlags;
-    LONG xDlg;
-    LONG yDlg;
-} RASADPARAMS, *LPRASADPARAMS;
-
-typedef struct tagRASSUBENTRYW {
-    DWORD dwSize;
-    DWORD dwfFlags;
-    WCHAR szDeviceType[RAS_MaxDeviceType + 1];
-    WCHAR szDeviceName[RAS_MaxDeviceName + 1];
-    WCHAR szLocalPhoneNumber[RAS_MaxPhoneNumber + 1];
-    DWORD dwAlternateOffset;
-} RASSUBENTRYW, *LPRASSUBENTRYW;
-
-typedef struct tagRASSUBENTRYA {
-    DWORD dwSize;
-    DWORD dwfFlags;
-    CHAR szDeviceType[RAS_MaxDeviceType + 1];
-    CHAR szDeviceName[RAS_MaxDeviceName + 1];
-    CHAR szLocalPhoneNumber[RAS_MaxPhoneNumber + 1];
-    DWORD dwAlternateOffset;
-} RASSUBENTRYA, *LPRASSUBENTRYA;
-
-typedef struct tagRASCREDENTIALSW {
-    DWORD dwSize;
-    DWORD dwMask;
-    WCHAR szUserName[UNLEN + 1];
-    WCHAR szPassword[PWLEN + 1];
-    WCHAR szDomain[DNLEN + 1];
-} RASCREDENTIALSW, *LPRASCREDENTIALSW;
-
-typedef struct tagRASCREDENTIALSA {
-    DWORD dwSize;
-    DWORD dwMask;
-    CHAR szUserName[UNLEN + 1];
-    CHAR szPassword[PWLEN + 1];
-    CHAR szDomain[DNLEN + 1];
-} RASCREDENTIALSA, *LPRASCREDENTIALSA;
-
-typedef struct tagRASAUTODIALENTRYW {
-    DWORD dwSize;
-    DWORD dwFlags;
-    DWORD dwDialingLocation;
-    WCHAR szEntry[RAS_MaxEntryName + 1];
-} RASAUTODIALENTRYW, *LPRASAUTODIALENTRYW;
-
-typedef struct tagRASAUTODIALENTRYA {
-    DWORD dwSize;
-    DWORD dwFlags;
-    DWORD dwDialingLocation;
-    CHAR szEntry[RAS_MaxEntryName + 1];
-} RASAUTODIALENTRYA, *LPRASAUTODIALENTRYA;
-#endif /* (WINVER >= 0x401) */
-
-#if (WINVER >= 0x500)
-typedef struct tagRASPPPCCP {
-    DWORD dwSize;
-    DWORD dwError;
-    DWORD dwCompressionAlgorithm;
-    DWORD dwOptions;
-    DWORD dwServerCompressionAlgorithm;
-    DWORD dwServerOptions;
-} RASPPPCCP, *LPRASPPPCCP;
-
-typedef struct tagRASEAPUSERIDENTITYW {
-    WCHAR szUserName[UNLEN + 1];
-    DWORD dwSizeofEapInfo;
-    BYTE pbEapInfo[1];
-} RASEAPUSERIDENTITYW, *LPRASEAPUSERIDENTITYW;
-
-typedef struct tagRASEAPUSERIDENTITYA {
-    CHAR szUserName[UNLEN + 1];
-    DWORD dwSizeofEapInfo;
-    BYTE pbEapInfo[1];
-} RASEAPUSERIDENTITYA, *LPRASEAPUSERIDENTITYA;
-
-typedef struct tagRAS_STATS {
-    DWORD dwSize;
-    DWORD dwBytesXmited;
-    DWORD dwBytesRcved;
-    DWORD dwFramesXmited;
-    DWORD dwFramesRcved;
-    DWORD dwCrcErr;
-    DWORD dwTimeoutErr;
-    DWORD dwAlignmentErr;
-    DWORD dwHardwareOverrunErr;
-    DWORD dwFramingErr;
-    DWORD dwBufferOverrunErr;
-    DWORD dwCompressionRatioIn;
-    DWORD dwCompressionRatioOut;
-    DWORD dwBps;
-    DWORD dwConnectDuration;
-} RAS_STATS, *PRAS_STATS;
-#endif /* (WINVER >= 0x500) */
-
 
 /* UNICODE typedefs for structures*/
-#ifdef UNICODE
-typedef RASCONNW RASCONN, *LPRASCONN;
-typedef RASENTRYW  RASENTRY, *LPRASENTRY;
-typedef RASCONNSTATUSW RASCONNSTATUS, *LPRASCONNSTATUS;
-typedef RASDIALPARAMSW RASDIALPARAMS, *LPRASDIALPARAMS;
-typedef RASAMBW RASAMB, *LPRASAM;
-typedef RASPPPNBFW RASPPPNBF, *LPRASPPPNBF;
-typedef RASPPPIPXW RASPPPIPX, *LPRASPPPIPX;
-typedef RASPPPIPW RASPPPIP, *LPRASPPPIP; 
-typedef RASPPPLCPW RASPPPLCP, *LPRASPPPLCP;
-typedef RASSLIPW RASSLIP, *LPRASSLIP;
-typedef RASDEVINFOW  RASDEVINFO, *LPRASDEVINFO;
-typedef RASENTRYNAMEW RASENTRYNAME, *LPRASENTRYNAME;
+typedef __AW(RASCONN) RASCONN, *LPRASCONN;
+typedef __AW(RASENTRYW) RASENTRY, *LPRASENTRY;
+typedef __AW(RASCONNSTATUS) RASCONNSTATUS, *LPRASCONNSTATUS;
+typedef __AW(RASDIALPARAMS) RASDIALPARAMS, *LPRASDIALPARAMS;
+typedef __AW(RASAMB) RASAMB, *LPRASAM;
+typedef __AW(RASPPPNBF) RASPPPNBF, *LPRASPPPNBF;
+typedef __AW(RASPPPIPX) RASPPPIPX, *LPRASPPPIPX;
+typedef __AW(RASPPPIP) RASPPPIP, *LPRASPPPIP; 
+typedef __AW(RASPPPLCP) RASPPPLCP, *LPRASPPPLCP;
+typedef __AW(RASSLIP) RASSLIP, *LPRASSLIP;
+typedef __AW(RASDEVINFOW) RASDEVINFO, *LPRASDEVINFO;
+typedef __AW(RASENTRYNAME) RASENTRYNAME, *LPRASENTRYNAME;
 
-#if (WINVER >= 0x401)
-typedef RASSUBENTRYW RASSUBENTRY, *LPRASSUBENTRY;
-typedef RASCREDENTIALSW RASCREDENTIALS, *LPRASCREDENTIALS;
-typedef RASAUTODIALENTRYW RASAUTODIALENTRY, *LPRASAUTODIALENTRY;
-#endif /* (WINVER >= 0x401) */
-
-#if (WINVER >= 0x500)
-typedef RASEAPUSERIDENTITYW RASEAPUSERIDENTITY, *LPRASEAPUSERIDENTITY;
-#endif /* (WINVER >= 0x500) */
-
-#else  /* ! defined UNICODE */
-typedef RASCONNA RASCONN, *LPRASCONN;
-typedef RASENTRYA  RASENTRY, *LPRASENTRY;
-typedef RASCONNSTATUSA RASCONNSTATUS, *LPRASCONNSTATUS;
-typedef RASDIALPARAMSA RASDIALPARAMS, *LPRASDIALPARAMS;
-typedef RASAMBA RASAMB, *LPRASAM;
-typedef RASPPPNBFA RASPPPNBF, *LPRASPPPNBF;
-typedef RASPPPIPXA RASPPPIPX, *LPRASPPPIPX;
-typedef RASPPPIPA RASPPPIP, *LPRASPPPIP;
-typedef RASPPPLCPA RASPPPLCP, *LPRASPPPLCP;
-typedef RASSLIPA RASSLIP, *LPRASSLIP;
-typedef RASDEVINFOA  RASDEVINFO, *LPRASDEVINFO;
-typedef RASENTRYNAMEA RASENTRYNAME, *LPRASENTRYNAME;
-
-#if (WINVER >= 0x401)
-typedef RASSUBENTRYA RASSUBENTRY, *LPRASSUBENTRY;
-typedef RASCREDENTIALSA RASCREDENTIALS, *LPRASCREDENTIALS;
-typedef RASAUTODIALENTRYA RASAUTODIALENTRY, *LPRASAUTODIALENTRY;
-#endif /*(WINVER >= 0x401)*/
-#if (WINVER >= 0x500)
-typedef RASEAPUSERIDENTITYA RASEAPUSERIDENTITY, *LPRASEAPUSERIDENTITY;
-#endif /* (WINVER >= 0x500) */
-#endif /* ! UNICODE */
 
 /* Callback prototypes */
 typedef BOOL (WINAPI * ORASADFUNC) (HWND, LPSTR, DWORD, LPDWORD); /* deprecated */
@@ -853,7 +627,61 @@ DWORD APIENTRY RasDeleteEntryW (LPCWSTR, LPCWSTR);
 DWORD APIENTRY RasValidateEntryNameA (LPCSTR, LPCSTR);
 DWORD APIENTRY RasValidateEntryNameW (LPCWSTR, LPCWSTR);
 
-#if (WINVER >= 0x401)
+
+/* UNICODE defines for functions */
+#define RasDial __AW(RasDial)
+#define RasEnumConnections __AW(RasEnumConnections)
+#define RasEnumEntries __AW(RasEnumEntries)
+#define RasGetConnectStatus __AW(RasGetConnectStatus)
+#define RasGetErrorString __AW(RasGetErrorString)
+#define RasHangUp __AW(RasHangUp)
+#define RasGetProjectionInfo __AW(RasGetProjectionInfo)
+#define RasCreatePhonebookEntry __AW(RasCreatePhonebookEntry)
+#define RasEditPhonebookEntry __AW(RasEditPhonebookEntry)
+#define RasSetEntryDialParams __AW(RasSetEntryDialParams)
+#define RasGetEntryDialParams __AW(RasGetEntryDialParams)
+#define RasEnumDevices __AW(RasEnumDevices)
+#define RasGetCountryInfo __AW(RasGetCountryInfo)
+#define RasGetEntryProperties __AW(RasGetEntryProperties)
+#define RasSetEntryProperties __AW(RasSetEntryProperties)
+#define RasRenameEntry __AW(RasRenameEntry)
+#define RasDeleteEntry __AW(RasDeleteEntry)
+#define RasValidateEntryName __AW(RasValidateEntryName)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_NT4E)
+#define RASADFUNC __AW(RASADFUNC)
+#define RasGetSubEntryHandle __AW(RasGetSubEntryHandle)
+#define RasConnectionNotification __AW(RasConnectionNotification)
+#define RasGetSubEntryProperties __AW(RasGetSubEntryProperties)
+#define RasSetSubEntryProperties __AW(RasSetSubEntryProperties)
+#define RasGetCredentials __AW(RasGetCredentials)
+#define RasSetCredentials __AW(RasSetCredentials)
+#define RasGetAutodialAddress __AW(RasGetAutodialAddress)
+#define RasSetAutodialAddress __AW(RasSetAutodialAddress)
+#define RasEnumAutodialAddresses __AW(RasEnumAutodialAddresses)
+#define RasGetAutodialEnable __AW(RasGetAutodialEnable)
+#define RasSetAutodialEnable __AW(RasSetAutodialEnable)
+#define RasGetAutodialParam __AW(RasGetAutodialParam)
+#define RasSetAutodialParam __AW(RasSetAutodialParam)
+#define RASEO_SecureLocalFiles  0x00010000
+#define RASCN_Connection        0x00000001
+#define RASCN_Disconnection     0x00000002
+#define RASCN_BandwidthAdded    0x00000004
+#define RASCN_BandwidthRemoved  0x00000008
+#define RASEDM_DialAll          1
+#define RASEDM_DialAsNeeded     2
+#define RASIDS_Disabled         0xffffffff
+#define RASIDS_UseGlobalValue   0
+#define RASADFLG_PositionDlg    0x00000001
+#define RASCM_UserName       0x00000001
+#define RASCM_Password       0x00000002
+#define RASCM_Domain         0x00000004
+#define RASADP_DisableConnectionQuery   0
+#define RASADP_LoginSessionDisable      1
+#define RASADP_SavedAddressesLimit      2
+#define RASADP_FailedConnectionTimeout  3
+#define RASADP_ConnectionQueryTimeout   4
+
 typedef BOOL (WINAPI * RASADFUNCA) (LPSTR, LPSTR, LPRASADPARAMS, LPDWORD);
 typedef BOOL (WINAPI * RASADFUNCW) (LPWSTR, LPWSTR, LPRASADPARAMS, LPDWORD);
 
@@ -891,9 +719,126 @@ DWORD APIENTRY RasGetAutodialParamA (DWORD, LPVOID, LPDWORD);
 DWORD APIENTRY RasGetAutodialParamW (DWORD, LPVOID, LPDWORD);
 DWORD APIENTRY RasSetAutodialParamA (DWORD, LPVOID, DWORD);
 DWORD APIENTRY RasSetAutodialParamW (DWORD, LPVOID, DWORD);
-#endif
+typedef __AW(RASSUBENTRY) RASSUBENTRY, *LPRASSUBENTRY;
+typedef __AW(RASCREDENTIALS) RASCREDENTIALS, *LPRASCREDENTIALS;
+typedef __AW(RASAUTODIALENTRY) RASAUTODIALENTRY, *LPRASAUTODIALENTRY;
+typedef struct tagRASADPARAMS {
+    DWORD dwSize;
+    HWND hwndOwner;
+    DWORD dwFlags;
+    LONG xDlg;
+    LONG yDlg;
+} RASADPARAMS, *LPRASADPARAMS;
 
-#if (WINVER >= 0x500)
+typedef struct tagRASSUBENTRYW {
+    DWORD dwSize;
+    DWORD dwfFlags;
+    WCHAR szDeviceType[RAS_MaxDeviceType + 1];
+    WCHAR szDeviceName[RAS_MaxDeviceName + 1];
+    WCHAR szLocalPhoneNumber[RAS_MaxPhoneNumber + 1];
+    DWORD dwAlternateOffset;
+} RASSUBENTRYW, *LPRASSUBENTRYW;
+
+typedef struct tagRASSUBENTRYA {
+    DWORD dwSize;
+    DWORD dwfFlags;
+    CHAR szDeviceType[RAS_MaxDeviceType + 1];
+    CHAR szDeviceName[RAS_MaxDeviceName + 1];
+    CHAR szLocalPhoneNumber[RAS_MaxPhoneNumber + 1];
+    DWORD dwAlternateOffset;
+} RASSUBENTRYA, *LPRASSUBENTRYA;
+
+typedef struct tagRASCREDENTIALSW {
+    DWORD dwSize;
+    DWORD dwMask;
+    WCHAR szUserName[UNLEN + 1];
+    WCHAR szPassword[PWLEN + 1];
+    WCHAR szDomain[DNLEN + 1];
+} RASCREDENTIALSW, *LPRASCREDENTIALSW;
+
+typedef struct tagRASCREDENTIALSA {
+    DWORD dwSize;
+    DWORD dwMask;
+    CHAR szUserName[UNLEN + 1];
+    CHAR szPassword[PWLEN + 1];
+    CHAR szDomain[DNLEN + 1];
+} RASCREDENTIALSA, *LPRASCREDENTIALSA;
+
+typedef struct tagRASAUTODIALENTRYW {
+    DWORD dwSize;
+    DWORD dwFlags;
+    DWORD dwDialingLocation;
+    WCHAR szEntry[RAS_MaxEntryName + 1];
+} RASAUTODIALENTRYW, *LPRASAUTODIALENTRYW;
+
+typedef struct tagRASAUTODIALENTRYA {
+    DWORD dwSize;
+    DWORD dwFlags;
+    DWORD dwDialingLocation;
+    CHAR szEntry[RAS_MaxEntryName + 1];
+} RASAUTODIALENTRYA, *LPRASAUTODIALENTRYA;
+
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_NT4E) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+#define RasGetEapUserData __AW(RasGetEapUserData)
+#define RasSetEapUserData __AW(RasSetEapUserData)
+#define RasGetCustomAuthData __AW(RasGetCustomAuthData)
+#define RasSetCustomAuthData __AW(RasSetCustomAuthData)
+#define RasGetEapUserIdentity __AW(RasGetEapUserIdentity)
+#define RasFreeEapUserIdentity __AW(RasFreeEapUserIdentity)
+#define RDEOPT_CustomDial   0x00001000
+#define RASLCPAP_PAP        0xC023
+#define RASLCPAP_SPAP       0xC027
+#define RASLCPAP_CHAP       0xC223
+#define RASLCPAP_EAP        0xC227
+#define RASLCPAD_CHAP_MD5   0x05
+#define RASLCPAD_CHAP_MS    0x80
+#define RASLCPAD_CHAP_MSV2  0x81
+#define RASLCPO_PFC         0x00000001
+#define RASLCPO_ACFC        0x00000002
+#define RASLCPO_SSHF        0x00000004
+#define RASLCPO_DES_56      0x00000008
+#define RASLCPO_3_DES       0x00000010
+#define RASCCPCA_MPPC       0x00000006
+#define RASCCPCA_STAC       0x00000005
+#define RASCCPO_Compression         0x00000001
+#define RASCCPO_HistoryLess         0x00000002
+#define RASCCPO_Encryption56bit     0x00000010
+#define RASCCPO_Encryption40bit     0x00000020
+#define RASCCPO_Encryption128bit    0x00000040
+#define RASEO_RequireEAP            0x00020000
+#define RASEO_RequirePAP            0x00040000
+#define RASEO_RequireSPAP           0x00080000
+#define RASEO_Custom                0x00100000
+#define RASEO_PreviewPhoneNumber    0x00200000
+#define RASEO_SharedPhoneNumbers    0x00800000
+#define RASEO_PreviewUserPw         0x01000000
+#define RASEO_PreviewDomain         0x02000000
+#define RASEO_ShowDialingProgress   0x04000000
+#define RASEO_RequireCHAP           0x08000000
+#define RASEO_RequireMsCHAP         0x10000000
+#define RASEO_RequireMsCHAP2        0x20000000
+#define RASEO_RequireW95MSCHAP      0x40000000
+#define RASEO_CustomScript          0x80000000
+#define RASIPO_VJ                   0x00000001
+#define RCD_SingleUser              0
+#define RCD_AllUsers                0x00000001
+#define RCD_Eap                     0x00000002
+#define RASEAPF_NonInteractive      0x00000002
+#define RASEAPF_Logon               0x00000004
+#define RASEAPF_Preview             0x00000008
+#define ET_40Bit        1
+#define ET_128Bit       2
+#define ET_None         0
+#define ET_Require      1
+#define ET_RequireMax   2
+#define ET_Optional     3
+
+typedef struct tagRASEAPINFO {
+    DWORD dwSizeofEapInfo;
+    BYTE *pbEapInfo;
+} RASEAPINFO;
 typedef DWORD (WINAPI * RasCustomHangUpFn) (HRASCONN);
 typedef DWORD (WINAPI * RasCustomDeleteEntryNotifyFn) (LPCTSTR,	LPCTSTR, DWORD);
 typedef DWORD (WINAPI * RasCustomDialFn) (HINSTANCE, LPRASDIALEXTENSIONS,
@@ -916,103 +861,65 @@ DWORD APIENTRY RasGetEapUserIdentityW (LPCWSTR, LPCWSTR, DWORD, HWND, LPRASEAPUS
 DWORD APIENTRY RasGetEapUserIdentityA (LPCSTR, LPCSTR, DWORD, HWND, LPRASEAPUSERIDENTITYA*);
 VOID APIENTRY RasFreeEapUserIdentityW (LPRASEAPUSERIDENTITYW);
 VOID APIENTRY RasFreeEapUserIdentityA (LPRASEAPUSERIDENTITYA);
-#endif  /* (WINVER >= 0x500) */
+typedef __AW(RASEAPUSERIDENTITY) RASEAPUSERIDENTITY, *LPRASEAPUSERIDENTITY;
+typedef struct tagRASPPPCCP {
+    DWORD dwSize;
+    DWORD dwError;
+    DWORD dwCompressionAlgorithm;
+    DWORD dwOptions;
+    DWORD dwServerCompressionAlgorithm;
+    DWORD dwServerOptions;
+} RASPPPCCP, *LPRASPPPCCP;
 
+typedef struct tagRASEAPUSERIDENTITYW {
+    WCHAR szUserName[UNLEN + 1];
+    DWORD dwSizeofEapInfo;
+    BYTE pbEapInfo[1];
+} RASEAPUSERIDENTITYW, *LPRASEAPUSERIDENTITYW;
 
-/* UNICODE defines for functions */
-#ifdef UNICODE
-#define RasDial RasDialW
-#define RasEnumConnections RasEnumConnectionsW
-#define RasEnumEntries RasEnumEntriesW
-#define RasGetConnectStatus RasGetConnectStatusW
-#define RasGetErrorString RasGetErrorStringW
-#define RasHangUp RasHangUpW
-#define RasGetProjectionInfo RasGetProjectionInfoW
-#define RasCreatePhonebookEntry RasCreatePhonebookEntryW
-#define RasEditPhonebookEntry RasEditPhonebookEntryW
-#define RasSetEntryDialParams RasSetEntryDialParamsW
-#define RasGetEntryDialParams RasGetEntryDialParamsW
-#define RasEnumDevices RasEnumDevicesW
-#define RasGetCountryInfo RasGetCountryInfoW
-#define RasGetEntryProperties RasGetEntryPropertiesW
-#define RasSetEntryProperties RasSetEntryPropertiesW
-#define RasRenameEntry RasRenameEntryW
-#define RasDeleteEntry RasDeleteEntryW
-#define RasValidateEntryName RasValidateEntryNameW
-#if (WINVER >= 0x401)
-#define RASADFUNC RASADFUNCW
-#define RasGetSubEntryHandle RasGetSubEntryHandleW
-#define RasConnectionNotification RasConnectionNotificationW
-#define RasGetSubEntryProperties RasGetSubEntryPropertiesW
-#define RasSetSubEntryProperties RasSetSubEntryPropertiesW
-#define RasGetCredentials RasGetCredentialsW
-#define RasSetCredentials RasSetCredentialsW
-#define RasGetAutodialAddress RasGetAutodialAddressW
-#define RasSetAutodialAddress RasSetAutodialAddressW
-#define RasEnumAutodialAddresses RasEnumAutodialAddressesW
-#define RasGetAutodialEnable RasGetAutodialEnableW
-#define RasSetAutodialEnable RasSetAutodialEnableW
-#define RasGetAutodialParam RasGetAutodialParamW
-#define RasSetAutodialParam RasSetAutodialParamW
-#endif /* (WINVER >= 0x401) */
-#if (WINVER >= 0x500)
-#define RasGetEapUserData RasGetEapUserDataW
-#define RasSetEapUserData RasSetEapUserDataW
-#define RasGetCustomAuthData RasGetCustomAuthDataW
-#define RasSetCustomAuthData RasSetCustomAuthDataW
-#define RasGetEapUserIdentity RasGetEapUserIdentityW
-#define RasFreeEapUserIdentity RasFreeEapUserIdentityW
-#endif /* (WINVER >= 0x500) */
+typedef struct tagRASEAPUSERIDENTITYA {
+    CHAR szUserName[UNLEN + 1];
+    DWORD dwSizeofEapInfo;
+    BYTE pbEapInfo[1];
+} RASEAPUSERIDENTITYA, *LPRASEAPUSERIDENTITYA;
 
-#else  /* ! defined UNICODE */
-#define RasDial RasDialA
-#define RasEnumConnections RasEnumConnectionsA
-#define RasEnumEntries RasEnumEntriesA
-#define RasGetConnectStatus RasGetConnectStatusA
-#define RasGetErrorString RasGetErrorStringA
-#define RasHangUp RasHangUpA
-#define RasGetProjectionInfo RasGetProjectionInfoA
-#define RasCreatePhonebookEntry RasCreatePhonebookEntryA
-#define RasEditPhonebookEntry RasEditPhonebookEntryA
-#define RasSetEntryDialParams RasSetEntryDialParamsA
-#define RasGetEntryDialParams RasGetEntryDialParamsA
-#define RasEnumDevices RasEnumDevicesA
-#define RasGetCountryInfo RasGetCountryInfoA
-#define RasGetEntryProperties RasGetEntryPropertiesA
-#define RasSetEntryProperties RasSetEntryPropertiesA
-#define RasRenameEntry RasRenameEntryA
-#define RasDeleteEntry RasDeleteEntryA
-#define RasValidateEntryName RasValidateEntryNameA
+typedef struct tagRAS_STATS {
+    DWORD dwSize;
+    DWORD dwBytesXmited;
+    DWORD dwBytesRcved;
+    DWORD dwFramesXmited;
+    DWORD dwFramesRcved;
+    DWORD dwCrcErr;
+    DWORD dwTimeoutErr;
+    DWORD dwAlignmentErr;
+    DWORD dwHardwareOverrunErr;
+    DWORD dwFramingErr;
+    DWORD dwBufferOverrunErr;
+    DWORD dwCompressionRatioIn;
+    DWORD dwCompressionRatioOut;
+    DWORD dwBps;
+    DWORD dwConnectDuration;
+} RAS_STATS, *PRAS_STATS;
 
-#if (WINVER >= 0x401)
-#define RASADFUNC RASADFUNCA
-#define RasGetSubEntryHandle RasGetSubEntryHandleA
-#define RasConnectionNotification RasConnectionNotificationA
-#define RasGetSubEntryProperties RasGetSubEntryPropertiesA
-#define RasSetSubEntryProperties RasSetSubEntryPropertiesA
-#define RasGetCredentials RasGetCredentialsA
-#define RasSetCredentials RasSetCredentialsA
-#define RasGetAutodialAddress RasGetAutodialAddressA
-#define RasSetAutodialAddress RasSetAutodialAddressA
-#define RasEnumAutodialAddressesRasEnumAutodialAddressesA
-#define RasGetAutodialEnable RasGetAutodialEnableA
-#define RasSetAutodialEnable RasSetAutodialEnableA
-#define RasGetAutodialParam RasGetAutodialParamA
-#define RasSetAutodialParam RasSetAutodialParamA
-#endif /*(WINVER >= 0x401)*/
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
-#if (WINVER >= 0x500)
-#define RasGetEapUserData RasGetEapUserDataA
-#define RasSetEapUserData RasSetEapUserDataA
-#define RasGetCustomAuthData RasGetCustomAuthDataA
-#define RasSetCustomAuthData RasSetCustomAuthDataA
-#define RasGetEapUserIdentity RasGetEapUserIdentityA
-#define RasFreeEapUserIdentity RasFreeEapUserIdentityA
-#endif /* (WINVER >= 0x500) */
-#endif /* ! UNICODE */
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+#define RASEO2_SecureFileAndPrint       0x00000001
+#define RASEO2_SecureClientForMSNet     0x00000002
+#define RASEO2_DontNegotiateMultilink   0x00000004
+#define RASEO2_DontUseRasCredentials    0x00000008
+#define RASEO2_UsePreSharedKey          0x00000010
+#define RASEO2_Internet                 0x00000020
+#define RASEO2_DisableNbtOverIP         0x00000040
+#define RASEO2_UseGlobalDeviceSettings  0x00000080
+#define RASEO2_ReconnectIfDropped       0x00000100
+#define RASEO2_SharePhoneNumbers        0x00000200
+#endif		
 
 #ifdef __cplusplus
 }
 #endif
+
 #include <poppack.h>
+
 #endif /* _RAS_H */ 

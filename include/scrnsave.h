@@ -24,6 +24,7 @@
 #ifndef _SCRNSAVE_H
 #define _SCRNSAVE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,6 +63,7 @@ BOOL WINAPI RegisterDialogClasses(HANDLE);
 LONG WINAPI ScreenSaverProc(HWND,UINT,WPARAM,LPARAM);
 
 /* Change name of function if we are using UNICODE */
+/* Cannot use _AW() since there is no A version. */
 #ifdef UNICODE
 #define DefScreenSaverProc DefScreenSaverProcW
 #endif

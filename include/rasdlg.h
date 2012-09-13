@@ -24,6 +24,7 @@
 #ifndef _RASDLG_H
 #define _RASDLG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -149,25 +150,17 @@ BOOL APIENTRY RasEntryDlgW(LPWSTR,LPWSTR,LPRASENTRYDLGW);
 BOOL APIENTRY RasPhonebookDlgA(LPSTR,LPSTR,LPRASPBDLGA);
 BOOL APIENTRY RasPhonebookDlgW(LPWSTR,LPWSTR,LPRASPBDLGW);
 
-#ifdef UNICODE
-typedef RASENTRYDLGW	RASENTRYDLG, *LPRASENTRYDLG;
-typedef RASPBDLGW	RASPBDLG, *LPRASPBDLG;
-typedef RASNOUSERW	RASNOUSER, *LPRASNOUSER;
-#define RasDialDlg	RasDialDlgW
-#define RasEntryDlg	RasEntryDlgW
-#define RasPhonebookDlg	RasPhonebookDlgW
-#else
-typedef RASENTRYDLGA	RASENTRYDLG, *LPRASENTRYDLG;
-typedef RASPBDLGA	RASPBDLG, *LPRASPBDLG;
-typedef RASNOUSERA	RASNOUSER, *LPRASNOUSER;
-#define RasDialDlg	RasDialDlgA
-#define RasEntryDlg	RasEntryDlgA
-#define RasPhonebookDlg	RasPhonebookDlgA
-#endif /* UNICODE */
+typedef __AW(RASENTRYDLG)	RASENTRYDLG, *LPRASENTRYDLG;
+typedef __AW(RASPBDLG)	RASPBDLG, *LPRASPBDLG;
+typedef __AW(RASNOUSER)	RASNOUSER, *LPRASNOUSER;
+#define RasDialDlg	__AW(RasDialDlg)
+#define RasEntryDlg	__AW(RasEntryDlg)
+#define RasPhonebookDlg	__AW(RasPhonebookDlg)
 
 #endif /* RC_INVOKED */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

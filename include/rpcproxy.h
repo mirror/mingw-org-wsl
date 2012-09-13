@@ -21,6 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _RPCPROXY_H
+#define _RPCPROXY_H
+#pragma GCC system_header
+#include <_mingw.h>
+
 /*
  *  -DREGISTER_PROXY_DLL Generates DllMain, DllRegisterServer, and
  *    DllUnregisterServer
@@ -28,16 +33,16 @@
  *  -DPROXY_CLSID_IS={..} Specifies the class ID to be used by the proxy DLL.
  *  -DNT35_STRICT No new features
 */
-#ifndef _RPCPROXY_H
-#define _RPCPROXY_H
-#pragma GCC system_header
 
 #if defined  __cplusplus  && !defined CINTERFACE
 #warning "rpcproxy type definitions require CINTERFACE"
+
 #else
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <rpc.h>
 #include <rpcndr.h>
 #include <string.h>
@@ -66,21 +71,28 @@ HRESULT STDAPICALLTYPE DllUnregisterServer(void)\
 {\
 return NdrDllUnregisterProxy(hProxyDll, pProxyFileList, pClsID);\
 }
+
 #ifdef PROXY_CLSID
 #define CLSID_PSFACTORYBUFFER extern CLSID PROXY_CLSID;
 #else
+
 #ifdef PROXY_CLSID_IS
 #define CLSID_PSFACTORYBUFFER const CLSID CLSID_PSFactoryBuffer = PROXY_CLSID_IS;
 #define PROXY_CLSID CLSID_PSFactoryBuffer
+
 #else
 #define CLSID_PSFACTORYBUFFER
+
 #endif
+
 #endif
+
 #ifndef PROXY_CLSID
 #define GET_DLL_CLSID (aProxyFileList[0]->pStubVtblList[0] != 0 ? aProxyFileList[0]->pStubVtblList[0]->header.piid : 0)
 #else
 #define GET_DLL_CLSID &PROXY_CLSID
 #endif
+
 #define EXTERN_PROXY_FILE(name) EXTERN_C const ProxyFileInfo name##_ProxyFileInfo;
 #define PROXYFILE_LIST_START const ProxyFileInfo * aProxyFileList[] = {
 #define REFERENCE_PROXY_FILE(name) & name##_ProxyFileInfo
@@ -95,6 +107,7 @@ void RPC_ENTRY GetProxyDllInfo( const ProxyFileInfo*** pInfo, const CLSID ** pId
 #define DLLDUMMYPURECALL void __cdecl _purecall(void) { }
 #define CSTDSTUBBUFFERRELEASE(pFactory) ULONG STDMETHODCALLTYPE CStdStubBuffer_Release(IRpcStubBuffer *This) \
 { return NdrCStdStubBuffer_Release(This,(IPSFactoryBuffer *)pFactory); }
+
 #ifdef PROXY_DELEGATION
 #define CSTDSTUBBUFFER2RELEASE(pFactory) ULONG STDMETHODCALLTYPE CStdStubBuffer2_Release(IRpcStubBuffer *This) \
 { return NdrCStdStubBuffer2_Release(This,(IPSFactoryBuffer *)pFactory); }
@@ -107,6 +120,7 @@ void RPC_ENTRY GetProxyDllInfo( const ProxyFileInfo*** pInfo, const CLSID ** pId
 #else
 #define DLLREGISTRY_ROUTINES(pProxyFileList,pClsID)
 #endif
+
 #define DLLDATA_ROUTINES(pProxyFileList,pClsID) \
 CLSID_PSFACTORYBUFFER \
 CStdPSFactoryBuffer gPFactory = {0,0,0,0}; \
@@ -143,6 +157,7 @@ typedef struct tagProxyFileInfo {
 typedef ProxyFileInfo ExtendedProxyFileInfo;
 
 typedef struct tagCInterfaceProxyHeader {
+
 #ifdef USE_STUBLESS_PROXY
     const void *pStublessProxyInfo;
 #endif
@@ -201,6 +216,7 @@ HRESULT STDMETHODCALLTYPE CStdStubBuffer_DebugServerQueryInterface(IRpcStubBuffe
 void STDMETHODCALLTYPE CStdStubBuffer_DebugServerRelease(IRpcStubBuffer*,void*);
 HRESULT RPC_ENTRY NdrDllGetClassObject(REFCLSID,REFIID,void**,const ProxyFileInfo**,const CLSID*,CStdPSFactoryBuffer*);
 HRESULT RPC_ENTRY NdrDllCanUnloadNow(CStdPSFactoryBuffer*);
+
 #ifndef NT35_STRICT
 HRESULT RPC_ENTRY NdrDllRegisterProxy(HMODULE,const ProxyFileInfo**,const CLSID*);
 HRESULT RPC_ENTRY NdrDllUnregisterProxy(HMODULE,const ProxyFileInfo**,const CLSID*);
@@ -215,6 +231,8 @@ NdrCStdStubBuffer2_Release(IRpcStubBuffer*,IPSFactoryBuffer*);
 #ifdef __cplusplus
 }
 #endif
+
 #endif  /* defined  __cplusplus  && !defined CINTERFACE  */
+
 #endif  /* ndef _RPCPROXY_H  */
 

@@ -24,8 +24,6 @@
 #ifndef	_SHARE_H
 #define	_SHARE_H
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 #define _SH_COMPAT	0x00	/* Compatibility */

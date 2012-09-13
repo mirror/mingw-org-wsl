@@ -24,13 +24,14 @@
 #ifndef _SECEXT_H
 #define _SECEXT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #ifndef RC_INVOKED
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef enum 
 {
   NameUnknown = 0, 
@@ -52,18 +53,12 @@ BOOLEAN WINAPI GetUserNameExW(EXTENDED_NAME_FORMAT,LPWSTR,PULONG);
 BOOLEAN WINAPI TranslateNameA(LPCSTR,EXTENDED_NAME_FORMAT,EXTENDED_NAME_FORMAT,LPSTR,PULONG);
 BOOLEAN WINAPI TranslateNameW(LPCWSTR,EXTENDED_NAME_FORMAT,EXTENDED_NAME_FORMAT,LPWSTR,PULONG);
 
-#ifdef UNICODE
-#define GetComputerObjectName GetComputerObjectNameW
-#define GetUserNameEx GetUserNameExW
-#define TranslateName TranslateNameW
-#else
-#define GetComputerObjectName GetComputerObjectNameA
-#define GetUserNameEx GetUserNameExA
-#define TranslateName TranslateNameA
-#endif
+#define GetComputerObjectName __AW(GetComputerObjectName)
+#define GetUserNameEx __AW(GetUserNameEx)
+#define TranslateName __AW(TranslateName)
 
 #endif /* ! RC_INVOKED */
-#endif /* _WIN32_WINNT >= 0x0500 */
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WIN2K */
 
 #ifdef __cplusplus
 }

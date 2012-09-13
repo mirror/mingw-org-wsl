@@ -9,3 +9,18 @@
 ** objbase.h - DBG, how does MS set this macro?
 ** objidl.h - Commented out code in PROVARIANT struct.
 ** odbcinst.h - UNICODE??
+** ras.h - WINNT35COMPATIBLE??
+** rpc.h - SEH??
+** rpcdce.h - RPC_UNICODE_SUPPORTED
+** rpcdce2.h - RPC_UNICODE_SUPPORTED
+** rpcdcep.h - __RPC_NT__??
+** rpcndr.h - CONST_VTABLE, _M_IX86, __MIDL_USER_DEFINED
+** rpcnsi.h - UNICODE_ONLY, RPC_UNICODE_SUPPORTED
+** rpcproxy.h - NT35_STRICT, PROXY_CLSID, PROXY_CLSID_IS, PROXY_DELEGATION,
+		REGISTER_PROXY_DLL, USE_SUBLESS_PROXY
+	      - Should the CINTERFACE warning be and error?
+** sddl.h - WINADVAPI
+** servprov.h - COBJMACROS
+** setupapi.h - _SETUPAPI_VER???, USE_SP_DRVINFO_DATA_V1
+** shldisp.h - COBJMACROS
+** shlobj.h - COBJMACROS, _FIX_ENABLEMODELESS_CONFLICT

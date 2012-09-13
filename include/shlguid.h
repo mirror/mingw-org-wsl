@@ -24,10 +24,12 @@
 #ifndef _SHLGUID_H
 #define _SHLGUID_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define DEFINE_SHLGUID(n,l,w1,w2) DEFINE_GUID(n,l,w1,w2,0xC0,0,0,0,0,0,0,0x46)
 #define SID_SShellBrowser IID_IShellBrowser
 extern const GUID CLSID_ShellDesktop;
@@ -92,31 +94,26 @@ extern const GUID CLSID_ACLMulti;
 extern const GUID IID_IObjMgr;
 extern const GUID CLSID_ACListISF;
 extern const GUID IID_IACList;
-#if (_WIN32_IE >= 0x400 || _WIN32_WINNT >= 0x500)
+
+#define IID_IFileViewer	__AW(IID_IFileViewer)
+#define IID_IShellLink	__AW(IID_IShellLink)
+#define IID_IExtractIcon	__AW(IID_IExtractIcon)
+#define IID_IShellCopyHook	__AW(IID_IShellCopyHook)
+#define IID_IShellExecuteHook	__AW(IID_IShellExecuteHook)
+#define IID_INewShortcutHook	__AW(IID_INewShortcutHook)
+
+#if (_WIN32_IE >= 0x400 || _WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 extern const GUID IID_IPersistFolder2;
 #endif
-#if (_WIN32_WINNT >= 0x500)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 extern const GUID IID_IPersistFolder3;
 extern const GUID IID_IShellFolder2;
 extern const GUID IID_IFileSystemBindData;
 #endif
-#if (_WIN32_WINNT >= 0x501)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 extern const GUID IID_IFolderView;
-#endif
-#ifdef UNICODE
-#define IID_IFileViewer	IID_IFileViewerW
-#define IID_IShellLink	IID_IShellLinkW
-#define IID_IExtractIcon	IID_IExtractIconW
-#define IID_IShellCopyHook	IID_IShellCopyHookW
-#define IID_IShellExecuteHook	IID_IShellExecuteHookW
-#define IID_INewShortcutHook	IID_INewShortcutHookW
-#else
-#define IID_IFileViewer	IID_IFileViewerA
-#define IID_IShellLink	IID_IShellLinkA
-#define IID_IExtractIcon	IID_IExtractIconA
-#define IID_IShellCopyHook	IID_IShellCopyHookA
-#define IID_IShellExecuteHook	IID_IShellExecuteHookA
-#define IID_INewShortcutHook	IID_INewShortcutHookA
 #endif
 
 #ifdef __cplusplus

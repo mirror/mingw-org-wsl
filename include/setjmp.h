@@ -24,8 +24,6 @@
 #ifndef _SETJMP_H
 #define _SETJMP_H
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 #ifndef RC_INVOKED

@@ -24,6 +24,9 @@
 #ifndef _SDKDDKVER_H
 #define _SDKDDKVER_H
 #pragma GCC system_header
+/* Do not include _mingw.h since _mingw.h includes this file.
+#include <_mingw.h>
+*/
 
 /**
  * Define version masks
@@ -53,6 +56,7 @@
  * http://msdn.microsoft.com/en-us/library/windows/desktop/aa383745(v=vs.85).aspx
  */
 #define _WIN32_WINNT_NT4          0x0400
+#define _WIN32_WINNT_NT4E	  0x0401
 #define _WIN32_WINNT_WIN95	  0x0400
 #define _WIN32_WINNT_WIN98	  0x0410
 #define _WIN32_WINNT_WINME	  0x0490

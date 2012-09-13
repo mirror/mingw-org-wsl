@@ -24,6 +24,7 @@
 #ifndef _RPCDCE_H
 #define _RPCDCE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,9 +34,11 @@ extern "C" {
 #ifndef _NO_W32_PSEUDO_MODIFIERS
 #define IN
 #define OUT
+
 #ifndef OPTIONAL
 #define OPTIONAL
 #endif
+
 #endif
 
 #define uuid_t UUID
@@ -246,75 +249,42 @@ RPC_STATUS RPC_ENTRY DceErrorInqTextA(RPC_STATUS,unsigned char*);
 RPC_STATUS RPC_ENTRY DceErrorInqTextW(RPC_STATUS,unsigned short*);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqNextA(RPC_EP_INQ_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE*,UUID*,unsigned char**);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqNextW(RPC_EP_INQ_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE*,UUID*,unsigned short**);
+
 #ifdef UNICODE
-#define RPC_PROTSEQ_VECTOR RPC_PROTSEQ_VECTORW
-#define SEC_WINNT_AUTH_IDENTITY SEC_WINNT_AUTH_IDENTITY_W
-#define PSEC_WINNT_AUTH_IDENTITY PSEC_WINNT_AUTH_IDENTITY_W
-#define _SEC_WINNT_AUTH_IDENTITY _SEC_WINNT_AUTH_IDENTITY_W
-#define RpcMgmtEpEltInqNext RpcMgmtEpEltInqNextW
-#define RpcBindingFromStringBinding RpcBindingFromStringBindingW
-#define RpcBindingToStringBinding RpcBindingToStringBindingW
-#define RpcStringBindingCompose RpcStringBindingComposeW
-#define RpcStringBindingParse RpcStringBindingParseW
-#define RpcStringFree RpcStringFreeW
-#define RpcNetworkIsProtseqValid RpcNetworkIsProtseqValidW
-#define RpcNetworkInqProtseqs RpcNetworkInqProtseqsW
-#define RpcProtseqVectorFree RpcProtseqVectorFreeW
-#define RpcServerUseProtseq RpcServerUseProtseqW
-#define RpcServerUseProtseqEx RpcServerUseProtseqExW
-#define RpcServerUseProtseqEp RpcServerUseProtseqEpW
-#define RpcServerUseProtseqEpEx RpcServerUseProtseqEpExW
-#define RpcServerUseProtseqIf RpcServerUseProtseqIfW
-#define RpcServerUseProtseqIfEx RpcServerUseProtseqIfExW
-#define RpcMgmtInqServerPrincName RpcMgmtInqServerPrincNameW
-#define RpcServerInqDefaultPrincName RpcServerInqDefaultPrincNameW
-#define RpcNsBindingInqEntryName RpcNsBindingInqEntryNameW
-#define RpcBindingInqAuthClient RpcBindingInqAuthClientW
-#define RpcBindingInqAuthInfo RpcBindingInqAuthInfoW
-#define RpcBindingSetAuthInfo RpcBindingSetAuthInfoW
-#define RpcServerRegisterAuthInfo RpcServerRegisterAuthInfoW
-#define RpcBindingInqAuthInfoEx RpcBindingInqAuthInfoExW
-#define RpcBindingSetAuthInfoEx RpcBindingSetAuthInfoExW
-#define UuidFromString UuidFromStringW
-#define UuidToString UuidToStringW
-#define RpcEpRegisterNoReplace RpcEpRegisterNoReplaceW
-#define RpcEpRegister RpcEpRegisterW
-#define DceErrorInqText DceErrorInqTextW
-#else /* UNICODE */
-#define RPC_PROTSEQ_VECTOR RPC_PROTSEQ_VECTORA
-#define SEC_WINNT_AUTH_IDENTITY SEC_WINNT_AUTH_IDENTITY_A
-#define PSEC_WINNT_AUTH_IDENTITY PSEC_WINNT_AUTH_IDENTITY_A
-#define _SEC_WINNT_AUTH_IDENTITY _SEC_WINNT_AUTH_IDENTITY_A
-#define RpcMgmtEpEltInqNext RpcMgmtEpEltInqNextA
-#define RpcBindingFromStringBinding RpcBindingFromStringBindingA
-#define RpcBindingToStringBinding RpcBindingToStringBindingA
-#define RpcStringBindingCompose RpcStringBindingComposeA
-#define RpcStringBindingParse RpcStringBindingParseA
-#define RpcStringFree RpcStringFreeA
-#define RpcNetworkIsProtseqValid RpcNetworkIsProtseqValidA
-#define RpcNetworkInqProtseqs RpcNetworkInqProtseqsA
-#define RpcProtseqVectorFree RpcProtseqVectorFreeA
-#define RpcServerUseProtseq RpcServerUseProtseqA
-#define RpcServerUseProtseqEx RpcServerUseProtseqExA
-#define RpcServerUseProtseqEp RpcServerUseProtseqEpA
-#define RpcServerUseProtseqEpEx RpcServerUseProtseqEpExA
-#define RpcServerUseProtseqIf RpcServerUseProtseqIfA
-#define RpcServerUseProtseqIfEx RpcServerUseProtseqIfExA
-#define RpcMgmtInqServerPrincName RpcMgmtInqServerPrincNameA
-#define RpcServerInqDefaultPrincName RpcServerInqDefaultPrincNameA
-#define RpcNsBindingInqEntryName RpcNsBindingInqEntryNameA
-#define RpcBindingInqAuthClient RpcBindingInqAuthClientA
-#define RpcBindingInqAuthInfo RpcBindingInqAuthInfoA
-#define RpcBindingSetAuthInfo RpcBindingSetAuthInfoA
-#define RpcServerRegisterAuthInfo RpcServerRegisterAuthInfoA
-#define RpcBindingInqAuthInfoEx RpcBindingInqAuthInfoExA
-#define RpcBindingSetAuthInfoEx RpcBindingSetAuthInfoExA
-#define UuidFromString UuidFromStringA
-#define UuidToString UuidToStringA
-#define RpcEpRegisterNoReplace RpcEpRegisterNoReplaceA
-#define RpcEpRegister RpcEpRegisterA
-#define DceErrorInqText DceErrorInqTextA
-#endif /* UNICODE */
+#define RPC_PROTSEQ_VECTOR __AW(RPC_PROTSEQ_VECTOR)
+#define SEC_WINNT_AUTH_IDENTITY __AW(SEC_WINNT_AUTH_IDENTITY_)
+#define PSEC_WINNT_AUTH_IDENTITY __AW(PSEC_WINNT_AUTH_IDENTITY_)
+#define _SEC_WINNT_AUTH_IDENTITY __AW(_SEC_WINNT_AUTH_IDENTITY_)
+#define RpcMgmtEpEltInqNext __AW(RpcMgmtEpEltInqNext)
+#define RpcBindingFromStringBinding __AW(RpcBindingFromStringBinding)
+#define RpcBindingToStringBinding __AW(RpcBindingToStringBinding)
+#define RpcStringBindingCompose __AW(RpcStringBindingCompose)
+#define RpcStringBindingParse __AW(RpcStringBindingParse)
+#define RpcStringFree __AW(RpcStringFree)
+#define RpcNetworkIsProtseqValid __AW(RpcNetworkIsProtseqValid)
+#define RpcNetworkInqProtseqs __AW(RpcNetworkInqProtseqs)
+#define RpcProtseqVectorFree __AW(RpcProtseqVectorFree)
+#define RpcServerUseProtseq __AW(RpcServerUseProtseq)
+#define RpcServerUseProtseqEx __AW(RpcServerUseProtseqEx)
+#define RpcServerUseProtseqEp __AW(RpcServerUseProtseqEp)
+#define RpcServerUseProtseqEpEx __AW(RpcServerUseProtseqEpEx)
+#define RpcServerUseProtseqIf __AW(RpcServerUseProtseqIf)
+#define RpcServerUseProtseqIfEx __AW(RpcServerUseProtseqIfEx)
+#define RpcMgmtInqServerPrincName __AW(RpcMgmtInqServerPrincName)
+#define RpcServerInqDefaultPrincName __AW(RpcServerInqDefaultPrincName)
+#define RpcNsBindingInqEntryName __AW(RpcNsBindingInqEntryName)
+#define RpcBindingInqAuthClient __AW(RpcBindingInqAuthClient)
+#define RpcBindingInqAuthInfo __AW(RpcBindingInqAuthInfo)
+#define RpcBindingSetAuthInfo __AW(RpcBindingSetAuthInfo)
+#define RpcServerRegisterAuthInfo __AW(RpcServerRegisterAuthInfo)
+#define RpcBindingInqAuthInfoEx __AW(RpcBindingInqAuthInfoEx)
+#define RpcBindingSetAuthInfoEx __AW(RpcBindingSetAuthInfoEx)
+#define UuidFromString __AW(UuidFromString)
+#define UuidToString __AW(UuidToString)
+#define RpcEpRegisterNoReplace __AW(RpcEpRegisterNoReplace)
+#define RpcEpRegister __AW(RpcEpRegister)
+#define DceErrorInqText __AW(DceErrorInqText)
+
 #else /* RPC_UNICODE_SUPPORTED */
 typedef struct _RPC_PROTSEQ_VECTOR {
 	unsigned int Count;
@@ -406,12 +376,14 @@ RPC_STATUS RPC_ENTRY RpcMgmtSetParameter(unsigned int,unsigned long);
 RPC_STATUS RPC_ENTRY RpcMgmtBindingInqParameter(RPC_BINDING_HANDLE,unsigned int,unsigned long*);
 RPC_STATUS RPC_ENTRY RpcMgmtBindingSetParameter(RPC_BINDING_HANDLE,unsigned int,unsigned long);
 
-#if _WIN32_WINNT >= 0x0500
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN2K
 RPC_STATUS RPC_ENTRY UuidCreateSequential(UUID*);
-#endif
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WIN2K */
 
 #include <rpcdcep.h>
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

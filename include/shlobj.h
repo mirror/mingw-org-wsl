@@ -24,6 +24,7 @@
 #ifndef _SHLOBJ_H
 #define _SHLOBJ_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,15 +60,9 @@ extern "C" {
 #define BFFM_SETSELECTIONW (WM_USER + 103)
 #define BFFM_SETOKTEXT (WM_USER + 105)
 #define BFFM_SETEXPANDED (WM_USER + 106)
-#ifdef UNICODE
-#define BFFM_SETSTATUSTEXT  BFFM_SETSTATUSTEXTW
-#define BFFM_SETSELECTION   BFFM_SETSELECTIONW
-#define BFFM_VALIDATEFAILED BFFM_VALIDATEFAILEDW
-#else
-#define BFFM_SETSTATUSTEXT  BFFM_SETSTATUSTEXTA
-#define BFFM_SETSELECTION   BFFM_SETSELECTIONA
-#define BFFM_VALIDATEFAILED BFFM_VALIDATEFAILEDA
-#endif
+#define BFFM_SETSTATUSTEXT  __AW(BFFM_SETSTATUSTEXT)
+#define BFFM_SETSELECTION   __AW(BFFM_SETSELECTION)
+#define BFFM_VALIDATEFAILED __AW(BFFM_VALIDATEFAILED)
 #define DVASPECT_SHORTNAME 2
 typedef enum tagSHARD {
     SHARD_PIDL = 0x00000001,
@@ -79,11 +74,7 @@ typedef enum tagSHARD {
     SHARD_APPIDINFOLINK = 0x00000007,
     SHARD_SHELLITEM = 0x00000008
 } SHARD;
-#ifdef UNICODE
-#define SHARD_PATH SHARD_PATHW
-#else
-#define SHARD_PATH SHARD_PATHA
-#endif
+#define SHARD_PATH __AW(SHARD_PATH)
 #define SHCNE_RENAMEITEM	1
 #define SHCNE_CREATE	2
 #define SHCNE_DELETE	4
@@ -117,13 +108,8 @@ typedef enum tagSHARD {
 #define SHCNF_TYPE	0xFF
 #define SHCNF_FLUSH	0x1000
 #define SHCNF_FLUSHNOWAIT	0x2000
-#ifdef UNICODE
-#define SHCNF_PATH      SHCNF_PATHW
-#define SHCNF_PRINTER   SHCNF_PRINTERW
-#else
-#define SHCNF_PATH      SHCNF_PATHA
-#define SHCNF_PRINTER   SHCNF_PRINTERA
-#endif
+#define SHCNF_PATH      __AW(SHCNF_PATH)
+#define SHCNF_PRINTER   __AW(SHCNF_PRINTER)
 #define SFGAO_CANCOPY	DROPEFFECT_COPY
 #define SFGAO_CANMOVE	DROPEFFECT_MOVE
 #define SFGAO_CANLINK	DROPEFFECT_LINK
@@ -175,9 +161,11 @@ typedef enum tagSHARD {
 #define SHDID_NET_SHARE	15
 #define SHDID_NET_RESTOFNET	16
 #define SHDID_NET_OTHER	17
+
 #ifndef REGSTR_PATH_EXPLORER
 #define REGSTR_PATH_EXPLORER	TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")
 #endif
+
 #define REGSTR_PATH_SPECIAL_FOLDERS	REGSTR_PATH_EXPLORER TEXT("\\Shell Folders")
 #define CSIDL_DESKTOP	0
 #define CSIDL_INTERNET  1
@@ -251,17 +239,10 @@ typedef enum tagSHARD {
 #define CFSTR_FILENAMEMAPW	TEXT("FileNameMapW")
 #define CFSTR_FILEDESCRIPTORW	TEXT("FileGroupDescriptorW")
 #define CFSTR_INETURLW		TEXT("UniformResourceLocatorW")
-#ifdef UNICODE
-#define CFSTR_FILENAME		CFSTR_FILENAMEW
-#define CFSTR_FILENAMEMAP	CFSTR_FILENAMEMAPW
-#define CFSTR_FILEDESCRIPTOR	CFSTR_FILEDESCRIPTORW
-#define CFSTR_INETURL		CFSTR_INETURLW
-#else
-#define CFSTR_FILENAME		CFSTR_FILENAMEA
-#define CFSTR_FILENAMEMAP	CFSTR_FILENAMEMAPA
-#define CFSTR_FILEDESCRIPTOR	CFSTR_FILEDESCRIPTORA
-#define CFSTR_INETURL		CFSTR_INETURLA
-#endif
+#define CFSTR_FILENAME		__AW(CFSTR_FILENAME)
+#define CFSTR_FILENAMEMAP	__AW(CFSTR_FILENAMEMAP)
+#define CFSTR_FILEDESCRIPTOR	__AW(CFSTR_FILEDESCRIPTOR)
+#define CFSTR_INETURL		__AW(CFSTR_INETURL)
 #define CFSTR_PRINTERGROUP	TEXT("PrinterFriendlyName")
 #define CFSTR_INDRAGLOOP	TEXT("InShellDragLoop")
 #define CFSTR_PASTESUCCEEDED	TEXT("Paste Succeeded")
@@ -283,30 +264,18 @@ typedef enum tagSHARD {
 #define GCS_HELPTEXTW    5
 #define GCS_VALIDATEW    6
 #define GCS_UNICODE      4
-#ifdef UNICODE
-#define GCS_VERB        GCS_VERBW
-#define GCS_HELPTEXT    GCS_HELPTEXTW
-#define GCS_VALIDATE    GCS_VALIDATEW
-#else
-#define GCS_VERB        GCS_VERBA
-#define GCS_HELPTEXT    GCS_HELPTEXTA
-#define GCS_VALIDATE    GCS_VALIDATEA
-#endif
+#define GCS_VERB        __AW(GCS_VERB)
+#define GCS_HELPTEXT    __AW(GCS_HELPTEXT)
+#define GCS_VALIDATE    __AW(GCS_VALIDATE)
 #define CMDSTR_NEWFOLDERA	"NewFolder"
 #define CMDSTR_VIEWLISTA	"ViewList"
 #define CMDSTR_VIEWDETAILSA	"ViewDetails"
 #define CMDSTR_NEWFOLDERW	L"NewFolder"
 #define CMDSTR_VIEWLISTW	L"ViewList"
 #define CMDSTR_VIEWDETAILSW	L"ViewDetails"
-#ifdef UNICODE
-#define CMDSTR_NEWFOLDER	CMDSTR_NEWFOLDERW
-#define CMDSTR_VIEWLIST		CMDSTR_VIEWLISTW
-#define CMDSTR_VIEWDETAILS	CMDSTR_VIEWDETAILSW
-#else
-#define CMDSTR_NEWFOLDER	CMDSTR_NEWFOLDER
-#define CMDSTR_VIEWLIST		CMDSTR_VIEWLIST
-#define CMDSTR_VIEWDETAILS	CMDSTR_VIEWDETAILS
-#endif
+#define CMDSTR_NEWFOLDER	__AW(CMDSTR_NEWFOLDER)
+#define CMDSTR_VIEWLIST		__AW(CMDSTR_VIEWLIST)
+#define CMDSTR_VIEWDETAILS	__AW(CMDSTR_VIEWDETAILS)
 #define CMIC_MASK_HOTKEY	SEE_MASK_HOTKEY
 #define CMIC_MASK_ICON	SEE_MASK_ICON
 #define CMIC_MASK_FLAG_NO_UI	SEE_MASK_FLAG_NO_UI
@@ -547,40 +516,7 @@ typedef enum {
 	SVUIA_DEACTIVATE,SVUIA_ACTIVATE_NOFOCUS,SVUIA_ACTIVATE_FOCUS,
 	SVUIA_INPLACEACTIVATE
 } SVUIA_STATUS;
-#if (_WIN32_IE >= 0x0500)
-typedef struct tagEXTRASEARCH
-{
-	GUID guidSearch;
-	WCHAR wszFriendlyName[80];
-	WCHAR wszUrl[2084];
-} EXTRASEARCH, *LPEXTRASEARCH;
-typedef DWORD SHCOLSTATEF;
-typedef struct
-{
-	GUID fmtid;
-	DWORD pid;
-} SHCOLUMNID, *LPSHCOLUMNID;
-typedef const SHCOLUMNID *LPCSHCOLUMNID;
-typedef struct _SHELLDETAILS
-{
-	int fmt; 
-	int cxChar;
-	STRRET str;
-} SHELLDETAILS, *LPSHELLDETAILS;
-typedef struct
-{
-	LPITEMIDLIST pidlTargetFolder;
-	WCHAR szTargetParsingName[MAX_PATH];
-	WCHAR szNetworkProvider[MAX_PATH];
-	DWORD dwAttributes;
-	int csidl;
-} PERSIST_FOLDER_TARGET_INFO;
 
-typedef enum {
-	SHGFP_TYPE_CURRENT = 0,
-	SHGFP_TYPE_DEFAULT = 1,
-} SHGFP_TYPE;
-#endif
 
 
 DECLARE_ENUMERATOR_(IEnumIDList,LPITEMIDLIST);
@@ -658,87 +594,6 @@ DECLARE_INTERFACE_(IContextMenu3,IContextMenu2)
 #undef INTERFACE
 typedef IContextMenu3 *LPCONTEXTMENU3;
 
-#if (_WIN32_IE >= 0x0500)
-#pragma pack(push,8)
-typedef struct {
-	ULONG dwFlags;
-	ULONG dwReserved;
-	WCHAR wszFolder[MAX_PATH];
-} SHCOLUMNINIT,*LPSHCOLUMNINIT;
-typedef const SHCOLUMNINIT* LPCSHCOLUMNINIT;
-typedef struct {
-	ULONG dwFlags;
-	DWORD dwFileAttributes;
-	ULONG dwReserved;
-	WCHAR *pwszExt;
-	WCHAR wszFile[MAX_PATH];
-} SHCOLUMNDATA,*LPSHCOLUMNDATA;
-typedef const SHCOLUMNDATA* LPCSHCOLUMNDATA;
-#pragma pack(pop)
-
-#define MAX_COLUMN_NAME_LEN 80
-#define MAX_COLUMN_DESC_LEN 128
-
-#pragma pack(push,1)
-typedef struct {
-	SHCOLUMNID scid;
-	VARTYPE vt;
-	DWORD fmt;
-	UINT cChars;
-	DWORD csFlags;
-	WCHAR wszTitle[MAX_COLUMN_NAME_LEN];
-	WCHAR wszDescription[MAX_COLUMN_DESC_LEN];
-} SHCOLUMNINFO,*LPSHCOLUMNINFO;
-typedef const SHCOLUMNINFO* LPCSHCOLUMNINFO;
-#pragma pack(pop)
-
-typedef enum {
-	SHCOLSTATE_TYPE_STR = 0x00000001,
-	SHCOLSTATE_TYPE_INT = 0x00000002,
-	SHCOLSTATE_TYPE_DATE = 0x00000003,
-	SHCOLSTATE_TYPEMASK = 0x0000000f,
-	SHCOLSTATE_ONBYDEFAULT = 0x00000010,
-	SHCOLSTATE_SLOW = 0x00000020,
-	SHCOLSTATE_EXTENDED = 0x00000040,
-	SHCOLSTATE_SECONDARYUI = 0x00000080,
-	SHCOLSTATE_HIDDEN = 0x00000100,
-	SHCOLSTATE_PREFER_VARCMP = 0x00000200
-} SHCOLSTATE;
-
-#ifdef COBJMACROS
-#define IContextMenu2_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
-#define IContextMenu2_AddRef(T) (T)->lpVtbl->AddRef(T)
-#define IContextMenu2_Release(T) (T)->lpVtbl->Release(T)
-#define IContextMenu2_QueryContextMenu(T,a,b,c,d,e) (T)->lpVtbl->QueryContextMenu(T,a,b,c,d,e)
-#define IContextMenu2_InvokeCommand(T,a) (T)->lpVtbl->InvokeCommand(T,a)
-#define IContextMenu2_GetCommandString(T,a,b,c,d,e) (T)->lpVtbl->GetCommandString(T,a,b,c,d,e)
-#define IContextMenu2_HandleMenuMsg(T,a,b,c) (T)->lpVtbl->HandleMenuMsg(T,a,b,c)
-#endif
-
-#ifdef COBJMACROS
-#define IContextMenu3_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
-#define IContextMenu3_AddRef(T) (T)->lpVtbl->AddRef(T)
-#define IContextMenu3_Release(T) (T)->lpVtbl->Release(T)
-#define IContextMenu3_QueryContextMenu(T,a,b,c,d,e) (T)->lpVtbl->QueryContextMenu(T,a,b,c,d,e)
-#define IContextMenu3_InvokeCommand(T,a) (T)->lpVtbl->InvokeCommand(T,a)
-#define IContextMenu3_GetCommandString(T,a,b,c,d,e) (T)->lpVtbl->GetCommandString(T,a,b,c,d,e)
-#define IContextMenu3_HandleMenuMsg(T,a,b,c) (T)->lpVtbl->HandleMenuMsg(T,a,b,c)
-#define IContextMenu3_HandleMenuMsg2(T,a,b,c,d) (T)->lpVtbl->HandleMenuMsg(T,a,b,c,d)
-#endif
-
-#define INTERFACE IColumnProvider
-DECLARE_INTERFACE_(IColumnProvider,IUnknown)
-{
-	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-	STDMETHOD_(ULONG,Release)(THIS) PURE;
-	STDMETHOD(Initialize)(THIS_ LPCSHCOLUMNINIT) PURE;
-	STDMETHOD(GetColumnInfo)(THIS_ DWORD,SHCOLUMNINFO*) PURE;
-	STDMETHOD(GetItemData)(THIS_ LPCSHCOLUMNID,LPCSHCOLUMNDATA,VARIANT*) PURE;
-};
-#undef INTERFACE
-#endif  /* _WIN32_IE >= 0x0500 */
-
 #define INTERFACE IQueryInfo
 DECLARE_INTERFACE_(IQueryInfo,IUnknown)
 {
@@ -813,13 +668,8 @@ typedef IExtractIconW *LPEXTRACTICONW;
 #define IExtractIconW_Extract(T,a,b,c,d,e) (T)->lpVtbl->Extract(T,a,b,c,d,e)
 #endif
 
-#ifdef UNICODE
-#define IExtractIcon IExtractIconW
-#define LPEXTRACTICON LPEXTRACTICONW
-#else
-#define IExtractIcon IExtractIconA
-#define LPEXTRACTICON LPEXTRACTICONA
-#endif
+#define IExtractIcon __AW(IExtractIcon)
+#define LPEXTRACTICON __AW(LPEXTRACTICON)
 
 #define INTERFACE IShellLinkA
 DECLARE_INTERFACE_(IShellLinkA, IUnknown)
@@ -959,62 +809,6 @@ typedef IShellFolder *LPSHELLFOLDER;
 #define IShellFolder_SetNameOf(T,a,b,c,d,e) (T)->lpVtbl->SetNameOf(T,a,b,c,d,e)
 #endif
 
-#if (_WIN32_IE >= 0x0500)
-
-DECLARE_ENUMERATOR_(IEnumExtraSearch,LPEXTRASEARCH);
-typedef IEnumExtraSearch *LPENUMEXTRASEARCH;
-
-#define INTERFACE IShellFolder2
-DECLARE_INTERFACE_(IShellFolder2, IShellFolder)
-{
-	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-	STDMETHOD_(ULONG,Release)(THIS) PURE;
-	STDMETHOD(ParseDisplayName)(THIS_ HWND,LPBC,LPOLESTR,PULONG,LPITEMIDLIST*,PULONG) PURE;
-	STDMETHOD(EnumObjects)(THIS_ HWND,DWORD,LPENUMIDLIST*) PURE;
-	STDMETHOD(BindToObject)(THIS_ LPCITEMIDLIST,LPBC,REFIID,PVOID*) PURE;
-	STDMETHOD(BindToStorage)(THIS_ LPCITEMIDLIST,LPBC,REFIID,PVOID*) PURE;
-	STDMETHOD(CompareIDs)(THIS_ LPARAM,LPCITEMIDLIST,LPCITEMIDLIST) PURE;
-	STDMETHOD(CreateViewObject)(THIS_ HWND,REFIID,PVOID*) PURE;
-	STDMETHOD(GetAttributesOf)(THIS_ UINT,LPCITEMIDLIST*,PULONG) PURE;
-	STDMETHOD(GetUIObjectOf)(THIS_ HWND,UINT,LPCITEMIDLIST*,REFIID,PUINT,PVOID*) PURE;
-	STDMETHOD(GetDisplayNameOf)(THIS_ LPCITEMIDLIST,DWORD,LPSTRRET) PURE;
-	STDMETHOD(SetNameOf)(THIS_ HWND,LPCITEMIDLIST,LPCOLESTR,DWORD,LPITEMIDLIST*) PURE;
-	STDMETHOD(GetDefaultSearchGUID)(THIS_ GUID*) PURE;
-	STDMETHOD(EnumSearches)(THIS_ IEnumExtraSearch**) PURE;
-	STDMETHOD(GetDefaultColumn)(THIS_ DWORD,ULONG*,ULONG*) PURE;
-	STDMETHOD(GetDefaultColumnState)(THIS_ UINT,SHCOLSTATEF*) PURE;
-	STDMETHOD(GetDetailsEx)(THIS_ LPCITEMIDLIST,const SHCOLUMNID*,VARIANT*) PURE;
-	STDMETHOD(GetDetailsOf)(THIS_ LPCITEMIDLIST,UINT,SHELLDETAILS*) PURE;
-	STDMETHOD(MapColumnToSCID)(THIS_ UINT,SHCOLUMNID*) PURE;
-};
-#undef INTERFACE
-typedef IShellFolder2 *LPSHELLFOLDER2;
-
-#ifdef COBJMACROS
-#define IShellFolder2_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
-#define IShellFolder2_AddRef(T) (T)->lpVtbl->AddRef(T)
-#define IShellFolder2_Release(T) (T)->lpVtbl->Release(T)
-#define IShellFolder2_ParseDisplayName(T,a,b,c,d,e,f) (T)->lpVtbl->ParseDisplayName(T,a,b,c,d,e,f)
-#define IShellFolder2_EnumObjects(T,a,b,c) (T)->lpVtbl->EnumObjects(T,a,b,c)
-#define IShellFolder2_BindToObject(T,a,b,c,d) (T)->lpVtbl->BindToObject(T,a,b,c,d)
-#define IShellFolder2_BindToStorage(T,a,b,c,d) (T)->lpVtbl->BindToStorage(T,a,b,c,d)
-#define IShellFolder2_CompareIDs(T,a,b,c) (T)->lpVtbl->CompareIDs(T,a,b,c)
-#define IShellFolder2_CreateViewObject(T,a,b) (T)->lpVtbl->CreateViewObject(T,a,b)
-#define IShellFolder2_GetAttributesOf(T,a,b,c) (T)->lpVtbl->GetAttributesOf(T,a,b,c)
-#define IShellFolder2_GetUIObjectOf(T,a,b,c,d,e,f) (T)->lpVtbl->GetUIObjectOf(T,a,b,c,d,e,f)
-#define IShellFolder2_GetDisplayNameOf(T,a,b,c) (T)->lpVtbl->GetDisplayNameOf(T,a,b,c)
-#define IShellFolder2_SetNameOf(T,a,b,c,d,e) (T)->lpVtbl->SetNameOf(T,a,b,c,d,e)
-#define IShellFolder2_GetDefaultSearchGUID(T,a) (T)->lpVtbl->GetDefaultSearchGUID(T,a)
-#define IShellFolder2_EnumSearches(T,a) (T)->lpVtbl->EnumSearches(T,a)
-#define IShellFolder2_GetDefaultColumn(T,a,b,c) (T)->lpVtbl->GetDefaultColumn(T,a,b,c)
-#define IShellFolder2_GetDefaultColumnState(T,a,b) (T)->lpVtbl->GetDefaultColumnState(T,a,b)
-#define IShellFolder2_GetDetailsEx(T,a,b,c) (T)->lpVtbl->GetDetailsEx(T,a,b,c)
-#define IShellFolder2_GetDetailsOf(T,a,b,c) (T)->lpVtbl->GetDetailsOf(T,a,b,c)
-#define IShellFolder2_MapColumnToSCID(T,a,b) (T)->lpVtbl->MapColumnToSCID(T,a,b)
-#endif
-
-#endif /* _WIN32_IE >= 0x0500 */
 #define INTERFACE ICopyHook
 DECLARE_INTERFACE_(ICopyHook, IUnknown)
 {
@@ -1081,62 +875,6 @@ typedef IPersistFolder *LPPERSISTFOLDER;
 #define IPersistFolder_GetClassID(T,a) (T)->lpVtbl->GetClassID(T,a)
 #define IPersistFolder_Initialize(T,a) (T)->lpVtbl->Initialize(T,a)
 #endif
-
-#if (_WIN32_IE >= 0x0400 || _WIN32_WINNT >= 0x0500)
-
-#define INTERFACE IPersistFolder2
-DECLARE_INTERFACE_(IPersistFolder2,IPersistFolder)
-{
-	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-	STDMETHOD_(ULONG,Release)(THIS) PURE;
-	STDMETHOD(GetClassID)(THIS_ CLSID*) PURE;
-	STDMETHOD(Initialize)(THIS_ LPCITEMIDLIST) PURE;
-	STDMETHOD(GetCurFolder)(THIS_ LPITEMIDLIST*) PURE;
-};
-#undef INTERFACE
-typedef IPersistFolder2 *LPPERSISTFOLDER2;
-
-#ifdef COBJMACROS
-#define IPersistFolder2_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
-#define IPersistFolder2_AddRef(T) (T)->lpVtbl->AddRef(T)
-#define IPersistFolder2_Release(T) (T)->lpVtbl->Release(T)
-#define IPersistFolder2_GetClassID(T,a) (T)->lpVtbl->GetClassID(T,a)
-#define IPersistFolder2_Initialize(T,a) (T)->lpVtbl->Initialize(T,a)
-#define IPersistFolder2_GetCurFolder(T,a) (T)->lpVtbl->GetCurFolder(T,a)
-#endif
-
-#endif /* _WIN32_IE >= 0x0400 || _WIN32_WINNT >= 0x0500 */
-
-#if (_WIN32_IE >= 0x0500)
-
-#define INTERFACE IPersistFolder3
-DECLARE_INTERFACE_(IPersistFolder3,IPersistFolder2)
-{
-	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-	STDMETHOD_(ULONG,Release)(THIS) PURE;
-	STDMETHOD(GetClassID)(THIS_ CLSID*) PURE;
-	STDMETHOD(Initialize)(THIS_ LPCITEMIDLIST) PURE;
-	STDMETHOD(GetCurFolder)(THIS_ LPITEMIDLIST*) PURE;
-	STDMETHOD(InitializeEx)(THIS_ IBindCtx*,LPCITEMIDLIST,const PERSIST_FOLDER_TARGET_INFO*) PURE;
-	STDMETHOD(GetFolderTargetInfo)(THIS_ PERSIST_FOLDER_TARGET_INFO*) PURE;
-};
-#undef INTERFACE
-typedef IPersistFolder3 *LPPERSISTFOLDER3;
-
-#ifdef COBJMACROS
-#define IPersistFolder3_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
-#define IPersistFolder3_AddRef(T) (T)->lpVtbl->AddRef(T)
-#define IPersistFolder3_Release(T) (T)->lpVtbl->Release(T)
-#define IPersistFolder3_GetClassID(T,a) (T)->lpVtbl->GetClassID(T,a)
-#define IPersistFolder3_Initialize(T,a) (T)->lpVtbl->Initialize(T,a)
-#define IPersistFolder3_GetCurFolder(T,a) (T)->lpVtbl->GetCurFolder(T,a)
-#define IPersistFolder3_InitializeEx(T,a,b,c) (T)->lpVtbl->InitializeEx(T,a,b,c)
-#define IPersistFolder3_GetFolderTargetInfo(T,a) (T)->lpVtbl->GetFolderTargetInfo(T,a)
-#endif
-
-#endif /* _WIN32_IE >= 0x0500 */
 
 typedef _COM_interface IShellBrowser *LPSHELLBROWSER;
 typedef _COM_interface IShellView *LPSHELLVIEW;
@@ -1219,11 +957,13 @@ DECLARE_INTERFACE_(IShellView,IOleWindow)
 #define IShellView_GetWindow(T,a) (T)->lpVtbl->GetWindow(T,a)
 #define IShellView_ContextSensitiveHelp(T,a) (T)->lpVtbl->ContextSensitiveHelp(T,a)
 #define IShellView_TranslateAccelerator(T,a) (T)->lpVtbl->TranslateAccelerator(T,a)
+
 #ifdef _FIX_ENABLEMODELESS_CONFLICT
 #define IShellView_EnableModeless(T,a) (T)->lpVtbl->EnableModelessSV(T,a)
 #else
 #define IShellView_EnableModeless(T,a) (T)->lpVtbl->EnableModeless(T,a)
 #endif
+
 #define IShellView_UIActivate(T,a) (T)->lpVtbl->UIActivate(T,a)
 #define IShellView_Refresh(T) (T)->lpVtbl->Refresh(T)
 #define IShellView_CreateViewWindow(T,a,b,c,d,e) (T)->lpVtbl->CreateViewWindow(T,a,b,c,d,e)
@@ -1277,11 +1017,13 @@ DECLARE_INTERFACE_(IShellView2,IShellView)
 	STDMETHOD(GetWindow)(THIS_ HWND*) PURE;
 	STDMETHOD(ContextSensitiveHelp)(THIS_ BOOL) PURE;
 	STDMETHOD(TranslateAccelerator) (THIS_ LPMSG) PURE;
+
 #ifdef _FIX_ENABLEMODELESS_CONFLICT
 	STDMETHOD(EnableModelessSV)(THIS_ BOOL) PURE;
 #else
 	STDMETHOD(EnableModeless)(THIS_ BOOL) PURE;
 #endif
+
 	STDMETHOD(UIActivate)(THIS_ UINT) PURE;
 	STDMETHOD(Refresh) (THIS) PURE;
 	STDMETHOD(CreateViewWindow)(THIS_ IShellView*,LPCFOLDERSETTINGS,LPSHELLBROWSER,RECT*,HWND*) PURE;
@@ -1370,69 +1112,270 @@ DECLARE_INTERFACE_(IShellIconOverlayIdentifier,IUnknown)
 };
 #undef INTERFACE
 
-#if (_WIN32_WINNT >= 0x0501) /* WXP */
-typedef _COM_interface IFolderView *LPFOLDERVIEW;
-
-#define INTERFACE IFolderView
-DECLARE_INTERFACE_(IFolderView,IUnknown)
-{
-   STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-   STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-   STDMETHOD_(ULONG,Release)(THIS) PURE;
-   STDMETHOD(GetAutoArrange)(THIS) PURE;
-   STDMETHOD(GetCurrentViewMode)(THIS_ UINT) PURE;
-   STDMETHOD(GetDefaultSpacing)(THIS_ POINT*) PURE;
-   STDMETHOD(GetFocusedItem)(THIS_ int*) PURE;
-   STDMETHOD(GetFolder)(THIS_ REFIID,PVOID*) PURE;
-   STDMETHOD(GetItemPosition)(THIS_ LPCITEMIDLIST,POINT*) PURE;
-   STDMETHOD(GetSelectionMarkedItem)(THIS_ int*) PURE;
-   STDMETHOD(GetSpacing)(THIS_ POINT*) PURE;
-   STDMETHOD(Item)(THIS_ int,LPITEMIDLIST*) PURE;
-   STDMETHOD(ItemCount)(THIS_ UINT,int*) PURE;
-   STDMETHOD(Items)(THIS_ UINT,REFIID,PVOID*) PURE;
-   STDMETHOD(SelectAndPositionItems)(THIS_ UINT,LPCITEMIDLIST*,POINT*,DWORD) PURE;
-   STDMETHOD(SelectItem)(THIS_ int,DWORD) PURE;
-   STDMETHOD(SetCurrentViewMode)(THIS_ UINT) PURE;
-};
-#undef INTERFACE
-#endif /* _WIN32_WINNT >= 0x0501 */
-
 #define ISIOI_ICONFILE 0x00000001
 #define ISIOI_ICONINDEX 0x00000002
 
-#if (_WIN32_WINNT >= 0x0500) /* W2K */
-typedef struct {
-	BOOL fShowAllObjects : 1;
-	BOOL fShowExtensions : 1;
-	BOOL fNoConfirmRecycle : 1;
-	BOOL fShowSysFiles : 1;
-	BOOL fShowCompColor : 1;
-	BOOL fDoubleClickInWebView : 1;
-	BOOL fDesktopHTML : 1;
-	BOOL fWin95Classic : 1;
-	BOOL fDontPrettyPath : 1;
-	BOOL fShowAttribCol : 1;
-	BOOL fMapNetDrvBtn : 1;
-	BOOL fShowInfoTip : 1;
-	BOOL fHideIcons : 1;
-	BOOL fWebView : 1;
-	BOOL fFilter : 1;
-	BOOL fShowSuperHidden : 1;
-	BOOL fNoNetCrawling : 1;
-	DWORD dwWin95Unused;
-	UINT uWin95Unused;
-	LONG lParamSort;
-	int iSortDirection;
-	UINT version;
-	UINT uNotUsed;
-	BOOL fSepProcess : 1;
-	BOOL fStartPanelOn : 1;
-	BOOL fShowStartPage : 1;
-	UINT fSpareFlags : 13;
-} SHELLSTATE, *LPSHELLSTATE;
-#endif /* _WIN32_WINNT >= 0x0500 */
+void WINAPI SHAddToRecentDocs(UINT,PCVOID);
+LPITEMIDLIST WINAPI SHBrowseForFolderA(PBROWSEINFOA);
+LPITEMIDLIST WINAPI SHBrowseForFolderW(PBROWSEINFOW);
+void WINAPI SHChangeNotify(LONG,UINT,PCVOID,PCVOID);
+HRESULT WINAPI SHGetDataFromIDListA(LPSHELLFOLDER,LPCITEMIDLIST,int,PVOID,int);
+HRESULT WINAPI SHGetDataFromIDListW(LPSHELLFOLDER,LPCITEMIDLIST,int,PVOID,int);
+HRESULT WINAPI SHGetDesktopFolder(LPSHELLFOLDER*);
+HRESULT WINAPI SHGetInstanceExplorer(IUnknown **);
+HRESULT WINAPI SHGetMalloc(LPMALLOC*);
+BOOL WINAPI SHGetPathFromIDListA(LPCITEMIDLIST,LPSTR);
+BOOL WINAPI SHGetPathFromIDListW(LPCITEMIDLIST,LPWSTR);
+HRESULT WINAPI SHGetSpecialFolderLocation(HWND,int,LPITEMIDLIST*);
+HRESULT WINAPI SHLoadInProc(REFCLSID);
+
+/* SHGetFolderPath in shfolder.dll on W9x, NT4, also in shell32.dll on W2K */
+HRESULT WINAPI SHGetFolderPathA(HWND,int,HANDLE,DWORD,LPSTR);
+HRESULT WINAPI SHGetFolderPathW(HWND,int,HANDLE,DWORD,LPWSTR);
+
+void WINAPI SHGetSettings(LPSHELLFLAGSTATE,DWORD);
+
+typedef __AW(IShellExecuteHook) IShellExecuteHook;
+typedef __AW(IShellLink) IShellLink;
+typedef __AW(BROWSEINFO) BROWSEINFO,*PBROWSEINFO,*LPBROWSEINFO;
+#define SHBrowseForFolder __AW(SHBrowseForFolder)
+#define SHGetDataFromIDList __AW(SHGetDataFromIDList)
+#define SHGetPathFromIDList __AW(SHGetPathFromIDList)
+#define SHGetFolderPath __AW(SHGetFolderPathW)
+#define FILEDESCRIPTOR __AW(FILEDESCRIPTOR)
+#define LPFILEDESCRIPTOR __AW(LPFILEDESCRIPTOR)
+#define FILEGROUPDESCRIPTOR __AW(FILEGROUPDESCRIPTOR)
+#define LPFILEGROUPDESCRIPTOR __AW(LPFILEGROUPDESCRIPTOR)
+
+DWORD WINAPI SHFormatDrive(HWND,UINT,UINT,UINT);
+
+#define SHFMT_ID_DEFAULT 0xFFFF
+#define SHFMT_OPT_FULL 1
+#define SHFMT_OPT_SYSONLY 2
+#define SHFMT_ERROR 0xFFFFFFFF
+#define SHFMT_CANCEL 0xFFFFFFFE
+#define SHFMT_NOFORMAT 0xFFFFFFFD
+
+#if (_WIN32_IE >= 0x0400)
+BOOL WINAPI SHGetSpecialFolderPathA(HWND,LPSTR,int,BOOL);
+BOOL WINAPI SHGetSpecialFolderPathW(HWND,LPWSTR,int,BOOL);
+#define SHGetSpecialFolderPath __AW(SHGetSpecialFolderPath)
+#endif /* _WIN32_IE >= 0x0400 */
+
+#if (_WIN32_IE >= 0x0400 || _WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+
+#define INTERFACE IPersistFolder2
+DECLARE_INTERFACE_(IPersistFolder2,IPersistFolder)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD(GetClassID)(THIS_ CLSID*) PURE;
+	STDMETHOD(Initialize)(THIS_ LPCITEMIDLIST) PURE;
+	STDMETHOD(GetCurFolder)(THIS_ LPITEMIDLIST*) PURE;
+};
+#undef INTERFACE
+typedef IPersistFolder2 *LPPERSISTFOLDER2;
+
+#ifdef COBJMACROS
+#define IPersistFolder2_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
+#define IPersistFolder2_AddRef(T) (T)->lpVtbl->AddRef(T)
+#define IPersistFolder2_Release(T) (T)->lpVtbl->Release(T)
+#define IPersistFolder2_GetClassID(T,a) (T)->lpVtbl->GetClassID(T,a)
+#define IPersistFolder2_Initialize(T,a) (T)->lpVtbl->Initialize(T,a)
+#define IPersistFolder2_GetCurFolder(T,a) (T)->lpVtbl->GetCurFolder(T,a)
+#endif
+
+#endif /* _WIN32_IE >= 0x0400 || _WIN32_WINNT >= _WIN32_WINNT_WIN2K */
 
 #if (_WIN32_IE >= 0x0500)
+typedef struct tagEXTRASEARCH
+{
+	GUID guidSearch;
+	WCHAR wszFriendlyName[80];
+	WCHAR wszUrl[2084];
+} EXTRASEARCH, *LPEXTRASEARCH;
+typedef DWORD SHCOLSTATEF;
+typedef struct
+{
+	GUID fmtid;
+	DWORD pid;
+} SHCOLUMNID, *LPSHCOLUMNID;
+typedef const SHCOLUMNID *LPCSHCOLUMNID;
+typedef struct _SHELLDETAILS
+{
+	int fmt; 
+	int cxChar;
+	STRRET str;
+} SHELLDETAILS, *LPSHELLDETAILS;
+typedef struct
+{
+	LPITEMIDLIST pidlTargetFolder;
+	WCHAR szTargetParsingName[MAX_PATH];
+	WCHAR szNetworkProvider[MAX_PATH];
+	DWORD dwAttributes;
+	int csidl;
+} PERSIST_FOLDER_TARGET_INFO;
+
+typedef enum {
+	SHGFP_TYPE_CURRENT = 0,
+	SHGFP_TYPE_DEFAULT = 1,
+} SHGFP_TYPE;
+#pragma pack(push,8)
+typedef struct {
+	ULONG dwFlags;
+	ULONG dwReserved;
+	WCHAR wszFolder[MAX_PATH];
+} SHCOLUMNINIT,*LPSHCOLUMNINIT;
+typedef const SHCOLUMNINIT* LPCSHCOLUMNINIT;
+typedef struct {
+	ULONG dwFlags;
+	DWORD dwFileAttributes;
+	ULONG dwReserved;
+	WCHAR *pwszExt;
+	WCHAR wszFile[MAX_PATH];
+} SHCOLUMNDATA,*LPSHCOLUMNDATA;
+typedef const SHCOLUMNDATA* LPCSHCOLUMNDATA;
+#pragma pack(pop)
+
+#define MAX_COLUMN_NAME_LEN 80
+#define MAX_COLUMN_DESC_LEN 128
+
+#pragma pack(push,1)
+typedef struct {
+	SHCOLUMNID scid;
+	VARTYPE vt;
+	DWORD fmt;
+	UINT cChars;
+	DWORD csFlags;
+	WCHAR wszTitle[MAX_COLUMN_NAME_LEN];
+	WCHAR wszDescription[MAX_COLUMN_DESC_LEN];
+} SHCOLUMNINFO,*LPSHCOLUMNINFO;
+typedef const SHCOLUMNINFO* LPCSHCOLUMNINFO;
+#pragma pack(pop)
+
+typedef enum {
+	SHCOLSTATE_TYPE_STR = 0x00000001,
+	SHCOLSTATE_TYPE_INT = 0x00000002,
+	SHCOLSTATE_TYPE_DATE = 0x00000003,
+	SHCOLSTATE_TYPEMASK = 0x0000000f,
+	SHCOLSTATE_ONBYDEFAULT = 0x00000010,
+	SHCOLSTATE_SLOW = 0x00000020,
+	SHCOLSTATE_EXTENDED = 0x00000040,
+	SHCOLSTATE_SECONDARYUI = 0x00000080,
+	SHCOLSTATE_HIDDEN = 0x00000100,
+	SHCOLSTATE_PREFER_VARCMP = 0x00000200
+} SHCOLSTATE;
+
+#ifdef COBJMACROS
+#define IContextMenu2_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
+#define IContextMenu2_AddRef(T) (T)->lpVtbl->AddRef(T)
+#define IContextMenu2_Release(T) (T)->lpVtbl->Release(T)
+#define IContextMenu2_QueryContextMenu(T,a,b,c,d,e) (T)->lpVtbl->QueryContextMenu(T,a,b,c,d,e)
+#define IContextMenu2_InvokeCommand(T,a) (T)->lpVtbl->InvokeCommand(T,a)
+#define IContextMenu2_GetCommandString(T,a,b,c,d,e) (T)->lpVtbl->GetCommandString(T,a,b,c,d,e)
+#define IContextMenu2_HandleMenuMsg(T,a,b,c) (T)->lpVtbl->HandleMenuMsg(T,a,b,c)
+#define IContextMenu3_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
+#define IContextMenu3_AddRef(T) (T)->lpVtbl->AddRef(T)
+#define IContextMenu3_Release(T) (T)->lpVtbl->Release(T)
+#define IContextMenu3_QueryContextMenu(T,a,b,c,d,e) (T)->lpVtbl->QueryContextMenu(T,a,b,c,d,e)
+#define IContextMenu3_InvokeCommand(T,a) (T)->lpVtbl->InvokeCommand(T,a)
+#define IContextMenu3_GetCommandString(T,a,b,c,d,e) (T)->lpVtbl->GetCommandString(T,a,b,c,d,e)
+#define IContextMenu3_HandleMenuMsg(T,a,b,c) (T)->lpVtbl->HandleMenuMsg(T,a,b,c)
+#define IContextMenu3_HandleMenuMsg2(T,a,b,c,d) (T)->lpVtbl->HandleMenuMsg(T,a,b,c,d)
+#endif
+
+#define INTERFACE IColumnProvider
+DECLARE_INTERFACE_(IColumnProvider,IUnknown)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD(Initialize)(THIS_ LPCSHCOLUMNINIT) PURE;
+	STDMETHOD(GetColumnInfo)(THIS_ DWORD,SHCOLUMNINFO*) PURE;
+	STDMETHOD(GetItemData)(THIS_ LPCSHCOLUMNID,LPCSHCOLUMNDATA,VARIANT*) PURE;
+};
+#undef INTERFACE
+
+DECLARE_ENUMERATOR_(IEnumExtraSearch,LPEXTRASEARCH);
+typedef IEnumExtraSearch *LPENUMEXTRASEARCH;
+
+#define INTERFACE IShellFolder2
+DECLARE_INTERFACE_(IShellFolder2, IShellFolder)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD(ParseDisplayName)(THIS_ HWND,LPBC,LPOLESTR,PULONG,LPITEMIDLIST*,PULONG) PURE;
+	STDMETHOD(EnumObjects)(THIS_ HWND,DWORD,LPENUMIDLIST*) PURE;
+	STDMETHOD(BindToObject)(THIS_ LPCITEMIDLIST,LPBC,REFIID,PVOID*) PURE;
+	STDMETHOD(BindToStorage)(THIS_ LPCITEMIDLIST,LPBC,REFIID,PVOID*) PURE;
+	STDMETHOD(CompareIDs)(THIS_ LPARAM,LPCITEMIDLIST,LPCITEMIDLIST) PURE;
+	STDMETHOD(CreateViewObject)(THIS_ HWND,REFIID,PVOID*) PURE;
+	STDMETHOD(GetAttributesOf)(THIS_ UINT,LPCITEMIDLIST*,PULONG) PURE;
+	STDMETHOD(GetUIObjectOf)(THIS_ HWND,UINT,LPCITEMIDLIST*,REFIID,PUINT,PVOID*) PURE;
+	STDMETHOD(GetDisplayNameOf)(THIS_ LPCITEMIDLIST,DWORD,LPSTRRET) PURE;
+	STDMETHOD(SetNameOf)(THIS_ HWND,LPCITEMIDLIST,LPCOLESTR,DWORD,LPITEMIDLIST*) PURE;
+	STDMETHOD(GetDefaultSearchGUID)(THIS_ GUID*) PURE;
+	STDMETHOD(EnumSearches)(THIS_ IEnumExtraSearch**) PURE;
+	STDMETHOD(GetDefaultColumn)(THIS_ DWORD,ULONG*,ULONG*) PURE;
+	STDMETHOD(GetDefaultColumnState)(THIS_ UINT,SHCOLSTATEF*) PURE;
+	STDMETHOD(GetDetailsEx)(THIS_ LPCITEMIDLIST,const SHCOLUMNID*,VARIANT*) PURE;
+	STDMETHOD(GetDetailsOf)(THIS_ LPCITEMIDLIST,UINT,SHELLDETAILS*) PURE;
+	STDMETHOD(MapColumnToSCID)(THIS_ UINT,SHCOLUMNID*) PURE;
+};
+#undef INTERFACE
+typedef IShellFolder2 *LPSHELLFOLDER2;
+
+#ifdef COBJMACROS
+#define IShellFolder2_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
+#define IShellFolder2_AddRef(T) (T)->lpVtbl->AddRef(T)
+#define IShellFolder2_Release(T) (T)->lpVtbl->Release(T)
+#define IShellFolder2_ParseDisplayName(T,a,b,c,d,e,f) (T)->lpVtbl->ParseDisplayName(T,a,b,c,d,e,f)
+#define IShellFolder2_EnumObjects(T,a,b,c) (T)->lpVtbl->EnumObjects(T,a,b,c)
+#define IShellFolder2_BindToObject(T,a,b,c,d) (T)->lpVtbl->BindToObject(T,a,b,c,d)
+#define IShellFolder2_BindToStorage(T,a,b,c,d) (T)->lpVtbl->BindToStorage(T,a,b,c,d)
+#define IShellFolder2_CompareIDs(T,a,b,c) (T)->lpVtbl->CompareIDs(T,a,b,c)
+#define IShellFolder2_CreateViewObject(T,a,b) (T)->lpVtbl->CreateViewObject(T,a,b)
+#define IShellFolder2_GetAttributesOf(T,a,b,c) (T)->lpVtbl->GetAttributesOf(T,a,b,c)
+#define IShellFolder2_GetUIObjectOf(T,a,b,c,d,e,f) (T)->lpVtbl->GetUIObjectOf(T,a,b,c,d,e,f)
+#define IShellFolder2_GetDisplayNameOf(T,a,b,c) (T)->lpVtbl->GetDisplayNameOf(T,a,b,c)
+#define IShellFolder2_SetNameOf(T,a,b,c,d,e) (T)->lpVtbl->SetNameOf(T,a,b,c,d,e)
+#define IShellFolder2_GetDefaultSearchGUID(T,a) (T)->lpVtbl->GetDefaultSearchGUID(T,a)
+#define IShellFolder2_EnumSearches(T,a) (T)->lpVtbl->EnumSearches(T,a)
+#define IShellFolder2_GetDefaultColumn(T,a,b,c) (T)->lpVtbl->GetDefaultColumn(T,a,b,c)
+#define IShellFolder2_GetDefaultColumnState(T,a,b) (T)->lpVtbl->GetDefaultColumnState(T,a,b)
+#define IShellFolder2_GetDetailsEx(T,a,b,c) (T)->lpVtbl->GetDetailsEx(T,a,b,c)
+#define IShellFolder2_GetDetailsOf(T,a,b,c) (T)->lpVtbl->GetDetailsOf(T,a,b,c)
+#define IShellFolder2_MapColumnToSCID(T,a,b) (T)->lpVtbl->MapColumnToSCID(T,a,b)
+#endif
+
+#define INTERFACE IPersistFolder3
+DECLARE_INTERFACE_(IPersistFolder3,IPersistFolder2)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD(GetClassID)(THIS_ CLSID*) PURE;
+	STDMETHOD(Initialize)(THIS_ LPCITEMIDLIST) PURE;
+	STDMETHOD(GetCurFolder)(THIS_ LPITEMIDLIST*) PURE;
+	STDMETHOD(InitializeEx)(THIS_ IBindCtx*,LPCITEMIDLIST,const PERSIST_FOLDER_TARGET_INFO*) PURE;
+	STDMETHOD(GetFolderTargetInfo)(THIS_ PERSIST_FOLDER_TARGET_INFO*) PURE;
+};
+#undef INTERFACE
+typedef IPersistFolder3 *LPPERSISTFOLDER3;
+
+#ifdef COBJMACROS
+#define IPersistFolder3_QueryInterface(T,a,b) (T)->lpVtbl->QueryInterface(T,a,b)
+#define IPersistFolder3_AddRef(T) (T)->lpVtbl->AddRef(T)
+#define IPersistFolder3_Release(T) (T)->lpVtbl->Release(T)
+#define IPersistFolder3_GetClassID(T,a) (T)->lpVtbl->GetClassID(T,a)
+#define IPersistFolder3_Initialize(T,a) (T)->lpVtbl->Initialize(T,a)
+#define IPersistFolder3_GetCurFolder(T,a) (T)->lpVtbl->GetCurFolder(T,a)
+#define IPersistFolder3_InitializeEx(T,a,b,c) (T)->lpVtbl->InitializeEx(T,a,b,c)
+#define IPersistFolder3_GetFolderTargetInfo(T,a) (T)->lpVtbl->GetFolderTargetInfo(T,a)
+#endif
+
 #pragma pack(push,8)
 typedef struct
 {
@@ -1467,9 +1410,44 @@ DECLARE_INTERFACE_(IDropTargetHelper, IUnknown)
 	STDMETHOD (Show)(THIS_ BOOL fShow) PURE;
 };
 #undef INTERFACE
+
 #endif /* _WIN32_IE >= 0x0500 */
 
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINME)
+HRESULT WINAPI SHGetFolderLocation(HWND,int,HANDLE,DWORD,LPITEMIDLIST*);
+#endif
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+typedef struct {
+	BOOL fShowAllObjects : 1;
+	BOOL fShowExtensions : 1;
+	BOOL fNoConfirmRecycle : 1;
+	BOOL fShowSysFiles : 1;
+	BOOL fShowCompColor : 1;
+	BOOL fDoubleClickInWebView : 1;
+	BOOL fDesktopHTML : 1;
+	BOOL fWin95Classic : 1;
+	BOOL fDontPrettyPath : 1;
+	BOOL fShowAttribCol : 1;
+	BOOL fMapNetDrvBtn : 1;
+	BOOL fShowInfoTip : 1;
+	BOOL fHideIcons : 1;
+	BOOL fWebView : 1;
+	BOOL fFilter : 1;
+	BOOL fShowSuperHidden : 1;
+	BOOL fNoNetCrawling : 1;
+	DWORD dwWin95Unused;
+	UINT uWin95Unused;
+	LONG lParamSort;
+	int iSortDirection;
+	UINT version;
+	UINT uNotUsed;
+	BOOL fSepProcess : 1;
+	BOOL fStartPanelOn : 1;
+	BOOL fShowStartPage : 1;
+	UINT fSpareFlags : 13;
+} SHELLSTATE, *LPSHELLSTATE;
+
 BOOL WINAPI PathResolve(LPWSTR, LPCWSTR*, UINT);
 #define PRF_VERIFYEXISTS            0x0001
 #define PRF_TRYPROGRAMEXTENSIONS    (0x0002 | PRF_VERIFYEXISTS)
@@ -1479,49 +1457,13 @@ BOOL WINAPI PathResolve(LPWSTR, LPCWSTR*, UINT);
 #define IDO_SHGIOI_LINK             0x0FFFFFFE
 #define IDO_SHGIOI_SLOWFILE         0x0FFFFFFD
 #define IDO_SHGIOI_DEFAULT          0x0FFFFFFC
-#endif
 
-void WINAPI SHAddToRecentDocs(UINT,PCVOID);
-LPITEMIDLIST WINAPI SHBrowseForFolderA(PBROWSEINFOA);
-LPITEMIDLIST WINAPI SHBrowseForFolderW(PBROWSEINFOW);
-void WINAPI SHChangeNotify(LONG,UINT,PCVOID,PCVOID);
-HRESULT WINAPI SHGetDataFromIDListA(LPSHELLFOLDER,LPCITEMIDLIST,int,PVOID,int);
-HRESULT WINAPI SHGetDataFromIDListW(LPSHELLFOLDER,LPCITEMIDLIST,int,PVOID,int);
-HRESULT WINAPI SHGetDesktopFolder(LPSHELLFOLDER*);
-HRESULT WINAPI SHGetInstanceExplorer(IUnknown **);
-HRESULT WINAPI SHGetMalloc(LPMALLOC*);
-BOOL WINAPI SHGetPathFromIDListA(LPCITEMIDLIST,LPSTR);
-BOOL WINAPI SHGetPathFromIDListW(LPCITEMIDLIST,LPWSTR);
-HRESULT WINAPI SHGetSpecialFolderLocation(HWND,int,LPITEMIDLIST*);
-HRESULT WINAPI SHLoadInProc(REFCLSID);
-#if (_WIN32_IE >= 0x0400)
-BOOL WINAPI SHGetSpecialFolderPathA(HWND,LPSTR,int,BOOL);
-BOOL WINAPI SHGetSpecialFolderPathW(HWND,LPWSTR,int,BOOL);
-#endif 
-/* SHGetFolderPath in shfolder.dll on W9x, NT4, also in shell32.dll on W2K */
-HRESULT WINAPI SHGetFolderPathA(HWND,int,HANDLE,DWORD,LPSTR);
-HRESULT WINAPI SHGetFolderPathW(HWND,int,HANDLE,DWORD,LPWSTR);
-#if (_WIN32_WINDOWS >= 0x0490) || (_WIN32_WINNT >= 0x0500) /* ME or W2K */
-HRESULT WINAPI SHGetFolderLocation(HWND,int,HANDLE,DWORD,LPITEMIDLIST*);
-#endif
-#if (_WIN32_WINNT >= 0x0500)
 INT WINAPI SHGetIconOverlayIndexW(LPCWSTR pszIconPath, int iIconIndex);
 INT WINAPI SHGetIconOverlayIndexA(LPCSTR pszIconPath, int iIconIndex);
 INT WINAPI SHCreateDirectoryExA(HWND,LPCSTR,LPSECURITY_ATTRIBUTES);
 INT WINAPI SHCreateDirectoryExW(HWND,LPCWSTR,LPSECURITY_ATTRIBUTES);
 HRESULT WINAPI SHBindToParent(LPCITEMIDLIST,REFIID,VOID**,LPCITEMIDLIST*);
-#endif
-#if (_WIN32_WINNT >= 0x0501) /* XP */
-HRESULT WINAPI SHGetFolderPathAndSubDirA(HWND,int,HANDLE,DWORD,LPCSTR,LPSTR);
-HRESULT WINAPI SHGetFolderPathAndSubDirW(HWND,int,HANDLE,DWORD,LPCWSTR,LPWSTR);
-HRESULT WINAPI SHParseDisplayName(LPCWSTR,IBindCtx*,LPITEMIDLIST,SFGAOF,SFGAOF*);
-#endif
-void WINAPI SHGetSettings(LPSHELLFLAGSTATE,DWORD);
-#if (_WIN32_WINNT >= 0x0500) /* W2K */
 void WINAPI SHGetSetSettings(LPSHELLSTATE,DWORD,BOOL);
-#endif
-
-#if (_WIN32_WINNT >= 0x0500) /* W2K */
 BOOL WINAPI ILIsEqual(LPCITEMIDLIST, LPCITEMIDLIST);
 BOOL WINAPI ILIsParent(LPCITEMIDLIST, LPCITEMIDLIST, BOOL);
 BOOL WINAPI ILRemoveLastID(LPITEMIDLIST);
@@ -1536,70 +1478,49 @@ LPITEMIDLIST WINAPI ILFindLastID(LPCITEMIDLIST);
 LPITEMIDLIST WINAPI ILGetNext(LPCITEMIDLIST);
 UINT WINAPI ILGetSize(LPCITEMIDLIST);
 void WINAPI ILFree(LPITEMIDLIST);
-
 HRESULT WINAPI SHCoCreateInstance(LPCWSTR,REFCLSID,IUnknown*,REFIID,void**);
-#endif
+#define SHGetIconOverlayIndex __AW(SHGetIconOverlayIndex)
+#define SHCreateDirectoryEx __AW(SHCreateDirectoryEx)
 
-#ifdef UNICODE
-typedef IShellExecuteHookW IShellExecuteHook;
-typedef IShellLinkW IShellLink;
-typedef BROWSEINFOW BROWSEINFO,*PBROWSEINFO,*LPBROWSEINFO;
-#define SHBrowseForFolder SHBrowseForFolderW
-#define SHGetDataFromIDList SHGetDataFromIDListW
-#define SHGetPathFromIDList SHGetPathFromIDListW
-#if (_WIN32_IE >= 0x0400)
-#define SHGetSpecialFolderPath SHGetSpecialFolderPathW
-#endif
-#define SHGetFolderPath SHGetFolderPathW 
-#if (_WIN32_WINNT >= 0x0500)
-#define SHGetIconOverlayIndex SHGetIconOverlayIndexW
-#define SHCreateDirectoryEx SHCreateDirectoryExW
-#endif
-#if (_WIN32_WINNT >= 0x0501)
-#define SHGetFolderPathAndSubDir SHGetFolderPathAndSubDirW
-#endif
-#define FILEDESCRIPTOR FILEDESCRIPTORW
-#define LPFILEDESCRIPTOR LPFILEDESCRIPTORW
-#define FILEGROUPDESCRIPTOR FILEGROUPDESCRIPTORW
-#define LPFILEGROUPDESCRIPTOR LPFILEGROUPDESCRIPTORW
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WIN2K */
 
-#else
-typedef IShellExecuteHookA IShellExecuteHook;
-typedef IShellLinkA IShellLink;
-typedef BROWSEINFOA BROWSEINFO,*PBROWSEINFO,*LPBROWSEINFO;
-#define SHBrowseForFolder SHBrowseForFolderA
-#define SHGetDataFromIDList SHGetDataFromIDListA
-#define SHGetPathFromIDList SHGetPathFromIDListA
-#if (_WIN32_IE >= 0x0400)
-#define SHGetSpecialFolderPath SHGetSpecialFolderPathA
-#endif
-#define SHGetFolderPath SHGetFolderPathA
-#if (_WIN32_WINNT >= 0x0500)
-#define SHGetIconOverlayIndex SHGetIconOverlayIndexA
-#define SHCreateDirectoryEx SHCreateDirectoryExA
-#endif
-#if (_WIN32_WINNT >= 0x0501)
-#define SHGetFolderPathAndSubDir SHGetFolderPathAndSubDirA
-#endif
-#define FILEDESCRIPTOR FILEDESCRIPTORA
-#define LPFILEDESCRIPTOR LPFILEDESCRIPTORA
-#define FILEGROUPDESCRIPTOR FILEGROUPDESCRIPTORA
-#define LPFILEGROUPDESCRIPTOR LPFILEGROUPDESCRIPTORA
-#endif /* UNICODE */
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+typedef _COM_interface IFolderView *LPFOLDERVIEW;
 
-DWORD WINAPI SHFormatDrive(HWND,UINT,UINT,UINT);
+#define INTERFACE IFolderView
+DECLARE_INTERFACE_(IFolderView,IUnknown)
+{
+   STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+   STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+   STDMETHOD_(ULONG,Release)(THIS) PURE;
+   STDMETHOD(GetAutoArrange)(THIS) PURE;
+   STDMETHOD(GetCurrentViewMode)(THIS_ UINT) PURE;
+   STDMETHOD(GetDefaultSpacing)(THIS_ POINT*) PURE;
+   STDMETHOD(GetFocusedItem)(THIS_ int*) PURE;
+   STDMETHOD(GetFolder)(THIS_ REFIID,PVOID*) PURE;
+   STDMETHOD(GetItemPosition)(THIS_ LPCITEMIDLIST,POINT*) PURE;
+   STDMETHOD(GetSelectionMarkedItem)(THIS_ int*) PURE;
+   STDMETHOD(GetSpacing)(THIS_ POINT*) PURE;
+   STDMETHOD(Item)(THIS_ int,LPITEMIDLIST*) PURE;
+   STDMETHOD(ItemCount)(THIS_ UINT,int*) PURE;
+   STDMETHOD(Items)(THIS_ UINT,REFIID,PVOID*) PURE;
+   STDMETHOD(SelectAndPositionItems)(THIS_ UINT,LPCITEMIDLIST*,POINT*,DWORD) PURE;
+   STDMETHOD(SelectItem)(THIS_ int,DWORD) PURE;
+   STDMETHOD(SetCurrentViewMode)(THIS_ UINT) PURE;
+};
+#undef INTERFACE
 
-#define SHFMT_ID_DEFAULT 0xFFFF
-#define SHFMT_OPT_FULL 1
-#define SHFMT_OPT_SYSONLY 2
-#define SHFMT_ERROR 0xFFFFFFFF
-#define SHFMT_CANCEL 0xFFFFFFFE
-#define SHFMT_NOFORMAT 0xFFFFFFFD
+HRESULT WINAPI SHGetFolderPathAndSubDirA(HWND,int,HANDLE,DWORD,LPCSTR,LPSTR);
+HRESULT WINAPI SHGetFolderPathAndSubDirW(HWND,int,HANDLE,DWORD,LPCWSTR,LPWSTR);
+HRESULT WINAPI SHParseDisplayName(LPCWSTR,IBindCtx*,LPITEMIDLIST,SFGAOF,SFGAOF*);
+#define SHGetFolderPathAndSubDir __AW(SHGetFolderPathAndSubDir)
+
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WINXP */
 
 #pragma pack(pop)
+
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* _SHLOBJ_H */

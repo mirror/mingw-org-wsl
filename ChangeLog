@@ -1,3 +1,76 @@
+2012-09-13  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/rapi.h (_mingw.h): Include.
+	* include/raserror.h: Ditto.
+	* include/rassapi.h: Ditto.
+	* include/regstr.h: Ditto.
+	* include/richole.h: Ditto.
+	* include/rpc.h: Ditto.
+	* include/rpcndr.h: Ditto.
+	* include/rpcnsip.h: Ditto.
+	* include/rpcnterr.h: Ditto.
+	* include/rpcproxy.h: Ditto.
+	* include/schannel.h: Ditto.
+	* include/schnlsp.h: Ditto.
+	* include/scrnsave.h: Ditto.
+	* include/security.h: Ditto.
+	* include/servprov.h: Ditto.
+
+	* include/search.h (_mingw.h): Remove comment and move to top of file.
+	* include/setjmp.h: Ditto.
+	* include/share.h: Ditto.
+
+	* include/rasdlg.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/richedit.h: Ditto.
+	* include/rpcdce2.h: Ditto.
+	* include/rpcdcep.h: Ditto.
+	* include/rpcnsi.h: Ditto.
+	* include/setupapi.h: Ditto.
+
+	* include/reason.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	* include/routprot.h: Ditto.
+
+	* include/shellapi.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+
+	* include/shldisp.h (_mingw.h): Include.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer.
+
+	* include/rpcdce.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	* include/rtutils.h: Ditto.
+	* include/sddl.h: Ditto.
+	* include/secext.h: Ditto.
+	* include/shlguid.h: Ditto.
+
+	* include/ras.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	(WINVER): Use _WIN32_WINNT instead.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+
+	* include/shlobj.h (_mingw.h): Include.
+	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
+	and move filters to the end of the file.
+	(_WIN32_IE): Move filters to the end of the file.
+
+	* include/sdkddkver.h (_WIN32_WINNT_WIN4E): Add new symbol.
+	(_mingw.h): Document to not include the file since _mingw.h includes
+	this file.
+
+	* TODO: Add entries.
+
+	* NOTES: New file.
+
 2012-09-12  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.

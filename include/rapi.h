@@ -24,6 +24,7 @@
 #ifndef _RAPI_H
 #define _RAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 typedef struct IRAPIStream
 {

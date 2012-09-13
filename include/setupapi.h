@@ -24,6 +24,7 @@
 #ifndef _SETUPAPI_H
 #define _SETUPAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <commctrl.h>
 #include <pshpack1.h>
@@ -333,12 +334,14 @@ extern "C" {
 #define FLG_ADDREG_APPEND	0x00000008
 #define FLG_ADDREG_KEYONLY	0x00000010
 #define FLG_ADDREG_OVERWRITEONLY	0x00000020
+
 #if (_SETUPAPI_VER >= 0x0501)
 #define FLG_ADDREG_64BITKEY	0x00001000
 #define FLG_ADDREG_KEYONLY_COMMON	0x00002000
 #define FLG_ADDREG_32BITKEY	0x00004000
 #define FLG_ADDREG_DELREG_BIT	0x00008000
 #endif
+
 #define FLG_ADDREG_TYPE_MULTI_SZ	0x00010000
 #define FLG_ADDREG_TYPE_EXPAND_SZ	0x00020000
 #define FLG_ADDREG_TYPE_BINARY	(0x00000000|FLG_ADDREG_BINVALUETYPE)
@@ -346,6 +349,7 @@ extern "C" {
 #define FLG_ADDREG_TYPE_NONE	(0x00020000|FLG_ADDREG_BINVALUETYPE)
 #define FLG_ADDREG_TYPE_MASK	(0xFFFF0000|FLG_ADDREG_BINVALUETYPE)
 #define FLG_DELREG_VALUE	0x00000000
+
 #if (_SETUPAPI_VER >= 0x0501)
 #define FLG_DELREG_TYPE_MASK	FLG_ADDREG_TYPE_MASK
 #define FLG_DELREG_TYPE_SZ	FLG_ADDREG_TYPE_SZ
@@ -360,6 +364,7 @@ extern "C" {
 #define FLG_DELREG_OPERATION_MASK	0x000000FE
 #define FLG_DELREG_MULTI_SZ_DELSTRING	(0x00000002|FLG_DELREG_TYPE_MULTI_SZ|FLG_ADDREG_DELREG_BIT)
 #endif
+
 #define FLG_BITREG_CLEARBITS	0x00000000
 #define FLG_BITREG_SETBITS	0x00000001
 #define FLG_PROFITEM_CURRENTUSER	0x00000001
@@ -434,9 +439,11 @@ extern "C" {
 #define NDW_INSTALLFLAG_KNOWNCLASS	0x00080000
 #define NDW_INSTALLFLAG_NEEDRESTART	0x00000080
 #define NDW_INSTALLFLAG_NEEDREBOOT	0x00000100
+
 #if (_SETUPAPI_VER >= 0x0502)
 #define SCWMI_CLOBBER_SECURITY  0x00000001
 #endif
+
 #define SETDIRID_NOT_FULL_PATH	0x00000001
 #define SP_COPY_DELETESOURCE	0x0000001
 #define SP_COPY_REPLACEONLY	0x0000002
@@ -552,12 +559,14 @@ extern "C" {
 #define SPINST_REGSVR	0x00000040
 #define SPINST_UNREGSVR	0x00000080
 #define SPINST_PROFILEITEMS	0x00000100
+
 #if (_SETUPAPI_VER >= 0x0501)
 #define SPINST_COPYINF	0x00000200
 #define SPINST_ALL	0x000003ff
 #else
 #define SPINST_ALL	0x000001ff
 #endif
+
 #define SPINST_SINGLESECTION	0x00010000
 #define SPINST_LOGCONFIG_IS_FORCED	0x00020000
 #define SPINST_LOGCONFIGS_ARE_OVERRIDES	0x00040000
@@ -927,13 +936,8 @@ typedef struct _SP_DRVINFO_DATA_V1_W {
     WCHAR     ProviderName[LINE_LEN];
 } SP_DRVINFO_DATA_V1_W, *PSP_DRVINFO_DATA_V1_W;
 
-#ifdef UNICODE
-typedef SP_DRVINFO_DATA_V1_W SP_DRVINFO_DATA_V1, *PSP_DRVINFO_DATA_V1;
-typedef SP_DRVINFO_DATA_V2_W SP_DRVINFO_DATA_V2, *PSP_DRVINFO_DATA_V2;
-#else
-typedef SP_DRVINFO_DATA_V1_A SP_DRVINFO_DATA_V1, *PSP_DRVINFO_DATA_V1;
-typedef SP_DRVINFO_DATA_V2_A SP_DRVINFO_DATA_V2, *PSP_DRVINFO_DATA_V2;
-#endif
+typedef __AW(SP_DRVINFO_DATA_V1_) SP_DRVINFO_DATA_V1, *PSP_DRVINFO_DATA_V1;
+typedef __AW(SP_DRVINFO_DATA_V2_) SP_DRVINFO_DATA_V2, *PSP_DRVINFO_DATA_V2;
 
 #if USE_SP_DRVINFO_DATA_V1
 typedef SP_DRVINFO_DATA_V1_A SP_DRVINFO_DATA_A, *PSP_DRVINFO_DATA_A;
@@ -1005,55 +1009,28 @@ typedef struct _SP_BACKUP_QUEUE_PARAMS_W {
     INT      FilenameOffset;
 } SP_BACKUP_QUEUE_PARAMS_W, *PSP_BACKUP_QUEUE_PARAMS_W;
 
-
-#ifdef UNICODE
-typedef SP_ORIGINAL_FILE_INFO_W SP_ORIGINAL_FILE_INFO, *PSP_ORIGINAL_FILE_INFO;
-typedef FILEPATHS_W FILEPATHS, *PFILEPATHS;
-typedef SOURCE_MEDIA_W SOURCE_MEDIA, *PSOURCE_MEDIA;
-typedef CABINET_INFO_W CABINET_INFO, *PCABINET_INFO;
-typedef FILE_IN_CABINET_INFO_W FILE_IN_CABINET_INFO, *PFILE_IN_CABINET_INFO;
-typedef SP_FILE_COPY_PARAMS_W SP_FILE_COPY_PARAMS, PSP_FILE_COPY_PARAMS;
-typedef SP_DEVICE_INTERFACE_DETAIL_DATA_W SP_DEVICE_INTERFACE_DETAIL_DATA,
+typedef __AW(SP_ORIGINAL_FILE_INFO_) SP_ORIGINAL_FILE_INFO, *PSP_ORIGINAL_FILE_INFO;
+typedef __AW(FILEPATHS_) FILEPATHS, *PFILEPATHS;
+typedef __AW(SOURCE_MEDIA_) SOURCE_MEDIA, *PSOURCE_MEDIA;
+typedef __AW(CABINET_INFO_) CABINET_INFO, *PCABINET_INFO;
+typedef __AW(FILE_IN_CABINET_INFO_) FILE_IN_CABINET_INFO, *PFILE_IN_CABINET_INFO;
+typedef __AW(SP_FILE_COPY_PARAMS_) SP_FILE_COPY_PARAMS, PSP_FILE_COPY_PARAMS;
+typedef __AW(SP_DEVICE_INTERFACE_DETAIL_DATA_) SP_DEVICE_INTERFACE_DETAIL_DATA,
     *PSP_DEVICE_INTERFACE_DETAIL_DATA;
-typedef SP_INTERFACE_DEVICE_DETAIL_DATA_W SP_INTERFACE_DEVICE_DETAIL_DATA,
+typedef __AW(SP_INTERFACE_DEVICE_DETAIL_DATA_) SP_INTERFACE_DEVICE_DETAIL_DATA,
     *PSP_INTERFACE_DEVICE_DETAIL_DATA; /* deprecated */
-typedef SP_DEVINFO_LIST_DETAIL_DATA_W SP_DEVINFO_LIST_DETAIL_DATA,
+typedef __AW(SP_DEVINFO_LIST_DETAIL_DATA_) SP_DEVINFO_LIST_DETAIL_DATA,
     *PSP_DEVINFO_LIST_DETAIL_DATA;
-typedef SP_DEVINSTALL_PARAMS_W SP_DEVINSTALL_PARAMS, *PSP_DEVINSTALL_PARAMS;
-typedef SP_SELECTDEVICE_PARAMS_W SP_SELECTDEVICE_PARAMS, *PSP_SELECTDEVICE_PARAMS;
-typedef SP_TROUBLESHOOTER_PARAMS_W SP_TROUBLESHOOTER_PARAMS,
+typedef __AW(SP_DEVINSTALL_PARAMS_) SP_DEVINSTALL_PARAMS, *PSP_DEVINSTALL_PARAMS;
+typedef __AW(SP_SELECTDEVICE_PARAMS_) SP_SELECTDEVICE_PARAMS, *PSP_SELECTDEVICE_PARAMS;
+typedef __AW(SP_TROUBLESHOOTER_PARAMS_) SP_TROUBLESHOOTER_PARAMS,
     *PSP_TROUBLESHOOTER_PARAMS;
-typedef SP_POWERMESSAGEWAKE_PARAMS_W SP_POWERMESSAGEWAKE_PARAMS,
+typedef __AW(SP_POWERMESSAGEWAKE_PARAMS_) SP_POWERMESSAGEWAKE_PARAMS,
     *PSP_POWERMESSAGEWAKE_PARAMS;
-typedef SP_DRVINFO_DETAIL_DATA_W SP_DRVINFO_DETAIL_DATA,
+typedef __AW(SP_DRVINFO_DETAIL_DATA_) SP_DRVINFO_DETAIL_DATA,
      *PSP_DRVINFO_DETAIL_DATA;
-typedef SP_BACKUP_QUEUE_PARAMS_W SP_BACKUP_QUEUE_PARAMS,
+typedef __AW(SP_BACKUP_QUEUE_PARAMS_) SP_BACKUP_QUEUE_PARAMS,
     *PSP_BACKUP_QUEUE_PARAMS;
-#else
-typedef SP_ORIGINAL_FILE_INFO_A SP_ORIGINAL_FILE_INFO, *PSP_ORIGINAL_FILE_INFO;
-typedef FILEPATHS_A FILEPATHS, *PFILEPATHS;
-typedef SOURCE_MEDIA_A SOURCE_MEDIA, *PSOURCE_MEDIA;
-typedef CABINET_INFO_A CABINET_INFO, *PCABINET_INFO;
-typedef FILE_IN_CABINET_INFO_A FILE_IN_CABINET_INFO, *PFILE_IN_CABINET_INFO;
-typedef SP_FILE_COPY_PARAMS_A SP_FILE_COPY_PARAMS, *PSP_FILE_COPY_PARAMS;
-typedef SP_DEVICE_INTERFACE_DETAIL_DATA_A SP_DEVICE_INTERFACE_DETAIL_DATA,
-    *PSP_DEVICE_INTERFACE_DETAIL_DATA;
-typedef SP_INTERFACE_DEVICE_DETAIL_DATA_A SP_INTERFACE_DEVICE_DETAIL_DATA,
-    *PSP_INTERFACE_DEVICE_DETAIL_DATA; /* deprecated */
-typedef SP_DEVINFO_LIST_DETAIL_DATA_A SP_DEVINFO_LIST_DETAIL_DATA,
-    *PSP_DEVINFO_LIST_DETAIL_DATA;
-typedef SP_DEVINSTALL_PARAMS_A SP_DEVINSTALL_PARAMS, *PSP_DEVINSTALL_PARAMS;
-typedef SP_SELECTDEVICE_PARAMS_A SP_SELECTDEVICE_PARAMS,
-    *PSP_SELECTDEVICE_PARAMS;
-typedef SP_TROUBLESHOOTER_PARAMS_A SP_TROUBLESHOOTER_PARAMS,
-    *PSP_TROUBLESHOOTER_PARAMS;
-typedef SP_POWERMESSAGEWAKE_PARAMS_A SP_POWERMESSAGEWAKE_PARAMS,
-    *PSP_POWERMESSAGEWAKE_PARAMS;
-typedef SP_DRVINFO_DETAIL_DATA_A SP_DRVINFO_DETAIL_DATA,
-    *PSP_DRVINFO_DETAIL_DATA;
-typedef SP_BACKUP_QUEUE_PARAMS_A SP_BACKUP_QUEUE_PARAMS,
-    *PSP_BACKUP_QUEUE_PARAMS;
-#endif /* UNICODE */
 
 WINSETUPAPI BOOL WINAPI SetupAddInstallSectionToDiskSpaceListA(HDSKSPC,HINF,HINF,PCSTR,PVOID,UINT);
 WINSETUPAPI BOOL WINAPI SetupAddInstallSectionToDiskSpaceListW(HDSKSPC,HINF,HINF,PCWSTR,PVOID,UINT);
@@ -1073,10 +1050,12 @@ WINSETUPAPI VOID WINAPI SetupCloseInfFile(HINF);
 WINSETUPAPI VOID WINAPI SetupCloseLog(VOID);
 WINSETUPAPI BOOL WINAPI SetupCommitFileQueueA(HWND,HSPFILEQ,PSP_FILE_CALLBACK_A,PVOID);
 WINSETUPAPI BOOL WINAPI SetupCommitFileQueueW(HWND,HSPFILEQ,PSP_FILE_CALLBACK_W,PVOID);
+
 #if (_SETUPAPI_VER >= 0x502)
 WINSETUPAPI BOOL WINAPI SetupConfigureWmiFromInfSectionA(HINF,PCSTR,DWORD);
 WINSETUPAPI BOOL WINAPI SetupConfigureWmiFromInfSectionW(HINF,PCWSTR,DWORD);
 #endif
+
 WINSETUPAPI UINT WINAPI SetupCopyErrorA(HWND,PCSTR,PCSTR,PCSTR,PCSTR,PCSTR,UINT,DWORD,PSTR,DWORD,PDWORD);
 WINSETUPAPI UINT WINAPI SetupCopyErrorW(HWND,PCWSTR,PCWSTR,PCWSTR,PCWSTR,PCWSTR,UINT,DWORD,PWSTR,DWORD,PDWORD);
 WINSETUPAPI BOOL WINAPI SetupCopyOEMInfA(PCSTR,PCSTR,DWORD,DWORD,PSTR,DWORD,PDWORD,PSTR*);
@@ -1355,257 +1334,136 @@ WINSETUPAPI BOOL WINAPI SetupTerminateFileLog(HSPFILELOG);
 #define SetupDiOpenInterfaceDeviceA	SetupDiOpenDeviceInterfaceA
 #define SetupDiGetInterfaceDeviceDetailA	SetupDiGetDeviceInterfaceDetailA
 
-#ifdef UNICODE		
-#define PSP_FILE_CALLBACK PSP_FILE_CALLBACK_W
-#define SetupAddInstallSectionToDiskSpaceList	SetupAddInstallSectionToDiskSpaceListW
-#define SetupAddSectionToDiskSpaceList	SetupAddSectionToDiskSpaceListW
-#define SetupAddToDiskSpaceList	SetupAddToDiskSpaceListW
-#define SetupAddToSourceList	SetupAddToSourceListW
-#define SetupAdjustDiskSpaceList	SetupAdjustDiskSpaceListW
-#define SetupBackupError	SetupBackupErrorW
-#define SetupCommitFileQueue	SetupCommitFileQueueW
+#define PSP_FILE_CALLBACK __AW(PSP_FILE_CALLBACK_)
+#define SetupAddInstallSectionToDiskSpaceList	__AW(SetupAddInstallSectionToDiskSpaceList)
+#define SetupAddSectionToDiskSpaceList	__AW(SetupAddSectionToDiskSpaceList)
+#define SetupAddToDiskSpaceList	__AW(SetupAddToDiskSpaceList)
+#define SetupAddToSourceList	__AW(SetupAddToSourceList)
+#define SetupAdjustDiskSpaceList	__AW(SetupAdjustDiskSpaceList)
+#define SetupBackupError	__AW(SetupBackupError)
+#define SetupCommitFileQueue	__AW(SetupCommitFileQueue)
+
 #if (_SETUPAPI_VER >= 0x0502)
-#define SetupConfigureWmiFromInfSection SetupConfigureWmiFromInfSectionW
+#define SetupConfigureWmiFromInfSection __AW(SetupConfigureWmiFromInfSection)
 #endif
-#define SetupCopyError	SetupCopyErrorW
-#define SetupCopyOEMInf	SetupCopyOEMInfW
-#define SetupCreateDiskSpaceList	SetupCreateDiskSpaceListW
-#define SetupDecompressOrCopyFile	SetupDecompressOrCopyFileW
-#define SetupDefaultQueueCallback	SetupDefaultQueueCallbackW
-#define SetupDeleteError	SetupDeleteErrorW
-#define SetupDiBuildClassInfoListEx	SetupDiBuildClassInfoListExW
-#define SetupDiClassGuidsFromNameEx	SetupDiClassGuidsFromNameExW
-#define SetupDiClassGuidsFromName	SetupDiClassGuidsFromNameW
-#define SetupDiClassNameFromGuidEx	SetupDiClassNameFromGuidExW
-#define SetupDiClassNameFromGuid	SetupDiClassNameFromGuidW
-#define SetupDiCreateDeviceInfoListEx	SetupDiCreateDeviceInfoListExW
-#define SetupDiCreateDeviceInfo	SetupDiCreateDeviceInfoW
-#define SetupDiCreateDeviceInterfaceRegKey	SetupDiCreateDeviceInterfaceRegKeyW
-#define SetupDiCreateInterfaceDeviceRegKey	SetupDiCreateDeviceInterfaceRegKeyW
-#define SetupDiCreateDeviceInterface	SetupDiCreateDeviceInterfaceW
-#define SetupDiCreateInterfaceDevice	SetupDiCreateDeviceInterfaceW
-#define SetupDiCreateDevRegKey	SetupDiCreateDevRegKeyW
-#define SetupDiEnumDriverInfo	SetupDiEnumDriverInfoW
-#define SetupDiGetActualSectionToInstall	SetupDiGetActualSectionToInstallW
-#define SetupDiGetClassDescriptionEx	SetupDiGetClassDescriptionExW
-#define SetupDiGetClassDescription	SetupDiGetClassDescriptionW
-#define SetupDiGetClassDevPropertySheets	SetupDiGetClassDevPropertySheetsW
-#define SetupDiGetClassDevsEx	SetupDiGetClassDevsExW
-#define SetupDiGetClassDevs	SetupDiGetClassDevsW
-#define SetupDiGetClassImageListEx	SetupDiGetClassImageListExW
-#define SetupDiGetClassInstallParams	SetupDiGetClassInstallParamsW
-#define SetupDiGetClassRegistryProperty	SetupDiGetClassRegistryPropertyW
-#define SetupDiGetDeviceInfoListDetail	SetupDiGetDeviceInfoListDetailW
-#define SetupDiGetDeviceInstallParams	SetupDiGetDeviceInstallParamsW
-#define SetupDiGetDeviceInstanceId	SetupDiGetDeviceInstanceIdW
-#define SetupDiGetDeviceInterfaceDetail	SetupDiGetDeviceInterfaceDetailW
-#define SetupDiGetInterfaceDeviceDetail	SetupDiGetDeviceInterfaceDetailW
-#define SetupDiGetDeviceRegistryProperty	SetupDiGetDeviceRegistryPropertyW
-#define SetupDiGetDriverInfoDetail	SetupDiGetDriverInfoDetailW
-#define SetupDiGetDriverInstallParams	SetupDiGetDriverInstallParamsW
-#define SetupDiGetHwProfileFriendlyNameEx	SetupDiGetHwProfileFriendlyNameExW
-#define SetupDiGetHwProfileFriendlyName	SetupDiGetHwProfileFriendlyNameW
-#define SetupDiGetHwProfileListEx	SetupDiGetHwProfileListExW
-#define SetupDiGetINFClass	SetupDiGetINFClassW
-#define SetupDiGetSelectedDriver	SetupDiGetSelectedDriverW
-#define SetupDiInstallClassEx	SetupDiInstallClassExW
-#define SetupDiInstallClass	SetupDiInstallClassW
-#define SetupDiOpenClassRegKeyEx	SetupDiOpenClassRegKeyExW
-#define SetupDiOpenDeviceInfo	SetupDiOpenDeviceInfoW
-#define SetupDiOpenDeviceInterface	SetupDiOpenDeviceInterfaceW
-#define SetupDiOpenInterfaceDevice	SetupDiOpenDeviceInterfaceW
-#define SetupDiSetClassInstallParams	SetupDiSetClassInstallParamsW
-#define SetupDiSetClassRegistryProperty	SetupDiSetClassRegistryPropertyW
-#define SetupDiSetDeviceInstallParams	SetupDiSetDeviceInstallParamsW
-#define SetupDiSetDeviceRegistryProperty	SetupDiSetDeviceRegistryPropertyW
-#define SetupDiSetDriverInstallParams	SetupDiSetDriverInstallParamsW
-#define SetupDiSetSelectedDriver	SetupDiSetSelectedDriverW
-#define SetupDuplicateDiskSpaceList	SetupDuplicateDiskSpaceListW
-#define SetupFindFirstLine	SetupFindFirstLineW
-#define SetupFindNextMatchLine	SetupFindNextMatchLineW
-#define SetupFreeSourceList	SetupFreeSourceListW
-#define SetupGetBackupInformation	SetupGetBackupInformationW
-#define SetupGetFileCompressionInfo	SetupGetFileCompressionInfoW
-#define SetupGetInfFileList	SetupGetInfFileListW
-#define SetupGetInfInformation	SetupGetInfInformationW
-#define SetupGetLineByIndex	SetupGetLineByIndexW
-#define SetupGetLineCount	SetupGetLineCountW
-#define SetupGetLineText	SetupGetLineTextW
-#define SetupGetMultiSzField	SetupGetMultiSzFieldW
-#define SetupGetSourceFileLocation	SetupGetSourceFileLocationW
-#define SetupGetSourceFileSize	SetupGetSourceFileSizeW
-#define SetupGetSourceInfo	SetupGetSourceInfoW
-#define SetupGetStringField	SetupGetStringFieldW
-#define SetupGetTargetPath	SetupGetTargetPathW
-#define SetupInitializeFileLog	SetupInitializeFileLogW
-#define SetupInstallFileEx	SetupInstallFileExW
-#define SetupInstallFilesFromInfSection	SetupInstallFilesFromInfSectionW
-#define SetupInstallFile	SetupInstallFileW
-#define SetupInstallFromInfSection	SetupInstallFromInfSectionW
-#define SetupInstallServicesFromInfSectionEx	SetupInstallServicesFromInfSectionExW
-#define SetupInstallServicesFromInfSection	SetupInstallServicesFromInfSectionW
-#define SetupIterateCabinet	SetupIterateCabinetW
-#define SetupLogError	SetupLogErrorW
-#define SetupLogFile	SetupLogFileW
-#define SetupOpenAppendInfFile	SetupOpenAppendInfFileW
-#define SetupOpenInfFile	SetupOpenInfFileW
-#define SetupPromptForDisk	SetupPromptForDiskW
-#define SetupQueryDrivesInDiskSpaceList	SetupQueryDrivesInDiskSpaceListW
-#define SetupQueryFileLog	SetupQueryFileLogW
-#define SetupQueryInfFileInformation	SetupQueryInfFileInformationW
-#define SetupQueryInfOriginalFileInformation	SetupQueryInfOriginalFileInformationW
-#define SetupQueryInfVersionInformation	SetupQueryInfVersionInformationW
-#define SetupQuerySourceList	SetupQuerySourceListW
-#define SetupQuerySpaceRequiredOnDrive	SetupQuerySpaceRequiredOnDriveW
-#define SetupQueueCopyIndirect	SetupQueueCopyIndirectW
-#define SetupQueueCopySection	SetupQueueCopySectionW
-#define SetupQueueCopy	SetupQueueCopyW
-#define SetupQueueDefaultCopy	SetupQueueDefaultCopyW
-#define SetupQueueDeleteSection	SetupQueueDeleteSectionW
-#define SetupQueueDelete	SetupQueueDeleteW
-#define SetupQueueRenameSection	SetupQueueRenameSectionW
-#define SetupQueueRename	SetupQueueRenameW
-#define SetupRemoveFileLogEntry	SetupRemoveFileLogEntryW
-#define SetupRemoveFromDiskSpaceList	SetupRemoveFromDiskSpaceListW
-#define SetupRemoveFromSourceList	SetupRemoveFromSourceListW
-#define SetupRemoveInstallSectionFromDiskSpaceList	SetupRemoveInstallSectionFromDiskSpaceListW
-#define SetupRemoveSectionFromDiskSpaceList	SetupRemoveSectionFromDiskSpaceListW
-#define SetupRenameError	SetupRenameErrorW
-#define SetupScanFileQueue	SetupScanFileQueueW
-#define SetupSetDirectoryIdEx	SetupSetDirectoryIdExW
-#define SetupSetDirectoryId	SetupSetDirectoryIdW
-#define SetupSetFileQueueAlternatePlatform	SetupSetFileQueueAlternatePlatformW
-#define SetupSetPlatformPathOverride	SetupSetPlatformPathOverrideW
-#define SetupSetSourceList	SetupSetSourceListW
-#else		
-#define PSP_FILE_CALLBACK PSP_FILE_CALLBACK_A
-#define SetupAddInstallSectionToDiskSpaceList	SetupAddInstallSectionToDiskSpaceListA
-#define SetupAddSectionToDiskSpaceList	SetupAddSectionToDiskSpaceListA
-#define SetupAddToDiskSpaceList	SetupAddToDiskSpaceListA
-#define SetupAddToSourceList	SetupAddToSourceListA
-#define SetupAdjustDiskSpaceList	SetupAdjustDiskSpaceListA
-#define SetupBackupError	SetupBackupErrorA
-#define SetupCommitFileQueue	SetupCommitFileQueueA
-#if (_SETUPAPI_VER >= 0x0502)
-#define SetupConfigureWmiFromInfSection SetupConfigureWmiFromInfSectionW
-#endif
-#define SetupCopyError	SetupCopyErrorA
-#define SetupCopyOEMInf	SetupCopyOEMInfA
-#define SetupCreateDiskSpaceList	SetupCreateDiskSpaceListA
-#define SetupDecompressOrCopyFile	SetupDecompressOrCopyFileA
-#define SetupDefaultQueueCallback	SetupDefaultQueueCallbackA
-#define SetupDeleteError	SetupDeleteErrorA
-#define SetupDiBuildClassInfoListEx	SetupDiBuildClassInfoListExA
-#define SetupDiClassGuidsFromName	SetupDiClassGuidsFromNameA
-#define SetupDiClassGuidsFromNameEx	SetupDiClassGuidsFromNameExA
-#define SetupDiClassNameFromGuid	SetupDiClassNameFromGuidA
-#define SetupDiClassNameFromGuidEx	SetupDiClassNameFromGuidExA
-#define SetupDiCreateDeviceInfo	SetupDiCreateDeviceInfoA
-#define SetupDiCreateDeviceInfoListEx	SetupDiCreateDeviceInfoListExA
-#define SetupDiCreateDeviceInterface	SetupDiCreateDeviceInterfaceA
-#define SetupDiCreateInterfaceDevice	SetupDiCreateDeviceInterfaceA
-#define SetupDiCreateDeviceInterfaceRegKey	SetupDiCreateDeviceInterfaceRegKeyA
-#define SetupDiCreateInterfaceDeviceRegKey	SetupDiCreateDeviceInterfaceRegKeyA
-#define SetupDiCreateDevRegKey	SetupDiCreateDevRegKeyA
-#define SetupDiDeleteInterfaceDeviceData	SetupDiDeleteDeviceInterfaceData
-#define SetupDiEnumDriverInfo	SetupDiEnumDriverInfoA
-#define SetupDiGetActualSectionToInstall	SetupDiGetActualSectionToInstallA
-#define SetupDiGetClassDescription	SetupDiGetClassDescriptionA
-#define SetupDiGetClassDescriptionEx	SetupDiGetClassDescriptionExA
-#define SetupDiGetClassDevPropertySheets	SetupDiGetClassDevPropertySheetsA
-#define SetupDiGetClassDevs	SetupDiGetClassDevsA
-#define SetupDiGetClassDevsEx	SetupDiGetClassDevsExA
-#define SetupDiGetClassImageListEx	SetupDiGetClassImageListExA
-#define SetupDiGetClassInstallParams	SetupDiGetClassInstallParamsA
-#define SetupDiGetClassRegistryProperty	SetupDiGetClassRegistryPropertyA
-#define SetupDiGetDeviceInfoListDetail	SetupDiGetDeviceInfoListDetailA
-#define SetupDiGetDeviceInstallParams	SetupDiGetDeviceInstallParamsA
-#define SetupDiGetDeviceInstanceId	SetupDiGetDeviceInstanceIdA
-#define SetupDiGetDeviceInterfaceDetail	SetupDiGetDeviceInterfaceDetailA
-#define SetupDiGetInterfaceDeviceDetail	SetupDiGetDeviceInterfaceDetailA
-#define SetupDiGetDeviceRegistryProperty	SetupDiGetDeviceRegistryPropertyA
-#define SetupDiGetDriverInfoDetail	SetupDiGetDriverInfoDetailA
-#define SetupDiGetDriverInstallParams	SetupDiGetDriverInstallParamsA
-#define SetupDiGetHwProfileFriendlyName	SetupDiGetHwProfileFriendlyNameA
-#define SetupDiGetHwProfileFriendlyNameEx	SetupDiGetHwProfileFriendlyNameExA
-#define SetupDiGetHwProfileListEx	SetupDiGetHwProfileListExA
-#define SetupDiGetINFClass	SetupDiGetINFClassA
-#define SetupDiGetSelectedDriver	SetupDiGetSelectedDriverA
-#define SetupDiInstallClass	SetupDiInstallClassA
-#define SetupDiInstallClassEx	SetupDiInstallClassExA
-#define SetupDiOpenClassRegKeyEx	SetupDiOpenClassRegKeyExA
-#define SetupDiOpenDeviceInfo	SetupDiOpenDeviceInfoA
-#define SetupDiOpenDeviceInterface	SetupDiOpenDeviceInterfaceA
-#define SetupDiOpenInterfaceDevice	SetupDiOpenDeviceInterfaceA
-#define SetupDiSetClassInstallParams	SetupDiSetClassInstallParamsA
-#define SetupDiSetClassRegistryProperty	SetupDiSetClassRegistryPropertyA
-#define SetupDiSetDeviceInstallParams	SetupDiSetDeviceInstallParamsA
-#define SetupDiSetDeviceRegistryProperty	SetupDiSetDeviceRegistryPropertyA
-#define SetupDiSetDriverInstallParams	SetupDiSetDriverInstallParamsA
-#define SetupDiSetSelectedDriver	SetupDiSetSelectedDriverA
-#define SetupDuplicateDiskSpaceList	SetupDuplicateDiskSpaceListA
-#define SetupFindFirstLine	SetupFindFirstLineA
-#define SetupFindNextMatchLine	SetupFindNextMatchLineA
-#define SetupFreeSourceList	SetupFreeSourceListA
-#define SetupGetBackupInformation	SetupGetBackupInformationA
-#define SetupGetFileCompressionInfo	SetupGetFileCompressionInfoA
-#define SetupGetInfFileList	SetupGetInfFileListA
-#define SetupGetInfInformation	SetupGetInfInformationA
-#define SetupGetLineByIndex	SetupGetLineByIndexA
-#define SetupGetLineCount	SetupGetLineCountA
-#define SetupGetLineText	SetupGetLineTextA
-#define SetupGetMultiSzField	SetupGetMultiSzFieldA
-#define SetupGetSourceFileLocation	SetupGetSourceFileLocationA
-#define SetupGetSourceFileSize	SetupGetSourceFileSizeA
-#define SetupGetSourceInfo	SetupGetSourceInfoA
-#define SetupGetStringField	SetupGetStringFieldA
-#define SetupGetTargetPath	SetupGetTargetPathA
-#define SetupInitializeFileLog	SetupInitializeFileLogA
-#define SetupInstallFile	SetupInstallFileA
-#define SetupInstallFileEx	SetupInstallFileExA
-#define SetupInstallFilesFromInfSection	SetupInstallFilesFromInfSectionA
-#define SetupInstallFromInfSection	SetupInstallFromInfSectionA
-#define SetupInstallServicesFromInfSection	SetupInstallServicesFromInfSectionA
-#define SetupInstallServicesFromInfSectionEx	SetupInstallServicesFromInfSectionExA
-#define SetupIterateCabinet	SetupIterateCabinetA
-#define SetupLogError	SetupLogErrorA
-#define SetupLogFile	SetupLogFileA
-#define SetupOpenAppendInfFile	SetupOpenAppendInfFileA
-#define SetupOpenInfFile	SetupOpenInfFileA
-#define SetupPromptForDisk	SetupPromptForDiskA
-#define SetupQueryDrivesInDiskSpaceList	SetupQueryDrivesInDiskSpaceListA
-#define SetupQueryFileLog	SetupQueryFileLogA
-#define SetupQueryInfFileInformation	SetupQueryInfFileInformationA
-#define SetupQueryInfOriginalFileInformation	SetupQueryInfOriginalFileInformationA
-#define SetupQueryInfVersionInformation	SetupQueryInfVersionInformationA
-#define SetupQuerySourceList	SetupQuerySourceListA
-#define SetupQuerySpaceRequiredOnDrive	SetupQuerySpaceRequiredOnDriveA
-#define SetupQueueCopy	SetupQueueCopyA
-#define SetupQueueCopyIndirect	SetupQueueCopyIndirectA
-#define SetupQueueCopySection	SetupQueueCopySectionA
-#define SetupQueueDefaultCopy	SetupQueueDefaultCopyA
-#define SetupQueueDelete	SetupQueueDeleteA
-#define SetupQueueDeleteSection	SetupQueueDeleteSectionA
-#define SetupQueueRename	SetupQueueRenameA
-#define SetupQueueRenameSection	SetupQueueRenameSectionA
-#define SetupRemoveFileLogEntry	SetupRemoveFileLogEntryA
-#define SetupRemoveFromDiskSpaceList	SetupRemoveFromDiskSpaceListA
-#define SetupRemoveFromSourceList	SetupRemoveFromSourceListA
-#define SetupRemoveInstallSectionFromDiskSpaceList	SetupRemoveInstallSectionFromDiskSpaceListA
-#define SetupRemoveSectionFromDiskSpaceList	SetupRemoveSectionFromDiskSpaceListA
-#define SetupRenameError	SetupRenameErrorA
-#define SetupScanFileQueue	SetupScanFileQueueA
-#define SetupSetDirectoryId	SetupSetDirectoryIdA
-#define SetupSetDirectoryIdEx	SetupSetDirectoryIdExA
-#define SetupSetFileQueueAlternatePlatform	SetupSetFileQueueAlternatePlatformA
-#define SetupSetPlatformPathOverride	SetupSetPlatformPathOverrideA
-#define SetupSetSourceList	SetupSetSourceListA
-#endif	/* UNICODE */	
+
+#define SetupCopyError	__AW(SetupCopyError)
+#define SetupCopyOEMInf	__AW(SetupCopyOEMInf)
+#define SetupCreateDiskSpaceList	__AW(SetupCreateDiskSpaceList)
+#define SetupDecompressOrCopyFile	__AW(SetupDecompressOrCopyFile)
+#define SetupDefaultQueueCallback	__AW(SetupDefaultQueueCallback)
+#define SetupDeleteError	__AW(SetupDeleteError)
+#define SetupDiBuildClassInfoListEx	__AW(SetupDiBuildClassInfoListEx)
+#define SetupDiClassGuidsFromNameEx	__AW(SetupDiClassGuidsFromNameEx)
+#define SetupDiClassGuidsFromName	__AW(SetupDiClassGuidsFromName)
+#define SetupDiClassNameFromGuidEx	__AW(SetupDiClassNameFromGuidEx)
+#define SetupDiClassNameFromGuid	__AW(SetupDiClassNameFromGuid)
+#define SetupDiCreateDeviceInfoListEx	__AW(SetupDiCreateDeviceInfoListEx)
+#define SetupDiCreateDeviceInfo	__AW(SetupDiCreateDeviceInfo)
+#define SetupDiCreateDeviceInterfaceRegKey	__AW(SetupDiCreateDeviceInterfaceRegKey)
+#define SetupDiCreateInterfaceDeviceRegKey	__AW(SetupDiCreateDeviceInterfaceRegKey)
+#define SetupDiCreateDeviceInterface	__AW(SetupDiCreateDeviceInterface)
+#define SetupDiCreateInterfaceDevice	__AW(SetupDiCreateDeviceInterface)
+#define SetupDiCreateDevRegKey	__AW(SetupDiCreateDevRegKey)
+#define SetupDiEnumDriverInfo	__AW(SetupDiEnumDriverInfo)
+#define SetupDiGetActualSectionToInstall	__AW(SetupDiGetActualSectionToInstall)
+#define SetupDiGetClassDescriptionEx	__AW(SetupDiGetClassDescriptionEx)
+#define SetupDiGetClassDescription	__AW(SetupDiGetClassDescription)
+#define SetupDiGetClassDevPropertySheets	__AW(SetupDiGetClassDevPropertySheets)
+#define SetupDiGetClassDevsEx	__AW(SetupDiGetClassDevsEx)
+#define SetupDiGetClassDevs	__AW(SetupDiGetClassDevs)
+#define SetupDiGetClassImageListEx	__AW(SetupDiGetClassImageListEx)
+#define SetupDiGetClassInstallParams	__AW(SetupDiGetClassInstallParams)
+#define SetupDiGetClassRegistryProperty	__AW(SetupDiGetClassRegistryProperty)
+#define SetupDiGetDeviceInfoListDetail	__AW(SetupDiGetDeviceInfoListDetail)
+#define SetupDiGetDeviceInstallParams	__AW(SetupDiGetDeviceInstallParams)
+#define SetupDiGetDeviceInstanceId	__AW(SetupDiGetDeviceInstanceId)
+#define SetupDiGetDeviceInterfaceDetail	__AW(SetupDiGetDeviceInterfaceDetail)
+#define SetupDiGetInterfaceDeviceDetail	__AW(SetupDiGetDeviceInterfaceDetail)
+#define SetupDiGetDeviceRegistryProperty	__AW(SetupDiGetDeviceRegistryProperty)
+#define SetupDiGetDriverInfoDetail	__AW(SetupDiGetDriverInfoDetail)
+#define SetupDiGetDriverInstallParams	__AW(SetupDiGetDriverInstallParams)
+#define SetupDiGetHwProfileFriendlyNameEx	__AW(SetupDiGetHwProfileFriendlyNameEx)
+#define SetupDiGetHwProfileFriendlyName	__AW(SetupDiGetHwProfileFriendlyName)
+#define SetupDiGetHwProfileListEx	__AW(SetupDiGetHwProfileListEx)
+#define SetupDiGetINFClass	__AW(SetupDiGetINFClass)
+#define SetupDiGetSelectedDriver	__AW(SetupDiGetSelectedDriver)
+#define SetupDiInstallClassEx	__AW(SetupDiInstallClassEx)
+#define SetupDiInstallClass	__AW(SetupDiInstallClass)
+#define SetupDiOpenClassRegKeyEx	__AW(SetupDiOpenClassRegKeyEx)
+#define SetupDiOpenDeviceInfo	__AW(SetupDiOpenDeviceInfo)
+#define SetupDiOpenDeviceInterface	__AW(SetupDiOpenDeviceInterface)
+#define SetupDiOpenInterfaceDevice	__AW(SetupDiOpenDeviceInterface)
+#define SetupDiSetClassInstallParams	__AW(SetupDiSetClassInstallParams)
+#define SetupDiSetClassRegistryProperty	__AW(SetupDiSetClassRegistryProperty)
+#define SetupDiSetDeviceInstallParams	__AW(SetupDiSetDeviceInstallParams)
+#define SetupDiSetDeviceRegistryProperty	__AW(SetupDiSetDeviceRegistryProperty)
+#define SetupDiSetDriverInstallParams	__AW(SetupDiSetDriverInstallParams)
+#define SetupDiSetSelectedDriver	__AW(SetupDiSetSelectedDriver)
+#define SetupDuplicateDiskSpaceList	__AW(SetupDuplicateDiskSpaceList)
+#define SetupFindFirstLine	__AW(SetupFindFirstLine)
+#define SetupFindNextMatchLine	__AW(SetupFindNextMatchLine)
+#define SetupFreeSourceList	__AW(SetupFreeSourceList)
+#define SetupGetBackupInformation	__AW(SetupGetBackupInformation)
+#define SetupGetFileCompressionInfo	__AW(SetupGetFileCompressionInfo)
+#define SetupGetInfFileList	__AW(SetupGetInfFileList)
+#define SetupGetInfInformation	__AW(SetupGetInfInformation)
+#define SetupGetLineByIndex	__AW(SetupGetLineByIndex)
+#define SetupGetLineCount	__AW(SetupGetLineCount)
+#define SetupGetLineText	__AW(SetupGetLineText)
+#define SetupGetMultiSzField	__AW(SetupGetMultiSzField)
+#define SetupGetSourceFileLocation	__AW(SetupGetSourceFileLocation)
+#define SetupGetSourceFileSize	__AW(SetupGetSourceFileSize)
+#define SetupGetSourceInfo	__AW(SetupGetSourceInfo)
+#define SetupGetStringField	__AW(SetupGetStringField)
+#define SetupGetTargetPath	__AW(SetupGetTargetPath)
+#define SetupInitializeFileLog	__AW(SetupInitializeFileLog)
+#define SetupInstallFileEx	__AW(SetupInstallFileEx)
+#define SetupInstallFilesFromInfSection	__AW(SetupInstallFilesFromInfSection)
+#define SetupInstallFile	__AW(SetupInstallFile)
+#define SetupInstallFromInfSection	__AW(SetupInstallFromInfSection)
+#define SetupInstallServicesFromInfSectionEx	__AW(SetupInstallServicesFromInfSectionEx)
+#define SetupInstallServicesFromInfSection	__AW(SetupInstallServicesFromInfSection)
+#define SetupIterateCabinet	__AW(SetupIterateCabinet)
+#define SetupLogError	__AW(SetupLogError)
+#define SetupLogFile	__AW(SetupLogFile)
+#define SetupOpenAppendInfFile	__AW(SetupOpenAppendInfFile)
+#define SetupOpenInfFile	__AW(SetupOpenInfFile)
+#define SetupPromptForDisk	__AW(SetupPromptForDisk)
+#define SetupQueryDrivesInDiskSpaceList	__AW(SetupQueryDrivesInDiskSpaceList)
+#define SetupQueryFileLog	__AW(SetupQueryFileLog)
+#define SetupQueryInfFileInformation	__AW(SetupQueryInfFileInformation)
+#define SetupQueryInfOriginalFileInformation	__AW(SetupQueryInfOriginalFileInformation)
+#define SetupQueryInfVersionInformation	__AW(SetupQueryInfVersionInformation)
+#define SetupQuerySourceList	__AW(SetupQuerySourceList)
+#define SetupQuerySpaceRequiredOnDrive	__AW(SetupQuerySpaceRequiredOnDrive)
+#define SetupQueueCopyIndirect	__AW(SetupQueueCopyIndirect)
+#define SetupQueueCopySection	__AW(SetupQueueCopySection)
+#define SetupQueueCopy	__AW(SetupQueueCopy)
+#define SetupQueueDefaultCopy	__AW(SetupQueueDefaultCopy)
+#define SetupQueueDeleteSection	__AW(SetupQueueDeleteSection)
+#define SetupQueueDelete	__AW(SetupQueueDelete)
+#define SetupQueueRenameSection	__AW(SetupQueueRenameSection)
+#define SetupQueueRename	__AW(SetupQueueRename)
+#define SetupRemoveFileLogEntry	__AW(SetupRemoveFileLogEntry)
+#define SetupRemoveFromDiskSpaceList	__AW(SetupRemoveFromDiskSpaceList)
+#define SetupRemoveFromSourceList	__AW(SetupRemoveFromSourceList)
+#define SetupRemoveInstallSectionFromDiskSpaceList	__AW(SetupRemoveInstallSectionFromDiskSpaceList)
+#define SetupRemoveSectionFromDiskSpaceList	__AW(SetupRemoveSectionFromDiskSpaceList)
+#define SetupRenameError	__AW(SetupRenameError)
+#define SetupScanFileQueue	__AW(SetupScanFileQueue)
+#define SetupSetDirectoryIdEx	__AW(SetupSetDirectoryIdEx)
+#define SetupSetDirectoryId	__AW(SetupSetDirectoryId)
+#define SetupSetFileQueueAlternatePlatform	__AW(SetupSetFileQueueAlternatePlatform)
+#define SetupSetPlatformPathOverride	__AW(SetupSetPlatformPathOverride)
+#define SetupSetSourceList	__AW(SetupSetSourceList)
+
 
 #endif /* RC_INVOKED */
 
 #ifdef __cplusplus
 }
 #endif
+
 #include <poppack.h>
 #endif

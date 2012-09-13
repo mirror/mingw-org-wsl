@@ -24,6 +24,7 @@
 #ifndef _RASERROR_H
 #define _RASERROR_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define RASBASE 600
 #define SUCCESS 0

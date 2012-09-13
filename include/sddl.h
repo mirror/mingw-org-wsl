@@ -24,6 +24,7 @@
 #ifndef _SDDL_H
 #define _SDDL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef WINADVAPI
 #define WINADVAPI
@@ -33,20 +34,15 @@
 extern "C" {
 #endif
 
-#if (WINVER >= 0x0500)
+#if (WINVER >= _WIN32_WINNT_WIN2K)
 WINADVAPI BOOL WINAPI ConvertSidToStringSidA(PSID Sid, LPSTR* StringSid);
 WINADVAPI BOOL WINAPI ConvertSidToStringSidW(PSID Sid, LPWSTR* StringSid);
 WINADVAPI BOOL WINAPI ConvertStringSidToSidA(LPSTR StringSid, PSID *Sid);
 WINADVAPI BOOL WINAPI ConvertStringSidToSidW(LPWSTR StringSid, PSID *Sid);
-#endif
+#endif /* (WINVER >= _WIN32_WINNT_WIN2K) */
 
-#ifdef UNICODE
-#define ConvertSidToStringSid ConvertSidToStringSidW
-#define ConvertStringSidToSid ConvertStringSidToSidW
-#else
-#define ConvertSidToStringSid ConvertSidToStringSidA
-#define ConvertStringSidToSid ConvertStringSidToSidA
-#endif
+#define ConvertSidToStringSid __AW(ConvertSidToStringSid)
+#define ConvertStringSidToSid __AW(ConvertStringSidToSid)
 
 #ifdef __cplusplus
 }

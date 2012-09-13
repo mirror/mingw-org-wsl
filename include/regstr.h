@@ -24,10 +24,12 @@
 #ifndef _REGSTR_H
 #define _REGSTR_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define REGSTR_KEY_CLASS TEXT("Class")
 #define REGSTR_KEY_CONFIG TEXT("Config")
 #define REGSTR_KEY_ENUM TEXT("Enum")
@@ -53,9 +55,11 @@ extern "C" {
 #define REGSTR_PATH_RUN	TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Run")
 #define REGSTR_PATH_RUNSERVICESONCE	TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\RunServicesOnce")
 #define REGSTR_PATH_RUNSERVICES	TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\RunServices")
+
 #ifndef REGSTR_PATH_EXPLORER /* also in shlobj.h */
 #define REGSTR_PATH_EXPLORER	TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer")
 #endif
+
 #define REGSTR_PATH_DETECT	TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Detect")
 #define REGSTR_PATH_APPPATHS	TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\App Paths")
 #define REGSTR_PATH_UNINSTALL TEXT("Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall")
@@ -517,11 +521,13 @@ extern "C" {
 #define REGSTR_KEY_USER TEXT("User")
 #define REGSTR_VAL_DPI	TEXT("dpi")
 #define REGSTR_VAL_PCICOPTIONS	TEXT("PCICOptions")
+
 #ifndef NEC_98
 #define PCIC_DEFAULT_IRQMASK	0x4EB8
 #else
 #define PCIC_DEFAULT_IRQMASK	0x1468
 #endif
+
 #define PCIC_DEFAULT_NUMSOCKETS 0
 #define REGSTR_VAL_PCICIRQMAP	TEXT("PCICIRQMap")
 #define REGSTR_PATH_APPEARANCE	TEXT("Control Panel\\Appearance")
@@ -756,6 +762,7 @@ extern "C" {
 #define REGSTR_VAL_JOYOEMCAL10	TEXT("OEMCal10")
 #define REGSTR_VAL_JOYOEMCAL11	TEXT("OEMCal11")
 #define REGSTR_VAL_JOYOEMCAL12	TEXT("OEMCal12")
+
 #ifndef NEC_98
 #define REGSTR_KEY_ISAENUM	TEXT("ISAPnP")
 #define REGSTR_KEY_EISAENUM	TEXT("EISA")
@@ -773,6 +780,7 @@ extern "C" {
 #define	REGSTR_VAL_EISA_FLAGS	TEXT("NESAFlags")
 #define	REGSTR_VAL_EISA_SIMULATE_INT15	TEXT("NESASimulateInt15")
 #endif
+
 typedef struct _DSKTLSYSTEMTIME {
 	WORD wYear;
 	WORD wMonth;
@@ -784,7 +792,9 @@ typedef struct _DSKTLSYSTEMTIME {
 	WORD wMilliseconds;
 	WORD wResult;
 } DSKTLSYSTEMTIME,*PDSKTLSYSTEMTIME,*LPDSKTLSYSTEMTIME;
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

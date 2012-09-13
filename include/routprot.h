@@ -24,6 +24,7 @@
 #ifndef _ROUTPROT_H
 #define _ROUTPROT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,7 +55,8 @@ extern "C" {
 #define IPX_PROTOCOL_SAP 0x00020001
 #define IPX_PROTOCOL_NLSP 0x00020002
 /*--- Router Management Reference - Router Management Structures */
-#if (_WIN32_WINNT >= 0x0500)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 typedef struct IP_LOCAL_BINDING {
 	DWORD Address;
 	DWORD Mask;
@@ -74,7 +76,7 @@ typedef struct IPX_ADAPTER_BINDING_INFO {
 	ULONG MaxPacketSize;
 	ULONG LinkSpeed;
 } IPX_ADAPTER_BINDING_INFO,*PIPX_ADAPTER_BINDING_INFO;
-#endif /* (_WIN32_WINNT >= 0x0500) */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }

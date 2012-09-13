@@ -24,13 +24,14 @@
 #ifndef _RTUTILS_H
 #define _RTUTILS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /*--- Tracing Reference */
-#if (_WIN32_WINNT >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 DWORD WINAPI TraceDeregisterA(DWORD);
 DWORD WINAPI TraceDeregisterW(DWORD);
 DWORD WINAPI TraceDeregisterExA(DWORD,DWORD);
@@ -62,36 +63,24 @@ DWORD WINAPI TraceVprintfExW(DWORD,DWORD,LPCWSTR,va_list);
 #define TRACE_NO_STDINFO 0x00000001
 #define TRACE_USE_MASK 0x00000002
 #define TRACE_USE_MSEC 0x00000004
-#ifdef UNICODE
-#define TraceDeregister TraceDeregisterW
-#define TraceDeregisterEx TraceDeregisterExW
-#define TraceDump TraceDumpW
-#define TraceDumpEx TraceDumpExW
-#define TracePrintf TracePrintfW
-#define TracePrintfEx TracePrintfExW
-#define TracePuts TracePutsW
-#define TracePutsEx TracePutsExW
-#define TraceRegister TraceRegisterW
-#define TraceRegisterEx TraceRegisterExW
-#define TraceVprintf TraceVprintfW
-#define TraceVprintfEx TraceVprintfExW
-#else
-#define TraceDeregister TraceDeregisterA
-#define TraceDeregisterEx TraceDeregisterExA
-#define TraceDump TraceDumpA
-#define TraceDumpEx TraceDumpExA
-#define TracePrintf TracePrintfA
-#define TracePrintfEx TracePrintfExA
-#define TracePuts TracePutsA
-#define TracePutsEx TracePutsExA
-#define TraceRegister TraceRegisterA
-#define TraceRegisterEx TraceRegisterExA
-#define TraceVprintf TraceVprintfA
-#define TraceVprintfEx TraceVprintfExA
-#endif
-#endif /* (_WIN32_WINNT >= 0x0500) */
+
+#define TraceDeregister __AW(TraceDeregister)
+#define TraceDeregisterEx __AW(TraceDeregisterEx)
+#define TraceDump __AW(TraceDump)
+#define TraceDumpEx __AW(TraceDumpEx)
+#define TracePrintf __AW(TracePrintf)
+#define TracePrintfEx __AW(TracePrintfEx)
+#define TracePuts __AW(TracePuts)
+#define TracePutsEx __AW(TracePutsEx)
+#define TraceRegister __AW(TraceRegister)
+#define TraceRegisterEx __AW(TraceRegisterEx)
+#define TraceVprintf __AW(TraceVprintf)
+#define TraceVprintfEx __AW(TraceVprintfEx)
+
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif
