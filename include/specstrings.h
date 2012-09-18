@@ -24,6 +24,7 @@
 #ifndef _SPECSTRINGS_H
 #define _SPECSTRINGS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* These are built from primitives in Microsoft's Standard Annotation Language.
    Search for "Header Annotation" on MSDN site for their MS-specific meanings */
@@ -145,6 +146,5 @@
 #define __out_ecount_part(size,length)
 #define __out_ecount_part_opt(size,length)
 #define __out_opt 
-
 
 #endif /*_SPECSTRINGS_H */

@@ -24,6 +24,7 @@
 #ifndef _WINDEF_H
 #define _WINDEF_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,6 +38,7 @@ extern "C" {
  * the windef.h header.
  */
 #endif
+
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT WINVER
 /*
@@ -46,26 +48,33 @@ extern "C" {
  * including windows.h or any other method of including the windef.h header.
  */
 #endif
+
 #define FAR
 #define far
 #define NEAR
 #define near
+
 #ifndef CONST
 #define CONST const
 #endif
+
 #undef MAX_PATH
 #define MAX_PATH 260
 
 #ifndef NULL
+
 #ifdef __cplusplus
 #define NULL 0
 #else
 #define NULL ((void*)0)
 #endif
+
 #endif
+
 #ifndef FALSE
 #define FALSE 0
 #endif
+
 #ifndef TRUE
 #define TRUE 1
 #endif
@@ -77,9 +86,11 @@ extern "C" {
 #ifndef _NO_W32_PSEUDO_MODIFIERS
 #define IN
 #define OUT
+
 #ifndef OPTIONAL
 #define OPTIONAL
 #endif
+
 #endif
 
 #ifndef _declspec
@@ -117,17 +128,21 @@ extern "C" {
 #ifndef _export
 #define _export
 #endif
+
 #ifndef __export
 #define __export
 #endif
 
 #ifndef NOMINMAX
+
 #ifndef max
 #define max(a,b) ((a)>(b)?(a):(b))
 #endif
+
 #ifndef min
 #define min(a,b) ((a)<(b)?(a):(b))
 #endif
+
 #endif
 
 #define UNREFERENCED_PARAMETER(P) {(P)=(P);}
@@ -152,6 +167,7 @@ extern "C" {
 #define DUMMYUNIONNAME7	u7
 #define DUMMYUNIONNAME8	u8
 #else
+
 #define _UNION_NAME(x)
 #define DUMMYUNIONNAME
 #define DUMMYUNIONNAME2
@@ -162,6 +178,7 @@ extern "C" {
 #define DUMMYUNIONNAME7
 #define DUMMYUNIONNAME8
 #endif
+
 #ifndef _ANONYMOUS_STRUCT
 #define _ANONYMOUS_STRUCT
 #define _STRUCT_NAME(x) x
@@ -169,6 +186,7 @@ extern "C" {
 #define DUMMYSTRUCTNAME2 s2
 #define DUMMYSTRUCTNAME3 s3
 #else
+
 #define _STRUCT_NAME(x)
 #define DUMMYSTRUCTNAME
 #define DUMMYSTRUCTNAME2
@@ -176,9 +194,11 @@ extern "C" {
 #endif
 
 #ifndef NO_STRICT
+
 #ifndef STRICT
 #define STRICT 1
 #endif
+
 #endif
 
 /* FIXME: This will make some code compile. The programs will most
@@ -221,10 +241,12 @@ typedef unsigned int UINT,*PUINT,*LPUINT;
 typedef UINT_PTR WPARAM;
 typedef LONG_PTR LPARAM;
 typedef LONG_PTR LRESULT;
+
 #ifndef _HRESULT_DEFINED
 typedef LONG HRESULT;
 #define _HRESULT_DEFINED
 #endif
+
 typedef WORD ATOM;
 typedef HANDLE HHOOK;
 typedef HANDLE HGLOBAL;
@@ -299,4 +321,5 @@ typedef struct tagPOINTS {
 #ifdef __cplusplus
 }
 #endif
+
 #endif

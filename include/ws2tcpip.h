@@ -24,6 +24,7 @@
 #ifndef _WS2TCPIP_H
 #define _WS2TCPIP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * TCP/IP specific extensions in Windows Sockets 2
@@ -38,6 +39,7 @@
 #endif
 
 #include <winsock2.h>
+
 #ifdef  __cplusplus
 extern "C" {
 #endif
@@ -315,16 +317,6 @@ struct addrinfo {
 	struct addrinfo  *ai_next;
 };
 
-#if (_WIN32_WINNT >= 0x0501)
-void WSAAPI freeaddrinfo (struct addrinfo*);
-int WSAAPI getaddrinfo (const char*,const char*,const struct addrinfo*,
-		        struct addrinfo**);
-int WSAAPI getnameinfo(const struct sockaddr*,socklen_t,char*,DWORD,
-		       char*,DWORD,int);
-#else
-/* FIXME: Need WS protocol-independent API helpers.  */
-#endif
-
 static __inline char*
 gai_strerrorA(int ecode)
 {
@@ -347,11 +339,8 @@ gai_strerrorW(int ecode)
   	FormatMessageW(dwFlags, NULL, ecode, dwLanguageId, (LPWSTR)message, 1024, NULL);
 	return message;
 }
-#ifdef UNICODE
-#define gai_strerror gai_strerrorW
-#else
-#define gai_strerror gai_strerrorA
-#endif
+
+#define gai_strerror __AW(gai_strerror)
 
 /* Some older IPv4/IPv6 compatibility stuff */
 
@@ -394,7 +383,19 @@ typedef struct _OLD_INTERFACE_INFO {
 } OLD_INTERFACE_INFO;
 */
 
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+/**
+ * For WIN2K the user includes wspiapi.h for these functions.
+ */
+void WSAAPI freeaddrinfo (struct addrinfo*);
+int WSAAPI getaddrinfo (const char*,const char*,const struct addrinfo*,
+		        struct addrinfo**);
+int WSAAPI getnameinfo(const struct sockaddr*,socklen_t,char*,DWORD,
+		       char*,DWORD,int);
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
+
 #ifdef  __cplusplus
 }
 #endif
+
 #endif

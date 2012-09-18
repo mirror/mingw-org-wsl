@@ -24,6 +24,7 @@
 #ifndef _WINRESRC_H
 #define _WINRESRC_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <winuser.h>

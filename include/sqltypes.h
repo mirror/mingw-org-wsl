@@ -24,14 +24,18 @@
 #ifndef _SQLTYPES_H
 #define _SQLTYPES_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define SQL_API __stdcall
+
 #ifndef RC_INVOKED
 #define __need_wchar_t
 #include <stddef.h>
+
 typedef signed char SCHAR;
 typedef long SDWORD;
 typedef short SWORD;
@@ -51,25 +55,31 @@ typedef UCHAR SQLCHAR;
 typedef SCHAR SQLSCHAR;
 typedef SDWORD SQLINTEGER;
 typedef SWORD SQLSMALLINT;
+
 #ifndef __WIN64
 typedef UDWORD SQLUINTEGER;
 #endif
+
 typedef UWORD SQLUSMALLINT;
 typedef PVOID SQLPOINTER;
+
 #if (ODBCVER >= 0x0300)
 typedef void* SQLHANDLE;
 typedef SQLHANDLE SQLHENV;
 typedef SQLHANDLE SQLHDBC;
 typedef SQLHANDLE SQLHSTMT;
 typedef SQLHANDLE SQLHDESC;
+
 #else
 typedef void* SQLHENV;
 typedef void* SQLHDBC;
 typedef void* SQLHSTMT;
 #endif
+
 typedef SQLSMALLINT SQLRETURN;
 typedef HWND SQLHWND;
 typedef ULONG BOOKMARK;
+
 #ifdef _WIN64
 typedef INT64 SQLLEN;
 typedef INT64 SQLROWOFFSET;
@@ -77,6 +87,7 @@ typedef UINT64 SQLROWCOUNT;
 typedef UINT64 SQLULEN;
 typedef UINT64 SQLTRANSID;
 typedef unsigned long SQLSETPOSIROW;
+
 #else
 #define SQLLEN SQLINTEGER
 #define SQLROWOFFSET SQLINTEGER
@@ -85,12 +96,16 @@ typedef unsigned long SQLSETPOSIROW;
 #define SQLTRANSID DWORD
 #define SQLSETPOSIROW SQLUSMALLINT
 #endif
+
 typedef wchar_t SQLWCHAR;
+
+/* Cannot use __AW(). */
 #ifdef UNICODE
 typedef SQLWCHAR        SQLTCHAR;
 #else
 typedef SQLCHAR         SQLTCHAR;
 #endif  /* UNICODE */
+
 #if (ODBCVER >= 0x0300)
 typedef unsigned char   SQLDATE;
 typedef unsigned char   SQLDECIMAL;
@@ -125,6 +140,7 @@ typedef struct tagTIMESTAMP_STRUCT {
 	SQLUSMALLINT second;
 	SQLUINTEGER fraction;
 } TIMESTAMP_STRUCT;
+
 #if (ODBCVER >= 0x0300)
 typedef DATE_STRUCT	SQL_DATE_STRUCT;
 typedef TIME_STRUCT	SQL_TIME_STRUCT;
@@ -162,6 +178,7 @@ typedef struct tagSQL_NUMERIC_STRUCT {
 	SQLCHAR val[SQL_MAX_NUMERIC_LEN];
 } SQL_NUMERIC_STRUCT;
 #endif  /* ODBCVER >= 0x0300 */
+
 #if (ODBCVER >= 0x0350)
 
 #ifdef _GUID_DEFINED
@@ -178,9 +195,13 @@ typedef struct tagSQLGUID{
     BYTE Data4[ 8 ];
 } SQLGUID;
 #endif  /* GUID_DEFINED */
+
 #endif  /* ODBCVER >= 0x0350 */
+
 #endif     /* RC_INVOKED */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,6 +24,7 @@
 #ifndef _WINCON_H
 #define _WINCON_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,10 +38,7 @@ extern "C" {
 #define BACKGROUND_GREEN	32
 #define BACKGROUND_RED	64
 #define BACKGROUND_INTENSITY	128
-#if (_WIN32_WINNT >= 0x0501)
-#define CONSOLE_FULLSCREEN_MODE	1
-#define CONSOLE_WINDOWED_MODE	2
-#endif
+
 #define CTRL_C_EVENT 0
 #define CTRL_BREAK_EVENT 1
 #define CTRL_CLOSE_EVENT 2
@@ -146,10 +144,7 @@ typedef struct _INPUT_RECORD {
 } INPUT_RECORD,*PINPUT_RECORD;
 
 BOOL WINAPI AllocConsole(void);
-#if (_WIN32_WINNT >= 0x0501)
-#define ATTACH_PARENT_PROCESS	((DWORD)-1)
-BOOL WINAPI AttachConsole(DWORD);
-#endif
+
 HANDLE WINAPI CreateConsoleScreenBuffer(DWORD,DWORD,CONST SECURITY_ATTRIBUTES*,DWORD,LPVOID);
 BOOL WINAPI FillConsoleOutputAttribute(HANDLE,WORD,DWORD,COORD,PDWORD);
 BOOL WINAPI FillConsoleOutputCharacterA(HANDLE,CHAR,DWORD,COORD,PDWORD);
@@ -164,13 +159,7 @@ UINT WINAPI GetConsoleOutputCP(void);
 BOOL WINAPI GetConsoleScreenBufferInfo(HANDLE,PCONSOLE_SCREEN_BUFFER_INFO);
 DWORD WINAPI GetConsoleTitleA(LPSTR,DWORD);
 DWORD WINAPI GetConsoleTitleW(LPWSTR,DWORD);
-#if (_WIN32_WINNT >= 0x0500)
-BOOL WINAPI GetConsoleDisplayMode(LPDWORD);
-HWND WINAPI GetConsoleWindow(void);
-#endif
-#if (_WIN32_WINNT >= 0x0501)
-DWORD WINAPI GetConsoleProcessList(LPDWORD, DWORD);
-#endif
+
 COORD WINAPI GetLargestConsoleWindowSize(HANDLE);
 BOOL WINAPI GetNumberOfConsoleInputEvents(HANDLE,PDWORD);
 BOOL WINAPI GetNumberOfConsoleMouseButtons(PDWORD);
@@ -192,9 +181,7 @@ BOOL WINAPI SetConsoleCP(UINT);
 BOOL WINAPI SetConsoleCtrlHandler(PHANDLER_ROUTINE,BOOL);
 BOOL WINAPI SetConsoleCursorInfo(HANDLE,const CONSOLE_CURSOR_INFO*);
 BOOL WINAPI SetConsoleCursorPosition(HANDLE,COORD);
-#if (_WIN32_WINNT >= 0x0501)
-BOOL WINAPI SetConsoleDisplayMode(HANDLE,DWORD,PCOORD);
-#endif
+
 BOOL WINAPI SetConsoleMode(HANDLE,DWORD);
 BOOL WINAPI SetConsoleOutputCP(UINT);
 BOOL WINAPI SetConsoleScreenBufferSize(HANDLE,COORD);
@@ -212,37 +199,36 @@ BOOL WINAPI WriteConsoleOutputAttribute(HANDLE,const WORD*,DWORD,COORD,PDWORD);
 BOOL WINAPI WriteConsoleOutputCharacterA(HANDLE,LPCSTR,DWORD,COORD,PDWORD);
 BOOL WINAPI WriteConsoleOutputCharacterW(HANDLE,LPCWSTR,DWORD,COORD,PDWORD);
 
-#ifdef UNICODE
-#define FillConsoleOutputCharacter FillConsoleOutputCharacterW
-#define GetConsoleTitle GetConsoleTitleW
-#define PeekConsoleInput PeekConsoleInputW
-#define ReadConsole ReadConsoleW
-#define ReadConsoleInput ReadConsoleInputW
-#define ReadConsoleOutput ReadConsoleOutputW
-#define ReadConsoleOutputCharacter ReadConsoleOutputCharacterW
-#define ScrollConsoleScreenBuffer ScrollConsoleScreenBufferW
-#define SetConsoleTitle SetConsoleTitleW
-#define WriteConsole WriteConsoleW
-#define WriteConsoleInput WriteConsoleInputW
-#define WriteConsoleOutput WriteConsoleOutputW
-#define WriteConsoleOutputCharacter WriteConsoleOutputCharacterW
-#else
-#define FillConsoleOutputCharacter FillConsoleOutputCharacterA
-#define GetConsoleTitle GetConsoleTitleA
-#define PeekConsoleInput PeekConsoleInputA
-#define ReadConsole ReadConsoleA
-#define ReadConsoleInput ReadConsoleInputA
-#define ReadConsoleOutput ReadConsoleOutputA
-#define ReadConsoleOutputCharacter ReadConsoleOutputCharacterA
-#define ScrollConsoleScreenBuffer ScrollConsoleScreenBufferA
-#define SetConsoleTitle SetConsoleTitleA
-#define WriteConsole WriteConsoleA
-#define WriteConsoleInput WriteConsoleInputA
-#define WriteConsoleOutput WriteConsoleOutputA
-#define WriteConsoleOutputCharacter WriteConsoleOutputCharacterA
-#endif
+#define FillConsoleOutputCharacter __AW(FillConsoleOutputCharacter)
+#define GetConsoleTitle __AW(GetConsoleTitle)
+#define PeekConsoleInput __AW(PeekConsoleInput)
+#define ReadConsole __AW(ReadConsole)
+#define ReadConsoleInput __AW(ReadConsoleInput)
+#define ReadConsoleOutput __AW(ReadConsoleOutput)
+#define ReadConsoleOutputCharacter __AW(ReadConsoleOutputCharacter)
+#define ScrollConsoleScreenBuffer __AW(ScrollConsoleScreenBuffer)
+#define SetConsoleTitle __AW(SetConsoleTitle)
+#define WriteConsole __AW(WriteConsole)
+#define WriteConsoleInput __AW(WriteConsoleInput)
+#define WriteConsoleOutput __AW(WriteConsoleOutput)
+#define WriteConsoleOutputCharacter __AW(WriteConsoleOutputCharacter)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+BOOL WINAPI GetConsoleDisplayMode(LPDWORD);
+HWND WINAPI GetConsoleWindow(void);
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+#define CONSOLE_FULLSCREEN_MODE	1
+#define CONSOLE_WINDOWED_MODE	2
+#define ATTACH_PARENT_PROCESS	((DWORD)-1)
+BOOL WINAPI AttachConsole(DWORD);
+DWORD WINAPI GetConsoleProcessList(LPDWORD, DWORD);
+BOOL WINAPI SetConsoleDisplayMode(HANDLE,DWORD,PCOORD);
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

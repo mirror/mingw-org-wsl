@@ -24,14 +24,17 @@
 #ifndef _SUBAUTH_H
 #define _SUBAUTH_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #ifndef NT_SUCCESS
 #define NT_SUCCESS(x) ((x)>=0)
 #define STATUS_SUCCESS 0 
 #endif
+
 #define CYPHER_BLOCK_LENGTH 8
 #define USER_SESSION_KEY_LENGTH (CYPHER_BLOCK_LENGTH*2)
 #define CLEAR_BLOCK_LENGTH 8
@@ -90,6 +93,7 @@ extern "C" {
 #define USER_MACHINE_ACCOUNT_MASK 448
 #define USER_ACCOUNT_TYPE_MASK 472
 #define USER_ALL_PARAMETERS 2097152
+
 #if !defined(_NTDEF_H) && !defined(_NTSECAPI_H)
 typedef LONG NTSTATUS, *PNTSTATUS;
 typedef struct _UNICODE_STRING {
@@ -227,4 +231,5 @@ NTSTATUS NTAPI Msv1_0SubAuthenticationRoutineEx(NETLOGON_LOGON_INFO_CLASS,PVOID,
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _SUBAUTH_H */

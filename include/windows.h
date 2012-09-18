@@ -24,8 +24,7 @@
 #ifndef _WINDOWS_H
 #define _WINDOWS_H
 #pragma GCC system_header
-
-#include <sdkddkver.h>
+#include <_mingw.h>
 
 /* translate GCC target defines to MS equivalents. Keep this synchronized
    with winnt.h. */
@@ -38,6 +37,7 @@
 #elif defined(__i386__) && !defined(_M_IX86)
 #define _M_IX86 300
 #endif
+
 #if defined(_M_IX86) && !defined(_X86_)
 #define _X86_
 #elif defined(_M_ALPHA) && !defined(_ALPHA_)
@@ -81,29 +81,17 @@
 #include <rpc.h>
 #include <shellapi.h>
 #include <winperf.h>
+
 #ifndef NOGDI
 #include <commdlg.h>
 #include <winspool.h>
 #endif
-#if defined(Win32_Winsock)
-#warning "The  Win32_Winsock macro name is deprecated.\
-    Please use __USE_W32_SOCKETS instead"
-#ifndef __USE_W32_SOCKETS
-#define __USE_W32_SOCKETS
-#endif
-#endif
-#if defined(__USE_W32_SOCKETS) || !(defined(__CYGWIN__) || defined(__MSYS__) || defined(_UWIN))
-#if (_WIN32_WINNT >= 0x0400)
-#include <winsock2.h>
-/*
- * MS likes to include mswsock.h here as well,
- * but that can cause undefined symbols if
- * winsock2.h is included before windows.h
- */
-#else
+
+/* __USE_W32_SOCKETS is a __CYGWIN__ guard */
+#if defined(__USE_W32_SOCKETS) || !(defined(__CYGWIN__) || defined(__MSYS__))
 #include <winsock.h>
-#endif /*  (_WIN32_WINNT >= 0x0400) */
 #endif
+
 #ifndef NOGDI
 /* In older versions we disallowed COM declarations in __OBJC__
    because of conflicts with @interface directive.  Define _OBJC_NO_COM

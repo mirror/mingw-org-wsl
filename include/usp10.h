@@ -24,12 +24,14 @@
 #ifndef _USP10_H
 #define _USP10_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <windows.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #pragma pack(push,1)
 
 #define SCRIPT_UNDEFINED 0
@@ -243,6 +245,7 @@ HRESULT WINAPI ScriptXtoCP(int,int,int,const WORD *,const SCRIPT_VISATTR *,const
 
   
 #pragma pack(pop)
+
 #ifdef __cplusplus
 }
 #endif

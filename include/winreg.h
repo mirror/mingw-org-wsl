@@ -24,6 +24,7 @@
 #ifndef _WINREG_H
 #define _WINREG_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef WINADVAPI
 #define WINADVAPI
@@ -32,6 +33,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define HKEY_CLASSES_ROOT	((HKEY)0x80000000)
 #define HKEY_CURRENT_USER	((HKEY)0x80000001)
 #define HKEY_LOCAL_MACHINE	((HKEY)0x80000002)
@@ -89,10 +91,7 @@ WINADVAPI LONG WINAPI RegCreateKeyExW(HKEY,LPCWSTR,DWORD,LPWSTR,DWORD,REGSAM,LPS
 WINADVAPI LONG WINAPI RegCreateKeyW(HKEY,LPCWSTR,PHKEY);
 WINADVAPI LONG WINAPI RegDeleteKeyA(HKEY,LPCSTR);
 WINADVAPI LONG WINAPI RegDeleteKeyW(HKEY,LPCWSTR);
-#if (WINVER >= 0x0502)
-WINADVAPI LONG WINAPI RegDeleteKeyExA(HKEY,LPCSTR,REGSAM,DWORD);
-WINADVAPI LONG WINAPI RegDeleteKeyExW(HKEY,LPCWSTR,REGSAM,DWORD);
-#endif
+
 WINADVAPI LONG WINAPI RegDeleteValueA(HKEY,LPCSTR);
 WINADVAPI LONG WINAPI RegDeleteValueW(HKEY,LPCWSTR);
 WINADVAPI LONG WINAPI RegEnumKeyA(HKEY,DWORD,LPSTR,DWORD);
@@ -132,65 +131,42 @@ WINADVAPI LONG WINAPI RegSetValueW(HKEY,LPCWSTR,DWORD,LPCWSTR,DWORD);
 WINADVAPI LONG WINAPI RegUnLoadKeyA(HKEY,LPCSTR);
 WINADVAPI LONG WINAPI RegUnLoadKeyW(HKEY,LPCWSTR);
 
-#ifdef UNICODE
-typedef VALENTW VALENT,*PVALENT;
-#define AbortSystemShutdown AbortSystemShutdownW
-#define InitiateSystemShutdown InitiateSystemShutdownW
-#define RegConnectRegistry RegConnectRegistryW
-#define RegCreateKey RegCreateKeyW
-#define RegCreateKeyEx RegCreateKeyExW
-#define RegDeleteKey RegDeleteKeyW
-#if (WINVER >= 0x0502)
-#define RegDeleteKeyEx RegDeleteKeyExW
-#endif
-#define RegDeleteValue RegDeleteValueW
-#define RegEnumKey RegEnumKeyW
-#define RegEnumKeyEx RegEnumKeyExW
-#define RegEnumValue RegEnumValueW
-#define RegLoadKey RegLoadKeyW
-#define RegOpenKey RegOpenKeyW
-#define RegOpenKeyEx RegOpenKeyExW
-#define RegQueryInfoKey RegQueryInfoKeyW
-#define RegQueryMultipleValues RegQueryMultipleValuesW
-#define RegQueryValue RegQueryValueW
-#define RegQueryValueEx RegQueryValueExW
-#define RegReplaceKey RegReplaceKeyW
-#define RegRestoreKey RegRestoreKeyW
-#define RegSaveKey RegSaveKeyW
-#define RegSetValue RegSetValueW
-#define RegSetValueEx RegSetValueExW
-#define RegUnLoadKey RegUnLoadKeyW
-#else
-typedef VALENTA VALENT,*PVALENT;
-#define AbortSystemShutdown AbortSystemShutdownA
-#define InitiateSystemShutdown InitiateSystemShutdownA
-#define RegConnectRegistry RegConnectRegistryA
-#define RegCreateKey RegCreateKeyA
-#define RegCreateKeyEx RegCreateKeyExA
-#define RegDeleteKey RegDeleteKeyA
-#if (WINVER >= 0x0502)
-#define RegDeleteKeyEx RegDeleteKeyExA
-#endif
-#define RegDeleteValue RegDeleteValueA
-#define RegEnumKey RegEnumKeyA
-#define RegEnumKeyEx RegEnumKeyExA
-#define RegEnumValue RegEnumValueA
-#define RegLoadKey RegLoadKeyA
-#define RegOpenKey RegOpenKeyA
-#define RegOpenKeyEx RegOpenKeyExA
-#define RegQueryInfoKey RegQueryInfoKeyA
-#define RegQueryMultipleValues RegQueryMultipleValuesA
-#define RegQueryValue RegQueryValueA
-#define RegQueryValueEx RegQueryValueExA
-#define RegReplaceKey RegReplaceKeyA
-#define RegRestoreKey RegRestoreKeyA
-#define RegSaveKey RegSaveKeyA
-#define RegSetValue RegSetValueA
-#define RegSetValueEx RegSetValueExA
-#define RegUnLoadKey RegUnLoadKeyA
-#endif
-#endif
+typedef __AW(VALENT) VALENT,*PVALENT;
+#define AbortSystemShutdown __AW(AbortSystemShutdown)
+#define InitiateSystemShutdown __AW(InitiateSystemShutdown)
+#define RegConnectRegistry __AW(RegConnectRegistry)
+#define RegCreateKey __AW(RegCreateKey)
+#define RegCreateKeyEx __AW(RegCreateKeyEx)
+#define RegDeleteKey __AW(RegDeleteKey)
+
+#define RegDeleteValue __AW(RegDeleteValue)
+#define RegEnumKey __AW(RegEnumKey)
+#define RegEnumKeyEx __AW(RegEnumKeyEx)
+#define RegEnumValue __AW(RegEnumValue)
+#define RegLoadKey __AW(RegLoadKey)
+#define RegOpenKey __AW(RegOpenKey)
+#define RegOpenKeyEx __AW(RegOpenKeyEx)
+#define RegQueryInfoKey __AW(RegQueryInfoKey)
+#define RegQueryMultipleValues __AW(RegQueryMultipleValues)
+#define RegQueryValue __AW(RegQueryValue)
+#define RegQueryValueEx __AW(RegQueryValueEx)
+#define RegReplaceKey __AW(RegReplaceKey)
+#define RegRestoreKey __AW(RegRestoreKey)
+#define RegSaveKey __AW(RegSaveKey)
+#define RegSetValue __AW(RegSetValue)
+#define RegSetValueEx __AW(RegSetValueEx)
+#define RegUnLoadKey __AW(RegUnLoadKey)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+WINADVAPI LONG WINAPI RegDeleteKeyExA(HKEY,LPCSTR,REGSAM,DWORD);
+WINADVAPI LONG WINAPI RegDeleteKeyExW(HKEY,LPCWSTR,REGSAM,DWORD);
+#define RegDeleteKeyEx __AW(RegDeleteKeyEx)
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#endif /* ! RC_INVOKED */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

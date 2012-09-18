@@ -200,10 +200,10 @@ typedef struct localeinfo_struct {
  */
 #define __AW__(AW, AW_) AW ## AW_
 #if ( \
- (!defined(_ODBCINST_H) && defined(UNICODE)) || \
- (!defined(_ODBCINST_H) && defined(_UNICODE)) || \
- defined(FORCE_UNICODE) \
- (defined _ODBCINST_H && !defined(SQL_NOUNICODEMAP) && defined(UNICODE)) \
+ (!defined(__TEST_SQL_NOUNICODEMAP) && defined(UNICODE)) || \
+ (!defined(__TEST_SQL_NOUNICODEMAP) && defined(_UNICODE)) || \
+ defined(FORCE_UNICODE) || \
+ (defined(__TEST_SQL_NOUNICODEMAP) && !defined(SQL_NOUNICODEMAP) && (defined(UNICODE) || defined(_UNICODE))) \
 )
 #define __AW(AW) __AW__(AW, W)
 #define __STR(AW) __AW__(L, AW)

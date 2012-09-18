@@ -24,10 +24,12 @@
 #ifndef _WINSPOOL_H
 #define _WINSPOOL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define DI_CHANNEL 1
 #define DI_CHANNEL_WRITE 2
 #define DI_READ_SPOOL_JOB 3
@@ -35,15 +37,7 @@ extern "C" {
 #define	FORM_USER	0x0
 #define	FORM_BUILTIN	0x1
 #define	FORM_PRINTER	0x2
-#if (_WIN32_WINNT >= 0x0500)
-#define DRIVER_KERNELMODE	0x00000001
-#define DRIVER_USERMODE		0x00000002
-#define	DSPRINT_PUBLISH		0x00000001
-#define	DSPRINT_UPDATE		0x00000002
-#define	DSPRINT_UNPUBLISH	0x00000004
-#define	DSPRINT_REPUBLISH	0x00000008
-#define	DSPRINT_PENDING		0x80000000
-#endif
+
 #define	JOB_CONTROL_PAUSE		1
 #define	JOB_CONTROL_RESUME		2
 #define	JOB_CONTROL_CANCEL		3
@@ -254,6 +248,7 @@ extern "C" {
 #define PORT_STATUS_TONER_LOW	10
 #define PORT_STATUS_WARMING_UP	11
 #define PORT_STATUS_POWER_SAVE	12
+
 #ifndef RC_INVOKED
 typedef struct _ADDJOB_INFO_1A {
 	LPSTR Path;
@@ -416,94 +411,7 @@ typedef	struct	_DRIVER_INFO_3W	{
 	LPWSTR pMonitorName;
 	LPWSTR pDefaultDataType;
 } DRIVER_INFO_3W,*PDRIVER_INFO_3W,*LPDRIVER_INFO_3W;
-#if (_WIN32_WINNT >= 0x0500)
-typedef	struct	_DRIVER_INFO_4A {
-	DWORD cVersion;
-	LPSTR pName;
-	LPSTR pEnvironment;
-	LPSTR pDriverPath;
-	LPSTR pDataFile;
-	LPSTR pConfigFile;
-	LPSTR pHelpFile;
-	LPSTR pDependentFiles;  	
-	LPSTR pMonitorName;
-	LPSTR pDefaultDataType;
-	LPSTR pszzPreviousNames;
-} DRIVER_INFO_4A,*PDRIVER_INFO_4A,*LPDRIVER_INFO_4A;
-typedef	struct	_DRIVER_INFO_4W {
-	DWORD cVersion;
-	LPWSTR pName;
-	LPWSTR pEnvironment;
-	LPWSTR pDriverPath;
-	LPWSTR pDataFile;
-	LPWSTR pConfigFile;
-	LPWSTR pHelpFile;
-	LPWSTR pDependentFiles;
-	LPWSTR pMonitorName;
-	LPWSTR pDefaultDataType;
-	LPWSTR pszzPreviousNames;
-} DRIVER_INFO_4W,*PDRIVER_INFO_4W,*LPDRIVER_INFO_4W;
-typedef	struct	_DRIVER_INFO_5A {
-	DWORD cVersion;
-	LPSTR pName;
-	LPSTR pEnvironment;
-	LPSTR pDriverPath;
-	LPSTR pDataFile;
-	LPSTR pConfigFile;
-	DWORD dwDriverAttributes;
-	DWORD dwConfigVersion;
-	DWORD dwDriverVersion;
-} DRIVER_INFO_5A,*PDRIVER_INFO_5A,*LPDRIVER_INFO_5A;
-typedef	struct	_DRIVER_INFO_5W {
-	DWORD cVersion;
-	LPWSTR pName;
-	LPWSTR pEnvironment;
-	LPWSTR pDriverPath;
-	LPWSTR pDataFile;
-	LPWSTR pConfigFile;
-	DWORD dwDriverAttributes;
-	DWORD dwConfigVersion;
-	DWORD dwDriverVersion;
-} DRIVER_INFO_5W,*PDRIVER_INFO_5W,*LPDRIVER_INFO_5W;
-typedef	struct	_DRIVER_INFO_6A {
-	DWORD cVersion;
-	LPSTR pName;
-	LPSTR pEnvironment;
-	LPSTR pDriverPath;
-	LPSTR pDataFile;
-	LPSTR pConfigFile;
-	LPSTR pHelpFile;
-	LPSTR pDependentFiles;
-	LPSTR pMonitorName;
-	LPSTR pDefaultDataType;
-	LPSTR pszzPreviousNames;
-	FILETIME ftDriverDate;
-	DWORDLONG dwlDriverVersion;
-	LPSTR pszMfgName;
-	LPSTR pszOEMUrl;
-	LPSTR pszHardwareID;
-	LPSTR pszProvider;
-} DRIVER_INFO_6A,*PDRIVER_INFO_6A,*LPDRIVER_INFO_6A;
-typedef	struct	_DRIVER_INFO_6W {
-	DWORD cVersion;
-	LPWSTR pName;
-	LPWSTR pEnvironment;
-	LPWSTR pDriverPath;
-	LPWSTR pDataFile;
-	LPWSTR pConfigFile;
-	LPWSTR pHelpFile;
-	LPWSTR pDependentFiles;
-	LPWSTR pMonitorName;
-	LPWSTR pDefaultDataType;
-	LPWSTR pszzPreviousNames;
-	FILETIME ftDriverDate;
-	DWORDLONG dwlDriverVersion;
-	LPWSTR pszMfgName;
-	LPWSTR pszOEMUrl;
-	LPWSTR pszHardwareID;
-	LPWSTR pszProvider;
-} DRIVER_INFO_6W,*PDRIVER_INFO_6W,*LPDRIVER_INFO_6W;
-#endif
+
 typedef struct _MONITOR_INFO_1A{LPSTR pName;} MONITOR_INFO_1A,*PMONITOR_INFO_1A,*LPMONITOR_INFO_1A;
 typedef struct _MONITOR_INFO_1W{LPWSTR pName;} MONITOR_INFO_1W,*PMONITOR_INFO_1W,*LPMONITOR_INFO_1W;
 typedef struct _PORT_INFO_1A {LPSTR pName;} PORT_INFO_1A,*PPORT_INFO_1A,*LPPORT_INFO_1A;
@@ -542,22 +450,7 @@ typedef struct _PORT_INFO_3W {
 	LPWSTR pszStatus;
 	DWORD dwSeverity;
 } PORT_INFO_3W,*PPORT_INFO_3W,*LPPORT_INFO_3W;
-#if (_WIN32_WINNT >= 0x0500)
-typedef struct _PRINTER_ENUM_VALUESA {
-	LPSTR pValueName;
-	DWORD cbValueName;
-	DWORD dwType;
-	LPBYTE pData;
-	DWORD cbData;
-} PRINTER_ENUM_VALUESA,*PPRINTER_ENUM_VALUESA,*LPRINTER_ENUM_VALUESA;
-typedef struct _PRINTER_ENUM_VALUESW {
-	LPWSTR pValueName;
-	DWORD cbValueName;
-	DWORD dwType;
-	LPBYTE pData;
-	DWORD cbData;
-} PRINTER_ENUM_VALUESW,*PPRINTER_ENUM_VALUESW,*LPRINTER_ENUM_VALUESW;
-#endif
+
 typedef	struct _PRINTER_INFO_1A {
 	DWORD Flags;
 	LPSTR pDescription;
@@ -646,22 +539,7 @@ typedef	struct _PRINTER_INFO_5W	{
 typedef struct _PRINTER_INFO_6 {
 	DWORD	dwStatus;
 } PRINTER_INFO_6,*PPRINTER_INFO_6,*LPPRINTER_INFO_6;
-#if (_WIN32_WINNT >= 0x0500)
-typedef struct _PRINTER_INFO_7A {
-	LPWSTR pszObjectGUID;
-	DWORD dwAction;
-} PRINTER_INFO_7A,*PPRINTER_INFO_7A,*LPPRINTER_INFO_7A;
-typedef struct _PRINTER_INFO_7W {
-	LPWSTR pszObjectGUID;
-	DWORD dwAction;
-} PRINTER_INFO_7W,*PPRINTER_INFO_7W,*LPPRINTER_INFO_7W;
-typedef struct _PRINTER_INFO_8 {
-	LPDEVMODE pDevMode;
-} PRINTER_INFO_8,*PPRINTER_INFO_8,*LPPRINTER_INFO_8;
-typedef struct _PRINTER_INFO_9 {
-	LPDEVMODE pDevMode;
-} PRINTER_INFO_9,*PPRINTER_INFO_9,*LPPRINTER_INFO_9;
-#endif
+
 typedef	struct _PRINTPROCESSOR_INFO_1A {LPSTR pName;} PRINTPROCESSOR_INFO_1A,*PPRINTPROCESSOR_INFO_1A,*LPPRINTPROCESSOR_INFO_1A;
 typedef	struct _PRINTPROCESSOR_INFO_1W {LPWSTR pName;} PRINTPROCESSOR_INFO_1W,*PPRINTPROCESSOR_INFO_1W,*LPPRINTPROCESSOR_INFO_1W;
 typedef	struct	_PRINTER_NOTIFY_INFO_DATA {
@@ -705,14 +583,7 @@ typedef	struct _PRINTER_DEFAULTSW {
 	LPDEVMODE pDevMode;
 	ACCESS_MASK DesiredAccess;
 } PRINTER_DEFAULTSW,*PPRINTER_DEFAULTSW,*LPPRINTER_DEFAULTSW;
-#if (_WIN32_WINNT >= 0x0500)
-typedef	struct _PRINTPROCESSOR_CAPS_1 {
-	DWORD dwLevel;
-	DWORD dwNupOptions;
-	DWORD dwPageOrderFlags;
-	DWORD dwNumberOfCopies;
-} PRINTPROCESSOR_CAPS_1,*PPRINTPROCESSOR_CAPS_1,*LPPRINTPROCESSOR_CAPS_1;
-#endif
+
 typedef	struct _PROVIDOR_INFO_1A { 
 	LPSTR pName;
 	LPSTR pEnvironment;
@@ -798,10 +669,7 @@ BOOL WINAPI FindClosePrinterChangeNotification(HANDLE);
 HANDLE WINAPI FindFirstPrinterChangeNotification(HANDLE,DWORD,DWORD,PVOID);
 HANDLE WINAPI FindNextPrinterChangeNotification(HANDLE,PDWORD,PVOID,PVOID*);
 BOOL WINAPI FreePrinterNotifyInfo(PPRINTER_NOTIFY_INFO);
-#if _WIN32_WINNT >= 0x0500
-BOOL WINAPI GetDefaultPrinterA(LPSTR,LPDWORD);
-BOOL WINAPI GetDefaultPrinterW(LPWSTR,LPDWORD);
-#endif
+
 BOOL WINAPI GetFormA(HANDLE,LPSTR,DWORD,PBYTE,DWORD,PDWORD);
 BOOL WINAPI GetFormW(HANDLE,LPWSTR,DWORD,PBYTE,DWORD,PDWORD);
 BOOL WINAPI GetJobA(HANDLE,DWORD,DWORD,PBYTE,DWORD,PDWORD);
@@ -839,165 +707,221 @@ BOOL WINAPI StartPagePrinter(HANDLE);
 DWORD WINAPI WaitForPrinterChange(HANDLE,DWORD);
 BOOL WINAPI WritePrinter(HANDLE,PVOID,DWORD,PDWORD);
 
-#ifdef UNICODE
-typedef JOB_INFO_1W JOB_INFO_1,*PJOB_INFO_1,*LPJOB_INFO_1;
-typedef JOB_INFO_2W JOB_INFO_2,*PJOB_INFO_2,*LPJOB_INFO_2;
-typedef ADDJOB_INFO_1W ADDJOB_INFO_1,*PADDJOB_INFO_1,*LPADDJOB_INFO_1;
-typedef DATATYPES_INFO_1W DATATYPES_INFO_1,*PDATATYPES_INFO_1,*LPDATATYPES_INFO_1;
-typedef MONITOR_INFO_1W MONITOR_INFO_1,*PMONITOR_INFO_1,*LPMONITOR_INFO_1;
-typedef MONITOR_INFO_2W MONITOR_INFO_2,*PMONITOR_INFO_2,*LPMONITOR_INFO_2;
-typedef DOC_INFO_1W DOC_INFO_1,*PDOC_INFO_1,*LPDOC_INFO_1;
-typedef DOC_INFO_2W DOC_INFO_2,*PDOC_INFO_2,*LPDOC_INFO_2;
-typedef PORT_INFO_1W PORT_INFO_1,*PPORT_INFO_1,*LPPORT_INFO_1;
-typedef PORT_INFO_2W PORT_INFO_2,*PPORT_INFO_2,*LPPORT_INFO_2;
-typedef PORT_INFO_3W PORT_INFO_3,*PPORT_INFO_3,*LPPORT_INFO_3;
-typedef DRIVER_INFO_1W DRIVER_INFO_1,*PDRIVER_INFO_1,*LPDRIVER_INFO_1;
-typedef DRIVER_INFO_2W DRIVER_INFO_2,*PDRIVER_INFO_2,*LPDRIVER_INFO_2;
-typedef DRIVER_INFO_3W DRIVER_INFO_3,*PDRIVER_INFO_3,*LPDRIVER_INFO_3;
-#if (_WIN32_WINNT >= 0x0500)
-typedef DRIVER_INFO_4W DRIVER_INFO_4,*PDRIVER_INFO_4,*LPDRIVER_INFO_4;
-typedef DRIVER_INFO_5W DRIVER_INFO_5,*PDRIVER_INFO_5,*LPDRIVER_INFO_5;
-typedef DRIVER_INFO_6W DRIVER_INFO_6,*PDRIVER_INFO_6,*LPDRIVER_INFO_6;
-typedef PRINTER_ENUM_VALUESW PRINTER_ENUM_VALUES,*PPRINTER_ENUM_VALUES,*LPRINTER_ENUM_VALUES;
-#endif
-typedef PRINTER_INFO_1W PRINTER_INFO_1,*PPRINTER_INFO_1,*LPPRINTER_INFO_1;
-typedef PRINTER_INFO_2W PRINTER_INFO_2,*PPRINTER_INFO_2,*LPPRINTER_INFO_2;
-typedef PRINTER_INFO_4W PRINTER_INFO_4,*PPRINTER_INFO_4,*LPPRINTER_INFO_4;
-typedef PRINTER_INFO_5W PRINTER_INFO_5,*PPRINTER_INFO_5,*LPPRINTER_INFO_5;
-#if (_WIN32_WINNT >= 0x0500)
-typedef PRINTER_INFO_7W PRINTER_INFO_7,*PPRINTER_INFO_7,*LPPRINTER_INFO_7;
-#endif
-typedef PRINTPROCESSOR_INFO_1W PRINTPROCESSOR_INFO_1,*PPRINTPROCESSOR_INFO_1,*LPPRINTPROCESSOR_INFO_1;
-typedef FORM_INFO_1W FORM_INFO_1,*PFORM_INFO_1,*LPFORM_INFO_1;
-typedef PRINTER_DEFAULTSW PRINTER_DEFAULTS,*PPRINTER_DEFAULTS,*LPPRINTER_DEFAULTS;
-typedef PROVIDOR_INFO_1W PROVIDOR_INFO_1,*PPROVIDOR_INFO_1,*LPROVIDOR_INFO_1;
-typedef PROVIDOR_INFO_2W PROVIDOR_INFO_2,*PPROVIDOR_INFO_2,*LPROVIDOR_INFO_2;
-#define AddForm AddFormW
-#define AddJob AddJobW
-#define AddMonitor AddMonitorW
-#define AddPort AddPortW
-#define AddPrinter AddPrinterW
-#define AddPrinterConnection AddPrinterConnectionW
-#define AddPrinterDriver AddPrinterDriverW
-#define AddPrintProcessor AddPrintProcessorW
-#define AddPrintProvidor AddPrintProvidorW
-#define AdvancedDocumentProperties AdvancedDocumentPropertiesW
-#define ConfigurePort ConfigurePortW
-#define DeleteForm DeleteFormW
-#define DeleteMonitor DeleteMonitorW
-#define DeletePort DeletePortW
-#define DeletePrinterConnection DeletePrinterConnectionW
-#define DeletePrinterData DeletePrinterDataW
-#define DeletePrinterDriver DeletePrinterDriverW
-#define DeletePrintProcessor DeletePrinterProcessorW
-#define DeletePrintProvidor DeletePrinterProvidorW
-#define DocumentProperties DocumentPropertiesW
-#define EnumForms EnumFormsW
-#define EnumJobs EnumJobsW
-#define EnumMonitors EnumMonitorsW
-#define EnumPorts EnumPortsW
-#define EnumPrinterData EnumPrinterDataW
-#define EnumPrinterDrivers EnumPrinterDriversW
-#define EnumPrinters EnumPrintersW
-#define EnumPrintProcessorDatatypes EnumPrintProcessorDatatypesW
-#define EnumPrintProcessors EnumPrintProcessorsW
-#define GetDefaultPrinter GetDefaultPrinterW
-#define	GetForm	GetFormW
-#define GetJob GetJobW
-#define GetPrinter GetPrinterW
-#define GetPrinterData GetPrinterDataW
-#define GetPrinterDriver GetPrinterDriverW
-#define GetPrinterDriverDirectory GetPrinterDriverDirectoryW
-#define GetPrintProcessorDirectory GetPrintProcessorDirectoryW
-#define OpenPrinter OpenPrinterW
-#define PrinterMessageBox PrinterMessageBoxW
-#define ResetPrinter ResetPrinterW
-#define SetForm SetFormW
-#define SetJob SetJobW
-#define SetPrinter SetPrinterW
-#define SetPrinterData SetPrinterDataW
-#define StartDocPrinter StartDocPrinterW
-#else
-typedef JOB_INFO_1A JOB_INFO_1,*PJOB_INFO_1,*LPJOB_INFO_1;
-typedef JOB_INFO_2A JOB_INFO_2,*PJOB_INFO_2,*LPJOB_INFO_2;
-typedef ADDJOB_INFO_1A ADDJOB_INFO_1,*PADDJOB_INFO_1,*LPADDJOB_INFO_1;
-typedef DATATYPES_INFO_1A DATATYPES_INFO_1,*PDATATYPES_INFO_1,*LPDATATYPES_INFO_1;
-typedef MONITOR_INFO_1A MONITOR_INFO_1,*PMONITOR_INFO_1,*LPMONITOR_INFO_1;
-typedef MONITOR_INFO_2A MONITOR_INFO_2,*PMONITOR_INFO_2,*LPMONITOR_INFO_2;
-typedef DOC_INFO_1A DOC_INFO_1,*PDOC_INFO_1,*LPDOC_INFO_1;
-typedef DOC_INFO_2A DOC_INFO_2,*PDOC_INFO_2,*LPDOC_INFO_2;
-typedef PORT_INFO_1A PORT_INFO_1,*PPORT_INFO_1,*LPPORT_INFO_1;
-typedef PORT_INFO_2A PORT_INFO_2,*PPORT_INFO_2,*LPPORT_INFO_2;
-typedef PORT_INFO_3A PORT_INFO_3,*PPORT_INFO_3,*LPPORT_INFO_3;
-typedef DRIVER_INFO_1A DRIVER_INFO_1,*PDRIVER_INFO_1,*LPDRIVER_INFO_1;
-typedef DRIVER_INFO_2A DRIVER_INFO_2,*PDRIVER_INFO_2,*LPDRIVER_INFO_2;
-typedef DRIVER_INFO_3A DRIVER_INFO_3,*PDRIVER_INFO_3,*LPDRIVER_INFO_3;
-#if (_WIN32_WINNT >= 0x0500)
-typedef DRIVER_INFO_4A DRIVER_INFO_4,*PDRIVER_INFO_4,*LPDRIVER_INFO_4;
-typedef DRIVER_INFO_5A DRIVER_INFO_5,*PDRIVER_INFO_5,*LPDRIVER_INFO_5;
-typedef DRIVER_INFO_6A DRIVER_INFO_6,*PDRIVER_INFO_6,*LPDRIVER_INFO_6;
-typedef PRINTER_ENUM_VALUESA PRINTER_ENUM_VALUES,*PPRINTER_ENUM_VALUES,*LPRINTER_ENUM_VALUES;
-#endif
-typedef PRINTER_INFO_1A PRINTER_INFO_1,*PPRINTER_INFO_1,*LPPRINTER_INFO_1;
-typedef PRINTER_INFO_2A PRINTER_INFO_2,*PPRINTER_INFO_2,*LPPRINTER_INFO_2;
-typedef PRINTER_INFO_4A PRINTER_INFO_4,*PPRINTER_INFO_4,*LPPRINTER_INFO_4;
-typedef PRINTER_INFO_5A PRINTER_INFO_5,*PPRINTER_INFO_5,*LPPRINTER_INFO_5;
-#if (_WIN32_WINNT >= 0x0500)
-typedef PRINTER_INFO_7A PRINTER_INFO_7,*PPRINTER_INFO_7,*LPPRINTER_INFO_7;
-#endif
-typedef PRINTPROCESSOR_INFO_1A PRINTPROCESSOR_INFO_1,*PPRINTPROCESSOR_INFO_1,*LPPRINTPROCESSOR_INFO_1;
-typedef FORM_INFO_1A FORM_INFO_1,*PFORM_INFO_1,*LPFORM_INFO_1;
-typedef PRINTER_DEFAULTSA PRINTER_DEFAULTS,*PPRINTER_DEFAULTS,*LPPRINTER_DEFAULTS;
-typedef PROVIDOR_INFO_1A PROVIDOR_INFO_1,*PPROVIDOR_INFO_1,*LPROVIDOR_INFO_1;
-typedef PROVIDOR_INFO_2A PROVIDOR_INFO_2,*PPROVIDOR_INFO_2,*LPROVIDOR_INFO_2;
-#define AddForm AddFormA
-#define AddJob AddJobA
-#define AddMonitor AddMonitorA
-#define AddPort AddPortA
-#define AddPrinter AddPrinterA
-#define AddPrinterConnection AddPrinterConnectionA
-#define AddPrinterDriver AddPrinterDriverA
-#define AddPrintProcessor AddPrintProcessorA
-#define AddPrintProvidor AddPrintProvidorA
-#define AdvancedDocumentProperties AdvancedDocumentPropertiesA
-#define ConfigurePort ConfigurePortA
-#define DeleteForm DeleteFormA
-#define DeleteMonitor DeleteMonitorA
-#define DeletePort DeletePortA
-#define DeletePrinterConnection DeletePrinterConnectionA
-#define DeletePrinterData DeletePrinterDataA
-#define DeletePrinterDriver DeletePrinterDriverA
-#define DeletePrintProcessor DeletePrinterProcessorA
-#define DeletePrintProvidor DeletePrinterProvidorA
-#define DocumentProperties DocumentPropertiesA
-#define EnumForms EnumFormsA
-#define EnumJobs EnumJobsA
-#define EnumMonitors EnumMonitorsA
-#define EnumPorts EnumPortsA
-#define EnumPrinterData EnumPrinterDataA
-#define EnumPrinterDrivers EnumPrinterDriversA
-#define EnumPrinters EnumPrintersA
-#define EnumPrintProcessorDatatypes EnumPrintProcessorDatatypesA
-#define EnumPrintProcessors EnumPrintProcessorsA
-#define GetDefaultPrinter GetDefaultPrinterA
-#define	GetForm	GetFormA
-#define GetJob GetJobA
-#define GetPrinter GetPrinterA
-#define GetPrinterData GetPrinterDataA
-#define GetPrinterDriver GetPrinterDriverA
-#define GetPrinterDriverDirectory GetPrinterDriverDirectoryA
-#define GetPrintProcessorDirectory GetPrintProcessorDirectoryA
-#define OpenPrinter OpenPrinterA
-#define PrinterMessageBox PrinterMessageBoxA
-#define ResetPrinter ResetPrinterA
-#define SetForm SetFormA
-#define SetJob SetJobA
-#define SetPrinter SetPrinterA
-#define SetPrinterData SetPrinterDataA
-#define StartDocPrinter StartDocPrinterA
-#endif
+typedef __AW(JOB_INFO_1) JOB_INFO_1,*PJOB_INFO_1,*LPJOB_INFO_1;
+typedef __AW(JOB_INFO_2) JOB_INFO_2,*PJOB_INFO_2,*LPJOB_INFO_2;
+typedef __AW(ADDJOB_INFO_1) ADDJOB_INFO_1,*PADDJOB_INFO_1,*LPADDJOB_INFO_1;
+typedef __AW(DATATYPES_INFO_1) DATATYPES_INFO_1,*PDATATYPES_INFO_1,*LPDATATYPES_INFO_1;
+typedef __AW(MONITOR_INFO_1) MONITOR_INFO_1,*PMONITOR_INFO_1,*LPMONITOR_INFO_1;
+typedef __AW(MONITOR_INFO_2) MONITOR_INFO_2,*PMONITOR_INFO_2,*LPMONITOR_INFO_2;
+typedef __AW(DOC_INFO_1) DOC_INFO_1,*PDOC_INFO_1,*LPDOC_INFO_1;
+typedef __AW(DOC_INFO_2) DOC_INFO_2,*PDOC_INFO_2,*LPDOC_INFO_2;
+typedef __AW(PORT_INFO_1) PORT_INFO_1,*PPORT_INFO_1,*LPPORT_INFO_1;
+typedef __AW(PORT_INFO_2) PORT_INFO_2,*PPORT_INFO_2,*LPPORT_INFO_2;
+typedef __AW(PORT_INFO_3) PORT_INFO_3,*PPORT_INFO_3,*LPPORT_INFO_3;
+typedef __AW(DRIVER_INFO_1) DRIVER_INFO_1,*PDRIVER_INFO_1,*LPDRIVER_INFO_1;
+typedef __AW(DRIVER_INFO_2) DRIVER_INFO_2,*PDRIVER_INFO_2,*LPDRIVER_INFO_2;
+typedef __AW(DRIVER_INFO_3) DRIVER_INFO_3,*PDRIVER_INFO_3,*LPDRIVER_INFO_3;
+
+typedef __AW(PRINTER_INFO_1) PRINTER_INFO_1,*PPRINTER_INFO_1,*LPPRINTER_INFO_1;
+typedef __AW(PRINTER_INFO_2) PRINTER_INFO_2,*PPRINTER_INFO_2,*LPPRINTER_INFO_2;
+typedef __AW(PRINTER_INFO_4) PRINTER_INFO_4,*PPRINTER_INFO_4,*LPPRINTER_INFO_4;
+typedef __AW(PRINTER_INFO_5) PRINTER_INFO_5,*PPRINTER_INFO_5,*LPPRINTER_INFO_5;
+
+typedef __AW(PRINTPROCESSOR_INFO_1) PRINTPROCESSOR_INFO_1,*PPRINTPROCESSOR_INFO_1,*LPPRINTPROCESSOR_INFO_1;
+typedef __AW(FORM_INFO_1) FORM_INFO_1,*PFORM_INFO_1,*LPFORM_INFO_1;
+typedef __AW(PRINTER_DEFAULTS) PRINTER_DEFAULTS,*PPRINTER_DEFAULTS,*LPPRINTER_DEFAULTS;
+typedef __AW(PROVIDOR_INFO_1) PROVIDOR_INFO_1,*PPROVIDOR_INFO_1,*LPROVIDOR_INFO_1;
+typedef __AW(PROVIDOR_INFO_2) PROVIDOR_INFO_2,*PPROVIDOR_INFO_2,*LPROVIDOR_INFO_2;
+#define AddForm __AW(AddForm)
+#define AddJob __AW(AddJob)
+#define AddMonitor __AW(AddMonitor)
+#define AddPort __AW(AddPort)
+#define AddPrinter __AW(AddPrinter)
+#define AddPrinterConnection __AW(AddPrinterConnection)
+#define AddPrinterDriver __AW(AddPrinterDriver)
+#define AddPrintProcessor __AW(AddPrintProcessor)
+#define AddPrintProvidor __AW(AddPrintProvidor)
+#define AdvancedDocumentProperties __AW(AdvancedDocumentProperties)
+#define ConfigurePort __AW(ConfigurePort)
+#define DeleteForm __AW(DeleteForm)
+#define DeleteMonitor __AW(DeleteMonitor)
+#define DeletePort __AW(DeletePort)
+#define DeletePrinterConnection __AW(DeletePrinterConnection)
+#define DeletePrinterData __AW(DeletePrinterData)
+#define DeletePrinterDriver __AW(DeletePrinterDriver)
+#define DeletePrintProcessor __AW(DeletePrinterProcessor)
+#define DeletePrintProvidor __AW(DeletePrinterProvidor)
+#define DocumentProperties __AW(DocumentProperties)
+#define EnumForms __AW(EnumForms)
+#define EnumJobs __AW(EnumJobs)
+#define EnumMonitors __AW(EnumMonitors)
+#define EnumPorts __AW(EnumPorts)
+#define EnumPrinterData __AW(EnumPrinterData)
+#define EnumPrinterDrivers __AW(EnumPrinterDrivers)
+#define EnumPrinters __AW(EnumPrinters)
+#define EnumPrintProcessorDatatypes __AW(EnumPrintProcessorDatatypes)
+#define EnumPrintProcessors __AW(EnumPrintProcessors)
+#define GetDefaultPrinter __AW(GetDefaultPrinter)
+#define	GetForm	__AW(GetForm)
+#define GetJob __AW(GetJob)
+#define GetPrinter __AW(GetPrinter)
+#define GetPrinterData __AW(GetPrinterData)
+#define GetPrinterDriver __AW(GetPrinterDriver)
+#define GetPrinterDriverDirectory __AW(GetPrinterDriverDirectory)
+#define GetPrintProcessorDirectory __AW(GetPrintProcessorDirectory)
+#define OpenPrinter __AW(OpenPrinter)
+#define PrinterMessageBox __AW(PrinterMessageBox)
+#define ResetPrinter __AW(ResetPrinter)
+#define SetForm __AW(SetForm)
+#define SetJob __AW(SetJob)
+#define SetPrinter __AW(SetPrinter)
+#define SetPrinterData __AW(SetPrinterData)
+#define StartDocPrinter __AW(StartDocPrinter)
 #endif /* RC_INVOKED */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+#define DRIVER_KERNELMODE	0x00000001
+#define DRIVER_USERMODE		0x00000002
+#define	DSPRINT_PUBLISH		0x00000001
+#define	DSPRINT_UPDATE		0x00000002
+#define	DSPRINT_UNPUBLISH	0x00000004
+#define	DSPRINT_REPUBLISH	0x00000008
+#define	DSPRINT_PENDING		0x80000000
+
+#ifndef RC_INVOKED
+typedef	struct	_DRIVER_INFO_4A {
+	DWORD cVersion;
+	LPSTR pName;
+	LPSTR pEnvironment;
+	LPSTR pDriverPath;
+	LPSTR pDataFile;
+	LPSTR pConfigFile;
+	LPSTR pHelpFile;
+	LPSTR pDependentFiles;  	
+	LPSTR pMonitorName;
+	LPSTR pDefaultDataType;
+	LPSTR pszzPreviousNames;
+} DRIVER_INFO_4A,*PDRIVER_INFO_4A,*LPDRIVER_INFO_4A;
+typedef	struct	_DRIVER_INFO_4W {
+	DWORD cVersion;
+	LPWSTR pName;
+	LPWSTR pEnvironment;
+	LPWSTR pDriverPath;
+	LPWSTR pDataFile;
+	LPWSTR pConfigFile;
+	LPWSTR pHelpFile;
+	LPWSTR pDependentFiles;
+	LPWSTR pMonitorName;
+	LPWSTR pDefaultDataType;
+	LPWSTR pszzPreviousNames;
+} DRIVER_INFO_4W,*PDRIVER_INFO_4W,*LPDRIVER_INFO_4W;
+typedef	struct	_DRIVER_INFO_5A {
+	DWORD cVersion;
+	LPSTR pName;
+	LPSTR pEnvironment;
+	LPSTR pDriverPath;
+	LPSTR pDataFile;
+	LPSTR pConfigFile;
+	DWORD dwDriverAttributes;
+	DWORD dwConfigVersion;
+	DWORD dwDriverVersion;
+} DRIVER_INFO_5A,*PDRIVER_INFO_5A,*LPDRIVER_INFO_5A;
+typedef	struct	_DRIVER_INFO_5W {
+	DWORD cVersion;
+	LPWSTR pName;
+	LPWSTR pEnvironment;
+	LPWSTR pDriverPath;
+	LPWSTR pDataFile;
+	LPWSTR pConfigFile;
+	DWORD dwDriverAttributes;
+	DWORD dwConfigVersion;
+	DWORD dwDriverVersion;
+} DRIVER_INFO_5W,*PDRIVER_INFO_5W,*LPDRIVER_INFO_5W;
+typedef	struct	_DRIVER_INFO_6A {
+	DWORD cVersion;
+	LPSTR pName;
+	LPSTR pEnvironment;
+	LPSTR pDriverPath;
+	LPSTR pDataFile;
+	LPSTR pConfigFile;
+	LPSTR pHelpFile;
+	LPSTR pDependentFiles;
+	LPSTR pMonitorName;
+	LPSTR pDefaultDataType;
+	LPSTR pszzPreviousNames;
+	FILETIME ftDriverDate;
+	DWORDLONG dwlDriverVersion;
+	LPSTR pszMfgName;
+	LPSTR pszOEMUrl;
+	LPSTR pszHardwareID;
+	LPSTR pszProvider;
+} DRIVER_INFO_6A,*PDRIVER_INFO_6A,*LPDRIVER_INFO_6A;
+typedef	struct	_DRIVER_INFO_6W {
+	DWORD cVersion;
+	LPWSTR pName;
+	LPWSTR pEnvironment;
+	LPWSTR pDriverPath;
+	LPWSTR pDataFile;
+	LPWSTR pConfigFile;
+	LPWSTR pHelpFile;
+	LPWSTR pDependentFiles;
+	LPWSTR pMonitorName;
+	LPWSTR pDefaultDataType;
+	LPWSTR pszzPreviousNames;
+	FILETIME ftDriverDate;
+	DWORDLONG dwlDriverVersion;
+	LPWSTR pszMfgName;
+	LPWSTR pszOEMUrl;
+	LPWSTR pszHardwareID;
+	LPWSTR pszProvider;
+} DRIVER_INFO_6W,*PDRIVER_INFO_6W,*LPDRIVER_INFO_6W;
+typedef struct _PRINTER_ENUM_VALUESA {
+	LPSTR pValueName;
+	DWORD cbValueName;
+	DWORD dwType;
+	LPBYTE pData;
+	DWORD cbData;
+} PRINTER_ENUM_VALUESA,*PPRINTER_ENUM_VALUESA,*LPRINTER_ENUM_VALUESA;
+typedef struct _PRINTER_ENUM_VALUESW {
+	LPWSTR pValueName;
+	DWORD cbValueName;
+	DWORD dwType;
+	LPBYTE pData;
+	DWORD cbData;
+} PRINTER_ENUM_VALUESW,*PPRINTER_ENUM_VALUESW,*LPRINTER_ENUM_VALUESW;
+typedef struct _PRINTER_INFO_7A {
+	LPWSTR pszObjectGUID;
+	DWORD dwAction;
+} PRINTER_INFO_7A,*PPRINTER_INFO_7A,*LPPRINTER_INFO_7A;
+typedef struct _PRINTER_INFO_7W {
+	LPWSTR pszObjectGUID;
+	DWORD dwAction;
+} PRINTER_INFO_7W,*PPRINTER_INFO_7W,*LPPRINTER_INFO_7W;
+typedef struct _PRINTER_INFO_8 {
+	LPDEVMODE pDevMode;
+} PRINTER_INFO_8,*PPRINTER_INFO_8,*LPPRINTER_INFO_8;
+typedef struct _PRINTER_INFO_9 {
+	LPDEVMODE pDevMode;
+} PRINTER_INFO_9,*PPRINTER_INFO_9,*LPPRINTER_INFO_9;
+typedef	struct _PRINTPROCESSOR_CAPS_1 {
+	DWORD dwLevel;
+	DWORD dwNupOptions;
+	DWORD dwPageOrderFlags;
+	DWORD dwNumberOfCopies;
+} PRINTPROCESSOR_CAPS_1,*PPRINTPROCESSOR_CAPS_1,*LPPRINTPROCESSOR_CAPS_1;
+BOOL WINAPI GetDefaultPrinterA(LPSTR,LPDWORD);
+BOOL WINAPI GetDefaultPrinterW(LPWSTR,LPDWORD);
+typedef __AW(DRIVER_INFO_4) DRIVER_INFO_4,*PDRIVER_INFO_4,*LPDRIVER_INFO_4;
+typedef __AW(DRIVER_INFO_5) DRIVER_INFO_5,*PDRIVER_INFO_5,*LPDRIVER_INFO_5;
+typedef __AW(DRIVER_INFO_6) DRIVER_INFO_6,*PDRIVER_INFO_6,*LPDRIVER_INFO_6;
+typedef __AW(PRINTER_ENUM_VALUES) PRINTER_ENUM_VALUES,*PPRINTER_ENUM_VALUES,*LPRINTER_ENUM_VALUES;
+typedef __AW(PRINTER_INFO_7) PRINTER_INFO_7,*PPRINTER_INFO_7,*LPPRINTER_INFO_7;
+#endif /* ! RC_INVOKED */
+
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

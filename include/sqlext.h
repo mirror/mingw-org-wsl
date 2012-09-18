@@ -24,11 +24,14 @@
 #ifndef _SQLEXT_H
 #define _SQLEXT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <sql.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define SQL_SPEC_MAJOR 3
 #define SQL_SPEC_MINOR	51
 #define SQL_SPEC_STRING "03.51"
@@ -547,6 +550,7 @@ extern "C" {
 #define SQL_INTERVAL_HOUR_TO_MINUTE (-90)
 #define SQL_INTERVAL_HOUR_TO_SECOND (-91)
 #define SQL_INTERVAL_MINUTE_TO_SECOND (-92)
+
 #else  
 #define SQL_NO_DATA_FOUND SQL_NO_DATA
 #define SQL_CODE_YEAR 1
@@ -582,6 +586,7 @@ extern "C" {
 #define SQL_UNICODE_VARCHAR (-96)
 #define SQL_UNICODE_LONGVARCHAR (-97)
 #define SQL_UNICODE_CHAR SQL_UNICODE
+
 #else
 #define SQL_UNICODE SQL_WCHAR
 #define SQL_UNICODE_VARCHAR SQL_WVARCHAR
@@ -1137,10 +1142,12 @@ extern "C" {
 #define SQL_US_UNION SQL_U_UNION
 #define SQL_US_UNION_ALL SQL_U_UNION_ALL
 #endif /* ODBCVER >= 0x300 */
+
 #if (ODBCVER >= 0x0350)
 #define SQL_DESC_ROWVER 35
 #define SQL_GUID (-11)
 #define SQL_C_GUID SQL_GUID
+
 #ifdef ODBC_STD
 #define SQLAllocHandle SQLAllocHandleStd
 #define SQLAllocEnv(p) SQLAllocHandleStd(SQL_HANDLE_ENV,SQL_NULL_HANDLE,p)
@@ -1158,7 +1165,9 @@ extern "C" {
 #define SQL_HOUR_TO_SECOND SQL_CODE_HOUR_TO_SECOND
 #define SQL_MINUTE_TO_SECOND SQL_CODE_MINUTE_TO_SECOND
 #endif /* ODBC_STD */
+
 #endif /* ODBCVER >= 0x0350 */
+
 #if (ODBCVER >= 0x0351)
 #define SQL_ATTR_ANSI_APP 115
 #define SQL_AA_TRUE 1L
@@ -1227,13 +1236,18 @@ RETCODE	SQL_API TraceOpenLogFile(LPWSTR,LPWSTR,DWORD);
 RETCODE	SQL_API TraceCloseLogFile(void);
 VOID SQL_API TraceReturn(RETCODE,RETCODE);
 DWORD SQL_API TraceVersion(void);
+
 #if (ODBCVER >= 0x0300)
 SQLRETURN SQL_API SQLBulkOperations(SQLHSTMT,SQLSMALLINT);
 SQLRETURN SQL_API SQLAllocHandleStd( SQLSMALLINT,SQLHANDLE,SQLHANDLE*);
 #endif
+
 #endif /* ndef RC_INVOKED */
+
 #include <sqlucode.h>
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

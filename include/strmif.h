@@ -24,6 +24,7 @@
 #ifndef _STRMIF_H
 #define _STRMIF_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -1177,4 +1178,5 @@ DECLARE_INTERFACE_(IAMCertifiedOutputProtection, IUnknown)
 #ifdef __cplusplus
 }
 #endif
+
 #endif

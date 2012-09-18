@@ -24,6 +24,7 @@
 #ifndef _TMSCHEMA_H
 #define _TMSCHEMA_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* BUTTON parts */
 enum {

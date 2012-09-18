@@ -24,6 +24,7 @@
 #ifndef _ODBCINST_H
 #define _ODBCINST_H
 #pragma GCC system_header
+#define __TEST_SQL_NOUNICODEMAP
 #include <_mingw.h>
 
 #include <sql.h>

@@ -24,6 +24,7 @@
 #ifndef _SNMP_H
 #define _SNMP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <windows.h>
 #include <pshpack4.h>
@@ -40,6 +41,7 @@ extern "C" {
 #define DEFAULT_SNMP_PORT_IPX	36879
 #define DEFAULT_SNMPTRAP_PORT_UDP	162
 #define DEFAULT_SNMPTRAP_PORT_IPX	36880
+
 #ifndef _SNMP_ASN_DEFINED
 #define _SNMP_ASN_DEFINED
 #define ASN_UNIVERSAL	0x00
@@ -58,6 +60,7 @@ extern "C" {
 #define SNMP_PDU_TRAP	(ASN_CONTEXT | ASN_CONSTRUCTOR | 7) 
 #define SNMP_PDU_REPORT	(ASN_CONTEXT | ASN_CONSTRUCTOR | 8)
 #endif /* _SNMP_ASN_DEFINED */
+
 #define ASN_INTEGER	(ASN_UNIVERSAL | ASN_PRIMITIVE | 2)
 #define ASN_BITS	(ASN_UNIVERSAL | ASN_PRIMITIVE | 3)
 #define ASN_OCTETSTRING	(ASN_UNIVERSAL | ASN_PRIMITIVE | 4)

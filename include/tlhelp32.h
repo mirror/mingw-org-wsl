@@ -24,10 +24,12 @@
 #ifndef _TLHELP32_H
 #define _TLHELP32_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define HF32_DEFAULT	1
 #define HF32_SHARED	2
 #define LF32_FIXED	0x1
@@ -130,6 +132,8 @@ BOOL WINAPI Thread32First(HANDLE,LPTHREADENTRY32);
 BOOL WINAPI Thread32Next(HANDLE,LPTHREADENTRY32);
 BOOL WINAPI Toolhelp32ReadProcessMemory(DWORD,LPCVOID,LPVOID,DWORD,LPDWORD);
 HANDLE WINAPI CreateToolhelp32Snapshot(DWORD,DWORD);
+
+/* Cannot use __AW() since there is no A version. */
 #ifdef UNICODE
 #define LPMODULEENTRY32 LPMODULEENTRY32W
 #define LPPROCESSENTRY32 LPPROCESSENTRY32W
@@ -142,8 +146,9 @@ HANDLE WINAPI CreateToolhelp32Snapshot(DWORD,DWORD);
 #define Process32First Process32FirstW
 #define Process32Next Process32NextW
 #endif /* UNICODE */
+
 #ifdef __cplusplus
 }
 #endif
-#endif /* _TLHELP32_H */
 
+#endif /* _TLHELP32_H */

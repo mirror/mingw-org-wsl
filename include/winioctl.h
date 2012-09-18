@@ -24,10 +24,12 @@
 #ifndef _WINIOCTL_H
 #define _WINIOCTL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define HIST_NO_OF_BUCKETS 24
 #define HISTOGRAM_BUCKET_SIZE sizeof(HISTOGRAM_BUCKET)
 #define DISK_HISTOGRAM_SIZE sizeof(DISK_HISTOGRAM)
@@ -453,12 +455,14 @@ typedef struct _DRIVE_LAYOUT_INFORMATION_GPT {
   LARGE_INTEGER UsableLength;
   ULONG MaxPartitionCount;
 } DRIVE_LAYOUT_INFORMATION_GPT,*PDRIVE_LAYOUT_INFORMATION_GPT;
+
 #ifndef _DRIVE_LAYOUT_INFORMATION_MBR_DEFINED
 #define _DRIVE_LAYOUT_INFORMATION_MBR_DEFINED
 typedef struct _DRIVE_LAYOUT_INFORMATION_MBR {
   ULONG Signature;
 } DRIVE_LAYOUT_INFORMATION_MBR, *PDRIVE_LAYOUT_INFORMATION_MBR;
 #endif
+
 typedef struct _PARTITION_INFORMATION_MBR {
   BYTE PartitionType;
   BOOLEAN BootIndicator;
@@ -593,4 +597,5 @@ typedef enum _STORAGE_BUS_TYPE {
 #ifdef __cplusplus
 }
 #endif
+
 #endif

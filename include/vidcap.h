@@ -24,6 +24,7 @@
 #ifndef _VIDCAP_H
 #define _VIDCAP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -41,4 +42,5 @@ typedef struct {
 #ifdef __cplusplus
 }
 #endif
+
 #endif

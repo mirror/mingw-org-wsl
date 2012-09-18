@@ -24,6 +24,7 @@
 #ifndef _WINNT_H
 #define _WINNT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* translate GCC target defines to MS equivalents. Keep this synchronized
    with windows.h. */
@@ -36,6 +37,7 @@
 #elif defined(__i386__) && !defined(_M_IX86)
 #define _M_IX86 300
 #endif
+
 #if defined(_M_IX86) && !defined(_X86_)
 #define _X86_
 #elif defined(_M_ALPHA) && !defined(_ALPHA_)
@@ -87,6 +89,7 @@ extern "C" {
 #ifndef VOID
 #define VOID void
 #endif
+
 typedef char CHAR;
 typedef short SHORT;
 typedef long LONG;
@@ -120,8 +123,11 @@ typedef WCHAR *PWCHAR,*LPWCH,*PWCH,*NWPSTR,*LPWSTR,*PWSTR;
 typedef CONST WCHAR *LPCWCH,*PCWCH,*LPCWSTR,*PCWSTR;
 typedef CHAR *PCHAR,*LPCH,*PCH,*NPSTR,*LPSTR,*PSTR;
 typedef CONST CHAR *LPCCH,*PCSTR,*LPCSTR;
+
 #ifndef _TCHAR_DEFINED
 #define _TCHAR_DEFINED
+
+/* Cannot use __AW(). */
 #ifdef UNICODE
 /*
  * NOTE: This tests UNICODE, which is different from the _UNICODE define
@@ -129,15 +135,6 @@ typedef CONST CHAR *LPCCH,*PCSTR,*LPCSTR;
  */
 typedef WCHAR TCHAR;
 typedef WCHAR _TCHAR;
-#else
-typedef CHAR TCHAR;
-typedef CHAR _TCHAR;
-#endif
-#endif
-typedef TCHAR TBYTE,*PTCH,*PTBYTE;
-typedef TCHAR *LPTCH,*PTSTR,*LPTSTR,*LP,*PTCHAR;
-typedef const TCHAR *LPCTSTR;
-#ifdef UNICODE
 /*
  * __TEXT is a private macro whose specific use is to force the expansion of a
  * macro passed as an argument to the macro TEXT.  DO NOT use this
@@ -146,8 +143,17 @@ typedef const TCHAR *LPCTSTR;
  */
 #define __TEXT(q) L##q
 #else
+typedef CHAR TCHAR;
+typedef CHAR _TCHAR;
 #define __TEXT(q) q
 #endif
+
+#endif
+
+typedef TCHAR TBYTE,*PTCH,*PTBYTE;
+typedef TCHAR *LPTCH,*PTSTR,*LPTSTR,*LP,*PTCHAR;
+typedef const TCHAR *LPCTSTR;
+
 /*
  * UNICODE a constant string when UNICODE is defined, else returns the string
  * unmodified.
@@ -157,13 +163,16 @@ typedef const TCHAR *LPCTSTR;
 #define TEXT(q) __TEXT(q)    
 typedef SHORT *PSHORT;
 typedef LONG *PLONG;
+
 #ifdef STRICT
 typedef void *HANDLE;
 #define DECLARE_HANDLE(n) typedef struct n##__{int i;}*n
 #else
+
 typedef PVOID HANDLE;
 #define DECLARE_HANDLE(n) typedef HANDLE n
 #endif
+
 typedef HANDLE *PHANDLE,*LPHANDLE;
 typedef DWORD LCID;
 typedef PDWORD PLCID;
@@ -483,9 +492,7 @@ typedef DWORD FLONG;
 #define SECURITY_RESTRICTED_CODE_RID 0xC
 #define SECURITY_NT_NON_UNIQUE_RID 0x15
 #define SID_REVISION 1
-#if (_WIN32_WINNT >= 0x0600)
-#define SID_HASH_SIZE 32
-#endif
+
 #define DOMAIN_USER_RID_ADMIN 0x1F4L
 #define DOMAIN_USER_RID_GUEST 0x1F5L
 #define DOMAIN_GROUP_RID_ADMINS	0x200L
@@ -733,9 +740,7 @@ typedef DWORD FLONG;
 #define SUBLANG_ENGLISH_AUS	0x03
 #define SUBLANG_ENGLISH_CAN	0x04
 #define SUBLANG_ENGLISH_NZ	0x05
-#if (WINVER >= 0x0600)
-#define SUBLANG_ENGLISH_IRELAND	0x06
-#endif
+
 #define SUBLANG_ENGLISH_EIRE	0x06
 #define SUBLANG_ENGLISH_SOUTH_AFRICA	0x07
 #define SUBLANG_ENGLISH_JAMAICA	0x08
@@ -794,9 +799,7 @@ typedef DWORD FLONG;
 #define SUBLANG_LAO_LAO	0x01
 #define SUBLANG_LAO_LAO_PDR	SUBLANG_LAO_LAO /* SUBLANG_LAO_LAO is what MS defines */
 #define SUBLANG_LATVIAN_LATVIA	0x01
-#if (WINVER >= 0x0600)
-#define SUBLANG_LITHUANIAN_LITHUANIA	0x01
-#endif
+
 #define SUBLANG_LITHUANIAN	0x01
 #define SUBLANG_LOWER_SORBIAN_GERMANY	0x02
 #define SUBLANG_LUXEMBOURGISH_LUXEMBOURG	0x01
@@ -821,9 +824,7 @@ typedef DWORD FLONG;
 #define SUBLANG_PERSIAN_IRAN	0x01
 #define SUBLANG_POLISH_POLAND	0x01
 #define SUBLANG_PORTUGUESE_BRAZILIAN	0x01
-#if (WINVER >= 0x0600)
-#define SUBLANG_PORTUGUESE_PORTUGAL	0x02
-#endif
+
 #define SUBLANG_PORTUGUESE	0x02
 #define SUBLANG_PUNJABI_INDIA	0x01
 /* ??? #define SUBLANG_PUNJABI_PAKISTAN 0x01 ??? */
@@ -874,9 +875,7 @@ typedef DWORD FLONG;
 #define SUBLANG_SPANISH_NICARAGUA	0x13
 #define SUBLANG_SPANISH_PUERTO_RICO	0x14
 #define SUBLANG_SPANISH_US	0x15
-#if (WINVER >= 0x0600)
-#define SUBLANG_SWEDISH_SWEDEN	0x01
-#endif
+
 #define SUBLANG_SWEDISH	0x01
 #define SUBLANG_SWEDISH_FINLAND	0x02
 #define SUBLANG_SYRIAC	0x01
@@ -1016,10 +1015,7 @@ typedef DWORD FLONG;
 #define KEY_WRITE 0x20006
 #define KEY_EXECUTE 0x20019
 #define KEY_READ 0x20019
-#if (_WIN32_WINNT >= 0x0502)
-#define KEY_WOW64_64KEY 0x0100
-#define KEY_WOW64_32KEY 0x0200
-#endif
+
 #define KEY_ALL_ACCESS 0xf003f
 #define REG_WHOLE_HIVE_VOLATILE	1
 #define REG_REFRESH_HIVE	2
@@ -1086,10 +1082,12 @@ typedef DWORD FLONG;
 #define RTL_RESOURCE_TYPE 1
 /* Also in winddk.h */
 #define FIELD_OFFSET(t,f) ((LONG)&(((t*)0)->f))
+
 #ifndef CONTAINING_RECORD
 #define CONTAINING_RECORD(address, type, field) \
   ((type*)((PCHAR)(address) - (PCHAR)(&((type *)0)->field)))
 #endif
+
 /* end winddk.h */
 #define IMAGE_SIZEOF_FILE_HEADER	20
 #define IMAGE_FILE_RELOCS_STRIPPED	1
@@ -1137,11 +1135,14 @@ typedef DWORD FLONG;
 #define IMAGE_NT_SIGNATURE 0x00004550
 #define IMAGE_NT_OPTIONAL_HDR32_MAGIC 0x10b
 #define IMAGE_NT_OPTIONAL_HDR64_MAGIC 0x20b
+
 #ifdef _WIN64
 #define IMAGE_NT_OPTIONAL_HDR_MAGIC IMAGE_NT_OPTIONAL_HDR64_MAGIC
 #else
+
 #define IMAGE_NT_OPTIONAL_HDR_MAGIC IMAGE_NT_OPTIONAL_HDR32_MAGIC
 #endif
+
 #define IMAGE_ROM_OPTIONAL_HDR_MAGIC 0x107
 #define IMAGE_SEPARATE_DEBUG_SIGNATURE 0x4944
 #define IMAGE_NUMBEROF_DIRECTORY_ENTRIES 16
@@ -1490,15 +1491,18 @@ typedef DWORD FLONG;
 #define IMAGE_ORDINAL_FLAG64 0x8000000000000000ULL
 #define IMAGE_SNAP_BY_ORDINAL64(o) ((o&IMAGE_ORDINAL_FLAG64)!=0)
 #define IMAGE_ORDINAL64(o) (o&0xffff)
+
 #ifdef _WIN64
 #define IMAGE_ORDINAL_FLAG		IMAGE_ORDINAL_FLAG64
 #define IMAGE_SNAP_BY_ORDINAL(o)	IMAGE_SNAP_BY_ORDINAL64(o)
 #define IMAGE_ORDINAL(o)		IMAGE_ORDINAL64(o)
 #else
+
 #define IMAGE_ORDINAL_FLAG		IMAGE_ORDINAL_FLAG32
 #define IMAGE_SNAP_BY_ORDINAL(o)	IMAGE_SNAP_BY_ORDINAL32(o)
 #define IMAGE_ORDINAL(o)		IMAGE_ORDINAL32(o)
 #endif
+
 #define IMAGE_RESOURCE_NAME_IS_STRING 0x80000000
 #define IMAGE_RESOURCE_DATA_IS_DIRECTORY 0x80000000
 #define IMAGE_DEBUG_TYPE_UNKNOWN 0
@@ -1607,12 +1611,7 @@ typedef DWORD FLONG;
 
 #define TOKEN_EXECUTE    (STANDARD_RIGHTS_EXECUTE)
 #define TOKEN_SOURCE_LENGTH 8
-#if (_WIN32_WINNT >= 0x0600)
-#define TOKEN_MANDATORY_POLICY_OFF 0
-#define TOKEN_MANDATORY_POLICY_NO_WRITE_UP 1
-#define TOKEN_MANDATORY_POLICY_NEW_PROCESS_MIN 2
-#define TOKEN_MANDATORY_POLICY_VALID_MASK 3
-#endif
+
 /* end ddk/ntifs.h */
 #define DLL_PROCESS_DETACH	0
 #define DLL_PROCESS_ATTACH	1
@@ -1708,23 +1707,7 @@ typedef DWORD FLONG;
 #define TAPE_LOCK 3
 #define TAPE_UNLOCK 4
 #define TAPE_FORMAT 5
-#if (_WIN32_WINNT >= 0x0500)
-#define VER_MINORVERSION 0x0000001
-#define VER_MAJORVERSION 0x0000002
-#define VER_BUILDNUMBER 0x0000004
-#define VER_PLATFORMID 0x0000008
-#define VER_SERVICEPACKMINOR 0x0000010
-#define VER_SERVICEPACKMAJOR 0x0000020
-#define VER_SUITENAME 0x0000040
-#define VER_PRODUCT_TYPE 0x0000080
-#define VER_EQUAL 1
-#define VER_GREATER 2
-#define VER_GREATER_EQUAL 3
-#define VER_LESS 4
-#define VER_LESS_EQUAL 5
-#define VER_AND 6
-#define VER_OR 7
-#endif
+
 #define VER_PLATFORM_WIN32s 0
 #define VER_PLATFORM_WIN32_WINDOWS 1
 #define VER_PLATFORM_WIN32_NT 2
@@ -1751,16 +1734,7 @@ typedef DWORD FLONG;
 #define WT_EXECUTEINTIMERTHREAD 0x00000020                           
 #define WT_EXECUTEINPERSISTENTTHREAD 0x00000080                      
 #define WT_TRANSFER_IMPERSONATION 0x00000100                         
-#if (_WIN32_WINNT >= 0x0501)
-#define ACTIVATION_CONTEXT_SECTION_ASSEMBLY_INFORMATION 1
-#define ACTIVATION_CONTEXT_SECTION_DLL_REDIRECTION 2
-#define ACTIVATION_CONTEXT_SECTION_WINDOW_CLASS_REDIRECTION 3
-#define ACTIVATION_CONTEXT_SECTION_COM_SERVER_REDIRECTION 4
-#define ACTIVATION_CONTEXT_SECTION_COM_INTERFACE_REDIRECTION 5
-#define ACTIVATION_CONTEXT_SECTION_COM_TYPE_LIBRARY_REDIRECTION 6
-#define ACTIVATION_CONTEXT_SECTION_COM_PROGID_REDIRECTION 7
-#define ACTIVATION_CONTEXT_SECTION_CLR_SURROGATES 9
-#endif /* (_WIN32_WINNT >= 0x0501) */
+
 #define BTYPE(x) ((x)&N_BTMASK)
 #define ISPTR(x) (((x)&N_TMASK)==(IMAGE_SYM_DTYPE_POINTER<<N_BTSHFT))
 #define ISFCN(x) (((x)&N_TMASK)==(IMAGE_SYM_DTYPE_FUNCTION<<N_BTSHFT))
@@ -1784,6 +1758,7 @@ typedef DWORD FLONG;
 #define IO_REPARSE_TAG_MOUNT_POINT 0xA0000003
 #define IO_REPARSE_TAG_SYMLINK 0xA000000C
 #define WT_SET_MAX_THREADPOOL_THREADS(Flags,Limit) ((Flags)|=(Limit)<<16)
+
 #ifndef RC_INVOKED
 typedef DWORD ACCESS_MASK, *PACCESS_MASK;
 
@@ -1801,6 +1776,7 @@ typedef struct _GUID {
 } GUID, *REFGUID, *LPGUID;
 #define SYSTEM_LUID { 0x3e7, 0x0 }
 #endif /* GUID_DEFINED */
+
 typedef struct _GENERIC_MAPPING {
 	ACCESS_MASK GenericRead;
 	ACCESS_MASK GenericWrite;
@@ -2021,7 +1997,9 @@ typedef struct {
 	DWORD Dr6;
 	DWORD Dr7;
 } CONTEXT;
+
 #elif defined(_ALPHA_)
+
 #define CONTEXT_ALPHA	0x20000
 #define CONTEXT_CONTROL	(CONTEXT_ALPHA|1L)
 #define CONTEXT_FLOATING_POINT	(CONTEXT_ALPHA|2L)
@@ -2099,6 +2077,7 @@ typedef struct _CONTEXT {
 	DWORD ContextFlags;
 	DWORD Fill[4];
 } CONTEXT;
+
 #elif defined(SHx)
 
 /* These are the debug or break registers on the SH3 */
@@ -2128,6 +2107,7 @@ typedef struct _DEBUG_REGISTERS {
 #define CONTEXT_DEBUG_REGISTERS (CONTEXT_SH3 | 0x00000008L)
 #define CONTEXT_FULL (CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_DEBUG_REGISTERS)
 #else	/* SH4 */
+
 #define CONTEXT_CONTROL         (CONTEXT_SH4 | 0x00000001L)
 #define CONTEXT_INTEGER         (CONTEXT_SH4 | 0x00000002L)
 #define CONTEXT_DEBUG_REGISTERS (CONTEXT_SH4 | 0x00000008L)
@@ -2202,12 +2182,15 @@ typedef struct _CONTEXT {
 	ULONG	OldStuff[2];
 	DEBUG_REGISTERS DebugRegisters;
 #else
+
 	ULONG	Fpscr;
 	ULONG	Fpul;
 	ULONG	FRegs[16];
+
 #if defined(SH4)
 	ULONG	xFRegs[16];
 #endif
+
 #endif
 } CONTEXT;
 
@@ -2359,6 +2342,7 @@ typedef struct _CONTEXT {
 	DWORD Fill[2];
 
 } CONTEXT;
+
 #elif defined(ARM)
 
 /* The following flags control the contents of the CONTEXT structure. */
@@ -2409,10 +2393,11 @@ typedef struct _CONTEXT {
 	ULONG Pc;
 	ULONG Psr;
 } CONTEXT;
-
 #else
+
 #error "undefined processor type"
 #endif
+
 typedef CONTEXT *PCONTEXT,*LPCONTEXT;
 typedef struct _EXCEPTION_RECORD {
 	DWORD ExceptionCode;
@@ -2431,27 +2416,33 @@ typedef union _LARGE_INTEGER {
     DWORD LowPart;
     LONG  HighPart;
   } u;
+
 #if ! defined(NONAMELESSUNION) || defined(__cplusplus)
   _ANONYMOUS_STRUCT struct {
     DWORD LowPart;
     LONG  HighPart;
   };
 #endif /* NONAMELESSUNION */
+
   LONGLONG QuadPart;
 } LARGE_INTEGER, *PLARGE_INTEGER;
+
 typedef union _ULARGE_INTEGER {
   struct {
     DWORD LowPart;
     DWORD HighPart;
   } u;
+
 #if ! defined(NONAMELESSUNION) || defined(__cplusplus)
   _ANONYMOUS_STRUCT struct {
     DWORD LowPart;
     DWORD HighPart;
   };
 #endif /* NONAMELESSUNION */
+
   ULONGLONG QuadPart;
 } ULARGE_INTEGER, *PULARGE_INTEGER;
+
 typedef struct _LUID {
   DWORD LowPart;
   LONG HighPart;
@@ -2510,14 +2501,7 @@ typedef struct _SID_AND_ATTRIBUTES {
 } SID_AND_ATTRIBUTES, *PSID_AND_ATTRIBUTES;
 typedef SID_AND_ATTRIBUTES SID_AND_ATTRIBUTES_ARRAY[ANYSIZE_ARRAY];
 typedef SID_AND_ATTRIBUTES_ARRAY *PSID_AND_ATTRIBUTES_ARRAY;
-#if (_WIN32_WINNT >= 0x0600)
-typedef ULONG_PTR SID_HASH_ENTRY, *PSID_HASH_ENTRY;
-typedef struct _SID_AND_ATTRIBUTES_HASH {
-	DWORD SidCount;
-	PSID_AND_ATTRIBUTES SidAttr;
-	SID_HASH_ENTRY Hash[SID_HASH_SIZE];
-} SID_AND_ATTRIBUTES_HASH, *PSID_AND_ATTRIBUTES_HASH;
-#endif
+
 typedef struct _TOKEN_SOURCE {
 	CHAR SourceName[TOKEN_SOURCE_LENGTH];
 	LUID SourceIdentifier;
@@ -2564,30 +2548,7 @@ typedef struct _TOKEN_STATISTICS {
 typedef struct _TOKEN_USER {
 	SID_AND_ATTRIBUTES User;
 } TOKEN_USER, *PTOKEN_USER;
-#if (_WIN32_WINNT >= 0x0600)
-typedef struct _TOKEN_LINKED_TOKEN {
-	HANDLE LinkedToken;
-} TOKEN_LINKED_TOKEN, *PTOKEN_LINKED_TOKEN;
-typedef struct _TOKEN_MANDATORY_LABEL {
-	SID_AND_ATTRIBUTES Label;
-} TOKEN_MANDATORY_LABEL, *PTOKEN_MANDATORY_LABEL;
-typedef struct _TOKEN_MANDATORY_POLICY {
-	DWORD Policy;
-} TOKEN_MANDATORY_POLICY, *PTOKEN_MANDATORY_POLICY;
-typedef struct _TOKEN_ELEVATION {
-	DWORD TokenIsElevated;
-} TOKEN_ELEVATION, *PTOKEN_ELEVATION;
-typedef struct _TOKEN_ACCESS_INFORMATION {
-	PSID_AND_ATTRIBUTES_HASH SidHash;
-	PSID_AND_ATTRIBUTES_HASH RestrictedSidHash;
-	PTOKEN_PRIVILEGES Privileges;
-	LUID AuthenticationId;
-	TOKEN_TYPE TokenType;
-	SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
-	TOKEN_MANDATORY_POLICY MandatoryPolicy;
-	DWORD Flags;
-} TOKEN_ACCESS_INFORMATION, *PTOKEN_ACCESS_INFORMATION;
-#endif
+
 typedef DWORD SECURITY_INFORMATION,*PSECURITY_INFORMATION;
 typedef WORD SECURITY_DESCRIPTOR_CONTROL,*PSECURITY_DESCRIPTOR_CONTROL;
 typedef struct _SECURITY_DESCRIPTOR {
@@ -2617,7 +2578,8 @@ typedef enum _TOKEN_INFORMATION_CLASS {
 	TokenSandBoxInert,
 	TokenAuditPolicy,
 	TokenOrigin,
-#if (_WIN32_WINNT >= 0x0600)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
 	TokenElevationType,
 	TokenLinkedToken,
 	TokenElevation,
@@ -2630,6 +2592,7 @@ typedef enum _TOKEN_INFORMATION_CLASS {
 	TokenMandatoryPolicy,
 	TokenLogonSid,
 #endif
+
 	MaxTokenInfoClass
 } TOKEN_INFORMATION_CLASS;
 typedef enum _SID_NAME_USE {
@@ -2982,6 +2945,7 @@ typedef struct _IMAGE_OPTIONAL_HEADER64 {
 	DWORD NumberOfRvaAndSizes;
 	IMAGE_DATA_DIRECTORY DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
 } IMAGE_OPTIONAL_HEADER64,*PIMAGE_OPTIONAL_HEADER64;
+
 #ifdef _WIN64
 typedef IMAGE_OPTIONAL_HEADER64		IMAGE_OPTIONAL_HEADER;
 typedef PIMAGE_OPTIONAL_HEADER64	PIMAGE_OPTIONAL_HEADER;
@@ -2989,6 +2953,7 @@ typedef PIMAGE_OPTIONAL_HEADER64	PIMAGE_OPTIONAL_HEADER;
 typedef IMAGE_OPTIONAL_HEADER32		IMAGE_OPTIONAL_HEADER;
 typedef PIMAGE_OPTIONAL_HEADER32	PIMAGE_OPTIONAL_HEADER;
 #endif
+
 typedef struct _IMAGE_ROM_OPTIONAL_HEADER {
 	WORD Magic;
 	BYTE MajorLinkerVersion;
@@ -3071,6 +3036,7 @@ DWORD Signature;
 IMAGE_FILE_HEADER FileHeader;
 IMAGE_OPTIONAL_HEADER64 OptionalHeader;
 } IMAGE_NT_HEADERS64,*PIMAGE_NT_HEADERS64;
+
 #ifdef _WIN64
 typedef IMAGE_NT_HEADERS64	IMAGE_NT_HEADERS;
 typedef PIMAGE_NT_HEADERS64	PIMAGE_NT_HEADERS;
@@ -3078,6 +3044,7 @@ typedef PIMAGE_NT_HEADERS64	PIMAGE_NT_HEADERS;
 typedef IMAGE_NT_HEADERS32	IMAGE_NT_HEADERS;
 typedef PIMAGE_NT_HEADERS32	PIMAGE_NT_HEADERS;
 #endif
+
 typedef struct _IMAGE_ROM_HEADERS {
 	IMAGE_FILE_HEADER FileHeader;
 	IMAGE_ROM_OPTIONAL_HEADER OptionalHeader;
@@ -3224,6 +3191,7 @@ typedef struct _IMAGE_THUNK_DATA64 {
 		ULONGLONG AddressOfData;
 	} u1;
 } IMAGE_THUNK_DATA64, *PIMAGE_THUNK_DATA64;
+
 #ifdef __WIN64
 typedef IMAGE_THUNK_DATA64	IMAGE_THUNK_DATA;
 typedef PIMAGE_THUNK_DATA64	PIMAGE_THUNK_DATA;
@@ -3231,6 +3199,7 @@ typedef PIMAGE_THUNK_DATA64	PIMAGE_THUNK_DATA;
 typedef IMAGE_THUNK_DATA32	IMAGE_THUNK_DATA;
 typedef PIMAGE_THUNK_DATA32	PIMAGE_THUNK_DATA;
 #endif
+
 typedef struct _IMAGE_IMPORT_DESCRIPTOR {
 	_ANONYMOUS_UNION union {
 		DWORD Characteristics;
@@ -3268,6 +3237,7 @@ typedef struct _IMAGE_TLS_DIRECTORY64 {
 	DWORD SizeOfZeroFill;
 	DWORD Characteristics;
 } IMAGE_TLS_DIRECTORY64, *PIMAGE_TLS_DIRECTORY64;
+
 #ifdef __WIN64
 typedef IMAGE_TLS_DIRECTORY64	IMAGE_TLS_DIRECTORY;
 typedef PIMAGE_TLS_DIRECTORY64	PIMAGE_TLS_DIRECTORY;
@@ -3275,6 +3245,7 @@ typedef PIMAGE_TLS_DIRECTORY64	PIMAGE_TLS_DIRECTORY;
 typedef IMAGE_TLS_DIRECTORY32	IMAGE_TLS_DIRECTORY;
 typedef PIMAGE_TLS_DIRECTORY32	PIMAGE_TLS_DIRECTORY;
 #endif
+
 typedef struct _IMAGE_RESOURCE_DIRECTORY {
 	DWORD Characteristics;
 	DWORD TimeDateStamp;
@@ -3621,7 +3592,7 @@ typedef struct _JOBOBJECT_JOBSET_INFORMATION {
 } JOBOBJECT_JOBSET_INFORMATION,*PJOBOBJECT_JOBSET_INFORMATION;
 
 /* Fixme: Making these defines conditional on WINVER will break ddk includes */ 
-#if 1 /* (WINVER >= 0x0500) */
+#if 1 /* (WINVER >= _WIN32_WINNT_WIN2K) */
 #include <pshpack4.h>
 
 #define ES_SYSTEM_REQUIRED                0x00000001
@@ -3657,15 +3628,6 @@ typedef enum {
 	PowerActionWarmEject
 } POWER_ACTION, *PPOWER_ACTION;
 
-#if (_WIN32_WINNT >= 0x0600)
-typedef enum {
-	PoAc = 0,
-	PoDc = 1,
-	PoHot = 2,
-	PoConditionMaximum = 3
-} SYSTEM_POWER_CONDITION, *PSYSTEM_POWER_CONDITION;
-#endif
-	
 typedef enum _DEVICE_POWER_STATE {
 	PowerDeviceUnspecified,
 	PowerDeviceD0,
@@ -3824,79 +3786,6 @@ typedef enum _POWER_INFORMATION_LEVEL {
 	ProcessorPowerPolicyCurrent
 } POWER_INFORMATION_LEVEL;
 
-#if (_WIN32_WINNT >= 0x0500)
-typedef LONG (WINAPI *PVECTORED_EXCEPTION_HANDLER)(PEXCEPTION_POINTERS);
-#endif
-#if (WIN32_WINNT >= _WIN32_WINNT_WINXP)
-typedef struct _SYSTEM_POWER_INFORMATION {
-	ULONG  MaxIdlenessAllowed;
-	ULONG  Idleness;
-	ULONG  TimeRemaining;
-	UCHAR  CoolingMode;
-} SYSTEM_POWER_INFORMATION,*PSYSTEM_POWER_INFORMATION;
-#endif
-
-#if (_WIN32_WINNT >= 0x0501)
-typedef enum _HEAP_INFORMATION_CLASS {
-	HeapCompatibilityInformation
-} HEAP_INFORMATION_CLASS;
-typedef enum _ACTIVATION_CONTEXT_INFO_CLASS {
-	ActivationContextBasicInformation = 1,
-	ActivationContextDetailedInformation,
-	AssemblyDetailedInformationInActivationContext,
-	FileInformationInAssemblyOfAssemblyInActivationContext
-} ACTIVATION_CONTEXT_INFO_CLASS;
-typedef struct _ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION {
-	DWORD ulFlags;
-	DWORD ulEncodedAssemblyIdentityLength;
-	DWORD ulManifestPathType;
-	DWORD ulManifestPathLength;
-	LARGE_INTEGER liManifestLastWriteTime;
-	DWORD ulPolicyPathType;
-	DWORD ulPolicyPathLength;
-	LARGE_INTEGER liPolicyLastWriteTime;
-	DWORD ulMetadataSatelliteRosterIndex;
-	DWORD ulManifestVersionMajor;
-	DWORD ulManifestVersionMinor;
-	DWORD ulPolicyVersionMajor;
-	DWORD ulPolicyVersionMinor;
-	DWORD ulAssemblyDirectoryNameLength;
-	PCWSTR lpAssemblyEncodedAssemblyIdentity;
-	PCWSTR lpAssemblyManifestPath;
-	PCWSTR lpAssemblyPolicyPath;
-	PCWSTR lpAssemblyDirectoryName;
-} ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION,*PACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION;
-typedef const ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION *PCACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION;
-typedef struct _ACTIVATION_CONTEXT_DETAILED_INFORMATION {
-	DWORD dwFlags;
-	DWORD ulFormatVersion;
-	DWORD ulAssemblyCount;
-	DWORD ulRootManifestPathType;
-	DWORD ulRootManifestPathChars;
-	DWORD ulRootConfigurationPathType;
-	DWORD ulRootConfigurationPathChars;
-	DWORD ulAppDirPathType;
-	DWORD ulAppDirPathChars;
-	PCWSTR lpRootManifestPath;
-	PCWSTR lpRootConfigurationPath;
-	PCWSTR lpAppDirPath;
-} ACTIVATION_CONTEXT_DETAILED_INFORMATION,*PACTIVATION_CONTEXT_DETAILED_INFORMATION;
-typedef const ACTIVATION_CONTEXT_DETAILED_INFORMATION *PCACTIVATION_CONTEXT_DETAILED_INFORMATION;
-typedef struct _ACTIVATION_CONTEXT_QUERY_INDEX {
-	ULONG ulAssemblyIndex;
-	ULONG ulFileIndexInAssembly;
-} ACTIVATION_CONTEXT_QUERY_INDEX,*PACTIVATION_CONTEXT_QUERY_INDEX;
-typedef const ACTIVATION_CONTEXT_QUERY_INDEX *PCACTIVATION_CONTEXT_QUERY_INDEX;
-typedef struct _ASSEMBLY_FILE_DETAILED_INFORMATION {
-	DWORD ulFlags;
-	DWORD ulFilenameLength;
-	DWORD ulPathLength;
-	PCWSTR lpFileName;
-	PCWSTR lpFilePath;
-} ASSEMBLY_FILE_DETAILED_INFORMATION,*PASSEMBLY_FILE_DETAILED_INFORMATION;
-typedef const ASSEMBLY_FILE_DETAILED_INFORMATION *PCASSEMBLY_FILE_DETAILED_INFORMATION;
-#endif /* (WIN32_WINNT >= 0x0501) */
-
 typedef struct _PROCESSOR_POWER_POLICY_INFO {
 	ULONG  TimeCheck;
 	ULONG  DemoteLimit;
@@ -3925,26 +3814,10 @@ typedef struct _ADMINISTRATOR_POWER_POLICY {
 	ULONG  MaxSpindownTimeout;
 } ADMINISTRATOR_POWER_POLICY, *PADMINISTRATOR_POWER_POLICY;
 #include <poppack.h>
-#endif /* WINVER >= 0x0500 */
+#endif /* WINVER >= _WIN32_WINNT_WIN2K */
 
-#if (_WIN32_WINNT >= 0x0500)
-typedef VOID (NTAPI *WAITORTIMERCALLBACKFUNC)(PVOID,BOOLEAN);
-#endif
-
-#ifdef UNICODE
-typedef OSVERSIONINFOW OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
-typedef OSVERSIONINFOEXW OSVERSIONINFOEX,*POSVERSIONINFOEX,*LPOSVERSIONINFOEX;
-#else
-typedef OSVERSIONINFOA OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
-typedef OSVERSIONINFOEXA OSVERSIONINFOEX,*POSVERSIONINFOEX,*LPOSVERSIONINFOEX;
-#endif
-
-#if (_WIN32_WINNT >= 0x0500)
-ULONGLONG WINAPI VerSetConditionMask(ULONGLONG,DWORD,BYTE);
-#define VER_SET_CONDITION(ConditionMask, TypeBitMask, ComparisonType)  \
-	((ConditionMask) = VerSetConditionMask((ConditionMask), \
-	(TypeBitMask), (ComparisonType)))
-#endif
+typedef __AW(OSVERSIONINFO) OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
+typedef __AW(OSVERSIONINFOEX) OSVERSIONINFOEX,*POSVERSIONINFOEX,*LPOSVERSIONINFOEX;
 
 #ifdef _X86_
 /* Support -masm=intel.  */
@@ -4008,19 +3881,184 @@ struct _TEB * NtCurrentTeb(void);
 #if _WIN32_WINNT >= _WIN32_WINNT_VISTA
 # if defined(_AMD64_) || defined(__X86_64)
 #  define MemoryBarrier __faststorefence
+
 # elif defined(_IA64_)
+
 #  define MemoryBarrier __mf
 # else
-  void __mingworg_MemoryBarrier(void);
+
+   void __mingworg_MemoryBarrier(void);
 #  define MemoryBarrier __mingworg_MemoryBarrier
 # endif
+
 #else
+
 # define MemoryBarrier
 #endif
 
 #endif /* RC_INVOKED */
 
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+#define KEY_WOW64_64KEY 0x0100
+#define KEY_WOW64_32KEY 0x0200
+#define VER_MINORVERSION 0x0000001
+#define VER_MAJORVERSION 0x0000002
+#define VER_BUILDNUMBER 0x0000004
+#define VER_PLATFORMID 0x0000008
+#define VER_SERVICEPACKMINOR 0x0000010
+#define VER_SERVICEPACKMAJOR 0x0000020
+#define VER_SUITENAME 0x0000040
+#define VER_PRODUCT_TYPE 0x0000080
+#define VER_EQUAL 1
+#define VER_GREATER 2
+#define VER_GREATER_EQUAL 3
+#define VER_LESS 4
+#define VER_LESS_EQUAL 5
+#define VER_AND 6
+#define VER_OR 7
+
+#ifndef RC_INVOKED
+typedef LONG (WINAPI *PVECTORED_EXCEPTION_HANDLER)(PEXCEPTION_POINTERS);
+typedef VOID (NTAPI *WAITORTIMERCALLBACKFUNC)(PVOID,BOOLEAN);
+ULONGLONG WINAPI VerSetConditionMask(ULONGLONG,DWORD,BYTE);
+#define VER_SET_CONDITION(ConditionMask, TypeBitMask, ComparisonType)  \
+	((ConditionMask) = VerSetConditionMask((ConditionMask), \
+	(TypeBitMask), (ComparisonType)))
+#endif /* ! RC_INVOKED */
+
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+#define ACTIVATION_CONTEXT_SECTION_ASSEMBLY_INFORMATION 1
+#define ACTIVATION_CONTEXT_SECTION_DLL_REDIRECTION 2
+#define ACTIVATION_CONTEXT_SECTION_WINDOW_CLASS_REDIRECTION 3
+#define ACTIVATION_CONTEXT_SECTION_COM_SERVER_REDIRECTION 4
+#define ACTIVATION_CONTEXT_SECTION_COM_INTERFACE_REDIRECTION 5
+#define ACTIVATION_CONTEXT_SECTION_COM_TYPE_LIBRARY_REDIRECTION 6
+#define ACTIVATION_CONTEXT_SECTION_COM_PROGID_REDIRECTION 7
+#define ACTIVATION_CONTEXT_SECTION_CLR_SURROGATES 9
+
+#ifndef RC_INVOKED
+typedef struct _SYSTEM_POWER_INFORMATION {
+	ULONG  MaxIdlenessAllowed;
+	ULONG  Idleness;
+	ULONG  TimeRemaining;
+	UCHAR  CoolingMode;
+} SYSTEM_POWER_INFORMATION,*PSYSTEM_POWER_INFORMATION;
+typedef enum _HEAP_INFORMATION_CLASS {
+	HeapCompatibilityInformation
+} HEAP_INFORMATION_CLASS;
+typedef enum _ACTIVATION_CONTEXT_INFO_CLASS {
+	ActivationContextBasicInformation = 1,
+	ActivationContextDetailedInformation,
+	AssemblyDetailedInformationInActivationContext,
+	FileInformationInAssemblyOfAssemblyInActivationContext
+} ACTIVATION_CONTEXT_INFO_CLASS;
+typedef struct _ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION {
+	DWORD ulFlags;
+	DWORD ulEncodedAssemblyIdentityLength;
+	DWORD ulManifestPathType;
+	DWORD ulManifestPathLength;
+	LARGE_INTEGER liManifestLastWriteTime;
+	DWORD ulPolicyPathType;
+	DWORD ulPolicyPathLength;
+	LARGE_INTEGER liPolicyLastWriteTime;
+	DWORD ulMetadataSatelliteRosterIndex;
+	DWORD ulManifestVersionMajor;
+	DWORD ulManifestVersionMinor;
+	DWORD ulPolicyVersionMajor;
+	DWORD ulPolicyVersionMinor;
+	DWORD ulAssemblyDirectoryNameLength;
+	PCWSTR lpAssemblyEncodedAssemblyIdentity;
+	PCWSTR lpAssemblyManifestPath;
+	PCWSTR lpAssemblyPolicyPath;
+	PCWSTR lpAssemblyDirectoryName;
+} ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION,*PACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION;
+typedef const ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION *PCACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION;
+typedef struct _ACTIVATION_CONTEXT_DETAILED_INFORMATION {
+	DWORD dwFlags;
+	DWORD ulFormatVersion;
+	DWORD ulAssemblyCount;
+	DWORD ulRootManifestPathType;
+	DWORD ulRootManifestPathChars;
+	DWORD ulRootConfigurationPathType;
+	DWORD ulRootConfigurationPathChars;
+	DWORD ulAppDirPathType;
+	DWORD ulAppDirPathChars;
+	PCWSTR lpRootManifestPath;
+	PCWSTR lpRootConfigurationPath;
+	PCWSTR lpAppDirPath;
+} ACTIVATION_CONTEXT_DETAILED_INFORMATION,*PACTIVATION_CONTEXT_DETAILED_INFORMATION;
+typedef const ACTIVATION_CONTEXT_DETAILED_INFORMATION *PCACTIVATION_CONTEXT_DETAILED_INFORMATION;
+typedef struct _ACTIVATION_CONTEXT_QUERY_INDEX {
+	ULONG ulAssemblyIndex;
+	ULONG ulFileIndexInAssembly;
+} ACTIVATION_CONTEXT_QUERY_INDEX,*PACTIVATION_CONTEXT_QUERY_INDEX;
+typedef const ACTIVATION_CONTEXT_QUERY_INDEX *PCACTIVATION_CONTEXT_QUERY_INDEX;
+typedef struct _ASSEMBLY_FILE_DETAILED_INFORMATION {
+	DWORD ulFlags;
+	DWORD ulFilenameLength;
+	DWORD ulPathLength;
+	PCWSTR lpFileName;
+	PCWSTR lpFilePath;
+} ASSEMBLY_FILE_DETAILED_INFORMATION,*PASSEMBLY_FILE_DETAILED_INFORMATION;
+typedef const ASSEMBLY_FILE_DETAILED_INFORMATION *PCASSEMBLY_FILE_DETAILED_INFORMATION;
+#endif /* ! RC_INVOKED */
+
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+#define SID_HASH_SIZE 32
+#define SUBLANG_ENGLISH_IRELAND	0x06
+#define SUBLANG_LITHUANIAN_LITHUANIA	0x01
+#define SUBLANG_PORTUGUESE_PORTUGAL	0x02
+#define SUBLANG_SWEDISH_SWEDEN	0x01
+#define TOKEN_MANDATORY_POLICY_OFF 0
+#define TOKEN_MANDATORY_POLICY_NO_WRITE_UP 1
+#define TOKEN_MANDATORY_POLICY_NEW_PROCESS_MIN 2
+#define TOKEN_MANDATORY_POLICY_VALID_MASK 3
+
+#ifndef RC_INVOKED
+typedef ULONG_PTR SID_HASH_ENTRY, *PSID_HASH_ENTRY;
+typedef struct _SID_AND_ATTRIBUTES_HASH {
+	DWORD SidCount;
+	PSID_AND_ATTRIBUTES SidAttr;
+	SID_HASH_ENTRY Hash[SID_HASH_SIZE];
+} SID_AND_ATTRIBUTES_HASH, *PSID_AND_ATTRIBUTES_HASH;
+typedef struct _TOKEN_LINKED_TOKEN {
+	HANDLE LinkedToken;
+} TOKEN_LINKED_TOKEN, *PTOKEN_LINKED_TOKEN;
+typedef struct _TOKEN_MANDATORY_LABEL {
+	SID_AND_ATTRIBUTES Label;
+} TOKEN_MANDATORY_LABEL, *PTOKEN_MANDATORY_LABEL;
+typedef struct _TOKEN_MANDATORY_POLICY {
+	DWORD Policy;
+} TOKEN_MANDATORY_POLICY, *PTOKEN_MANDATORY_POLICY;
+typedef struct _TOKEN_ELEVATION {
+	DWORD TokenIsElevated;
+} TOKEN_ELEVATION, *PTOKEN_ELEVATION;
+typedef struct _TOKEN_ACCESS_INFORMATION {
+	PSID_AND_ATTRIBUTES_HASH SidHash;
+	PSID_AND_ATTRIBUTES_HASH RestrictedSidHash;
+	PTOKEN_PRIVILEGES Privileges;
+	LUID AuthenticationId;
+	TOKEN_TYPE TokenType;
+	SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+	TOKEN_MANDATORY_POLICY MandatoryPolicy;
+	DWORD Flags;
+} TOKEN_ACCESS_INFORMATION, *PTOKEN_ACCESS_INFORMATION;
+typedef enum {
+	PoAc = 0,
+	PoDc = 1,
+	PoHot = 2,
+	PoConditionMaximum = 3
+} SYSTEM_POWER_CONDITION, *PSYSTEM_POWER_CONDITION;
+#endif /* ! RC_INVOKED */
+
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_VISTA) */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

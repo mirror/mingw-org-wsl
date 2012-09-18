@@ -24,6 +24,7 @@
 #ifndef _SHLWAPI_H
 #define _SHLWAPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -215,12 +216,7 @@ WINSHLWAPI LPSTR WINAPI StrRChrA(LPCSTR,LPCSTR,WORD);
 WINSHLWAPI LPWSTR WINAPI StrRChrW(LPCWSTR,LPCWSTR,WCHAR);
 WINSHLWAPI LPSTR WINAPI StrRChrIA(LPCSTR,LPCSTR,WORD);
 WINSHLWAPI LPWSTR WINAPI StrRChrIW(LPCWSTR,LPCWSTR,WCHAR);
-#ifndef _OBJC_NO_COM
-WINSHLWAPI HRESULT WINAPI StrRetToBufA(LPSTRRET,LPCITEMIDLIST,LPSTR,UINT);
-WINSHLWAPI HRESULT WINAPI StrRetToBufW(LPSTRRET,LPCITEMIDLIST,LPWSTR,UINT);
-WINSHLWAPI HRESULT WINAPI StrRetToStrA(LPSTRRET,LPCITEMIDLIST,LPSTR*);
-WINSHLWAPI HRESULT WINAPI StrRetToStrW(LPSTRRET,LPCITEMIDLIST,LPWSTR*);
-#endif
+
 WINSHLWAPI LPSTR WINAPI StrRStrIA(LPCSTR,LPCSTR,LPCSTR);
 WINSHLWAPI LPWSTR WINAPI StrRStrIW(LPCWSTR,LPCWSTR,LPCWSTR);
 WINSHLWAPI int WINAPI StrSpnA(LPCSTR,LPCSTR);
@@ -348,14 +344,7 @@ WINSHLWAPI BOOL WINAPI PathUnmakeSystemFolderW(LPWSTR);
 WINSHLWAPI void WINAPI PathUnquoteSpacesA(LPSTR);
 WINSHLWAPI void WINAPI PathUnquoteSpacesW(LPWSTR);
 WINSHLWAPI HRESULT WINAPI SHAutoComplete(HWND,DWORD);
-#ifndef _OBJC_NO_COM
-WINSHLWAPI HRESULT WINAPI SHCreateStreamOnFileA(LPCSTR,DWORD,struct IStream**);
-WINSHLWAPI HRESULT WINAPI SHCreateStreamOnFileW(LPCWSTR,DWORD,struct IStream**);
-WINSHLWAPI struct IStream* WINAPI SHOpenRegStream2A(HKEY,LPCSTR,LPCSTR,DWORD);
-WINSHLWAPI struct IStream* WINAPI SHOpenRegStream2W(HKEY,LPCWSTR,LPCWSTR,DWORD);
-WINSHLWAPI struct IStream* WINAPI SHOpenRegStreamA(HKEY,LPCSTR,LPCSTR,DWORD);
-WINSHLWAPI struct IStream* WINAPI SHOpenRegStreamW(HKEY,LPCWSTR,LPCWSTR,DWORD);
-#endif
+
 WINSHLWAPI BOOL WINAPI SHCreateThread(LPTHREAD_START_ROUTINE,void*,DWORD,LPTHREAD_START_ROUTINE);
 WINSHLWAPI DWORD WINAPI SHCopyKeyA(HKEY,LPCSTR,HKEY,DWORD);
 WINSHLWAPI DWORD WINAPI SHCopyKeyW(HKEY,LPCWSTR,HKEY,DWORD);
@@ -369,11 +358,7 @@ WINSHLWAPI DWORD WINAPI SHQueryInfoKeyA(HKEY,LPDWORD,LPDWORD,LPDWORD,LPDWORD);
 WINSHLWAPI DWORD WINAPI SHQueryInfoKeyW(HKEY,LPDWORD,LPDWORD,LPDWORD,LPDWORD);
 WINSHLWAPI DWORD WINAPI SHQueryValueExA(HKEY,LPCSTR,LPDWORD,LPDWORD,LPVOID,LPDWORD);
 WINSHLWAPI DWORD WINAPI SHQueryValueExW(HKEY,LPCWSTR,LPDWORD,LPDWORD,LPVOID,LPDWORD);
-#ifndef _OBJC_NO_COM
-WINSHLWAPI HRESULT WINAPI SHGetThreadRef(IUnknown**);
-WINSHLWAPI HRESULT WINAPI SHSetThreadRef(IUnknown*);
-WINSHLWAPI BOOL WINAPI SHSkipJunction(IBindCtx*,const CLSID*);
-#endif
+
 WINSHLWAPI DWORD WINAPI SHEnumValueA(HKEY,DWORD,LPSTR,LPDWORD,LPDWORD,LPVOID,LPDWORD);
 WINSHLWAPI DWORD WINAPI SHEnumValueW(HKEY,DWORD,LPWSTR,LPDWORD,LPDWORD,LPVOID,LPDWORD);
 WINSHLWAPI DWORD WINAPI SHGetValueA(HKEY,LPCSTR,LPCSTR,LPDWORD,LPVOID,LPDWORD);
@@ -467,297 +452,168 @@ HINSTANCE WINAPI MLLoadLibraryW(LPCWSTR,HANDLE,DWORD,LPCWSTR,BOOL);
 
 HRESULT WINAPI DllInstall(BOOL,LPCWSTR);
 
-#ifdef UNICODE
-#define ChrCmpI ChrCmpIW
-#define IntlStrEqN IntlStrEqNW
-#define IntlStrEqNI IntlStrEqNIW
-#define IntlStrEqWorker IntlStrEqWorkerW
-#define SHStrDup SHStrDupW
-#define StrCat StrCatW
-#define StrCatBuff StrCatBuffW
-#define StrChr StrChrW
-#define StrChrI StrChrIW
-#define StrCmp StrCmpW
-#define StrCmpI StrCmpIW
-#define StrCmpNI StrCmpNIW
-#define StrCmpN StrCmpNW
-#define StrCpyN StrCpyNW
-#define StrCpy StrCpyW
-#define StrCSpnI StrCSpnIW
-#define StrCSpn StrCSpnW
-#define StrDup StrDupW
-#define StrFormatByteSize StrFormatByteSizeW
-#define StrFormatKBSize StrFormatKBSizeW
+#define ChrCmpI __AW(ChrCmpI)
+#define IntlStrEqN __AW(IntlStrEqN)
+#define IntlStrEqNI __AW(IntlStrEqNI)
+#define IntlStrEqWorker __AW(IntlStrEqWorker)
+#define SHStrDup __AW(SHStrDup)
+#define StrCat __AW(StrCat)
+#define StrCatBuff __AW(StrCatBuff)
+#define StrChr __AW(StrChr)
+#define StrChrI __AW(StrChrI)
+#define StrCmp __AW(StrCmp)
+#define StrCmpI __AW(StrCmpI)
+#define StrCmpNI __AW(StrCmpNI)
+#define StrCmpN __AW(StrCmpN)
+#define StrCpyN __AW(StrCpyN)
+#define StrCpy __AW(StrCpy)
+#define StrCSpnI __AW(StrCSpnI)
+#define StrCSpn __AW(StrCSpn)
+#define StrDup __AW(StrDup)
+#define StrFormatByteSize __AW(StrFormatByteSize)
+#define StrFormatKBSize __AW(StrFormatKBSize)
 #define StrFromTimeInterval StrFromTimeIntervalW
 #define StrIsIntlEqual StrIsIntlEqualW
-#define StrNCat StrNCatW
-#define StrPBrk StrPBrkW
-#define StrRChr StrRChrW
-#define StrRChrI StrRChrIW
-#ifndef _OBJC_NO_COM
-#define StrRetToBuf StrRetToBufW
-#define StrRetToStr StrRetToStrW
-#endif
-#define StrRStrI StrRStrIW
-#define StrSpn StrSpnW
-#define StrStrI StrStrIW
-#define StrStr StrStrW
-#define StrToInt StrToIntW
-#define StrToIntEx StrToIntExW
-#define StrTrim StrTrimW
-#define PathAddBackslash PathAddBackslashW
-#define PathAddExtension PathAddExtensionW
-#define PathAppend PathAppendW
-#define PathBuildRoot PathBuildRootW
-#define PathCanonicalize PathCanonicalizeW
-#define PathCombine PathCombineW
-#define PathCommonPrefix PathCommonPrefixW
-#define PathCompactPath PathCompactPathW
-#define PathCompactPathEx PathCompactPathExW
-#define PathCreateFromUrl PathCreateFromUrlW
-#define PathFileExists PathFileExistsW
-#define PathFindExtension PathFindExtensionW
-#define PathFindFileName PathFindFileNameW
+#define StrNCat __AW(StrNCat)
+#define StrPBrk __AW(StrPBrk)
+#define StrRChr __AW(StrRChr)
+#define StrRChrI __AW(StrRChrI)
+
+#define StrRStrI __AW(StrRStrI)
+#define StrSpn __AW(StrSpn)
+#define StrStrI __AW(StrStrI)
+#define StrStr __AW(StrStr)
+#define StrToInt __AW(StrToInt)
+#define StrToIntEx __AW(StrToIntEx)
+#define StrTrim __AW(StrTrim)
+#define PathAddBackslash __AW(PathAddBackslash)
+#define PathAddExtension __AW(PathAddExtension)
+#define PathAppend __AW(PathAppend)
+#define PathBuildRoot __AW(PathBuildRoot)
+#define PathCanonicalize __AW(PathCanonicalize)
+#define PathCombine __AW(PathCombine)
+#define PathCommonPrefix __AW(PathCommonPrefix)
+#define PathCompactPath __AW(PathCompactPath)
+#define PathCompactPathEx __AW(PathCompactPathEx)
+#define PathCreateFromUrl __AW(PathCreateFromUrl)
+#define PathFileExists __AW(PathFileExists)
+#define PathFindExtension __AW(PathFindExtension)
+#define PathFindFileName __AW(PathFindFileName)
 #define PathFindNextComponent PathFindNextComponentW
-#define PathFindOnPath PathFindOnPathW
-#define PathFindSuffixArray PathFindSuffixArrayW
-#define PathGetArgs PathGetArgsW
-#define PathGetCharType PathGetCharTypeW
-#define PathGetDriveNumber PathGetDriveNumberW
-#define PathIsContentType PathIsContentTypeW
-#define PathIsDirectoryEmpty PathIsDirectoryEmptyW
-#define PathIsDirectory PathIsDirectoryW
-#define PathIsFileSpec PathIsFileSpecW
-#define PathIsLFNFileSpec PathIsLFNFileSpecW
-#define PathIsNetworkPath PathIsNetworkPathW
-#define PathIsPrefix PathIsPrefixW
-#define PathIsRelative PathIsRelativeW
-#define PathIsRoot PathIsRootW
-#define PathIsSameRoot PathIsSameRootW
-#define PathIsSystemFolder PathIsSystemFolderW
-#define PathIsUNCServerShare PathIsUNCServerShareW
-#define PathIsUNCServer PathIsUNCServerW
-#define PathIsUNC PathIsUNCW
-#define PathIsURL PathIsURLW
-#define PathMakePretty PathMakePrettyW
-#define PathMakeSystemFolder PathMakeSystemFolderW
-#define PathMatchSpec PathMatchSpecW
-#define PathParseIconLocation PathParseIconLocationW
-#define PathQuoteSpaces PathQuoteSpacesW
-#define PathRelativePathTo PathRelativePathToW
-#define PathRemoveArgs PathRemoveArgsW
-#define PathRemoveBackslash PathRemoveBackslashW
-#define PathRemoveBlanks PathRemoveBlanksW
-#define PathRemoveExtension PathRemoveExtensionW
-#define PathRemoveFileSpec PathRemoveFileSpecW
-#define PathRenameExtension PathRenameExtensionW
-#define PathSearchAndQualify PathSearchAndQualifyW
-#define PathSetDlgItemPath PathSetDlgItemPathW
-#define PathSkipRoot PathSkipRootW
-#define PathStripPath PathStripPathW
-#define PathStripToRoot PathStripToRootW
-#define PathUndecorate PathUndecorateW
-#define PathUnExpandEnvStrings PathUnExpandEnvStringsW
-#define PathUnmakeSystemFolder PathUnmakeSystemFolderW
-#define PathUnquoteSpaces PathUnquoteSpacesW
-#ifndef _OBJC_NO_COM
-#define SHCreateStreamOnFile SHCreateStreamOnFileW
-#define SHOpenRegStream SHOpenRegStreamW
-#define SHOpenRegStream2 SHOpenRegStream2W
-#endif
-#define SHCopyKey SHCopyKeyW
-#define SHDeleteEmptyKey SHDeleteEmptyKeyW
-#define SHDeleteKey SHDeleteKeyW
-#define SHEnumKeyEx SHEnumKeyExW
-#define SHQueryInfoKey SHRegQueryInfoKeyW
-#define SHQueryValueEx SHQueryValueExW
-#define SHEnumValue SHEnumValueW
-#define SHGetValue SHGetValueW
-#define SHSetValue SHSetValueW
-#define SHDeleteValue SHDeleteValueW
-#define AssocQueryKey AssocQueryKeyW
-#define AssocQueryStringByKey AssocQueryStringByKeyW
-#define AssocQueryString AssocQueryStringW
-#define UrlApplyScheme UrlApplySchemeW
-#define UrlCanonicalize UrlCanonicalizeW
-#define UrlCombine UrlCombineW
-#define UrlCompare UrlCompareW
-#define UrlCreateFromPath UrlCreateFromPathW
-#define UrlEscape UrlEscapeW
-#define UrlGetLocation UrlGetLocationW
-#define UrlGetPart UrlGetPartW
-#define UrlHash UrlHashW
-#define UrlIs UrlIsW
-#define UrlIsFileUrl UrlIsFileUrlW
-#define UrlIsNoHistory UrlIsNoHistoryW
-#define UrlIsOpaque UrlIsOpaqueW
-#define UrlUnescape UrlUnescapeW
-#define UrlUnescapeInPlace UrlUnescapeInPlaceW
-#define SHRegCreateUSKey SHRegCreateUSKeyW
-#define SHRegDeleteEmptyUSKey SHRegDeleteEmptyUSKeyW
-#define SHRegDeleteUSValue SHRegDeleteUSValueW
-#define SHRegEnumUSKey SHRegEnumUSKeyW
-#define SHRegEnumUSValue SHRegEnumUSValueW
-#define SHRegGetBoolUSValue SHRegGetBoolUSValueW
-#define SHRegGetPath SHRegGetPathW
-#define SHRegGetUSValue SHRegGetUSValueW
-#define SHRegOpenUSKey SHRegOpenUSKeyW
-#define SHRegQueryInfoUSKey SHRegQueryInfoUSKeyW
-#define SHRegQueryUSValue SHRegQueryUSValueW
-#define SHRegSetPath SHRegSetPathW
-#define SHRegSetUSValue SHRegSetUSValueW
-#define SHRegWriteUSValue SHRegWriteUSValueW
-#define wnsprintf wnsprintfW
-#define wvnsprintf wvnsprintfW
-#else /* UNICODE */
-#define ChrCmpI ChrCmpIA
-#define IntlStrEqN IntlStrEqNA
-#define IntlStrEqNI IntlStrEqNIA
-#define IntlStrEqWorker IntlStrEqWorkerA
-#define SHStrDup SHStrDupA
-#define StrCat lstrcatA
-#define StrCatBuff StrCatBuffA
-#define StrChr StrChrA
-#define StrChrI StrChrIA
-#define StrCmp lstrcmpA
-#define StrCmpI lstrcmpiA
-#define StrCmpNI StrCmpNIA
-#define StrCmpN StrCmpNA
-#define StrCpyN lstrcpynA
-#define StrCpy lstrcpyA
-#define StrCSpnI StrCSpnIA
-#define StrCSpn StrCSpnA
-#define StrDup StrDupA
-#define StrFormatByteSize StrFormatByteSizeA
-#define StrFormatKBSize StrFormatKBSizeA
-#define StrFromTimeInterval StrFromTimeIntervalA
-#define StrIsIntlEqual StrIsIntlEqualA
-#define StrNCat StrNCatA
-#define StrPBrk StrPBrkA
-#define StrRChr StrRChrA
-#define StrRChrI StrRChrIA
-#ifndef _OBJC_NO_COM
-#define StrRetToBuf StrRetToBufA
-#define StrRetToStr StrRetToStrA
-#endif
-#define StrRStrI StrRStrIA
-#define StrSpn StrSpnA
-#define StrStrI StrStrIA
-#define StrStr StrStrA
-#define StrToInt StrToIntA
-#define StrToIntEx StrToIntExA
-#define StrTrim StrTrimA
-#define PathAddBackslash PathAddBackslashA
-#define PathAddExtension PathAddExtensionA
-#define PathAppend PathAppendA
-#define PathBuildRoot PathBuildRootA
-#define PathCanonicalize PathCanonicalizeA
-#define PathCombine PathCombineA
-#define PathCommonPrefix PathCommonPrefixA
-#define PathCompactPath PathCompactPathA
-#define PathCompactPathEx PathCompactPathExA
-#define PathCreateFromUrl PathCreateFromUrlA
-#define PathFileExists PathFileExistsA
-#define PathFindExtension PathFindExtensionA
-#define PathFindFileName PathFindFileNameA
-#define PathFindNextComponent PathFindNextComponentA
-#define PathFindOnPath PathFindOnPathA
-#define PathFindSuffixArray PathFindSuffixArrayA
-#define PathGetArgs PathGetArgsA
-#define PathGetCharType PathGetCharTypeA
-#define PathGetDriveNumber PathGetDriveNumberA
-#define PathIsContentType PathIsContentTypeA
-#define PathIsDirectoryEmpty PathIsDirectoryEmptyA
-#define PathIsDirectory PathIsDirectoryA
-#define PathIsFileSpec PathIsFileSpecA
-#define PathIsLFNFileSpec PathIsLFNFileSpecA
-#define PathIsNetworkPath PathIsNetworkPathA
-#define PathIsPrefix PathIsPrefixA
-#define PathIsRelative PathIsRelativeA
-#define PathIsRoot PathIsRootA
-#define PathIsSameRoot PathIsSameRootA
-#define PathIsSystemFolder PathIsSystemFolderA
-#define PathIsUNCServerShare PathIsUNCServerShareA
-#define PathIsUNCServer PathIsUNCServerA
-#define PathIsUNC PathIsUNCA
-#define PathIsURL PathIsURLA
-#define PathMakePretty PathMakePrettyA
-#define PathMakeSystemFolder PathMakeSystemFolderA
-#define PathMatchSpec PathMatchSpecA
-#define PathParseIconLocation PathParseIconLocationA
-#define PathQuoteSpaces PathQuoteSpacesA
-#define PathRelativePathTo PathRelativePathToA
-#define PathRemoveArgs PathRemoveArgsA
-#define PathRemoveBackslash PathRemoveBackslashA
-#define PathRemoveBlanks PathRemoveBlanksA
-#define PathRemoveExtension PathRemoveExtensionA
-#define PathRemoveFileSpec PathRemoveFileSpecA
-#define PathRenameExtension PathRenameExtensionA
-#define PathSearchAndQualify PathSearchAndQualifyA
-#define PathSetDlgItemPath PathSetDlgItemPathA
-#define PathSkipRoot PathSkipRootA
-#define PathStripPath PathStripPathA
-#define PathStripToRoot PathStripToRootA
-#define PathUndecorate PathUndecorateA
-#define PathUnExpandEnvStrings PathUnExpandEnvStringsA
-#define PathUnmakeSystemFolder PathUnmakeSystemFolderA
-#define PathUnquoteSpaces PathUnquoteSpacesA
-#ifndef _OBJC_NO_COM
-#define SHCreateStreamOnFile SHCreateStreamOnFileA
-#define SHOpenRegStream SHOpenRegStreamA
-#define SHOpenRegStream2 SHOpenRegStream2A
-#endif
-#define SHCopyKey SHCopyKeyA
-#define SHDeleteEmptyKey SHDeleteEmptyKeyA
-#define SHDeleteKey SHDeleteKeyA
-#define SHEnumKeyEx SHEnumKeyExA
-#define SHQueryInfoKey SHRegQueryInfoKeyA
-#define SHQueryValueEx SHQueryValueExA
-#define SHEnumValue SHEnumValueA
-#define SHGetValue SHGetValueA
-#define SHSetValue SHSetValueA
-#define SHDeleteValue SHDeleteValueA
-#define AssocQueryKey AssocQueryKeyA
-#define AssocQueryStringByKey AssocQueryStringByKeyA
-#define AssocQueryString AssocQueryStringA
-#define UrlApplyScheme UrlApplySchemeA
-#define UrlCanonicalize UrlCanonicalizeA
-#define UrlCombine UrlCombineA
-#define UrlCompare UrlCompareA
-#define UrlCreateFromPath UrlCreateFromPathA
-#define UrlEscape UrlEscapeA
-#define UrlGetLocation UrlGetLocationA
-#define UrlGetPart UrlGetPartA
-#define UrlHash UrlHashA
-#define UrlIs UrlIsA
-#define UrlIsFileUrl UrlIsFileUrl
-#define UrlIsNoHistory UrlIsNoHistoryA
-#define UrlIsOpaque UrlIsOpaqueA
-#define UrlUnescape UrlUnescapeA
-#define UrlUnescapeInPlace UrlUnescapeInPlaceA
-#define SHRegCreateUSKey SHRegCreateUSKeyA
-#define SHRegDeleteEmptyUSKey SHRegDeleteEmptyUSKeyA
-#define SHRegDeleteUSValue SHRegDeleteUSValueA
-#define SHRegEnumUSKey SHRegEnumUSKeyA
-#define SHRegEnumUSValue SHRegEnumUSValueA
-#define SHRegGetBoolUSValue SHRegGetBoolUSValueA
-#define SHRegGetPath SHRegGetPathA
-#define SHRegGetUSValue SHRegGetUSValueA
-#define SHRegOpenUSKey SHRegOpenUSKeyA
-#define SHRegQueryInfoUSKey SHRegQueryInfoUSKeyA
-#define SHRegQueryUSValue SHRegQueryUSValueA
-#define SHRegSetPath SHRegSetPathA
-#define SHRegSetUSValue SHRegSetUSValueA
-#define SHRegWriteUSValue SHRegWriteUSValueA
-#define wnsprintf wnsprintfA
-#define wvnsprintf wvnsprintfA
-#endif /* UNICODE */
+#define PathFindOnPath __AW(PathFindOnPath)
+#define PathFindSuffixArray __AW(PathFindSuffixArray)
+#define PathGetArgs __AW(PathGetArgs)
+#define PathGetCharType __AW(PathGetCharType)
+#define PathGetDriveNumber __AW(PathGetDriveNumber)
+#define PathIsContentType __AW(PathIsContentType)
+#define PathIsDirectoryEmpty __AW(PathIsDirectoryEmpty)
+#define PathIsDirectory __AW(PathIsDirectory)
+#define PathIsFileSpec __AW(PathIsFileSpec)
+#define PathIsLFNFileSpec __AW(PathIsLFNFileSpec)
+#define PathIsNetworkPath __AW(PathIsNetworkPath)
+#define PathIsPrefix __AW(PathIsPrefix)
+#define PathIsRelative __AW(PathIsRelative)
+#define PathIsRoot __AW(PathIsRoot)
+#define PathIsSameRoot __AW(PathIsSameRoot)
+#define PathIsSystemFolder __AW(PathIsSystemFolder)
+#define PathIsUNCServerShare __AW(PathIsUNCServerShare)
+#define PathIsUNCServer __AW(PathIsUNCServer)
+#define PathIsUNC __AW(PathIsUNC)
+#define PathIsURL __AW(PathIsURL)
+#define PathMakePretty __AW(PathMakePretty)
+#define PathMakeSystemFolder __AW(PathMakeSystemFolder)
+#define PathMatchSpec __AW(PathMatchSpec)
+#define PathParseIconLocation __AW(PathParseIconLocation)
+#define PathQuoteSpaces __AW(PathQuoteSpaces)
+#define PathRelativePathTo __AW(PathRelativePathTo)
+#define PathRemoveArgs __AW(PathRemoveArgs)
+#define PathRemoveBackslash __AW(PathRemoveBackslash)
+#define PathRemoveBlanks __AW(PathRemoveBlanks)
+#define PathRemoveExtension __AW(PathRemoveExtension)
+#define PathRemoveFileSpec __AW(PathRemoveFileSpec)
+#define PathRenameExtension __AW(PathRenameExtension)
+#define PathSearchAndQualify __AW(PathSearchAndQualify)
+#define PathSetDlgItemPath __AW(PathSetDlgItemPath)
+#define PathSkipRoot __AW(PathSkipRoot)
+#define PathStripPath __AW(PathStripPath)
+#define PathStripToRoot __AW(PathStripToRoot)
+#define PathUndecorate __AW(PathUndecorate)
+#define PathUnExpandEnvStrings __AW(PathUnExpandEnvStrings)
+#define PathUnmakeSystemFolder __AW(PathUnmakeSystemFolder)
+#define PathUnquoteSpaces __AW(PathUnquoteSpaces)
+
+#define SHCopyKey __AW(SHCopyKey)
+#define SHDeleteEmptyKey __AW(SHDeleteEmptyKey)
+#define SHDeleteKey __AW(SHDeleteKey)
+#define SHEnumKeyEx __AW(SHEnumKeyEx)
+#define SHQueryInfoKey __AW(SHRegQueryInfoKey)
+#define SHQueryValueEx __AW(SHQueryValueEx)
+#define SHEnumValue __AW(SHEnumValue)
+#define SHGetValue __AW(SHGetValue)
+#define SHSetValue __AW(SHSetValue)
+#define SHDeleteValue __AW(SHDeleteValue)
+#define AssocQueryKey __AW(AssocQueryKey)
+#define AssocQueryStringByKey __AW(AssocQueryStringByKey)
+#define AssocQueryString __AW(AssocQueryString)
+#define UrlApplyScheme __AW(UrlApplyScheme)
+#define UrlCanonicalize __AW(UrlCanonicalize)
+#define UrlCombine __AW(UrlCombine)
+#define UrlCompare __AW(UrlCompare)
+#define UrlCreateFromPath __AW(UrlCreateFromPath)
+#define UrlEscape __AW(UrlEscape)
+#define UrlGetLocation __AW(UrlGetLocation)
+#define UrlGetPart __AW(UrlGetPart)
+#define UrlHash __AW(UrlHash)
+#define UrlIs __AW(UrlIs)
+#define UrlIsFileUrl __AW(UrlIsFileUrl)
+#define UrlIsNoHistory __AW(UrlIsNoHistory)
+#define UrlIsOpaque __AW(UrlIsOpaque)
+#define UrlUnescape __AW(UrlUnescape)
+#define UrlUnescapeInPlace __AW(UrlUnescapeInPlace)
+#define SHRegCreateUSKey __AW(SHRegCreateUSKey)
+#define SHRegDeleteEmptyUSKey __AW(SHRegDeleteEmptyUSKey)
+#define SHRegDeleteUSValue __AW(SHRegDeleteUSValue)
+#define SHRegEnumUSKey __AW(SHRegEnumUSKey)
+#define SHRegEnumUSValue __AW(SHRegEnumUSValue)
+#define SHRegGetBoolUSValue __AW(SHRegGetBoolUSValue)
+#define SHRegGetPath __AW(SHRegGetPath)
+#define SHRegGetUSValue __AW(SHRegGetUSValue)
+#define SHRegOpenUSKey __AW(SHRegOpenUSKey)
+#define SHRegQueryInfoUSKey __AW(SHRegQueryInfoUSKey)
+#define SHRegQueryUSValue __AW(SHRegQueryUSValue)
+#define SHRegSetPath __AW(SHRegSetPath)
+#define SHRegSetUSValue __AW(SHRegSetUSValue)
+#define SHRegWriteUSValue __AW(SHRegWriteUSValue)
+#define wnsprintf __AW(wnsprintf)
+#define wvnsprintf __AW(wvnsprintf)
 
 #define StrToLong StrToInt
+
+#ifndef _OBJC_NO_COM
+WINSHLWAPI HRESULT WINAPI StrRetToBufA(LPSTRRET,LPCITEMIDLIST,LPSTR,UINT);
+WINSHLWAPI HRESULT WINAPI StrRetToBufW(LPSTRRET,LPCITEMIDLIST,LPWSTR,UINT);
+WINSHLWAPI HRESULT WINAPI StrRetToStrA(LPSTRRET,LPCITEMIDLIST,LPSTR*);
+WINSHLWAPI HRESULT WINAPI StrRetToStrW(LPSTRRET,LPCITEMIDLIST,LPWSTR*);
+WINSHLWAPI HRESULT WINAPI SHCreateStreamOnFileA(LPCSTR,DWORD,struct IStream**);
+WINSHLWAPI HRESULT WINAPI SHCreateStreamOnFileW(LPCWSTR,DWORD,struct IStream**);
+WINSHLWAPI struct IStream* WINAPI SHOpenRegStream2A(HKEY,LPCSTR,LPCSTR,DWORD);
+WINSHLWAPI struct IStream* WINAPI SHOpenRegStream2W(HKEY,LPCWSTR,LPCWSTR,DWORD);
+WINSHLWAPI struct IStream* WINAPI SHOpenRegStreamA(HKEY,LPCSTR,LPCSTR,DWORD);
+WINSHLWAPI struct IStream* WINAPI SHOpenRegStreamW(HKEY,LPCWSTR,LPCWSTR,DWORD);
+WINSHLWAPI HRESULT WINAPI SHGetThreadRef(IUnknown**);
+WINSHLWAPI HRESULT WINAPI SHSetThreadRef(IUnknown*);
+WINSHLWAPI BOOL WINAPI SHSkipJunction(IBindCtx*,const CLSID*);
+#define StrRetToBuf __AW(StrRetToBuf)
+#define StrRetToStr __AW(StrRetToStr)
+#define SHCreateStreamOnFile __AW(SHCreateStreamOnFile)
+#define SHOpenRegStream __AW(SHOpenRegStream)
+#define SHOpenRegStream2 __AW(SHOpenRegStream2)
+#endif /* !_OBJC_NO_COM */
 
 #endif /* !RC_INVOKED */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* ! defined _SHLWAPI_H */

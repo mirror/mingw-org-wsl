@@ -24,6 +24,8 @@
 #ifndef _STRINGS_H
 #define _STRINGS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <string.h>
+
 #endif

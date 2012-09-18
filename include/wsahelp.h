@@ -24,9 +24,11 @@
 #ifndef _WSAHELP_H
 #define _WSAHELP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <winsock2.h>
 #include <ntsecapi.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */

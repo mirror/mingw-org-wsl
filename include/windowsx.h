@@ -24,6 +24,7 @@
 #ifndef _WINDOWSX_H
 #define _WINDOWSX_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef SNDMSG
 #ifdef __cplusplus

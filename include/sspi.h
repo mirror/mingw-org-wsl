@@ -24,6 +24,7 @@
 #ifndef _SSPI_H
 #define _SSPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <ntsecapi.h>
 
@@ -285,9 +286,7 @@ SECURITY_STATUS WINAPI QueryContextAttributesA(PCtxtHandle,ULONG,PVOID);
 SECURITY_STATUS WINAPI QueryContextAttributesW(PCtxtHandle,ULONG,PVOID);
 SECURITY_STATUS WINAPI QueryCredentialsAttributesA(PCredHandle,ULONG,PVOID);
 SECURITY_STATUS WINAPI QueryCredentialsAttributesW(PCredHandle,ULONG,PVOID);
-#if (_WIN32_WINNT >= 0x0500)
-SECURITY_STATUS WINAPI QuerySecurityContextToken(PCtxtHandle,HANDLE*);
-#endif
+
 SECURITY_STATUS WINAPI DecryptMessage(PCtxtHandle,PSecBufferDesc,ULONG,PULONG);
 SECURITY_STATUS WINAPI EncryptMessage(PCtxtHandle,ULONG,PSecBufferDesc,ULONG);
 SECURITY_STATUS WINAPI DeleteSecurityContext(PCtxtHandle);
@@ -303,67 +302,41 @@ SECURITY_STATUS WINAPI QuerySecurityPackageInfoW(SEC_WCHAR*,PSecPkgInfoW*);
 PSecurityFunctionTableA WINAPI InitSecurityInterfaceA(VOID);
 PSecurityFunctionTableW WINAPI InitSecurityInterfaceW(VOID);
 
-#ifdef UNICODE
-#define UNISP_NAME UNISP_NAME_W
-#define SecPkgInfo SecPkgInfoW
-#define PSecPkgInfo PSecPkgInfoW
-#define SecPkgCredentials_Names SecPkgCredentials_NamesW
-#define PSecPkgCredentials_Names PSecPkgCredentials_NamesW
-#define SecPkgContext_Authority SecPkgContext_AuthorityW
-#define PSecPkgContext_Authority PSecPkgContext_AuthorityW
-#define SecPkgContext_KeyInfo SecPkgContext_KeyInfoW
-#define PSecPkgContext_KeyInfo PSecPkgContext_KeyInfoW
-#define SecPkgContext_Names SecPkgContext_NamesW
-#define PSecPkgContext_Names PSecPkgContext_NamesW
-#define SecurityFunctionTable SecurityFunctionTableW
-#define PSecurityFunctionTable PSecurityFunctionTableW
-#define AcquireCredentialsHandle AcquireCredentialsHandleW
-#define EnumerateSecurityPackages EnumerateSecurityPackagesW
-#define InitializeSecurityContext InitializeSecurityContextW
-#define QueryContextAttributes QueryContextAttributesW
-#define QueryCredentialsAttributes QueryCredentialsAttributesW
-#define QuerySecurityPackageInfo QuerySecurityPackageInfoW
-#define ApplyControlToken ApplyControlTokenW
-#define ENUMERATE_SECURITY_PACKAGES_FN ENUMERATE_SECURITY_PACKAGES_FN_W
-#define QUERY_CREDENTIALS_ATTRIBUTES_FN QUERY_CREDENTIALS_ATTRIBUTES_FN_W
-#define ACQUIRE_CREDENTIALS_HANDLE_FN ACQUIRE_CREDENTIALS_HANDLE_FN_W
-#define INITIALIZE_SECURITY_CONTEXT_FN INITIALIZE_SECURITY_CONTEXT_FN_W
-#define APPLY_CONTROL_TOKEN_FN APPLY_CONTROL_TOKEN_FN_W
-#define QUERY_CONTEXT_ATTRIBUTES_FN QUERY_CONTEXT_ATTRIBUTES_FN_W
-#define QUERY_SECURITY_PACKAGE_INFO_FN QUERY_SECURITY_PACKAGE_INFO_FN_W
-#define INIT_SECURITY_INTERFACE INIT_SECURITY_INTERFACE_W
-#else
-#define UNISP_NAME UNISP_NAME_A
-#define SecPkgInfo SecPkgInfoA
-#define PSecPkgInfo PSecPkgInfoA
-#define SecPkgCredentials_Names SecPkgCredentials_NamesA
-#define PSecPkgCredentials_Names PSecPkgCredentials_NamesA
-#define SecPkgContext_Authority SecPkgContext_AuthorityA
-#define PSecPkgContext_Authority PSecPkgContext_AuthorityA
-#define SecPkgContext_KeyInfo SecPkgContext_KeyInfoA
-#define PSecPkgContext_KeyInfo PSecPkgContext_KeyInfoA
-#define SecPkgContext_Names SecPkgContext_NamesA
-#define PSecPkgContext_Names PSecPkgContext_NamesA
-#define SecurityFunctionTable SecurityFunctionTableA
-#define PSecurityFunctionTable PSecurityFunctionTableA
-#define AcquireCredentialsHandle AcquireCredentialsHandleA
-#define EnumerateSecurityPackages EnumerateSecurityPackagesA
-#define InitializeSecurityContext InitializeSecurityContextA
-#define QueryContextAttributes QueryContextAttributesA
-#define QueryCredentialsAttributes QueryCredentialsAttributesA
-#define QuerySecurityPackageInfo QuerySecurityPackageInfoA
-#define ApplyControlToken ApplyControlTokenA
-#define ENUMERATE_SECURITY_PACKAGES_FN ENUMERATE_SECURITY_PACKAGES_FN_A
-#define QUERY_CREDENTIALS_ATTRIBUTES_FN QUERY_CREDENTIALS_ATTRIBUTES_FN_A
-#define ACQUIRE_CREDENTIALS_HANDLE_FN ACQUIRE_CREDENTIALS_HANDLE_FN_A
-#define INITIALIZE_SECURITY_CONTEXT_FN INITIALIZE_SECURITY_CONTEXT_FN_A
-#define APPLY_CONTROL_TOKEN_FN APPLY_CONTROL_TOKEN_FN_A
-#define QUERY_CONTEXT_ATTRIBUTES_FN QUERY_CONTEXT_ATTRIBUTES_FN_A
-#define QUERY_SECURITY_PACKAGE_INFO_FN QUERY_SECURITY_PACKAGE_INFO_FN_A
-#define INIT_SECURITY_INTERFACE INIT_SECURITY_INTERFACE_A
-#endif
+#define UNISP_NAME __AW(UNISP_NAME_)
+#define SecPkgInfo __AW(SecPkgInfo)
+#define PSecPkgInfo __AW(PSecPkgInfo)
+#define SecPkgCredentials_Names __AW(SecPkgCredentials_Names)
+#define PSecPkgCredentials_Names __AW(PSecPkgCredentials_Names)
+#define SecPkgContext_Authority __AW(SecPkgContext_Authority)
+#define PSecPkgContext_Authority __AW(PSecPkgContext_Authority)
+#define SecPkgContext_KeyInfo __AW(SecPkgContext_KeyInfo)
+#define PSecPkgContext_KeyInfo __AW(PSecPkgContext_KeyInfo)
+#define SecPkgContext_Names __AW(SecPkgContext_Names)
+#define PSecPkgContext_Names __AW(PSecPkgContext_Names)
+#define SecurityFunctionTable __AW(SecurityFunctionTable)
+#define PSecurityFunctionTable __AW(PSecurityFunctionTable)
+#define AcquireCredentialsHandle __AW(AcquireCredentialsHandle)
+#define EnumerateSecurityPackages __AW(EnumerateSecurityPackages)
+#define InitializeSecurityContext __AW(InitializeSecurityContext)
+#define QueryContextAttributes __AW(QueryContextAttributes)
+#define QueryCredentialsAttributes __AW(QueryCredentialsAttributes)
+#define QuerySecurityPackageInfo __AW(QuerySecurityPackageInfo)
+#define ApplyControlToken __AW(ApplyControlToken)
+#define ENUMERATE_SECURITY_PACKAGES_FN __AW(ENUMERATE_SECURITY_PACKAGES_FN_)
+#define QUERY_CREDENTIALS_ATTRIBUTES_FN __AW(QUERY_CREDENTIALS_ATTRIBUTES_FN_)
+#define ACQUIRE_CREDENTIALS_HANDLE_FN __AW(ACQUIRE_CREDENTIALS_HANDLE_FN_)
+#define INITIALIZE_SECURITY_CONTEXT_FN __AW(INITIALIZE_SECURITY_CONTEXT_FN_)
+#define APPLY_CONTROL_TOKEN_FN __AW(APPLY_CONTROL_TOKEN_FN_)
+#define QUERY_CONTEXT_ATTRIBUTES_FN __AW(QUERY_CONTEXT_ATTRIBUTES_FN_)
+#define QUERY_SECURITY_PACKAGE_INFO_FN __AW(QUERY_SECURITY_PACKAGE_INFO_FN_)
+#define INIT_SECURITY_INTERFACE __AW(INIT_SECURITY_INTERFACE_)
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+SECURITY_STATUS WINAPI QuerySecurityContextToken(PCtxtHandle,HANDLE*);
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

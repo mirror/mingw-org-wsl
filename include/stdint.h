@@ -24,12 +24,12 @@
 #ifndef _STDINT_H
 #define _STDINT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /* ISO C9x  7.18  Integer types <stdint.h>
  * Based on ISO/IEC SC22/WG14 9899 Committee draft (SC22 N2794)
  */
 
-#include <_mingw.h>
 #define __need_wint_t
 #define __need_wchar_t
 #include <stddef.h>

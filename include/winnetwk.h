@@ -24,10 +24,12 @@
 #ifndef _WINNETWK_H
 #define _WINNETWK_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define WNNC_NET_MSNET      0x00010000
 #define WNNC_NET_LANMAN     0x00020000
 #define WNNC_NET_NETWARE    0x00030000
@@ -305,67 +307,39 @@ DWORD APIENTRY WNetGetLastErrorA(PDWORD,LPSTR,DWORD,LPSTR,DWORD);
 DWORD APIENTRY WNetGetLastErrorW(PDWORD,LPWSTR,DWORD,LPWSTR,DWORD);
 DWORD APIENTRY MultinetGetConnectionPerformanceA(LPNETRESOURCEA,LPNETCONNECTINFOSTRUCT);
 DWORD APIENTRY MultinetGetConnectionPerformanceW(LPNETRESOURCEW,LPNETCONNECTINFOSTRUCT);
-#ifdef UNICODE
-#define PFNPROCESSPOLICIES PFNPROCESSPOLICIESW
-#define PFNRECONCILEPROFILE PFNRECONCILEPROFILEW
-#define PFNGETPROFILEPATH PFNGETPROFILEPATHW
-typedef NETRESOURCEW NETRESOURCE,*LPNETRESOURCE;
-typedef CONNECTDLGSTRUCTW CONNECTDLGSTRUCT,*LPCONNECTDLGSTRUCT;
-typedef DISCDLGSTRUCTW DISCDLGSTRUCT,*LPDISCDLGSTRUCT;
-typedef REMOTE_NAME_INFOW REMOTE_NAME_INFO,*LPREMOTE_NAME_INFO;
-typedef UNIVERSAL_NAME_INFOW UNIVERSAL_NAME_INFO,*LPUNIVERSAL_NAME_INFO;
-#define WNetEnumResource WNetEnumResourceW
-#define WNetOpenEnum WNetOpenEnumW
-#define WNetGetResourceInformation WNetGetResourceInformationW
-#define WNetGetResourceParent WNetGetResourceParentW
-#define WNetGetUniversalName WNetGetUniversalNameW
-#define WNetSetConnection WNetSetConnectionW
-#define WNetUseConnection WNetUseConnectionW
-#define WNetGetConnection WNetGetConnectionW
-#define WNetCancelConnection2 WNetCancelConnection2W
-#define WNetCancelConnection WNetCancelConnectionW
-#define WNetAddConnection3 WNetAddConnection3W
-#define WNetAddConnection2 WNetAddConnection2W
-#define WNetAddConnection WNetAddConnectionW
-#define WNetConnectionDialog1 WNetConnectionDialog1W
-#define WNetDisconnectDialog1 WNetDisconnectDialog1W
-#define WNetGetNetworkInformation WNetGetNetworkInformationW
-#define WNetGetProviderName WNetGetProviderNameW
-#define WNetGetUser WNetGetUserW
-#define MultinetGetConnectionPerformance MultinetGetConnectionPerformanceW
-#define WNetGetLastError WNetGetLastErrorW
-#else
-#define PFNGETPROFILEPATH PFNGETPROFILEPATHA
-#define PFNRECONCILEPROFILE PFNRECONCILEPROFILEA
-#define PFNPROCESSPOLICIES PFNPROCESSPOLICIESA
-typedef NETRESOURCEA NETRESOURCE,*LPNETRESOURCE;
-typedef CONNECTDLGSTRUCTA CONNECTDLGSTRUCT,*LPCONNECTDLGSTRUCT;
-typedef DISCDLGSTRUCTA DISCDLGSTRUCT,*LPDISCDLGSTRUCT;
-typedef UNIVERSAL_NAME_INFOA UNIVERSAL_NAME_INFO,*LPUNIVERSAL_NAME_INFO;
-typedef REMOTE_NAME_INFOA REMOTE_NAME_INFO,*LPREMOTE_NAME_INFO;
-#define WNetOpenEnum WNetOpenEnumA
-#define WNetEnumResource WNetEnumResourceA
-#define WNetGetResourceInformation WNetGetResourceInformationA
-#define WNetGetResourceParent WNetGetResourceParentA
-#define WNetGetUniversalName WNetGetUniversalNameA
-#define WNetConnectionDialog1 WNetConnectionDialog1A
-#define WNetDisconnectDialog1 WNetDisconnectDialog1A
-#define WNetAddConnection2 WNetAddConnection2A
-#define WNetAddConnection3 WNetAddConnection3A
-#define WNetCancelConnection WNetCancelConnectionA
-#define WNetCancelConnection2 WNetCancelConnection2A
-#define WNetGetConnection WNetGetConnectionA
-#define WNetUseConnection WNetUseConnectionA
-#define WNetSetConnection WNetSetConnectionA
-#define WNetAddConnection WNetAddConnectionA
-#define WNetGetUser WNetGetUserA
-#define WNetGetProviderName WNetGetProviderNameA
-#define WNetGetNetworkInformation WNetGetNetworkInformationA
-#define WNetGetLastError WNetGetLastErrorA
-#define MultinetGetConnectionPerformance MultinetGetConnectionPerformanceA
-#endif
-#endif
+
+#define PFNPROCESSPOLICIES __AW(PFNPROCESSPOLICIES)
+#define PFNRECONCILEPROFILE __AW(PFNRECONCILEPROFILE)
+#define PFNGETPROFILEPATH __AW(PFNGETPROFILEPATH)
+typedef __AW(NETRESOURCE) NETRESOURCE,*LPNETRESOURCE;
+typedef __AW(CONNECTDLGSTRUCT) CONNECTDLGSTRUCT,*LPCONNECTDLGSTRUCT;
+typedef __AW(DISCDLGSTRUCT) DISCDLGSTRUCT,*LPDISCDLGSTRUCT;
+typedef __AW(REMOTE_NAME_INFO) REMOTE_NAME_INFO,*LPREMOTE_NAME_INFO;
+typedef __AW(UNIVERSAL_NAME_INFO) UNIVERSAL_NAME_INFO,*LPUNIVERSAL_NAME_INFO;
+#define WNetEnumResource __AW(WNetEnumResource)
+#define WNetOpenEnum __AW(WNetOpenEnum)
+#define WNetGetResourceInformation __AW(WNetGetResourceInformation)
+#define WNetGetResourceParent __AW(WNetGetResourceParent)
+#define WNetGetUniversalName __AW(WNetGetUniversalName)
+#define WNetSetConnection __AW(WNetSetConnection)
+#define WNetUseConnection __AW(WNetUseConnection)
+#define WNetGetConnection __AW(WNetGetConnection)
+#define WNetCancelConnection2 __AW(WNetCancelConnection2)
+#define WNetCancelConnection __AW(WNetCancelConnection)
+#define WNetAddConnection3 __AW(WNetAddConnection3)
+#define WNetAddConnection2 __AW(WNetAddConnection2)
+#define WNetAddConnection __AW(WNetAddConnection)
+#define WNetConnectionDialog1 __AW(WNetConnectionDialog1)
+#define WNetDisconnectDialog1 __AW(WNetDisconnectDialog1)
+#define WNetGetNetworkInformation __AW(WNetGetNetworkInformation)
+#define WNetGetProviderName __AW(WNetGetProviderName)
+#define WNetGetUser __AW(WNetGetUser)
+#define MultinetGetConnectionPerformance __AW(MultinetGetConnectionPerformance)
+#define WNetGetLastError __AW(WNetGetLastError)
+#endif /* ! RC_INVOKED */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

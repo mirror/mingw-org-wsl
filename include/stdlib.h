@@ -24,13 +24,12 @@
 #ifndef _STDLIB_H
 #define _STDLIB_H
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 #define __need_size_t
 #define __need_wchar_t
 #define __need_NULL
+
 #ifndef RC_INVOKED
 #include <stddef.h>
 #endif /* RC_INVOKED */
@@ -66,7 +65,6 @@
 #define _MAX_EXT 256
 
 #endif /* Not __STRICT_ANSI__ */
-
 
 #ifndef RC_INVOKED
 
@@ -108,13 +106,8 @@ extern wchar_t***  __cdecl __MINGW_NOTHROW __p___wargv(void);
  * MS likes to declare errno in stdlib.h as well. 
  */
 
-#ifdef _UWIN
-#undef errno
-extern int errno;
-#else
  _CRTIMP int* __cdecl __MINGW_NOTHROW _errno(void);
 #define errno  (*_errno())
-#endif
  _CRTIMP int* __cdecl __MINGW_NOTHROW __doserrno(void);
 #define _doserrno (*__doserrno())
 
@@ -183,11 +176,13 @@ _CRTIMP unsigned __int64 __cdecl _strtoui64_l(const char *, char **, int, _local
 _CRTIMP double __cdecl __MINGW_NOTHROW atof (const char*);
 _CRTIMP int __cdecl __MINGW_NOTHROW atoi (const char*);
 _CRTIMP long __cdecl __MINGW_NOTHROW  atol (const char*);
+
 #if !defined (__STRICT_ANSI__)
 _CRTIMP double __cdecl __MINGW_NOTHROW _wtof (const wchar_t *);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wtoi (const wchar_t *);
 _CRTIMP long __cdecl __MINGW_NOTHROW _wtol (const wchar_t *);
 #endif
+
 #if !defined __NO_ISOCEXT  /*  in libmingwex.a */
 double __cdecl __MINGW_NOTHROW __strtod (const char*, char**);
 extern double __cdecl __MINGW_NOTHROW
@@ -210,10 +205,12 @@ _CRTIMP unsigned __int64 __cdecl _wcstoui64_l(const wchar_t *, wchar_t **, int, 
 _CRTIMP long __cdecl __MINGW_NOTHROW wcstol (const wchar_t*, wchar_t**, int);
 _CRTIMP unsigned long __cdecl __MINGW_NOTHROW wcstoul (const wchar_t*, wchar_t**, int);
 _CRTIMP double __cdecl __MINGW_NOTHROW wcstod (const wchar_t*, wchar_t**);
+
 #if !defined __NO_ISOCEXT /*  in libmingwex.a */
 float __cdecl __MINGW_NOTHROW wcstof( const wchar_t * __restrict__, wchar_t ** __restrict__);
 long double __cdecl __MINGW_NOTHROW wcstold (const wchar_t * __restrict__, wchar_t ** __restrict__);
 #endif /* __NO_ISOCEXT */
+
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wgetenv(const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wputenv(const wchar_t*);
 _CRTIMP void __cdecl __MINGW_NOTHROW _wsearchenv(const wchar_t*, const wchar_t*, wchar_t*);
@@ -222,7 +219,7 @@ _CRTIMP void __cdecl __MINGW_NOTHROW    _wmakepath(wchar_t*, const wchar_t*, con
 _CRTIMP void __cdecl __MINGW_NOTHROW _wsplitpath (const wchar_t*, wchar_t*, wchar_t*, wchar_t*, wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW   _wfullpath (wchar_t*, const wchar_t*, size_t);
 #define _WSTDLIB_DEFINED
-#endif
+#endif /* !_WSTDLIB_DEFINED */
 
 _CRTIMP size_t __cdecl __MINGW_NOTHROW wcstombs (char*, const wchar_t*, size_t);
 _CRTIMP int __cdecl __MINGW_NOTHROW wctomb  (char*, wchar_t);
@@ -325,15 +322,14 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _set_error_mode (int);
 # define _OUT_TO_MSGBOX  2
 # define _REPORT_ERRMODE 3
 
-# if __MSVCRT_VERSION__ >= 0x800
-#  ifndef _UINTPTR_T_DEFINED
-#   define _UINTPTR_T_DEFINED
-#   ifdef _WIN64
-      typedef unsigned __int64 uintptr_t;
-#   else
-      typedef unsigned int uintptr_t;
-#   endif
+# ifndef _UINTPTR_T_DEFINED
+#  define _UINTPTR_T_DEFINED
+#  ifdef _WIN64
+     typedef unsigned __int64 uintptr_t;
+#  else
+     typedef unsigned int uintptr_t;
 #  endif
+# endif
 
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _set_abort_behavior (unsigned int, unsigned int);
 
@@ -350,8 +346,6 @@ typedef void
     uintptr_t);
 _invalid_parameter_handler _set_invalid_parameter_handler (_invalid_parameter_handler);
 
-# endif /* __MSVCRT_VERSION__ >= 0x800 */
-
 #ifndef _NO_OLDNAMES
 
 _CRTIMP int __cdecl __MINGW_NOTHROW putenv (const char*);
@@ -360,11 +354,9 @@ _CRTIMP void __cdecl __MINGW_NOTHROW searchenv (const char*, const char*, char*)
 _CRTIMP char* __cdecl __MINGW_NOTHROW itoa (int, char*, int);
 _CRTIMP char* __cdecl __MINGW_NOTHROW ltoa (long, char*, int);
 
-#ifndef _UWIN
 _CRTIMP char* __cdecl __MINGW_NOTHROW ecvt (double, int, int*, int*);
 _CRTIMP char* __cdecl __MINGW_NOTHROW fcvt (double, int, int*, int*);
 _CRTIMP char* __cdecl __MINGW_NOTHROW gcvt (double, int, char*);
-#endif /* _UWIN */
 #endif /* Not _NO_OLDNAMES */
 
 #endif /* Not __STRICT_ANSI__ */

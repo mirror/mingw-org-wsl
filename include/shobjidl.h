@@ -24,6 +24,7 @@
 #ifndef _SHLOBJIDL_H
 #define _SHLOBJIDL_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -156,9 +157,9 @@ DECLARE_INTERFACE_(ITaskbarList3, ITaskbarList2)
 typedef ITaskbarList3 *LPTASKBARLIST3;
 
 #pragma pack(pop)
+
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* _SHLOBJIDL_H */

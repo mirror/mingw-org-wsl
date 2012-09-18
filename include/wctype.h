@@ -24,12 +24,11 @@
 #ifndef _WCTYPE_H
 #define _WCTYPE_H
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 #define	__need_wchar_t
 #define	__need_wint_t
+
 #ifndef RC_INVOKED
 #include <stddef.h>
 #endif	/* Not RC_INVOKED */
@@ -96,9 +95,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	isleadbyte (int);
 
 /* Also in ctype.h */
 
-# if __MSVCRT_VERSION__ <= 0x0700
   __MINGW_IMPORT unsigned short _ctype[];
-# endif 
 __MINGW_IMPORT unsigned short* _pctype;
 
 
@@ -145,4 +142,5 @@ wctype_t __cdecl __MINGW_NOTHROW	wctype(const char*);
 #endif
 
 #endif	/* Not RC_INVOKED */
+
 #endif	/* Not _WCTYPE_H */

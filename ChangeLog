@@ -1,3 +1,173 @@
+2012-09-18  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/shobjidl.h (_mingw.h): Include.
+	* include/shlwapi.h: Ditto.
+	* include/snmp.h: Ditto.
+	* include/specstrings.h: Ditto.
+	* include/sql.h: Ditto.
+	* include/sqlext.h: Ditto.
+	* include/sqltypes.h: Ditto.
+	* include/sqlucode.h: Ditto.
+	* include/sspi.h: Ditto.
+	* include/stm.h: Ditto.
+	* include/strings.h: Ditto.
+	* include/strmif.h: Ditto.
+	* include/subauth.h: Ditto.
+	* include/svcguid.h: Ditto.
+	* include/tchar.h: Ditto.
+	* include/tlhelp32.h: Ditto.
+	* include/tmschema.h: Ditto.
+	* include/unistd.h: Ditto.
+	* include/unknwn.h: Ditto.
+	* include/userenv.h: Ditto.
+	* include/usp10.h: Ditto.
+	* include/utime.h: Ditto.
+	* include/uxtheme.h: Ditto.
+	* include/values.h: Ditto.
+	* include/vfw.h: Ditto.
+	* include/vidcap.h: Ditto.
+	* include/vmr9.h: Ditto.
+	* include/vptype.h: Ditto.
+	* include/wtypes.h: Ditto.
+	* include/winable.h: Ditto.
+	* include/winbase.h: Ditto.
+	* include/winber.h: Ditto.
+	* include/wincon.h: Ditto.
+	* include/wincrypt.h: Ditto.
+	* include/windef.h: Ditto.
+	* include/windns.h: Ditto.
+	* include/windows.h: Ditto.
+	* include/windowsx.h: Ditto.
+	* include/winerror.h: Ditto.
+	* include/wingdi.h: Ditto.
+	* include/wininet.h: Ditto.
+	* include/winioctl.h: Ditto.
+	* include/winldap.h: Ditto.
+	* include/winnetwk.h: Ditto.
+	* include/winnls.h: Ditto.
+	* include/winnt.h: Ditto.
+	* include/winperf.h: Ditto.
+	* include/winreg.h: Ditto.
+	* include/winresrc.h: Ditto.
+	* include/winsnmp.h: Ditto.
+	* include/winsock.h: Ditto.
+	* include/winsock2.h: Ditto.
+	* include/winspool.h: Ditto.
+	* include/winsvc.h: Ditto.
+	* include/winuser.h: Ditto.
+	* include/winver.h: Ditto.
+	* include/ws2spi.h: Ditto.
+	* include/ws2tcpip.h: Ditto.
+	* include/wsahelp.h: Ditto.
+	* include/wsipx.h: Ditto.
+	* include/wsnetbs.h: Ditto.
+	* include/wtsapi32.h: Ditto.
+	* include/xprtdefs.h: Ditto.
+	* include/zmouse.h: Ditto.
+
+	* include/signal.h (_mingw.h): Remove comment and move to top of file.
+	* include/stdint.h: Ditto.
+	* include/stdio.h: Ditto.
+	* include/stdlib.h: Ditto.
+	* include/string.h: Ditto.
+	* include/time.h: Ditto.
+	* include/wchar.h: Ditto.
+	* include/wctype.h: Ditto.
+
+	* include/shlwapi.h (UNICODE): Use __AW() macro for mapping
+	non-specific symbols.
+	* include/sspi.h: Ditto.
+	* include/userenv.h: Ditto.
+	* include/vfw.h: Ditto.
+	* include/winbase.h: Ditto.
+	* include/wincon.h: Ditto.
+	* include/wincrypt.h: Ditto.
+	* include/windns.h: Ditto.
+	* include/wingdi.h: Ditto.
+	* include/wininet.h: Ditto.
+	* include/winldap.h: Ditto.
+	* include/winnetwk.h: Ditto.
+	* include/winnls.h: Ditto.
+	* include/winreg.h: Ditto.
+	* include/winsock2.h: Ditto.
+	* include/winspool.h: Ditto.
+	* include/winsvc.h: Ditto.
+	* include/winuser.h: Ditto.
+	* include/winver.h: Ditto.
+	* include/ws2tcpip.h: Ditto.
+
+	* include/stm.h (_WIN32_WINNT): Use MACRO constant for comparison
+	instead of integer and move filters to the end of the file.
+	* include/userenv.h: Ditto.
+	* include/winbase.h: Ditto.
+	* include/wincon.h: Ditto.
+	* include/wincrypt.h: Ditto.
+	* include/wingdi.h: Ditto.
+	* include/winnls.h: Ditto.
+	* include/winnt.h: Ditto.
+	* include/winreg.h: Ditto.
+	* include/winspool.h: Ditto.
+	* include/winuser.h: Ditto.
+	* include/ws2tcpip.h: Ditto.
+
+	* include/shlwapi.h (_OBJC_NO_COM): Move filters to the end of the file.
+
+	* include/stdlib.h (_UWIN): Remove filter since we assume only GCC.
+	* include/string.h: Ditto.
+
+	* include/stdio.h (__GNUC__): Remove filter since we assume only GCC.
+
+	* include/stdio.h (__MSVCRT_VERSION__): Remove needless filter.
+	* include/stdlib.h: Ditto.
+	* include/string.h: Ditto.
+	* include/tchar.h: Ditto.
+	* include/time.h: Ditto.
+	* include/wchar.h: Ditto.
+	* include/wctype.h: Ditto.
+
+	* include/winbase.h (_WIN32_WINDOWS): Use _WIN32_WINNT instead.
+	* include/wingdi.h: Ditto.
+	* include/winuser.h: Ditto.
+
+	* include/wincrypt.h (WINVER): Use _WIN32_WINNT instead.
+	* include/wingdi.h: Ditto.
+	* include/winnls.h: Ditto.
+	* include/winreg.h: Ditto.
+	* include/winuser.h: Dittol
+
+	* include/_mingw.h (__TEST_SQL_NOUNICODEMAP): Use to determine if
+	UNICODE should be considered.
+	(_ODBCINST_H): Changed to use __TEST_SQL_NOUNICODEMAP.
+	* include/odbcinst.h (__TEST_SQL_NOUNICODEMAP): Define before including
+	_mingw.h.
+	* include/sqlucode.h: Ditto.
+
+	* include/time.h (time_t): Logic fix for filters.
+	* (__time64_t): Remove the __STRICT_ANSI__ guard.
+
+	* include/winable.h: This file is deprecated by Microsoft due to
+	winuser.h containing all of the functionality of winable.h; therefore
+	issue a warning and include winuser.h.
+
+	* include/windows.h (Win32_Winsock): Remove filter logic and warning.
+	(winsock2.h): Do not include as doing so is not Microsoft compatible.
+	To use winsock2.h you need to include it instead of windows.h.
+	(__USE_W32_SOCKETS): Add a comment that it is __CYGWIN__ specific.
+
+	* include/winsock.h (_WIN32_WINNT_WIN95): Give a warning if winsock.h
+	is included for Windows versions greater than WIN95.
+
+	* include/winuser.h (MB_SERVICE_NOTIFICATION): We assume WIN95 or
+	greater so define based on this assumption.
+	(MB_SERVICE_NOTIFICATION_NT3X): Ditto.
+	(SM_CMETRICS): Ditto.
+	(MOUSEEVENTF_WHEEL): Ditto.
+	(ENDSESSION_LOGOFF): Ditto.
+
+	* TODO: Add entries.
+
 2012-09-13  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.

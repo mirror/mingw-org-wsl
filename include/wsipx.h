@@ -24,6 +24,7 @@
 #ifndef _WSIPX_H
 #define _WSIPX_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,4 +44,5 @@ typedef struct sockaddr_ipx {
 #ifdef __cplusplus
 }
 #endif
+
 #endif

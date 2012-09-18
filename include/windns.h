@@ -24,6 +24,7 @@
 #ifndef _WINDNS_H
 #define _WINDNS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -401,21 +402,12 @@ DNS_STATUS WINAPI DnsValidateName_UTF8(LPCSTR,DNS_NAME_FORMAT);
 BOOL WINAPI DnsWriteQuestionToBuffer_W(PDNS_MESSAGE_BUFFER,LPDWORD,LPWSTR,WORD,WORD,BOOL);
 BOOL WINAPI DnsWriteQuestionToBuffer_UTF8(PDNS_MESSAGE_BUFFER,LPDWORD,LPSTR,WORD,WORD,BOOL);
 
-#ifdef UNICODE
-#define DnsAcquireContextHandle DnsAcquireContextHandle_W
-#define DnsModifyRecordsInSet DnsModifyRecordsInSet_W
-#define DnsNameCompare DnsNameCompare_W
-#define DnsQuery DnsQuery_W
-#define DnsReplaceRecordSet DnsReplaceRecordSetW
-#define DnsValidateName DnsValidateName_W
-#else
-#define DnsAcquireContextHandle DnsAcquireContextHandle_A
-#define DnsModifyRecordsInSet DnsModifyRecordsInSet_A
-#define DnsNameCompare DnsNameCompare_A
-#define DnsQuery DnsQuery_A
-#define DnsReplaceRecordSet DnsReplaceRecordSetA
-#define DnsValidateName DnsValidateName_A
-#endif
+#define DnsAcquireContextHandle __AW(DnsAcquireContextHandle_)
+#define DnsModifyRecordsInSet __AW(DnsModifyRecordsInSet_)
+#define DnsNameCompare __AW(DnsNameCompare_)
+#define DnsQuery __AW(DnsQuery_)
+#define DnsReplaceRecordSet __AW(DnsReplaceRecordSet)
+#define DnsValidateName __AW(DnsValidateName_)
 
 #endif /* RC_INVOKED */
 

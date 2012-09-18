@@ -24,6 +24,7 @@
 #ifndef _VPTYPE_H
 #define _VPTYPE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -73,4 +74,5 @@ typedef struct _AMVPSIZE{
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -25,6 +25,7 @@
 #define _WINSOCK2_H
 #define _WINSOCK_H /* to prevent later inclusion of winsock.h */
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Definitions for winsock 2
@@ -50,6 +51,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /*   Names common to Winsock1.1 and Winsock2  */
 #if !defined ( _BSDTYPES_DEFINED )
 /* also defined in gmon.h and in cygwin's sys/types */
@@ -59,7 +61,9 @@ typedef unsigned int	u_int;
 typedef unsigned long	u_long;
 #define _BSDTYPES_DEFINED
 #endif /* ! def _BSDTYPES_DEFINED  */
+
 typedef u_int	SOCKET;
+
 #ifndef FD_SETSIZE
 #define FD_SETSIZE	64
 #endif
@@ -73,14 +77,17 @@ typedef u_int	SOCKET;
 /* fd_set may be defined by the newlib <sys/types.h>
  * if __USE_W32_SOCKETS not defined.
  */
+
 #ifdef fd_set
 #undef fd_set
 #endif
+
 typedef struct fd_set {
 	u_int   fd_count;
 	SOCKET  fd_array[FD_SETSIZE];
 } fd_set;
 int PASCAL __WSAFDIsSet(SOCKET,fd_set*);
+
 #ifndef FD_CLR
 #define FD_CLR(fd,set) do { u_int __i;\
 for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++) {\
@@ -95,6 +102,7 @@ for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++) {\
 }\
 } while (0)
 #endif
+
 #ifndef FD_SET
 /* this differs from the define in winsock.h and in cygwin sys/types.h */
 #define FD_SET(fd, set) do { u_int __i;\
@@ -111,17 +119,23 @@ if (__i == ((fd_set *)(set))->fd_count) {\
 }\
 } while(0)
 #endif
+
 #ifndef FD_ZERO
 #define FD_ZERO(set) (((fd_set *)(set))->fd_count=0)
 #endif
+
 #ifndef FD_ISSET
 #define FD_ISSET(fd, set) __WSAFDIsSet((SOCKET)(fd), (fd_set *)(set))
 #endif
+
 #elif !defined (USE_SYS_TYPES_FD_SET)
+
 #warning "fd_set and associated macros have been defined in sys/types.  \
     This may cause runtime problems with W32 sockets"
 #endif /* ndef _SYS_TYPES_FD_SET */
+
 #if !(defined (__INSIDE_CYGWIN__) || (__INSIDE_MSYS__))
+
 #ifndef _TIMEVAL_DEFINED /* also in sys/time.h */
 #define _TIMEVAL_DEFINED
 struct timeval {
@@ -135,6 +149,7 @@ struct timeval {
 	((tvp)->tv_usec cmp (uvp)->tv_usec))
 #define timerclear(tvp)	 (tvp)->tv_sec = (tvp)->tv_usec = 0
 #endif /* _TIMEVAL_DEFINED */
+
 struct  hostent {
 	char	*h_name;
 	char	**h_aliases;
@@ -148,6 +163,7 @@ struct linger {
 	u_short l_linger;
 };
 #endif /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+
 #define IOCPARM_MASK	0x7f
 #define IOC_VOID	0x20000000
 #define IOC_OUT	0x40000000
@@ -349,6 +365,7 @@ typedef WSADATA *LPWSADATA;
 #define AF_12844    25
 #define AF_IRDA     26
 #define AF_NETDES   28
+
 #ifndef __INSIDE_MSYS__
 #define AF_MAX	29
 struct sockaddr {
@@ -410,12 +427,14 @@ struct sockproto {
 #define PF_INET6	AF_INET6
 #define PF_MAX	AF_MAX
 #define SOL_SOCKET	0xffff
+
 #if ! (defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
 #define SOMAXCONN	0x7fffffff /* (5) in WinSock1.1 */
 #define MSG_OOB	1
 #define MSG_PEEK	2
 #define MSG_DONTROUTE	4
 #endif  /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+
 #define MSG_MAXIOVLEN	16
 #define MSG_PARTIAL	0x8000
 #define MAXGETHOSTSTRUCT	1024
@@ -543,6 +562,7 @@ struct sockproto {
 #endif /* !WSABASEERR */
 
 #define WSANO_ADDRESS	WSANO_DATA
+
 #if !(defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
 #define h_errno WSAGetLastError()
 #define HOST_NOT_FOUND	WSAHOST_NOT_FOUND
@@ -551,6 +571,7 @@ struct sockproto {
 #define NO_DATA	WSANO_DATA
 #define NO_ADDRESS	WSANO_ADDRESS
 #endif /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+
 WINSOCK_API_LINKAGE SOCKET PASCAL accept(SOCKET,struct sockaddr*,int*);
 WINSOCK_API_LINKAGE int PASCAL bind(SOCKET,const struct sockaddr*,int);
 WINSOCK_API_LINKAGE int PASCAL closesocket(SOCKET);
@@ -642,6 +663,7 @@ typedef HANDLE(PASCAL * LPFN_WSAASYNCGETPROTOBYNUMBER)(HWND, u_int, int, char*, 
 typedef HANDLE(PASCAL * LPFN_WSAASYNCGETHOSTBYADDR)(HWND, u_int, const char*, int, int, char*, int);
 typedef int(PASCAL * LPFN_WSACANCELASYNCREQUEST)(HANDLE);
 typedef int(PASCAL * LPFN_WSAASYNCSELECT)(SOCKET, HWND, u_int, long);
+
 #if ! (defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
 WINSOCK_API_LINKAGE u_long PASCAL htonl(u_long);
 WINSOCK_API_LINKAGE u_long PASCAL ntohl(u_long);
@@ -705,11 +727,9 @@ typedef struct timeval *LPTIMEVAL;
 #define SO_MAX_MSG_SIZE	0x2003
 #define SO_PROTOCOL_INFOA	0x2004
 #define SO_PROTOCOL_INFOW	0x2005
-#ifdef UNICODE
-#define SO_PROTOCOL_INFO	SO_PROTOCOL_INFOW
-#else
-#define SO_PROTOCOL_INFO	SO_PROTOCOL_INFOA
-#endif
+
+#define SO_PROTOCOL_INFO	__AW(SO_PROTOCOL_INFO)
+
 #define PVD_CONFIG        0x3001
 
 #define	MSG_INTERRUPT	0x10
@@ -889,15 +909,9 @@ typedef struct _WSAQuerySetW
 	LPBLOB	lpBlob;
 } WSAQUERYSETW, *PWSAQUERYSETW, *LPWSAQUERYSETW;
 
-#ifdef UNICODE
-typedef WSAQUERYSETW WSAQUERYSET;
-typedef PWSAQUERYSETW PWSAQUERYSET;
-typedef LPWSAQUERYSETW LPWSAQUERYSET;
-#else
-typedef WSAQUERYSETA WSAQUERYSET;
-typedef PWSAQUERYSETA PWSAQUERYSET;
-typedef LPWSAQUERYSETA LPWSAQUERYSET;
-#endif
+typedef __AW(WSAQUERYSET) WSAQUERYSET;
+typedef __AW(PWSAQUERYSET) PWSAQUERYSET;
+typedef __AW(LPWSAQUERYSET) LPWSAQUERYSET;
 
 #define LUP_DEEP                0x0001
 #define LUP_CONTAINERS          0x0002
@@ -934,15 +948,9 @@ typedef struct _WSANSClassInfoW
 	LPVOID	lpValue;
 } WSANSCLASSINFOW, *PWSANSCLASSINFOW, *LPWSANSCLASSINFOW;
 
-#ifdef UNICODE
-typedef WSANSCLASSINFOW WSANSCLASSINFO;
-typedef PWSANSCLASSINFOW PWSANSCLASSINFO;
-typedef LPWSANSCLASSINFOW LPWSANSCLASSINFO;
-#else
-typedef WSANSCLASSINFOA WSANSCLASSINFO;
-typedef PWSANSCLASSINFOA PWSANSCLASSINFO;
-typedef LPWSANSCLASSINFOA LPWSANSCLASSINFO;
-#endif
+typedef __AW(WSANSCLASSINFO) WSANSCLASSINFO;
+typedef __AW(PWSANSCLASSINFO) PWSANSCLASSINFO;
+typedef __AW(LPWSANSCLASSINFO) LPWSANSCLASSINFO;
 
 typedef struct _WSAServiceClassInfoA
 {
@@ -960,15 +968,9 @@ typedef struct _WSAServiceClassInfoW
 	LPWSANSCLASSINFOW	lpClassInfos;
 } WSASERVICECLASSINFOW, *PWSASERVICECLASSINFOW, *LPWSASERVICECLASSINFOW;
 
-#ifdef UNICODE
-typedef WSASERVICECLASSINFOW WSASERVICECLASSINFO;
-typedef PWSASERVICECLASSINFOW PWSASERVICECLASSINFO;
-typedef LPWSASERVICECLASSINFOW LPWSASERVICECLASSINFO;
-#else
-typedef WSASERVICECLASSINFOA WSASERVICECLASSINFO;
-typedef PWSASERVICECLASSINFOA PWSASERVICECLASSINFO;
-typedef LPWSASERVICECLASSINFOA LPWSASERVICECLASSINFO;
-#endif
+typedef __AW(WSASERVICECLASSINFO) WSASERVICECLASSINFO;
+typedef __AW(PWSASERVICECLASSINFO) PWSASERVICECLASSINFO;
+typedef __AW(LPWSASERVICECLASSINFO) LPWSASERVICECLASSINFO;
 
 typedef struct _WSANAMESPACE_INFOA {
 	GUID	NSProviderId;
@@ -986,15 +988,9 @@ typedef struct _WSANAMESPACE_INFOW {
 	LPWSTR	lpszIdentifier;
 } WSANAMESPACE_INFOW, *PWSANAMESPACE_INFOW, *LPWSANAMESPACE_INFOW;
 
-#ifdef UNICODE
-typedef WSANAMESPACE_INFOW WSANAMESPACE_INFO;
-typedef PWSANAMESPACE_INFOW PWSANAMESPACE_INFO;
-typedef LPWSANAMESPACE_INFOW LPWSANAMESPACE_INFO;
-#else
-typedef WSANAMESPACE_INFOA WSANAMESPACE_INFO;
-typedef PWSANAMESPACE_INFOA PWSANAMESPACE_INFO;
-typedef LPWSANAMESPACE_INFOA LPWSANAMESPACE_INFO;
-#endif
+typedef __AW(WSANAMESPACE_INFO) WSANAMESPACE_INFO;
+typedef __AW(PWSANAMESPACE_INFO) PWSANAMESPACE_INFO;
+typedef __AW(LPWSANAMESPACE_INFO) LPWSANAMESPACE_INFO;
 
 typedef struct _WSAPROTOCOLCHAIN {
 	int ChainLen;
@@ -1052,14 +1048,8 @@ typedef struct _WSAPROTOCOL_INFOW {
 typedef int (CALLBACK *LPCONDITIONPROC)(LPWSABUF, LPWSABUF, LPQOS, LPQOS, LPWSABUF, LPWSABUF, GROUP *, DWORD);
 typedef void (WINAPI *LPWSAOVERLAPPED_COMPLETION_ROUTINE)(DWORD, DWORD, LPWSAOVERLAPPED, DWORD);
 
-
-#ifdef UNICODE
-typedef WSAPROTOCOL_INFOW WSAPROTOCOL_INFO;
-typedef LPWSAPROTOCOL_INFOW LPWSAPROTOCOL_INFO;
-#else
-typedef WSAPROTOCOL_INFOA WSAPROTOCOL_INFO;
-typedef LPWSAPROTOCOL_INFOA LPWSAPROTOCOL_INFO;
-#endif
+typedef __AW(WSAPROTOCOL_INFO) WSAPROTOCOL_INFO;
+typedef __AW(LPWSAPROTOCOL_INFO) LPWSAPROTOCOL_INFO;
 
 /* Needed for XP & .NET Server function WSANSPIoctl.  */
 typedef enum _WSACOMPLETIONTYPE {
@@ -1264,59 +1254,33 @@ typedef INT (WINAPI *LPFN_WSASTRINGTOADDRESSA)(LPSTR, INT, LPWSAPROTOCOL_INFOA, 
 typedef INT (WINAPI *LPFN_WSASTRINGTOADDRESSW)(LPWSTR, INT, LPWSAPROTOCOL_INFOW, LPSOCKADDR, LPINT);
 typedef DWORD (WINAPI *LPFN_WSAWAITFORMULTIPLEEVENTS)(DWORD, const WSAEVENT *, BOOL, DWORD, BOOL);
 
-#ifdef UNICODE
-#define LPFN_WSAADDRESSTOSTRING LPFN_WSAADDRESSTOSTRINGW
-#define LPFN_WSADUPLICATESOCKET LPFN_WSADUPLICATESOCKETW
-#define LPFN_WSAENUMNAMESPACEPROVIDERS LPFN_WSAENUMNAMESPACEPROVIDERSW
-#define LPFN_WSAENUMPROTOCOLS LPFN_WSAENUMPROTOCOLSW
-#define LPFN_WSAGETSERVICECLASSINFO LPFN_WSAGETSERVICECLASSINFOW
-#define LPFN_WSAGETSERVICECLASSNAMEBYCLASSID LPFN_WSAGETSERVICECLASSNAMEBYCLASSIDW
-#define LPFN_WSAINSTALLSERVICECLASS LPFN_WSAINSTALLSERVICECLASSW
-#define LPFN_WSALOOKUPSERVICEBEGIN LPFN_WSALOOKUPSERVICEBEGINW
-#define LPFN_WSALOOKUPSERVICENEXT LPFN_WSALOOKUPSERVICENEXTW
-#define LPFN_WSASETSERVICE  LPFN_WSASETSERVICEW
-#define LPFN_WSASOCKET LPFN_WSASOCKETW
-#define LPFN_WSASTRINGTOADDRESS LPFN_WSASTRINGTOADDRESSW
-#define WSAAddressToString WSAAddressToStringW
-#define WSADuplicateSocket WSADuplicateSocketW
-#define WSAEnumNameSpaceProviders WSAEnumNameSpaceProvidersW
-#define WSAEnumProtocols WSAEnumProtocolsW
-#define WSAGetServiceClassInfo WSAGetServiceClassInfoW
-#define WSAGetServiceClassNameByClassId WSAGetServiceClassNameByClassIdW
-#define WSASetService WSASetServiceW
-#define WSASocket WSASocketW
-#define WSAStringToAddress WSAStringToAddressW
-#define WSALookupServiceBegin WSALookupServiceBeginW
-#define WSALookupServiceNext WSALookupServiceNextW
-#define WSAInstallServiceClass WSAInstallServiceClassW
-#else
-#define LPFN_WSAADDRESSTOSTRING LPFN_WSAADDRESSTOSTRINGA
-#define LPFN_WSADUPLICATESOCKET LPFN_WSADUPLICATESOCKETW
-#define LPFN_WSAENUMNAMESPACEPROVIDERS LPFN_WSAENUMNAMESPACEPROVIDERSA
-#define LPFN_WSAENUMPROTOCOLS LPFN_WSAENUMPROTOCOLSA
-#define LPFN_WSAGETSERVICECLASSINFO LPFN_WSAGETSERVICECLASSINFOA
-#define LPFN_WSAGETSERVICECLASSNAMEBYCLASSID LPFN_WSAGETSERVICECLASSNAMEBYCLASSIDA
-#define LPFN_WSAINSTALLSERVICECLASS LPFN_WSAINSTALLSERVICECLASSA
-#define LPFN_WSALOOKUPSERVICEBEGIN LPFN_WSALOOKUPSERVICEBEGINA
-#define LPFN_WSALOOKUPSERVICENEXT LPFN_WSALOOKUPSERVICENEXTA
-#define LPFN_WSASETSERVICE  LPFN_WSASETSERVICEA
-#define LPFN_WSASOCKET LPFN_WSASOCKETA
-#define LPFN_WSASTRINGTOADDRESS LPFN_WSASTRINGTOADDRESSA
-#define WSAAddressToString WSAAddressToStringA
-#define WSADuplicateSocket WSADuplicateSocketA
-#define WSAEnumNameSpaceProviders WSAEnumNameSpaceProvidersA
-#define WSAEnumProtocols WSAEnumProtocolsA
-#define WSAGetServiceClassInfo WSAGetServiceClassInfoA
-#define WSAGetServiceClassNameByClassId WSAGetServiceClassNameByClassIdA
-#define WSAInstallServiceClass WSAInstallServiceClassA
-#define WSALookupServiceBegin WSALookupServiceBeginA
-#define WSALookupServiceNext WSALookupServiceNextA
-#define WSASocket WSASocketA
-#define WSAStringToAddress WSAStringToAddressA
-#define WSASetService WSASetServiceA
-#endif
+#define LPFN_WSAADDRESSTOSTRING __AW(LPFN_WSAADDRESSTOSTRING)
+#define LPFN_WSADUPLICATESOCKET __AW(LPFN_WSADUPLICATESOCKET)
+#define LPFN_WSAENUMNAMESPACEPROVIDERS __AW(LPFN_WSAENUMNAMESPACEPROVIDERS)
+#define LPFN_WSAENUMPROTOCOLS __AW(LPFN_WSAENUMPROTOCOLS)
+#define LPFN_WSAGETSERVICECLASSINFO __AW(LPFN_WSAGETSERVICECLASSINFO)
+#define LPFN_WSAGETSERVICECLASSNAMEBYCLASSID __AW(LPFN_WSAGETSERVICECLASSNAMEBYCLASSID)
+#define LPFN_WSAINSTALLSERVICECLASS __AW(LPFN_WSAINSTALLSERVICECLASS)
+#define LPFN_WSALOOKUPSERVICEBEGIN __AW(LPFN_WSALOOKUPSERVICEBEGIN)
+#define LPFN_WSALOOKUPSERVICENEXT __AW(LPFN_WSALOOKUPSERVICENEXT)
+#define LPFN_WSASETSERVICE  __AW(LPFN_WSASETSERVICE)
+#define LPFN_WSASOCKET __AW(LPFN_WSASOCKET)
+#define LPFN_WSASTRINGTOADDRESS __AW(LPFN_WSASTRINGTOADDRESS)
+#define WSAAddressToString __AW(WSAAddressToString)
+#define WSADuplicateSocket __AW(WSADuplicateSocket)
+#define WSAEnumNameSpaceProviders __AW(WSAEnumNameSpaceProviders)
+#define WSAEnumProtocols __AW(WSAEnumProtocols)
+#define WSAGetServiceClassInfo __AW(WSAGetServiceClassInfo)
+#define WSAGetServiceClassNameByClassId __AW(WSAGetServiceClassNameByClassId)
+#define WSASetService __AW(WSASetService)
+#define WSASocket __AW(WSASocket)
+#define WSAStringToAddress __AW(WSAStringToAddress)
+#define WSALookupServiceBegin __AW(WSALookupServiceBegin)
+#define WSALookupServiceNext __AW(WSALookupServiceNext)
+#define WSAInstallServiceClass __AW(WSAInstallServiceClass)
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

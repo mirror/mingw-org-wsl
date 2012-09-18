@@ -24,6 +24,7 @@
 #ifndef _WINNLS_H
 #define _WINNLS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef WINBASEAPI
 #ifdef __W32API_USE_DLLIMPORT__
@@ -41,9 +42,7 @@ extern "C" {
 #define MAX_DEFAULTCHAR	2
 #define LOCALE_NOUSEROVERRIDE	0x80000000
 #define LOCALE_USE_CP_ACP	0x40000000
-#if (WINVER >= 0x0400)
 #define LOCALE_RETURN_NUMBER	0x20000000
-#endif
 #define LOCALE_ILANGUAGE	1
 #define LOCALE_SLANGUAGE	2
 #define LOCALE_SENGLANGUAGE	0x1001
@@ -429,47 +428,7 @@ extern "C" {
 #define IS_HIGH_SURROGATE(c) (((c) & 0xFC00) == 0xD800)
 #define IS_LOW_SURROGATE(c) (((c) & 0xFC00) == 0xDC00)
 #define IS_SURROGATE_PAIR(hc,lc) (IS_HIGH_SURROGATE(hc) && IS_LOW_SURROGATE(lc))
-#if (WINVER >= 0x0410)
-#define CAL_SYEARMONTH 47
-#define CAL_ITWODIGITYEARMAX 48
-#define CAL_NOUSEROVERRIDE LOCALE_NOUSEROVERRIDE
-#define CAL_RETURN_NUMBER LOCALE_RETURN_NUMBER
-#define CAL_USE_CP_ACP LOCALE_USE_CP_ACP
-#define LOCALE_SYEARMONTH 0x1006
-#define LOCALE_SENGCURRNAME 0x1007
-#define LOCALE_SNATIVECURRNAME 0x1008
-#define LOCALE_SSORTNAME 0x1013
-#endif /* (WINVER >= 0x0410) */
-#if (WINVER >= 0x0500)
-#define LOCALE_IDEFAULTEBCDICCODEPAGE 0x1012
-#define LOCALE_IDIGITSUBSTITUTION 0x1014
-#define LOCALE_IPAPERSIZE 0x100A
-#define DATE_YEARMONTH 8
-#define DATE_LTRREADING 16
-#define DATE_RTLREADING 32
-#define MAP_EXPAND_LIGATURES   0x2000
-#define WC_NO_BEST_FIT_CHARS 1024
-#endif /* (WINVER >= 0x0500) */
-#if (WINVER >= 0x0600)
-/*#define CAL_SSHORTESTDAYNAME1 */
-/*#define CAL_SSHORTESTDAYNAME2 */
-/*#define CAL_SSHORTESTDAYNAME3 */
-/*#define CAL_SSHORTESTDAYNAME4 */
-/*#define CAL_SSHORTESTDAYNAME5 */
-/*#define CAL_SSHORTESTDAYNAME6 */
-/*#define CAL_SSHORTESTDAYNAME7 */
-#define CAL_UMALQURA 23
-/*#define LOCALE_SDURATION */
-/*#define LOCALE_SIETFLANGUAGE */
-/*#define LOCALE_SISO3166CTRYNAME2 */
-/*#define LOCALE_SISO639LANGNAME2 */
-/*#define LOCALE_SKEYBOARDSTOINSTALL */
-/*#define LOCALE_SNAME */
-/*#define LOCALE_SNAN */
-/*#define LOCALE_SNEGINFINITY */
-/*#define LOCALE_SPOSINFINITY */
-/*#define LOCALE_SSCRIPTS */
-#endif /* (WINVER >= 0x0600) */
+
 #ifndef  _BASETSD_H
 typedef long LONG_PTR;
 #endif 
@@ -650,7 +609,65 @@ WINBASEAPI BOOL WINAPI SetLocaleInfoW(LCID,LCTYPE,LPCWSTR);
 WINBASEAPI BOOL WINAPI SetThreadLocale(LCID);
 WINBASEAPI BOOL WINAPI SetUserGeoID(GEOID);
 WINBASEAPI int WINAPI WideCharToMultiByte(UINT,DWORD,LPCWSTR,int,LPSTR,int,LPCSTR,LPBOOL);
-#if (WINVER >= 0x0500)
+
+#define CALINFO_ENUMPROC __AW(CALINFO_ENUMPROC)
+#define CALINFO_ENUMPROCEX __AW(CALINFO_ENUMPROCEX)
+#define LOCALE_ENUMPROC __AW(LOCALE_ENUMPROC)
+#define CODEPAGE_ENUMPROC __AW(CODEPAGE_ENUMPROC)
+#define DATEFMT_ENUMPROC __AW(DATEFMT_ENUMPROC)
+#define DATEFMT_ENUMPROCEX __AW(DATEFMT_ENUMPROCEX)
+#define TIMEFMT_ENUMPROC __AW(TIMEFMT_ENUMPROC)
+#define LANGUAGEGROUP_ENUMPROC __AW(LANGUAGEGROUP_ENUMPROC)
+#define LANGGROUPLOCALE_ENUMPROC __AW(LANGGROUPLOCALE_ENUMPROC)
+#define UILANGUAGE_ENUMPROC __AW(UILANGUAGE_ENUMPROC)
+typedef __AW(CPINFOEX) CPINFOEX;
+typedef __AW(LPCPINFOEX) LPCPINFOEX;
+typedef __AW(CURRENCYFMT) CURRENCYFMT;
+typedef __AW(LPCURRENCYFMT) LPCURRENCYFMT;
+typedef __AW(NUMBERFMT) NUMBERFMT;
+typedef __AW(LPNUMBERFMT) LPNUMBERFMT;
+#define CompareString __AW(CompareString)
+#define EnumCalendarInfo __AW(EnumCalendarInfo)
+#define EnumSystemCodePages __AW(EnumSystemCodePages)
+#define EnumSystemLocales __AW(EnumSystemLocales)
+#define EnumTimeFormats __AW(EnumTimeFormats)
+#define FoldString __AW(FoldString)
+#define GetCalendarInfo __AW(GetCalendarInfo)
+#define GetCPInfoEx __AW(GetCPInfoEx)
+#define GetCurrencyFormat __AW(GetCurrencyFormat)
+#define GetDateFormat __AW(GetDateFormat)
+#define GetGeoInfo __AW(GetGeoInfo)
+#define GetLocaleInfo __AW(GetLocaleInfo)
+#define GetNumberFormat __AW(GetNumberFormat)
+#define GetStringTypeEx __AW(GetStringTypeEx)
+#define GetTimeFormat __AW(GetTimeFormat)
+#define LCMapString __AW(LCMapString)
+#define SetCalendarInfo  __AW(SetCalendarInfo)
+#define SetLocaleInfo __AW(SetLocaleInfo)
+#endif /* RC_INVOKED */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN98)
+#define CAL_SYEARMONTH 47
+#define CAL_ITWODIGITYEARMAX 48
+#define CAL_NOUSEROVERRIDE LOCALE_NOUSEROVERRIDE
+#define CAL_RETURN_NUMBER LOCALE_RETURN_NUMBER
+#define CAL_USE_CP_ACP LOCALE_USE_CP_ACP
+#define LOCALE_SYEARMONTH 0x1006
+#define LOCALE_SENGCURRNAME 0x1007
+#define LOCALE_SNATIVECURRNAME 0x1008
+#define LOCALE_SSORTNAME 0x1013
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN98) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+#define LOCALE_IDEFAULTEBCDICCODEPAGE 0x1012
+#define LOCALE_IDIGITSUBSTITUTION 0x1014
+#define LOCALE_IPAPERSIZE 0x100A
+#define DATE_YEARMONTH 8
+#define DATE_LTRREADING 16
+#define DATE_RTLREADING 32
+#define MAP_EXPAND_LIGATURES   0x2000
+#define WC_NO_BEST_FIT_CHARS 1024
+#ifndef RC_INVOKED
 WINBASEAPI BOOL WINAPI EnumCalendarInfoExA(CALINFO_ENUMPROCEXA,LCID,CALID,CALTYPE);
 WINBASEAPI BOOL WINAPI EnumCalendarInfoExW(CALINFO_ENUMPROCEXW,LCID,CALID,CALTYPE);
 WINBASEAPI BOOL WINAPI EnumDateFormatsExA(DATEFMT_ENUMPROCEXA,LCID,DWORD);
@@ -664,95 +681,38 @@ WINBASEAPI BOOL WINAPI EnumUILanguagesW(UILANGUAGE_ENUMPROCW,DWORD,LONG_PTR);
 WINBASEAPI LANGID WINAPI GetSystemDefaultUILanguage(void);
 WINBASEAPI LANGID WINAPI GetUserDefaultUILanguage(void);
 WINBASEAPI BOOL WINAPI IsValidLanguageGroup(LGRPID,DWORD);
-#endif /* (WINVER >= 0x0500) */
+#define EnumCalendarInfoEx __AW(EnumCalendarInfoEx)
+#define EnumDateFormatsEx __AW(EnumDateFormatsEx)
+#define EnumSystemLanguageGroups __AW(EnumSystemLanguageGroups)
+#define EnumLanguageGroupLocales __AW(EnumLanguageGroupLocales)
+#define EnumUILanguages __AW(EnumUILanguages)
+#endif /* ! RC_INVOKED */
 
-#ifdef UNICODE
-#define CALINFO_ENUMPROC CALINFO_ENUMPROCW
-#define CALINFO_ENUMPROCEX CALINFO_ENUMPROCEXW
-#define LOCALE_ENUMPROC LOCALE_ENUMPROCW
-#define CODEPAGE_ENUMPROC CODEPAGE_ENUMPROCW
-#define DATEFMT_ENUMPROC DATEFMT_ENUMPROCW
-#define DATEFMT_ENUMPROCEX DATEFMT_ENUMPROCEXW
-#define TIMEFMT_ENUMPROC TIMEFMT_ENUMPROCW
-#define LANGUAGEGROUP_ENUMPROC LANGUAGEGROUP_ENUMPROCW
-#define LANGGROUPLOCALE_ENUMPROC LANGGROUPLOCALE_ENUMPROCW
-#define UILANGUAGE_ENUMPROC UILANGUAGE_ENUMPROCW
-typedef CPINFOEXW CPINFOEX;
-typedef LPCPINFOEXW LPCPINFOEX;
-typedef CURRENCYFMTW CURRENCYFMT;
-typedef LPCURRENCYFMTW LPCURRENCYFMT;
-typedef NUMBERFMTW NUMBERFMT;
-typedef LPNUMBERFMTW LPNUMBERFMT;
-#define CompareString CompareStringW
-#define EnumCalendarInfo EnumCalendarInfoW
-#define EnumSystemCodePages EnumSystemCodePagesW
-#define EnumSystemLocales EnumSystemLocalesW
-#define EnumTimeFormats EnumTimeFormatsW
-#define FoldString FoldStringW
-#define GetCalendarInfo GetCalendarInfoW
-#define GetCPInfoEx GetCPInfoExW
-#define GetCurrencyFormat GetCurrencyFormatW
-#define GetDateFormat GetDateFormatW
-#define GetGeoInfo GetGeoInfoW
-#define GetLocaleInfo GetLocaleInfoW
-#define GetNumberFormat GetNumberFormatW
-#define GetStringTypeEx GetStringTypeExW
-#define GetTimeFormat GetTimeFormatW
-#define LCMapString LCMapStringW
-#define SetCalendarInfo  SetCalendarInfoW
-#define SetLocaleInfo SetLocaleInfoW
-#if (WINVER >= 0x0500)
-#define EnumCalendarInfoEx EnumCalendarInfoExW
-#define EnumDateFormatsEx EnumDateFormatsExW
-#define EnumSystemLanguageGroups EnumSystemLanguageGroupsW
-#define EnumLanguageGroupLocales EnumLanguageGroupLocalesW
-#define EnumUILanguages EnumUILanguagesW
-#endif /* (WINVER >= 0x0500) */
-#else
-#define CALINFO_ENUMPROC CALINFO_ENUMPROCA
-#define CALINFO_ENUMPROCEX CALINFO_ENUMPROCEXA
-#define LOCALE_ENUMPROC LOCALE_ENUMPROCA
-#define CODEPAGE_ENUMPROC CODEPAGE_ENUMPROCA
-#define DATEFMT_ENUMPROC DATEFMT_ENUMPROCA
-#define DATEFMT_ENUMPROCEX DATEFMT_ENUMPROCEXA
-#define TIMEFMT_ENUMPROC TIMEFMT_ENUMPROCA
-#define LANGUAGEGROUP_ENUMPROC LANGUAGEGROUP_ENUMPROCA
-#define LANGGROUPLOCALE_ENUMPROC LANGGROUPLOCALE_ENUMPROCA
-#define UILANGUAGE_ENUMPROC UILANGUAGE_ENUMPROCA
-typedef CPINFOEXA CPINFOEX;
-typedef LPCPINFOEXA LPCPINFOEX;
-typedef CURRENCYFMTA CURRENCYFMT;
-typedef LPCURRENCYFMTA LPCURRENCYFMT;
-typedef NUMBERFMTA NUMBERFMT;
-typedef LPNUMBERFMTA LPNUMBERFMT;
-#define CompareString CompareStringA
-#define EnumCalendarInfo EnumCalendarInfoA
-#define EnumSystemCodePages EnumSystemCodePagesA
-#define EnumSystemLocales EnumSystemLocalesA
-#define EnumTimeFormats EnumTimeFormatsA
-#define FoldString FoldStringA
-#define GetCalendarInfo GetCalendarInfoA
-#define GetCPInfoEx GetCPInfoExA
-#define GetCurrencyFormat GetCurrencyFormatA
-#define GetDateFormat GetDateFormatA
-#define GetGeoInfo GetGeoInfoA
-#define GetLocaleInfo GetLocaleInfoA
-#define GetNumberFormat GetNumberFormatA
-#define GetStringTypeEx GetStringTypeExA
-#define GetTimeFormat GetTimeFormatA
-#define LCMapString LCMapStringA
-#define SetCalendarInfo SetCalendarInfoA
-#define SetLocaleInfo SetLocaleInfoA
-#if (WINVER >= 0x0500)
-#define EnumCalendarInfoEx EnumCalendarInfoExA
-#define EnumDateFormatsEx EnumDateFormatsExA
-#define EnumSystemLanguageGroups EnumSystemLanguageGroupsA
-#define EnumLanguageGroupLocales EnumLanguageGroupLocalesA
-#define EnumUILanguages EnumUILanguagesA
-#endif /* (WINVER >= 0x0500) */
-#endif /* UNICODE */
-#endif /* RC_INVOKED */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+/*#define CAL_SSHORTESTDAYNAME1 */
+/*#define CAL_SSHORTESTDAYNAME2 */
+/*#define CAL_SSHORTESTDAYNAME3 */
+/*#define CAL_SSHORTESTDAYNAME4 */
+/*#define CAL_SSHORTESTDAYNAME5 */
+/*#define CAL_SSHORTESTDAYNAME6 */
+/*#define CAL_SSHORTESTDAYNAME7 */
+#define CAL_UMALQURA 23
+/*#define LOCALE_SDURATION */
+/*#define LOCALE_SIETFLANGUAGE */
+/*#define LOCALE_SISO3166CTRYNAME2 */
+/*#define LOCALE_SISO639LANGNAME2 */
+/*#define LOCALE_SKEYBOARDSTOINSTALL */
+/*#define LOCALE_SNAME */
+/*#define LOCALE_SNAN */
+/*#define LOCALE_SNEGINFINITY */
+/*#define LOCALE_SPOSINFINITY */
+/*#define LOCALE_SSCRIPTS */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_VISTA) */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,6 +24,7 @@
 #ifndef _WSNETBS_H
 #define _WSNETBS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define NETBIOS_NAME_LENGTH	16
 #define NETBIOS_UNIQUE_NAME	0
@@ -53,4 +54,5 @@ typedef struct sockaddr_nb {
 	_s->snb_name[NETBIOS_NAME_LENGTH-1] = (_port); \
 }
 #endif   /* RC_INVOKED */
+
 #endif

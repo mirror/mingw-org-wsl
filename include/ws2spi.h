@@ -24,6 +24,7 @@
 #ifndef _WS2SPI_H
 #define _WS2SPI_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <winsock2.h>
 
@@ -203,4 +204,5 @@ INT WSPAPI WSCWriteProviderOrder(LPDWORD,DWORD);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
 #endif

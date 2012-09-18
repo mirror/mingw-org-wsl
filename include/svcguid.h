@@ -24,6 +24,7 @@
 #ifndef _SVCGUID_H
 #define _SVCGUID_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,4 +52,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,12 +24,126 @@
 #ifndef _WTSAPI32_H
 #define _WTSAPI32_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0501)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+typedef struct _WTS_SESSION_INFOW {
+  DWORD SessionId;
+  LPWSTR pWinStationName;
+  WTS_CONNECTSTATE_CLASS State;
+} WTS_SESSION_INFOW, *PWTS_SESSION_INFOW;
+
+typedef struct _WTS_SESSION_INFOA {
+  DWORD SessionId;
+  LPSTR pWinStationName;
+  WTS_CONNECTSTATE_CLASS State;
+} WTS_SESSION_INFOA, *PWTS_SESSION_INFOA;
+
+#define WTS_SESSION_INFO	__AW(WTS_SESSION_INFO)
+#define PWTS_SESSION_INFO	__AW(PWTS_SESSION_INFO)
+
+  // WTSWaitSystemEvent local server handle
+#define WTS_CURRENT_SERVER_HANDLE 0
+#define WTS_CURRENT_SESSION       ((DWORD)-1)
+
+  // WTSWaitSystemEvent flags
+#define WTS_EVENT_NONE				0x00000000
+#define WTS_EVENT_CREATE			0x00000001
+#define WTS_EVENT_DELETE			0x00000002
+#define WTS_EVENT_RENAME			0x00000004
+#define WTS_EVENT_CONNECT			0x00000008
+#define WTS_EVENT_DISCONNECT		0x00000010
+#define WTS_EVENT_LOGON				0x00000020
+#define WTS_EVENT_LOGOFF			0x00000040
+#define WTS_EVENT_STATECHANGE		0x00000080
+#define WTS_EVENT_LICENSE			0x00000100
+#define WTS_EVENT_ALL				0x7FFFFFFF
+#define WTS_EVENT_FLUSH				0x80000000
+
+BOOL WINAPI WTSQuerySessionInformationA(HANDLE hServer, DWORD SessionId, WTS_INFO_CLASS WTSInfoClass,
+                                LPSTR *ppBuffer, DWORD *pBytesReturned);
+BOOL WINAPI WTSQuerySessionInformationW(HANDLE hServer, DWORD SessionId, WTS_INFO_CLASS WTSInfoClass,
+                                LPTSTR *ppBuffer, DWORD *pBytesReturned);
+BOOL WINAPI WTSWaitSystemEvent(HANDLE hServer, DWORD EventMask, DWORD* pEventFlags);
+BOOL WINAPI WTSDisconnectSession(HANDLE hServer, DWORD SessionId, BOOL bWait);
+BOOL WINAPI WTSEnumerateSessionsW(HANDLE hServer, DWORD Reserved, DWORD Version,
+				  PWTS_SESSION_INFOW *ppSessionInfo,
+				  PDWORD pCount);
+BOOL WINAPI WTSEnumerateSessionsA(HANDLE hServer, DWORD Reserved, DWORD Version,
+				  PWTS_SESSION_INFOA *ppSessionInfo,
+				  PDWORD pCount);
+void WINAPI WTSFreeMemory(PVOID pMemory);
+
+#define WTSEnumerateSessions __AW(WTSEnumerateSessions)
+#define WTSQuerySessionInformation __AW(WTSQuerySessionInformation)
+
+BOOL WTSSendMessageA(
+  HANDLE hServer,
+  DWORD SessionId,
+  LPSTR pTitle,
+  DWORD TitleLength,
+  LPSTR pMessage,
+  DWORD MessageLength,
+  DWORD Style,
+  DWORD Timeout,
+  DWORD *pResponse,
+  BOOL bWait
+);
+
+BOOL WTSSendMessageW(
+  HANDLE hServer,
+  DWORD SessionId,
+  LPWSTR pTitle,
+  DWORD TitleLength,
+  LPWSTR pMessage,
+  DWORD MessageLength,
+  DWORD Style,
+  DWORD Timeout,
+  DWORD *pResponse,
+  BOOL bWait
+);
+
+#define WTSSendMessage __AW(WTSSendMessage)
+
+BOOL WTSVirtualChannelClose(
+  __in  HANDLE hChannelHandle
+);
+
+HANDLE WTSVirtualChannelOpen(
+  __in  HANDLE hServer,
+  __in  DWORD SessionId,
+  __in  LPSTR pVirtualName
+);
+
+BOOL WTSVirtualChannelPurgeInput(
+  __in  HANDLE hChannelHandle
+);
+
+BOOL WTSVirtualChannelPurgeOutput(
+  __in  HANDLE hChannelHandle
+);
+
+BOOL WTSVirtualChannelRead(
+  __in   HANDLE hChannelHandle,
+  __in   ULONG TimeOut,
+  __out  PCHAR Buffer,
+  __in   ULONG BufferSize,
+  __out  PULONG pBytesRead
+);
+
+BOOL WTSVirtualChannelWrite(
+  __in   HANDLE hChannelHandle,
+  __in   PCHAR Buffer,
+  __in   ULONG Length,
+  __out  PULONG pBytesWritten
+);
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WIN2K */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
   // session notification message
 #define WM_WTSSESSION_CHANGE		0x02B1
 
@@ -93,111 +207,13 @@ BOOL WINAPI WTSRegisterSessionNotification(HWND hWnd, DWORD dwFlags);
 BOOL WINAPI WTSUnRegisterSessionNotification(HWND hWnd);
 BOOL WINAPI WTSQueryUserToken(ULONG SessionId, PHANDLE pToken);
 
-#endif /* _WIN32_WINNT >= 0x0501 */
-
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
-
-typedef struct _WTS_SESSION_INFOW {
-  DWORD SessionId;
-  LPWSTR pWinStationName;
-  WTS_CONNECTSTATE_CLASS State;
-} WTS_SESSION_INFOW, *PWTS_SESSION_INFOW;
-
-typedef struct _WTS_SESSION_INFOA {
-  DWORD SessionId;
-  LPSTR pWinStationName;
-  WTS_CONNECTSTATE_CLASS State;
-} WTS_SESSION_INFOA, *PWTS_SESSION_INFOA;
-
-#ifdef UNICODE
-#define WTS_SESSION_INFO	WTS_SESSION_INFOW
-#define PWTS_SESSION_INFO	PWTS_SESSION_INFOW
-#else
-#define WTS_SESSION_INFO	WTS_SESSION_INFOA
-#define PWTS_SESSION_INFO	PWTS_SESSION_INFOA
-#endif
-
-  // WTSWaitSystemEvent local server handle
-#define WTS_CURRENT_SERVER_HANDLE 0
-#define WTS_CURRENT_SESSION       ((DWORD)-1)
-
-  // WTSWaitSystemEvent flags
-#define WTS_EVENT_NONE				0x00000000
-#define WTS_EVENT_CREATE			0x00000001
-#define WTS_EVENT_DELETE			0x00000002
-#define WTS_EVENT_RENAME			0x00000004
-#define WTS_EVENT_CONNECT			0x00000008
-#define WTS_EVENT_DISCONNECT		0x00000010
-#define WTS_EVENT_LOGON				0x00000020
-#define WTS_EVENT_LOGOFF			0x00000040
-#define WTS_EVENT_STATECHANGE		0x00000080
-#define WTS_EVENT_LICENSE			0x00000100
-#define WTS_EVENT_ALL				0x7FFFFFFF
-#define WTS_EVENT_FLUSH				0x80000000
-
-BOOL WINAPI WTSQuerySessionInformationA(HANDLE hServer, DWORD SessionId, WTS_INFO_CLASS WTSInfoClass,
-                                LPSTR *ppBuffer, DWORD *pBytesReturned);
-BOOL WINAPI WTSQuerySessionInformationW(HANDLE hServer, DWORD SessionId, WTS_INFO_CLASS WTSInfoClass,
-                                LPTSTR *ppBuffer, DWORD *pBytesReturned);
-BOOL WINAPI WTSWaitSystemEvent(HANDLE hServer, DWORD EventMask, DWORD* pEventFlags);
-BOOL WINAPI WTSDisconnectSession(HANDLE hServer, DWORD SessionId, BOOL bWait);
-BOOL WINAPI WTSEnumerateSessionsW(HANDLE hServer, DWORD Reserved, DWORD Version,
-				  PWTS_SESSION_INFOW *ppSessionInfo,
-				  PDWORD pCount);
-BOOL WINAPI WTSEnumerateSessionsA(HANDLE hServer, DWORD Reserved, DWORD Version,
-				  PWTS_SESSION_INFOA *ppSessionInfo,
-				  PDWORD pCount);
-void WINAPI WTSFreeMemory(PVOID pMemory);
-
-#ifdef UNICODE
-#define WTSEnumerateSessions WTSEnumerateSessionsW
-#define WTSQuerySessionInformation WTSQuerySessionInformationW
-#else
-#define WTSEnumerateSessions WTSEnumerateSessionsA
-#define WTSQuerySessionInformation WTSQuerySessionInformationA
-#endif
-
-BOOL WTSSendMessageA(
-  HANDLE hServer,
-  DWORD SessionId,
-  LPSTR pTitle,
-  DWORD TitleLength,
-  LPSTR pMessage,
-  DWORD MessageLength,
-  DWORD Style,
-  DWORD Timeout,
-  DWORD *pResponse,
-  BOOL bWait
+BOOL WTSVirtualChannelQuery(
+  __in   HANDLE hChannelHandle,
+  __in   WTS_VIRTUAL_CLASS WtsVirtualClass,
+  __out  PVOID *ppBuffer,
+  __out  DWORD *pBytesReturned
 );
-
-BOOL WTSSendMessageW(
-  HANDLE hServer,
-  DWORD SessionId,
-  LPWSTR pTitle,
-  DWORD TitleLength,
-  LPWSTR pMessage,
-  DWORD MessageLength,
-  DWORD Style,
-  DWORD Timeout,
-  DWORD *pResponse,
-  BOOL bWait
-);
-
-#ifdef UNICODE
-#define WTSSendMessage WTSSendMessageW
-#else
-#define WTSSendMessage WTSSendMessageA
-#endif
-
-BOOL WTSVirtualChannelClose(
-  __in  HANDLE hChannelHandle
-);
-
-HANDLE WTSVirtualChannelOpen(
-  __in  HANDLE hServer,
-  __in  DWORD SessionId,
-  __in  LPSTR pVirtualName
-);
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WINXP */
 
 #if _WIN32_WINNT >= _WIN32_WINNT_VISTA
 HANDLE WTSVirtualChannelOpenEx(
@@ -206,40 +222,6 @@ HANDLE WTSVirtualChannelOpenEx(
   __in  DWORD flags
 );
 #endif
-
-BOOL WTSVirtualChannelPurgeInput(
-  __in  HANDLE hChannelHandle
-);
-
-BOOL WTSVirtualChannelPurgeOutput(
-  __in  HANDLE hChannelHandle
-);
-
-#if _WIN32_WINNT >= _WIN32_WINNT_WINXP
-BOOL WTSVirtualChannelQuery(
-  __in   HANDLE hChannelHandle,
-  __in   WTS_VIRTUAL_CLASS WtsVirtualClass,
-  __out  PVOID *ppBuffer,
-  __out  DWORD *pBytesReturned
-);
-#endif
-
-BOOL WTSVirtualChannelRead(
-  __in   HANDLE hChannelHandle,
-  __in   ULONG TimeOut,
-  __out  PCHAR Buffer,
-  __in   ULONG BufferSize,
-  __out  PULONG pBytesRead
-);
-
-BOOL WTSVirtualChannelWrite(
-  __in   HANDLE hChannelHandle,
-  __in   PCHAR Buffer,
-  __in   ULONG Length,
-  __out  PULONG pBytesWritten
-);
-
-#endif /* _WIN32_WINNT >= 0x0500 */
 
 #ifdef __cplusplus
 }

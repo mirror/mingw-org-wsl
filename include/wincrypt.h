@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,6 +24,7 @@
 #ifndef _WINCRYPT_H
 #define _WINCRYPT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef WINADVAPI
 #define WINADVAPI
@@ -32,6 +33,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define MS_DEF_PROV_A	"Microsoft Base Cryptographic Provider v1.0"
 #define MS_DEF_PROV_W	L"Microsoft Base Cryptographic Provider v1.0"
 #define MS_ENHANCED_PROV_A	"Microsoft Enhanced Cryptographic Provider v1.0"
@@ -52,13 +54,6 @@ extern "C" {
 #define MS_DEF_DH_SCHANNEL_PROV_W	L"Microsoft DH SChannel Cryptographic Provider"
 #define MS_SCARD_PROV_A	"Microsoft Base Smart Card Crypto Provider"
 #define MS_SCARD_PROV_W	L"Microsoft Base Smart Card Crypto Provider"
-#if (_WIN32_WINNT == 0x0501)
-#define MS_ENH_RSA_AES_PROV_A "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-#define MS_ENH_RSA_AES_PROV_W L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
-#elif (_WIN32_WINNT > 0x0501)
-#define MS_ENH_RSA_AES_PROV_A "Microsoft Enhanced RSA and AES Cryptographic Provider"
-#define MS_ENH_RSA_AES_PROV_W L"Microsoft Enhanced RSA and AES Cryptographic Provider"
-#endif
 
 #define GET_ALG_CLASS(x) (x&57344)
 #define GET_ALG_TYPE(x) (x&7680)
@@ -395,19 +390,7 @@ extern "C" {
 #define SCHANNEL_MAC_KEY    0x00000000
 #define SCHANNEL_ENC_KEY    0x00000001
 #define INTERNATIONAL_USAGE 0x00000001
-#if (WINVER >= 0x0501) /* Windows Server 2003, Windows XP */
-#define CMC_ADD_ATTRIBUTES (LPCSTR) 63
-#define CMC_ADD_EXTENSIONS (LPCSTR) 62
-#define X509_CERT_PAIR (LPCSTR) 53
-#define X509_CERTIFICATE_TEMPLATE (LPCSTR) 64
-#define X509_CROSS_CERT_DIST_POINTS (LPCSTR) 58
-#define CMC_DATA (LPCSTR) 59
-#define X509_NAME_CONSTRAINTS (LPCSTR) 55
-#define X509_POLICY_CONSTRAINTS (LPCSTR) 57
-#define X509_POLICY_MAPPINGS (LPCSTR) 56
-#define CMC_RESPONSE (LPCSTR) 60
-#define CMC_STATUS (LPCSTR) 61
-#endif /* (WINVER >= 0x0501) */ /* Windows Server 2003, Windows XP */
+
 #define X509_ALGORITHM_IDENTIFIER (LPCSTR) 74
 #define X509_ALTERNATE_NAME (LPCSTR) 12
 /* need X509_ANY_STRING */
@@ -632,16 +615,7 @@ enum { CRL_REASON_UNSPECIFIED=0,
 #define szOID_BIOMETRIC_EXT "1.3.6.1.5.5.7.1.2"
 #define szOID_CERT_EXTENSIONS "1.3.6.1.4.1.311.2.1.14"
 #define szOID_CERT_POLICIES "2.5.29.32"
-#if (WINVER >= 0x0501) /* Windows Server 2003, Windows XP */
-#define szOID_CERTIFICATE_TEMPLATE "1.3.6.1.4.1.311.21.7"
-#define szOID_CRL_NUMBER "2.5.29.20"
-#define szOID_CROSS_CERT_DIST_POINTS "1.3.6.1.4.1.311.10.9.1"
-#define szOID_DELTA_CRL_INDICATOR "2.5.29.27"
-#define szOID_ENROLLMENT_NAME_VALUE_PAIR "1.3.6.1.4.1.311.13.2.1"
-#define szOID_FRESHEST_CRL "2.5.29.46"
-#define szOID_ISSUING_DIST_POINT "2.5.29.28"
-#define szOID_NAME_CONSTRAINTS "2.5.29.30"
-#endif /* (WINVER >= 0x0501) */ /* Windows Server 2003, Windows XP */
+
 #define szOID_CRL_DIST_POINTS 2.5.29.31
 #define szOID_CRL_REASON_CODE "2.5.29.21"
 #define szOID_CRL_VIRTUAL_BASE "1.3.6.1.4.1.311.21.3"
@@ -667,7 +641,7 @@ typedef struct _CERT_BASIC_CONSTRAINTS2_INFO {
   BOOL fCA;
   BOOL fPathLenConstraint;
   DWORD dwPathLenConstraint;
-} CERT_BASIC_CONSTRAINTS2_INFO, 
+} CERT_BASIC_CONSTRAINTS2_INFO,
  *PCERT_BASIC_CONSTRAINTS2_INFO;
 
 typedef VOID (WINAPI *PFN_CRYPT_FREE)(LPVOID pv);
@@ -676,7 +650,7 @@ typedef struct _CRYPT_ENCODE_PARA {
   DWORD cbSize;
   PFN_CRYPT_ALLOC pfnAlloc;
   PFN_CRYPT_FREE pfnFree;
-} CRYPT_ENCODE_PARA, 
+} CRYPT_ENCODE_PARA,
  *PCRYPT_ENCODE_PARA;
 
 /* Definition missing. */
@@ -706,6 +680,10 @@ typedef struct _CRYPTOAPI_BLOB {
   CRYPT_DIGEST_BLOB,  *PCRYPT_DIGEST_BLOB,
   CRYPT_DER_BLOB,     *PCRYPT_DER_BLOB,
   CRYPT_ATTR_BLOB,    *PCRYPT_ATTR_BLOB;
+typedef struct _CERT_OTHER_NAME {
+	LPSTR pszObjId;
+	CRYPT_OBJID_BLOB Value;
+} CERT_OTHER_NAME, *PCERT_OTHER_NAME;
 /* not described in SDK; has the same layout as HTTPSPolicyCallbackData */
 typedef struct _SSL_EXTRA_CERT_CHAIN_POLICY_PARA {
 	DWORD cbStruct;
@@ -943,80 +921,6 @@ typedef struct _HMAC_Info
 	BYTE* pbOuterString;
 	DWORD cbOuterString;
 } HMAC_INFO, *PHMAC_INFO;
-#if (WINVER >= 0x0501) /* Windows Server 2003, Windows XP */
-typedef struct _CMC_ADD_ATTRIBUTES_INFO {
-  DWORD dwCmcDataReference;
-  DWORD cCertReference;
-  DWORD* rgdwCertReference;
-  DWORD cAttribute;
-  PCRYPT_ATTRIBUTE rgAttribute;
-} CMC_ADD_ATTRIBUTES_INFO, 
- *PCMC_ADD_ATTRIBUTES_INFO;
-typedef struct _CMC_ADD_EXTENSIONS_INFO {
-  DWORD dwCmcDataReference;
-  DWORD cCertReference;
-  DWORD* rgdwCertReference;
-  DWORD cExtension;
-  PCERT_EXTENSION rgExtension;
-} CMC_ADD_EXTENSIONS_INFO, 
- *PCMC_ADD_EXTENSIONS_INFO;
-#endif /* (WINVER >= 0x0501) */ /* Windows Server 2003, Windows XP */
-#if (WINVER >= 0x0410) /* Windows 98 */
-/* need PCERT_OTHER_NAME & CERT_DATA_BLOB!
-typedef struct _CERT_ALT_NAME_ENTRY {
-  DWORD dwAltNameChoice;
-  union {
-    PCERT_OTHER_NAME pOtherName;
-    LPWSTR pwszRfc822Name;
-    LPWSTR pwszDNSName;
-    CERT_DATA_BLOB x400Address;
-    CERT_NAME_BLOB DirectoryName;
-    LPWSTR pEdiPartyName;
-    LPWSTR pwszURL;
-    CRYPT_DATA_BLOB IPAddress;
-    LPSTR pszRegisteredID;
-  };
-} CERT_ALT_NAME_ENTRY, 
- *PCERT_ALT_NAME_ENTRY;
-*/
-/* needs CERT_ALT_NAME_ENTRY above, which lacks prereqs
-typedef struct _CERT_ALT_NAME_INFO {
-  DWORD cAltEntry;
-  PCERT_ALT_NAME_ENTRY rgAltEntry;
-} CERT_ALT_NAME_INFO, 
- *PCERT_ALT_NAME_INFO;
- */
-typedef struct _CERT_NAME_VALUE {
-  DWORD dwValueType;
-  CERT_RDN_VALUE_BLOB Value;
-} CERT_NAME_VALUE, 
- *PCERT_NAME_VALUE;
-typedef struct _CERT_POLICY_QUALIFIER_INFO {
-  LPSTR pszPolicyQualifierId;
-  CRYPT_OBJID_BLOB Qualifier;
-} CERT_POLICY_QUALIFIER_INFO, 
- *PCERT_POLICY_QUALIFIER_INFO;
-typedef struct _CERT_POLICY_CONSTRAINTS_INFO {
-  BOOL fRequireExplicitPolicy;
-  DWORD dwRequireExplicitPolicySkipCerts;
-  BOOL fInhibitPolicyMapping;
-  DWORD dwInhibitPolicyMappingSkipCerts;
-} CERT_POLICY_CONSTRAINTS_INFO, 
- *PCERT_POLICY_CONSTRAINTS_INFO;
-#endif /* (WINVER >= 0x0410) */ /* Windows 98 */
-#if (WINVER >= 0x0501) /* Windows Server 2003, Windows XP */
-typedef struct _CERT_POLICY_MAPPING {
-  LPSTR pszIssuerDomainPolicy;
-  LPSTR pszSubjectDomainPolicy;
-} CERT_POLICY_MAPPING, 
- *PCERT_POLICY_MAPPING;
-typedef struct _CERT_POLICY_MAPPINGS_INFO {
-  DWORD cPolicyMapping;
-  PCERT_POLICY_MAPPING rgPolicyMapping;
-} CERT_POLICY_MAPPINGS_INFO, 
- *PCERT_POLICY_MAPPINGS_INFO;
-
-#endif /* (WINVER >= 0x0501) */ /* Windows Server 2003, Windows XP */
 
 //http://msdn.microsoft.com/en-us/library/aa922935.aspx
 //Some Crypto Key Provider Information structures.
@@ -1193,10 +1097,7 @@ WINADVAPI BOOL WINAPI CryptReleaseContext(HCRYPTPROV,DWORD);
 WINADVAPI BOOL WINAPI CryptGenKey(HCRYPTPROV,ALG_ID,DWORD,HCRYPTKEY*);
 WINADVAPI BOOL WINAPI CryptDeriveKey(HCRYPTPROV,ALG_ID,HCRYPTHASH,DWORD,HCRYPTKEY*);
 WINADVAPI BOOL WINAPI CryptDestroyKey(HCRYPTKEY);
-#if (WINVER >= 0x0500)
-WINADVAPI BOOL WINAPI CryptDuplicateHash(HCRYPTHASH,DWORD*,DWORD,HCRYPTHASH*);
-WINADVAPI BOOL WINAPI CryptDuplicateKey(HCRYPTKEY,DWORD*,DWORD,HCRYPTKEY*);
-#endif
+
 WINADVAPI BOOL WINAPI CryptSetKeyParam(HCRYPTKEY,DWORD,PBYTE,DWORD);
 WINADVAPI BOOL WINAPI CryptGetKeyParam(HCRYPTKEY,DWORD,PBYTE,PDWORD,DWORD);
 WINADVAPI BOOL WINAPI CryptSetHashParam(HCRYPTHASH,DWORD,PBYTE,DWORD);
@@ -1223,66 +1124,35 @@ WINADVAPI BOOL WINAPI CryptSetProviderW(LPCWSTR,DWORD);
 WINADVAPI BOOL WINAPI CryptEnumProvidersA(DWORD,DWORD*,DWORD,DWORD*,LPTSTR,DWORD*);
 WINADVAPI BOOL WINAPI CryptEnumProvidersW(DWORD,DWORD*,DWORD,DWORD*,LPTSTR,DWORD*);
 
-#ifdef UNICODE
-#define CertGetNameString CertGetNameStringW
-#else
-#define CertGetNameString CertGetNameStringA
-#endif
+#define CertGetNameString __AW(CertGetNameString)
 
-#ifdef UNICODE
-#define CertNameToStr CertNameToStrW
-#define CryptAcquireContext CryptAcquireContextW
-#define CryptSignHash CryptSignHashW
-#define CryptVerifySignature CryptVerifySignatureW
-#define CryptSetProvider CryptSetProviderW
-#define CryptEnumProviders CryptEnumProvidersW
-#define CertOpenSystemStore CertOpenSystemStoreW
-#define CERT_FIND_SUBJECT_STR CERT_FIND_SUBJECT_STR_W
-#define CERT_FIND_ISSUER_STR CERT_FIND_ISSUER_STR_W
-#define MS_DEF_PROV MS_DEF_PROV_W
-#define MS_ENHANCED_PROV MS_ENHANCED_PROV_W
-#define MS_STRONG_PROV MS_STRONG_PROV_W
-#define MS_DEF_RSA_SIG_PROV MS_DEF_RSA_SIG_PROV_W
-#define MS_DEF_RSA_SCHANNEL_PROV MS_DEF_RSA_SCHANNEL_PROV_W
-#define MS_DEF_DSS_PROV MS_DEF_DSS_PROV_W
-#define MS_DEF_DSS_DH_PROV MS_DEF_DSS_DH_PROV_W
-#define MS_ENH_DSS_DH_PROV MS_ENH_DSS_DH_PROV_W
-#define MS_DEF_DH_SCHANNEL_PROV MS_DEF_DH_SCHANNEL_PROV_W
-#define MS_SCARD_PROV MS_SCARD_PROV_W
-#if (_WIN32_WINNT >= 0x0501)
-#define MS_ENH_RSA_AES_PROV MS_ENH_RSA_AES_PROV_W
-#endif
-#else
-#define CertNameToStr CertNameToStrA
-#define CryptAcquireContext CryptAcquireContextA
-#define CryptSignHash CryptSignHashA
-#define CryptVerifySignature CryptVerifySignatureA
-#define CryptSetProvider CryptSetProviderA
-#define CryptEnumProviders CryptEnumProvidersA
-#define CertOpenSystemStore CertOpenSystemStoreA
-#define CERT_FIND_SUBJECT_STR CERT_FIND_SUBJECT_STR_A
-#define CERT_FIND_ISSUER_STR CERT_FIND_ISSUER_STR_A
-#define MS_DEF_PROV MS_DEF_PROV_A
-#define MS_ENHANCED_PROV MS_ENHANCED_PROV_A
-#define MS_STRONG_PROV MS_STRONG_PROV_A
-#define MS_DEF_RSA_SIG_PROV MS_DEF_RSA_SIG_PROV_A
-#define MS_DEF_RSA_SCHANNEL_PROV MS_DEF_RSA_SCHANNEL_PROV_A
-#define MS_DEF_DSS_PROV MS_DEF_DSS_PROV_A
-#define MS_DEF_DSS_DH_PROV MS_DEF_DSS_DH_PROV_A
-#define MS_ENH_DSS_DH_PROV MS_ENH_DSS_DH_PROV_A
-#define MS_DEF_DH_SCHANNEL_PROV MS_DEF_DH_SCHANNEL_PROV_A
-#define MS_SCARD_PROV MS_SCARD_PROV_A
-#if (_WIN32_WINNT >= 0x0501)
-#define MS_ENH_RSA_AES_PROV MS_ENH_RSA_AES_PROV_A
-#endif
-#endif
+#define CertNameToStr __AW(CertNameToStr)
+#define CryptAcquireContext __AW(CryptAcquireContext)
+#define CryptSignHash __AW(CryptSignHash)
+#define CryptVerifySignature __AW(CryptVerifySignature)
+#define CryptSetProvider __AW(CryptSetProvider)
+#define CryptEnumProviders __AW(CryptEnumProviders)
+#define CertOpenSystemStore __AW(CertOpenSystemStore)
+#define CERT_FIND_SUBJECT_STR __AW(CERT_FIND_SUBJECT_STR_)
+#define CERT_FIND_ISSUER_STR __AW(CERT_FIND_ISSUER_STR_)
+#define MS_DEF_PROV __AW(MS_DEF_PROV_)
+#define MS_ENHANCED_PROV __AW(MS_ENHANCED_PROV_)
+#define MS_STRONG_PROV __AW(MS_STRONG_PROV_)
+#define MS_DEF_RSA_SIG_PROV __AW(MS_DEF_RSA_SIG_PROV_)
+#define MS_DEF_RSA_SCHANNEL_PROV __AW(MS_DEF_RSA_SCHANNEL_PROV_)
+#define MS_DEF_DSS_PROV __AW(MS_DEF_DSS_PROV_)
+#define MS_DEF_DSS_DH_PROV __AW(MS_DEF_DSS_DH_PROV_)
+#define MS_ENH_DSS_DH_PROV __AW(MS_ENH_DSS_DH_PROV_)
+#define MS_DEF_DH_SCHANNEL_PROV __AW(MS_DEF_DH_SCHANNEL_PROV_)
+#define MS_SCARD_PROV __AW(MS_SCARD_PROV_)
+
 /* from http://msdn2.microsoft.com/en-us/library/Aa380263.aspx: */
 typedef struct _CRYPTPROTECT_PROMPTSTRUCT {
    DWORD cbSize;
    DWORD dwPromptFlags;
    HWND hwndApp;
    LPCWSTR szPrompt;
-} CRYPTPROTECT_PROMPTSTRUCT, 
+} CRYPTPROTECT_PROMPTSTRUCT,
 *PCRYPTPROTECT_PROMPTSTRUCT;
 
 
@@ -1311,14 +1181,110 @@ DWORD WINAPI CertOIDToAlgId( LPCSTR );
 BOOL WINAPI CryptGetDefaultProviderA(DWORD,DWORD,DWORD,LPSTR,DWORD);
 BOOL WINAPI CryptGetDefaultProviderW(DWORD,DWORD,DWORD,LPSTR,DWORD);
 
-#ifdef UNICODE
-#define CryptGetDefaultProvider  CryptGetDefaultProviderW
-#else
-#define CryptGetDefaultProvider  CryptGetDefaultProviderA
-#endif // !UNICODE
+#define CryptGetDefaultProvider  __AW(CryptGetDefaultProvider)
 
- 
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN98) /* Windows 98 */
+typedef struct _CERT_ALT_NAME_ENTRY {
+  DWORD dwAltNameChoice;
+  union {
+    PCERT_OTHER_NAME pOtherName;
+    LPWSTR pwszRfc822Name;
+    LPWSTR pwszDNSName;
+    CRYPT_DATA_BLOB x400Address;
+    CERT_NAME_BLOB DirectoryName;
+    LPWSTR pEdiPartyName;
+    LPWSTR pwszURL;
+    CRYPT_DATA_BLOB IPAddress;
+    LPSTR pszRegisteredID;
+  };
+} CERT_ALT_NAME_ENTRY, *PCERT_ALT_NAME_ENTRY;
+typedef struct _CERT_ALT_NAME_INFO {
+  DWORD cAltEntry;
+  PCERT_ALT_NAME_ENTRY rgAltEntry;
+} CERT_ALT_NAME_INFO, *PCERT_ALT_NAME_INFO;
+typedef struct _CERT_NAME_VALUE {
+  DWORD dwValueType;
+  CERT_RDN_VALUE_BLOB Value;
+} CERT_NAME_VALUE,
+ *PCERT_NAME_VALUE;
+typedef struct _CERT_POLICY_QUALIFIER_INFO {
+  LPSTR pszPolicyQualifierId;
+  CRYPT_OBJID_BLOB Qualifier;
+} CERT_POLICY_QUALIFIER_INFO, *PCERT_POLICY_QUALIFIER_INFO;
+typedef struct _CERT_POLICY_CONSTRAINTS_INFO {
+  BOOL fRequireExplicitPolicy;
+  DWORD dwRequireExplicitPolicySkipCerts;
+  BOOL fInhibitPolicyMapping;
+  DWORD dwInhibitPolicyMappingSkipCerts;
+} CERT_POLICY_CONSTRAINTS_INFO, *PCERT_POLICY_CONSTRAINTS_INFO;
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN98) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+WINADVAPI BOOL WINAPI CryptDuplicateHash(HCRYPTHASH,DWORD*,DWORD,HCRYPTHASH*);
+WINADVAPI BOOL WINAPI CryptDuplicateKey(HCRYPTKEY,DWORD*,DWORD,HCRYPTKEY*);
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#if (_WIN32_WINNT == _WIN32_WINNT_WINXP)
+#define MS_ENH_RSA_AES_PROV_A "Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+#define MS_ENH_RSA_AES_PROV_W L"Microsoft Enhanced RSA and AES Cryptographic Provider (Prototype)"
+#endif /* (_WIN32_WINNT == _WIN32_WINNT_WINXP) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+#define CMC_ADD_ATTRIBUTES (LPCSTR) 63
+#define CMC_ADD_EXTENSIONS (LPCSTR) 62
+#define X509_CERT_PAIR (LPCSTR) 53
+#define X509_CERTIFICATE_TEMPLATE (LPCSTR) 64
+#define X509_CROSS_CERT_DIST_POINTS (LPCSTR) 58
+#define CMC_DATA (LPCSTR) 59
+#define X509_NAME_CONSTRAINTS (LPCSTR) 55
+#define X509_POLICY_CONSTRAINTS (LPCSTR) 57
+#define X509_POLICY_MAPPINGS (LPCSTR) 56
+#define CMC_RESPONSE (LPCSTR) 60
+#define CMC_STATUS (LPCSTR) 61
+#define szOID_CERTIFICATE_TEMPLATE "1.3.6.1.4.1.311.21.7"
+#define szOID_CRL_NUMBER "2.5.29.20"
+#define szOID_CROSS_CERT_DIST_POINTS "1.3.6.1.4.1.311.10.9.1"
+#define szOID_DELTA_CRL_INDICATOR "2.5.29.27"
+#define szOID_ENROLLMENT_NAME_VALUE_PAIR "1.3.6.1.4.1.311.13.2.1"
+#define szOID_FRESHEST_CRL "2.5.29.46"
+#define szOID_ISSUING_DIST_POINT "2.5.29.28"
+#define szOID_NAME_CONSTRAINTS "2.5.29.30"
+typedef struct _CMC_ADD_ATTRIBUTES_INFO {
+  DWORD dwCmcDataReference;
+  DWORD cCertReference;
+  DWORD* rgdwCertReference;
+  DWORD cAttribute;
+  PCRYPT_ATTRIBUTE rgAttribute;
+} CMC_ADD_ATTRIBUTES_INFO,
+ *PCMC_ADD_ATTRIBUTES_INFO;
+typedef struct _CMC_ADD_EXTENSIONS_INFO {
+  DWORD dwCmcDataReference;
+  DWORD cCertReference;
+  DWORD* rgdwCertReference;
+  DWORD cExtension;
+  PCERT_EXTENSION rgExtension;
+} CMC_ADD_EXTENSIONS_INFO,
+ *PCMC_ADD_EXTENSIONS_INFO;
+typedef struct _CERT_POLICY_MAPPING {
+  LPSTR pszIssuerDomainPolicy;
+  LPSTR pszSubjectDomainPolicy;
+} CERT_POLICY_MAPPING,
+ *PCERT_POLICY_MAPPING;
+typedef struct _CERT_POLICY_MAPPINGS_INFO {
+  DWORD cPolicyMapping;
+  PCERT_POLICY_MAPPING rgPolicyMapping;
+} CERT_POLICY_MAPPINGS_INFO,
+ *PCERT_POLICY_MAPPINGS_INFO;
+#define MS_ENH_RSA_AES_PROV __AW(MS_ENH_RSA_AES_PROV_)
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+#define MS_ENH_RSA_AES_PROV_A "Microsoft Enhanced RSA and AES Cryptographic Provider"
+#define MS_ENH_RSA_AES_PROV_W L"Microsoft Enhanced RSA and AES Cryptographic Provider"
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_VISTA) */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _WINCRYPT_H */

@@ -24,6 +24,7 @@
 #ifndef _ZMOUSE_H
 #define _ZMOUSE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * FIXME: This file is obviously horribly incomplete!

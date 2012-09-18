@@ -24,8 +24,6 @@
 #ifndef	_SIGNAL_H
 #define	_SIGNAL_H
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 /*
@@ -107,4 +105,5 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	raise (int);
 #endif
 
 #endif	/* Not RC_INVOKED */
+
 #endif	/* Not _SIGNAL_H */

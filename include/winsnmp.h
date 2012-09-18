@@ -24,6 +24,7 @@
 #ifndef _WINSNMP_H
 #define _WINSNMP_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * SNMP API
@@ -41,9 +42,7 @@
  *  http://msdn.microsoft.com/library/en-us/snmp/snmp/winsnmp_api_reference.asp
  */
 
-#ifndef _WINDOWS_H
 #include <windows.h>
-#endif
 
 #include <pshpack4.h>
 
@@ -58,6 +57,7 @@ extern "C" {
 #define MAXOBJIDSIZE	128
 #define MAXOBJIDSTRSIZE	1408
 #define MAXVENDORINFO	32
+
 #ifndef _SNMP_ASN_DEFINED
 #define _SNMP_ASN_DEFINED
 #define ASN_UNIVERSAL	0x00
@@ -76,6 +76,7 @@ extern "C" {
 #define SNMP_PDU_TRAP	(ASN_CONTEXT | ASN_CONSTRUCTOR | 7) 
 #define SNMP_PDU_REPORT	(ASN_CONTEXT | ASN_CONSTRUCTOR | 8)
 #endif /* _SNMP_ASN_DEFINED */
+
 #define SNMP_SYNTAX_SEQUENCE	(ASN_UNIVERSAL | ASN_CONSTRUCTOR | 0x10)
 #define SNMP_SYNTAX_INT	(ASN_UNIVERSAL | ASN_PRIMITIVE | 0x02)
 #define SNMP_SYNTAX_BITS	(ASN_UNIVERSAL | ASN_PRIMITIVE | 0x03)
@@ -339,5 +340,7 @@ SNMPAPI_STATUS WINSNMPAPI SnmpPasswordToKey(smiLPOCTETS,smiINT32,smiLPOCTETS);
 #ifdef __cplusplus
 }
 #endif
+
 #include <poppack.h>
+
 #endif

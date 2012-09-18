@@ -24,8 +24,6 @@
 #ifndef _STDIO_H
 #define	_STDIO_H
 #pragma GCC system_header
-
-/* All the headers include this file. */
 #include <_mingw.h>
 
 #ifndef RC_INVOKED
@@ -101,9 +99,11 @@
 #define _IOEOF    0x0010  /* EOF reached on read */
 #define _IOERR    0x0020  /* I/O error from system */
 #define _IOSTRG   0x0040  /* Strange or no file descriptor */
+
 #ifdef _POSIX_SOURCE
 # define _IOAPPEND 0x0200
 #endif
+
 /*
  * The buffer size as used by setbuf such that it is equivalent to
  * (void) setvbuf(fileSetBuffer, caBuffer, _IOFBF, BUFSIZ).
@@ -120,11 +120,7 @@
 #ifndef	RC_INVOKED
 
 #ifndef __VALIST
-#ifdef __GNUC__
 #define __VALIST __gnuc_va_list
-#else
-#define __VALIST char*
-#endif
 #endif /* defined __VALIST  */
 
 /*
@@ -222,21 +218,10 @@ extern int __mingw_stdio_redirect__(vsnprintf)(char*, size_t, const char*, __VAL
  */
 #  define __mingw_stdio_redirect__  inline __cdecl __MINGW_NOTHROW
 
-# elif defined __GNUC__
-/*
- * FIXME: Is there any GCC version prerequisite here?
- *
- * We also prefer inline implementations for C, when we can be confident
- * that the GNU specific __inline__ mechanism is supported.
- */
+# else /* !__cplusplus */
 #  define __mingw_stdio_redirect__  static __inline__ __cdecl __MINGW_NOTHROW
 
-# else
-/*
- * Can't use inlines; fall back on module local static stubs.
- */
-#  define __mingw_stdio_redirect__  static __cdecl __MINGW_NOTHROW
-# endif
+# endif /* __cplusplus */
 
 __mingw_stdio_redirect__
 int fprintf (FILE *__stream, const char *__format, ...)
@@ -286,7 +271,7 @@ int vsprintf (char *__stream, const char *__format, __VALIST __local_argv)
   return __mingw_vsprintf( __stream, __format, __local_argv );
 }
 
-#else
+#else /* __USE_MINGW_ANSI_STDIO */
 /*
  * Default configuration: simply direct all calls to MSVCRT...
  */
@@ -297,7 +282,8 @@ _CRTIMP int __cdecl __MINGW_NOTHROW vfprintf (FILE*, const char*, __VALIST);
 _CRTIMP int __cdecl __MINGW_NOTHROW vprintf (const char*, __VALIST);
 _CRTIMP int __cdecl __MINGW_NOTHROW vsprintf (char*, const char*, __VALIST);
 
-#endif
+#endif /* __USE_MINGW_ANSI_STDIO */
+
 /*
  * Regardless of user preference, always offer these alternative
  * entry points, for direct access to the MSVCRT implementations.
@@ -424,7 +410,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	fseek (FILE*, long, int);
 _CRTIMP long __cdecl __MINGW_NOTHROW	ftell (FILE*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	rewind (FILE*);
 
-#if __MSVCRT_VERSION__ >= 0x800
 _CRTIMP int __cdecl __MINGW_NOTHROW	_fseek_nolock (FILE*, long, int);
 _CRTIMP long __cdecl __MINGW_NOTHROW	_ftell_nolock (FILE*);
 
@@ -432,7 +417,6 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_fseeki64 (FILE*, __int64, int);
 _CRTIMP __int64 __cdecl __MINGW_NOTHROW	_ftelli64 (FILE*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_fseeki64_nolock (FILE*, __int64, int);
 _CRTIMP __int64 __cdecl __MINGW_NOTHROW	_ftelli64_nolock (FILE*);
-#endif
 
 #ifdef __USE_MINGW_FSEEK  /* These are in libmingwex.a */
 /*
@@ -505,7 +489,6 @@ _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_fsopen (const char*, const char*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_getmaxstdio (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_setmaxstdio (int);
 
-#if __MSVCRT_VERSION__ >= 0x800
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _get_output_format (void);
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _set_output_format (unsigned int);
 
@@ -513,7 +496,6 @@ _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _set_output_format (unsigned int);
 
 _CRTIMP int __cdecl __MINGW_NOTHROW _get_printf_count_output (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW _set_printf_count_output (int);
-#endif
 
 #ifndef _NO_OLDNAMES
 _CRTIMP int __cdecl __MINGW_NOTHROW	fgetchar (void);

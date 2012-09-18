@@ -24,6 +24,7 @@
 #ifndef _UXTHEME_H
 #define _UXTHEME_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <commctrl.h>
 
@@ -31,7 +32,7 @@
 extern "C" {
 #endif
 
-#if (_WIN32_WINNT >= 0x0501)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 #define DTBG_CLIPRECT 0x00000001
 #define DTBG_DRAWSOLID 0x00000002
 #define DTBG_OMITBORDER 0x00000004
@@ -286,9 +287,10 @@ BOOL WINAPI IsThemePartDefined(HTHEME,int,int);
 HTHEME WINAPI OpenThemeData(HWND,LPCWSTR);
 void WINAPI SetThemeAppProperties(DWORD);
 HRESULT WINAPI SetWindowTheme(HWND,LPCWSTR,LPCWSTR);
-#endif
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,6 +24,7 @@
 #ifndef _VMR9_H
 #define _VMR9_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -229,4 +230,5 @@ typedef struct VMR9AlphaBitmap{
 #ifdef __cplusplus
 }
 #endif
+
 #endif

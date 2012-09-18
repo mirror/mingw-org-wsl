@@ -24,6 +24,7 @@
 #ifndef _WINBER_H
 #define _WINBER_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * LDAP Basic Encoding Rules API
@@ -78,4 +79,5 @@ WINBERAPI BerElement *ber_alloc_t(int);
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _WINBER_H */

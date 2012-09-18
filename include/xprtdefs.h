@@ -24,6 +24,7 @@
 #ifndef _XPTRDEFS_H
 #define _XPTRDEFS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*--- DirectShow Reference - DirectShow Structures - TIMECODE_SAMPLE Structure */
 #define ED_DEVCAP_ATN_READ 0x13B7

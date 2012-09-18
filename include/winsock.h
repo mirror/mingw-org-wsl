@@ -24,6 +24,11 @@
 #ifndef _WINSOCK_H
 #define _WINSOCK_H
 #pragma GCC system_header
+#include <_mingw.h>
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN95) {
+#warning WARNING Winsock.h is included instead of winsock2.h.
+#endif
 
 /*
   Definitions for winsock 1.1
@@ -50,7 +55,9 @@ typedef unsigned int	u_int;
 typedef unsigned long	u_long;
 #define _BSDTYPES_DEFINED
 #endif /* !defined  _BSDTYPES_DEFINED */
+
 typedef u_int	SOCKET;
+
 #ifndef FD_SETSIZE
 #define FD_SETSIZE	64
 #endif
@@ -64,14 +71,17 @@ typedef u_int	SOCKET;
 /* fd_set may have be defined by the newlib <sys/types.h>
  * if  __USE_W32_SOCKETS not defined.
  */
+
 #ifdef fd_set
 #undef fd_set
 #endif
+
 typedef struct fd_set {
 	u_int   fd_count;
 	SOCKET  fd_array[FD_SETSIZE];
 } fd_set;
 int PASCAL __WSAFDIsSet(SOCKET,fd_set*);
+
 #ifndef FD_CLR
 #define FD_CLR(fd,set) do { u_int __i;\
 for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++) {\
@@ -86,24 +96,29 @@ for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++) {\
 }\
 } while (0)
 #endif
+
 #ifndef FD_SET
 #define FD_SET(fd, set) do { \
     if (((fd_set *)(set))->fd_count < FD_SETSIZE) \
 	((fd_set *)(set))->fd_array[((fd_set *)(set))->fd_count++]=(fd);\
 }while (0)
 #endif
+
 #ifndef FD_ZERO
 #define FD_ZERO(set) (((fd_set *)(set))->fd_count=0)
 #endif
+
 #ifndef FD_ISSET
 #define FD_ISSET(fd, set) __WSAFDIsSet((SOCKET)(fd), (fd_set *)(set))
 #endif
+
 #elif !defined(USE_SYS_TYPES_FD_SET)
 #warning "fd_set and associated macros have been defined in sys/types.  \
     This can cause runtime problems with W32 sockets" 
 #endif /* ndef _SYS_TYPES_FD_SET */
 
 #if !(defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
+
 #ifndef _TIMEVAL_DEFINED /* also in sys/time.h */
 #define _TIMEVAL_DEFINED
 struct timeval {
@@ -130,6 +145,7 @@ struct linger {
 	u_short l_linger;
 };
 #endif /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+
 #define IOCPARM_MASK	0x7f
 #define IOC_VOID	0x20000000
 #define IOC_OUT	0x40000000
@@ -281,6 +297,7 @@ typedef WSADATA *LPWSADATA;
 #define SO_ERROR	0x1007
 #define SO_TYPE	0x1008
 #endif /* !__INSIDE_MSYS__ */
+
 /*
  * Note that the next 5 IP defines are specific to WinSock 1.1 (wsock32.dll).
  * They will cause errors or unexpected results if used with the
@@ -333,6 +350,7 @@ struct ip_mreq {
 #define	AF_BAN	21
 #define AF_ATM	22
 #define AF_INET6	23
+
 #if !(defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
 #define AF_MAX	24
 struct sockaddr {
@@ -373,11 +391,13 @@ struct sockproto {
 #define PF_MAX	AF_MAX
 #define SOL_SOCKET	0xffff
 #define SOMAXCONN	5
+
 #if !(defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
 #define MSG_OOB	1
 #define MSG_PEEK	2
 #define MSG_DONTROUTE	4
 #endif  /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+
 #define MSG_MAXIOVLEN	16
 #define MSG_PARTIAL	0x8000
 #define MAXGETHOSTSTRUCT	1024
@@ -387,6 +407,7 @@ struct sockproto {
 #define FD_ACCEPT	8
 #define FD_CONNECT	16
 #define FD_CLOSE	32
+
 #ifndef WSABASEERR
 #define WSABASEERR	10000
 #define WSAEINTR	(WSABASEERR+4)
@@ -443,6 +464,7 @@ struct sockproto {
 #endif /* !WSABASEERR */
 
 #define WSANO_ADDRESS	WSANO_DATA
+
 #if !(defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
 #define h_errno WSAGetLastError()
 #define HOST_NOT_FOUND	WSAHOST_NOT_FOUND
@@ -451,6 +473,7 @@ struct sockproto {
 #define NO_DATA	WSANO_DATA
 #define NO_ADDRESS	WSANO_ADDRESS
 #endif /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+
 SOCKET PASCAL accept(SOCKET,struct sockaddr*,int*);
 int PASCAL bind(SOCKET,const struct sockaddr*,int);
 int PASCAL closesocket(SOCKET);
@@ -491,6 +514,7 @@ HANDLE PASCAL WSAAsyncGetHostByName(HWND,u_int,const char*,char*,int);
 HANDLE PASCAL WSAAsyncGetHostByAddr(HWND,u_int,const char*,int,int,char*,int);
 int PASCAL WSACancelAsyncRequest(HANDLE);
 int PASCAL WSAAsyncSelect(SOCKET,HWND,u_int,long);
+
 #if !(defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
 u_long PASCAL htonl(u_long);
 u_long PASCAL ntohl(u_long);

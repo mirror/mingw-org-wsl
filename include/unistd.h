@@ -24,6 +24,7 @@
 #ifndef _UNISTD_H
 #define _UNISTD_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * unistd.h maps (roughly) to io.h

@@ -24,6 +24,7 @@
 #ifndef _WTYPES_H
 #define _WTYPES_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <rpc.h>
 #include <rpcndr.h>
@@ -45,6 +46,7 @@ typedef struct _BLOB {
 	BYTE	*pBlobData;
 } BLOB,*PBLOB,*LPBLOB;
 #endif
+
 typedef enum tagDVASPECT {
 	DVASPECT_CONTENT=1,
 	DVASPECT_THUMBNAIL=2,
@@ -93,11 +95,13 @@ typedef LPWSTR LPOLESTR;
 typedef LPCWSTR LPCOLESTR;
 #define OLESTR(s) L##s
 #else
+
 typedef char OLECHAR;
 typedef LPSTR LPOLESTR;
 typedef LPCSTR LPCOLESTR;
 #define OLESTR(s) s
 #endif
+
 typedef unsigned short VARTYPE;
 typedef short VARIANT_BOOL;
 typedef VARIANT_BOOL _VARIANT_BOOL;
@@ -180,13 +184,18 @@ typedef struct tagDEC {
 } DECIMAL;
 typedef DECIMAL *LPDECIMAL;
 #define DECIMAL_NEG ((BYTE)0x80)
+
 #ifdef NONAMELESSUNION
 #define DECIMAL_SETZERO(d) {(d).DUMMYUNIONNAME2.Lo64=(d).Hi32=(d).DUMMYUNIONNAME.signscale=0;}
 #else
+
 #define DECIMAL_SETZERO(d) {(d).Lo64=(d).Hi32=(d).signscale=0;}
 #endif
+
 typedef void *HMETAFILEPICT;
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

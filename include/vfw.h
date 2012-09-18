@@ -24,9 +24,11 @@
 #ifndef _VFW_H
 #define _VFW_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <windows.h>
 #include <mmsystem.h>
+
 #ifndef _OBJC_NO_COM
 #include <ole2.h>
 #endif
@@ -374,9 +376,11 @@ extern "C" {
 #define PD_STRETCHDIB_1_1_OK	0x04
 #define PD_STRETCHDIB_1_2_OK	0x08
 #define PD_STRETCHDIB_1_N_OK	0x10
+
 #ifndef mmioFOURCC
 #define mmioFOURCC(c0,c1,c2,c3) ((DWORD)(BYTE)(c0)|((DWORD)(BYTE)(c1)<<8)|((DWORD)(BYTE)(c2)<<16)|((DWORD)(BYTE)(c3)<<24))
 #endif
+
 #ifndef aviTWOCC
 #define aviTWOCC(ch0,ch1) ((WORD)(BYTE)(ch0)|((WORD)(BYTE)(ch1)<<8))
 #endif
@@ -837,6 +841,7 @@ BOOL VFWAPI ICSeqCompressFrameStart(PCOMPVARS,LPBITMAPINFO);
 void VFWAPI ICSeqCompressFrameEnd(PCOMPVARS);
 LPVOID VFWAPI ICSeqCompressFrame(PCOMPVARS,UINT,LPVOID,BOOL*,LONG*);
 void VFWAPI ICCompressorFree(PCOMPVARS);
+
 #if !defined (_OBJC_NO_COM)
 ULONG WINAPI AVIStreamAddRef(PAVISTREAM);
 ULONG WINAPI AVIStreamRelease(PAVISTREAM);
@@ -903,12 +908,14 @@ HRESULT WINAPI AVIClearClipboard(VOID);
 HRESULT WINAPI AVIGetFromClipboard(PAVIFILE*);
 HRESULT WINAPI AVIPutFileOnClipboard(PAVIFILE);
 #endif /* _OBJC_NO_COM */
+
 #ifdef OFN_READONLY
 BOOL WINAPI GetOpenFileNamePreviewA(LPOPENFILENAMEA);
 BOOL WINAPI GetOpenFileNamePreviewW(LPOPENFILENAMEW);
 BOOL WINAPI GetSaveFileNamePreviewA(LPOPENFILENAMEA);
 BOOL WINAPI GetSaveFileNamePreviewW(LPOPENFILENAMEW);
 #endif
+
 HWND VFWAPIV MCIWndCreateA(HWND,HINSTANCE,DWORD,LPCSTR);
 HWND VFWAPIV MCIWndCreateW(HWND,HINSTANCE,DWORD,LPCWSTR);
 HDRAWDIB VFWAPI DrawDibOpen(VOID);
@@ -978,11 +985,13 @@ DWORD VFWAPI DrawDibProfileDisplay(LPBITMAPINFOHEADER);
 #define AVStreamPrevKeyFrame(pavi,pos) AVIStreamFindSample(pavi,pos-1,FIND_NEXT|FIND_KEY)
 #define AVIStreamNearestKeyFrame(pavi,pos) AVIStreamFindSample(pavi,pos,FIND_PREV|FIND_KEY)
 #define AVIStreamIsKeyFrame(pavi, pos) (AVIStreamNearestKeyFrame(pavi,pos) == pos)
+
 #ifdef __cplusplus
 #define MCIWndSM ::SendMessage
 #else
 #define MCIWndSM SendMessage
 #endif
+
 #define MCIWndCanPlay(hWnd) (BOOL)MCIWndSM(hWnd,MCIWNDM_CAN_PLAY,0,0)
 #define MCIWndCanRecord(hWnd) (BOOL)MCIWndSM(hWnd,MCIWNDM_CAN_RECORD,0,0)
 #define MCIWndCanSave(hWnd) (BOOL)MCIWndSM(hWnd,MCIWNDM_CAN_SAVE,0,0)
@@ -1214,33 +1223,18 @@ ICDecompressExQuery(HIC hic,DWORD dwFlags,LPBITMAPINFOHEADER lpbiSrc,LPVOID lpSr
 #define WM_CAP_PAL_MANUALCREATE         (WM_USER + 84)
 #define WM_CAP_SET_CALLBACK_CAPCONTROL  (WM_USER + 85)
 
-#ifdef UNICODE
-#define WM_CAP_SET_CALLBACK_ERROR       WM_CAP_SET_CALLBACK_ERRORW
-#define WM_CAP_SET_CALLBACK_FRAME       WM_CAP_SET_CALLBACK_FRAMEW
-#define WM_CAP_DRIVER_GET_NAME          WM_CAP_DRIVER_GET_NAMEW
-#define WM_CAP_DRIVER_GET_VERSION       WM_CAP_DRIVER_GET_VERSIONW
-#define WM_CAP_FILE_SET_CAPTURE_FILE    WM_CAP_FILE_SET_CAPTURE_FILEW
-#define WM_CAP_FILE_GET_CAPTURE_FILE    WM_CAP_FILE_GET_CAPTURE_FILEW
-#define WM_CAP_FILE_SAVEAS              WM_CAP_FILE_SAVEASW
-#define WM_CAP_FILE_SAVEDIB             WM_CAP_FILE_SAVEDIBW
-#define WM_CAP_SET_MCI_DEVICE           WM_CAP_SET_MCI_DEVICEW
-#define WM_CAP_GET_MCI_DEVICE           WM_CAP_GET_MCI_DEVICEW
-#define WM_CAP_PAL_OPEN                 WM_CAP_PAL_OPENW
-#define WM_CAP_PAL_SAVE                 WM_CAP_PAL_SAVEW
-#else
-#define WM_CAP_SET_CALLBACK_ERROR       WM_CAP_SET_CALLBACK_ERRORA
-#define WM_CAP_SET_CALLBACK_FRAME       WM_CAP_SET_CALLBACK_FRAMEA
-#define WM_CAP_DRIVER_GET_NAME          WM_CAP_DRIVER_GET_NAMEA
-#define WM_CAP_DRIVER_GET_VERSION       WM_CAP_DRIVER_GET_VERSIONA
-#define WM_CAP_FILE_SET_CAPTURE_FILE    WM_CAP_FILE_SET_CAPTURE_FILEA
-#define WM_CAP_FILE_GET_CAPTURE_FILE    WM_CAP_FILE_GET_CAPTURE_FILEA
-#define WM_CAP_FILE_SAVEAS              WM_CAP_FILE_SAVEASA
-#define WM_CAP_FILE_SAVEDIB             WM_CAP_FILE_SAVEDIBA
-#define WM_CAP_SET_MCI_DEVICE           WM_CAP_SET_MCI_DEVICEA
-#define WM_CAP_GET_MCI_DEVICE           WM_CAP_GET_MCI_DEVICEA
-#define WM_CAP_PAL_OPEN                 WM_CAP_PAL_OPENA
-#define WM_CAP_PAL_SAVE                 WM_CAP_PAL_SAVEA
-#endif
+#define WM_CAP_SET_CALLBACK_ERROR       __AW(WM_CAP_SET_CALLBACK_ERROR)
+#define WM_CAP_SET_CALLBACK_FRAME       __AW(WM_CAP_SET_CALLBACK_FRAME)
+#define WM_CAP_DRIVER_GET_NAME          __AW(WM_CAP_DRIVER_GET_NAME)
+#define WM_CAP_DRIVER_GET_VERSION       __AW(WM_CAP_DRIVER_GET_VERSION)
+#define WM_CAP_FILE_SET_CAPTURE_FILE    __AW(WM_CAP_FILE_SET_CAPTURE_FILE)
+#define WM_CAP_FILE_GET_CAPTURE_FILE    __AW(WM_CAP_FILE_GET_CAPTURE_FILE)
+#define WM_CAP_FILE_SAVEAS              __AW(WM_CAP_FILE_SAVEAS)
+#define WM_CAP_FILE_SAVEDIB             __AW(WM_CAP_FILE_SAVEDIB)
+#define WM_CAP_SET_MCI_DEVICE           __AW(WM_CAP_SET_MCI_DEVICE)
+#define WM_CAP_GET_MCI_DEVICE           __AW(WM_CAP_GET_MCI_DEVICE)
+#define WM_CAP_PAL_OPEN                 __AW(WM_CAP_PAL_OPEN)
+#define WM_CAP_PAL_SAVE                 __AW(WM_CAP_PAL_SAVE)
 
 #define __capSendMessage(hwnd,m,w,l) (IsWindow(hwnd)?SendMessage(hwnd,m,w,l):0)
 
@@ -1306,82 +1300,46 @@ HWND VFWAPI capCreateCaptureWindowW (LPCWSTR,DWORD,int,int,int,int,HWND,int);
 BOOL VFWAPI capGetDriverDescriptionA (UINT,LPSTR,int,LPSTR,int);
 BOOL VFWAPI capGetDriverDescriptionW (UINT,LPWSTR,int,LPWSTR,int);
 
-#ifdef UNICODE
-#define AVISTREAMINFO AVISTREAMINFOW
-#define LPAVISTREAMINFO LPAVISTREAMINFOW
-#define PAVISTREAMINFO PAVISTREAMINFOW
-#define AVIFILEINFO AVIFILEINFOW
-#define PAVIFILEINFO PAVIFILEINFOW
-#define LPAVIFILEINFO LPAVIFILEINFOW
-#define AVIStreamInfo AVIStreamInfoW
-#define AVIStreamOpenFromFile AVIStreamOpenFromFileW
-#define AVIBuildFilter AVIBuildFilterW
-#define AVISaveV AVISaveVW
-#define EditStreamSetInfo EditStreamSetInfoW
-#define EditStreamSetName EditStreamSetNameW
-#define AVIFileOpen AVIFileOpenW
-#define AVIFileInfo AVIFileInfoW
-#define AVIFileCreateStream AVIFileCreateStreamW
-#define GetOpenFileNamePreview GetOpenFileNamePreviewW
-#define GetSaveFileNamePreview GetSaveFileNamePreviewW
-#define MCIWndCreate MCIWndCreateW
-#define MCIWNDF_NOTIFYMEDIA MCIWNDF_NOTIFYMEDIAW
-#define MCIWNDM_SENDSTRING MCIWNDM_SENDSTRINGW
-#define MCIWNDM_GETPOSITION MCIWNDM_GETPOSITIONW
-#define MCIWNDM_GETMODE MCIWNDM_GETMODEW
-#define MCIWNDM_SETTIMEFORMAT MCIWNDM_SETTIMEFORMATW
-#define MCIWNDM_GETTIMEFORMAT MCIWNDM_GETTIMEFORMATW
-#define MCIWNDM_GETFILENAME MCIWNDM_GETFILENAMEW
-#define MCIWNDM_GETDEVICE MCIWNDM_GETDEVICEW
-#define MCIWNDM_GETERROR MCIWNDM_GETERRORW
-#define MCIWNDM_NEW MCIWNDM_NEWW
-#define MCIWNDM_RETURNSTRING MCIWNDM_RETURNSTRINGW
-#define MCIWNDM_OPEN MCIWNDM_OPENW
+#define AVISTREAMINFO __AW(AVISTREAMINFO)
+#define LPAVISTREAMINFO __AW(LPAVISTREAMINFO)
+#define PAVISTREAMINFO __AW(PAVISTREAMINFO)
+#define AVIFILEINFO __AW(AVIFILEINFO)
+#define PAVIFILEINFO __AW(PAVIFILEINFO)
+#define LPAVIFILEINFO __AW(LPAVIFILEINFO)
+#define AVIStreamInfo __AW(AVIStreamInfo)
+#define AVIStreamOpenFromFile __AW(AVIStreamOpenFromFile)
+#define AVIBuildFilter __AW(AVIBuildFilter)
+#define AVISaveV __AW(AVISaveV)
+#define EditStreamSetInfo __AW(EditStreamSetInfo)
+#define EditStreamSetName __AW(EditStreamSetName)
+#define AVIFileOpen __AW(AVIFileOpen)
+#define AVIFileInfo __AW(AVIFileInfo)
+#define AVIFileCreateStream __AW(AVIFileCreateStream)
+#define GetOpenFileNamePreview __AW(GetOpenFileNamePreview)
+#define GetSaveFileNamePreview __AW(GetSaveFileNamePreview)
+#define MCIWndCreate __AW(MCIWndCreate)
+#define MCIWNDF_NOTIFYMEDIA __AW(__AW(MCIWNDF_NOTIFYMEDIA)
+#define MCIWNDM_SENDSTRING __AW(__AW(MCIWNDM_SENDSTRING)
+#define MCIWNDM_GETPOSITION __AW(MCIWNDM_GETPOSITION)
+#define MCIWNDM_GETMODE __AW(MCIWNDM_GETMODE)
+#define MCIWNDM_SETTIMEFORMAT __AW(MCIWNDM_SETTIMEFORMAT)
+#define MCIWNDM_GETTIMEFORMAT __AW(MCIWNDM_GETTIMEFORMAT)
+#define MCIWNDM_GETFILENAME __AW(MCIWNDM_GETFILENAME)
+#define MCIWNDM_GETDEVICE __AW(MCIWNDM_GETDEVICE)
+#define MCIWNDM_GETERROR __AW(MCIWNDM_GETERROR)
+#define MCIWNDM_NEW __AW(MCIWNDM_NEW)
+#define MCIWNDM_RETURNSTRING __AW(MCIWNDM_RETURNSTRING)
+#define MCIWNDM_OPEN __AW(MCIWNDM_OPEN)
 
-#define capCreateCaptureWindow  capCreateCaptureWindowW
-#define capGetDriverDescription capGetDriverDescriptionW
-
-#else
-#define AVISTREAMINFO AVISTREAMINFOA
-#define LPAVISTREAMINFO LPAVISTREAMINFOA
-#define PAVISTREAMINFO PAVISTREAMINFOA
-#define AVIFILEINFO AVIFILEINFOA
-#define PAVIFILEINFO PAVIFILEINFOA
-#define LPAVIFILEINFO LPAVIFILEINFOA
-#define AVIStreamInfo AVIStreamInfoA
-#define AVIStreamOpenFromFile AVIStreamOpenFromFileA
-#define AVIBuildFilter AVIBuildFilterA
-#define AVISaveV AVISaveVA
-#define EditStreamSetInfo EditStreamSetInfoA
-#define EditStreamSetName EditStreamSetNameA
-#define AVIFileOpen AVIFileOpenA
-#define AVIFileInfo AVIFileInfoA
-#define AVIFileCreateStream AVIFileCreateStreamA
-#define GetOpenFileNamePreview GetOpenFileNamePreviewA
-#define GetSaveFileNamePreview GetSaveFileNamePreviewA
-#define MCIWndCreate MCIWndCreateA
-#define MCIWNDF_NOTIFYMEDIA MCIWNDF_NOTIFYMEDIAA
-#define MCIWNDM_SENDSTRING MCIWNDM_SENDSTRINGA
-#define MCIWNDM_GETPOSITION MCIWNDM_GETPOSITIONA
-#define MCIWNDM_GETMODE MCIWNDM_GETMODEA
-#define MCIWNDM_SETTIMEFORMAT MCIWNDM_SETTIMEFORMATA
-#define MCIWNDM_GETTIMEFORMAT MCIWNDM_GETTIMEFORMATA
-#define MCIWNDM_GETFILENAME MCIWNDM_GETFILENAMEA
-#define MCIWNDM_GETDEVICE MCIWNDM_GETDEVICEA
-#define MCIWNDM_GETERROR MCIWNDM_GETERRORA
-#define MCIWNDM_NEW MCIWNDM_NEWA
-#define MCIWNDM_RETURNSTRING MCIWNDM_RETURNSTRINGA
-#define MCIWNDM_OPEN MCIWNDM_OPENA
-
-#define capCreateCaptureWindow  capCreateCaptureWindowA
-#define capGetDriverDescription capGetDriverDescriptionA
-
-#endif
+#define capCreateCaptureWindow  __AW(capCreateCaptureWindow)
+#define capGetDriverDescription __AW(capGetDriverDescription)
 
 #endif /* RC_INVOKED */
 
 #ifdef __cplusplus
 }
 #endif
+
 #include <poppack.h>
+
 #endif /* _VFW_H */

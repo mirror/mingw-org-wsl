@@ -25,6 +25,7 @@
 #define _WINGDI_H
 #define _WINGDI_
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -183,10 +184,7 @@ extern "C" {
 #define EMR_PIXELFORMAT 104
 #define ENHMETA_SIGNATURE 1179469088
 #define EPS_SIGNATURE 0x46535045
-#if (_WIN32_WINNT >= 0x0500)
-#define FR_PRIVATE 0x10
-#define FR_NOT_ENUM 0x20
-#endif
+
 #define META_SETBKCOLOR	0x201
 #define META_SETBKMODE	0x102
 #define META_SETMAPMODE	0x103
@@ -393,9 +391,7 @@ extern "C" {
 #define PROOF_QUALITY	2
 #define NONANTIALIASED_QUALITY 3
 #define ANTIALIASED_QUALITY 4
-#if _WIN32_WINNT >= 0x0500
-#define CLEARTYPE_QUALITY 5
-#endif
+
 #define DEFAULT_PITCH	0
 #define FIXED_PITCH	1
 #define VARIABLE_PITCH	2
@@ -585,21 +581,7 @@ extern "C" {
 #define DC_DATATYPE_PRODUCED	21
 #define DC_MANUFACTURER	23
 #define DC_MODEL	24
-#if (WINVER >= 0x0500)
-#define DC_PERSONALITY	25
-#define DC_PRINTRATE	26
-#define DC_PRINTRATEUNIT	27
-#define DC_PRINTERMEM	28
-#define DC_MEDIAREADY	29
-#define DC_STAPLE	30
-#define DC_PRINTRATEPPM	31
-#define DC_COLORDEVICE	32
-#define DC_NUP	33
-#endif
-#if (WINVER >= 0x0501)
-#define DC_MEDIATYPENAMES	34
-#define DC_MEDIATYPES	35
-#endif
+
 #define DCBA_FACEUPNONE	0
 #define DCBA_FACEUPCENTER	1
 #define DCBA_FACEUPLEFT	2
@@ -616,12 +598,8 @@ extern "C" {
 #define ETO_NUMERICSLATIN 0x0800
 #define ETO_NUMERICSLOCAL 0x0400
 #define ETO_RTLREADING 0x0080
-#if (_WIN32_WINNT >= 0x0400)
 #define ETO_IGNORELANGUAGE 0x1000
-#endif
-#if (_WIN32_WINNT >= 0x0500)
-#define ETO_PDY 0x2000
-#endif
+
 #define GDICOMMENT_WINDOWS_METAFILE (-2147483647)
 #define GDICOMMENT_BEGINGROUP 2
 #define GDICOMMENT_ENDGROUP 3
@@ -704,20 +682,7 @@ extern "C" {
 #define DESKTOPHORZRES 118
 #define DESKTOPVERTRES 117
 #define BLTALIGNMENT 119
-#if(WINVER >= 0x0500)
-#define SHADEBLENDCAPS 120
-#define SB_NONE 0x00
-#define SB_CONST_ALPHA 0x01
-#define SB_PIXEL_ALPHA 0x02
-#define SB_PREMULT_ALPHA 0x04
-#define SB_GRAD_RECT 0x10
-#define SB_GRAD_TRI 0x20
-#define COLORMGMTCAPS 121
-#define CM_NONE 0x00
-#define CM_DEVICE_ICM 0x01
-#define CM_GAMMA_RAMP 0x02
-#define CM_CMYK_COLOR 0x04
-#endif
+
 #define RASTERCAPS 38
 #define RC_BANDING 2
 #define RC_BITBLT 1
@@ -825,9 +790,7 @@ extern "C" {
 #define GGO_GRAY4_BITMAP 5
 #define GGO_GRAY8_BITMAP 6
 #define GGO_GLYPH_INDEX 128
-#if (WINVER >= 0x0500)
-#define GGO_UNHINTED 256
-#endif
+
 #define GM_COMPATIBLE 1
 #define GM_ADVANCED 2
 #define MM_ANISOTROPIC 8
@@ -871,10 +834,7 @@ extern "C" {
 #define SYSTEM_FONT 13
 #define SYSTEM_FIXED_FONT 16
 #define DEFAULT_PALETTE 15
-#if (_WIN32_WINNT >= 0x0500)
-#define DC_BRUSH	18
-#define DC_PEN	19
-#endif
+
 #define SYSPAL_ERROR 0
 #define SYSPAL_STATIC 1
 #define SYSPAL_NOSTATIC 2
@@ -1088,61 +1048,8 @@ extern "C" {
 #define DMPAPER_A2	66
 #define DMPAPER_A3_TRANSVERSE	67
 #define DMPAPER_A3_EXTRA_TRANSVERSE	68
-#if (WINVER >= 0x0500)
-#define DMPAPER_DBL_JAPANESE_POSTCARD	69
-#define DMPAPER_A6	70
-#define DMPAPER_JENV_KAKU2	71
-#define DMPAPER_JENV_KAKU3	72
-#define DMPAPER_JENV_CHOU3	73
-#define DMPAPER_JENV_CHOU4	74
-#define DMPAPER_LETTER_ROTATED	75
-#define DMPAPER_A3_ROTATED	76
-#define DMPAPER_A4_ROTATED	77
-#define DMPAPER_A5_ROTATED	78
-#define DMPAPER_B4_JIS_ROTATED	79
-#define DMPAPER_B5_JIS_ROTATED	80
-#define DMPAPER_JAPANESE_POSTCARD_ROTATED	81
-#define DMPAPER_DBL_JAPANESE_POSTCARD_ROTATED	82
-#define DMPAPER_A6_ROTATED	83
-#define DMPAPER_JENV_KAKU2_ROTATED	84
-#define DMPAPER_JENV_KAKU3_ROTATED	85
-#define DMPAPER_JENV_CHOU3_ROTATED	86
-#define DMPAPER_JENV_CHOU4_ROTATED	87
-#define DMPAPER_B6_JIS	88
-#define DMPAPER_B6_JIS_ROTATED	89
-#define DMPAPER_12X11	90
-#define DMPAPER_JENV_YOU4	91
-#define DMPAPER_JENV_YOU4_ROTATED	92
-#define DMPAPER_P16K	93
-#define DMPAPER_P32K	94
-#define DMPAPER_P32KBIG	95
-#define DMPAPER_PENV_1	96
-#define DMPAPER_PENV_2	97
-#define DMPAPER_PENV_3	98
-#define DMPAPER_PENV_4	99
-#define DMPAPER_PENV_5	100
-#define DMPAPER_PENV_6	101
-#define DMPAPER_PENV_7	102
-#define DMPAPER_PENV_8	103
-#define DMPAPER_PENV_9	104
-#define DMPAPER_PENV_10	105
-#define DMPAPER_P16K_ROTATED	106
-#define DMPAPER_P32K_ROTATED	107
-#define DMPAPER_P32KBIG_ROTATED	108
-#define DMPAPER_PENV_1_ROTATED	109
-#define DMPAPER_PENV_2_ROTATED	110
-#define DMPAPER_PENV_3_ROTATED	111
-#define DMPAPER_PENV_4_ROTATED	112
-#define DMPAPER_PENV_5_ROTATED	113
-#define DMPAPER_PENV_6_ROTATED	114
-#define DMPAPER_PENV_7_ROTATED	115
-#define DMPAPER_PENV_8_ROTATED	116
-#define DMPAPER_PENV_9_ROTATED	117
-#define DMPAPER_PENV_10_ROTATED	118
-#define DMPAPER_LAST	118
-#else
 #define DMPAPER_LAST	68
-#endif
+
 #define DMPAPER_USER	256
 #define DMBIN_FIRST	1
 #define DMBIN_UPPER	1
@@ -1212,21 +1119,7 @@ extern "C" {
 #define DM_ICMINTENT 0x01000000
 #define DM_MEDIATYPE 0x02000000
 #define DM_DITHERTYPE 0x04000000
-#if(WINVER >= 0x0500)
-#define DM_PANNINGWIDTH 0x08000000
-#define DM_PANNINGHEIGHT 0x10000000
-#endif
-#if(WINVER >= 0x0501)
-#define DM_DISPLAYFIXEDOUTPUT 0x20000000
-#define DM_DISPLAYORIENTATION 0x00000080
-#define DMDO_DEFAULT 0x00000000
-#define DMDO_90 0x00000001
-#define DMDO_180 0x00000002
-#define DMDO_270 0x00000003
-#define DMDFO_DEFAULT 0x00000000
-#define DMDFO_STRETCH 0x00000001
-#define DMDFO_CENTER 0x00000002
-#endif
+
 #define DMICMMETHOD_NONE	1
 #define DMICMMETHOD_SYSTEM	2
 #define DMICMMETHOD_DRIVER	3
@@ -1319,20 +1212,9 @@ extern "C" {
 #define AC_DST_NO_ALPHA		0x20
 #define LAYOUT_RTL 1
 #define LAYOUT_BITMAPORIENTATIONPRESERVED 8
-#if (WINVER >= 0x0400)
 #define CS_ENABLE           0x00000001
 #define CS_DISABLE          0x00000002
 #define CS_DELETE_TRANSFORM 0x00000003
-#endif
-#if (WINVER >= 0x0500)
-#define GRADIENT_FILL_RECT_H 0x00
-#define GRADIENT_FILL_RECT_V 0x01
-#define GRADIENT_FILL_TRIANGLE 0x02
-#define GRADIENT_FILL_OP_FLAG 0xff
-#define COLORMATCHTOTARGET_EMBEDED 0x00000001
-#define CREATECOLORSPACE_EMBEDED   0x00000001
-#define SETICMPROFILE_EMBEDED      0x00000001
-#endif
 
 #define DISPLAY_DEVICE_ATTACHED_TO_DESKTOP 0x00000001
 #define DISPLAY_DEVICE_MULTI_DRIVER        0x00000002
@@ -1341,19 +1223,6 @@ extern "C" {
 #define DISPLAY_DEVICE_VGA_COMPATIBLE      0x00000010
 #define DISPLAY_DEVICE_REMOVABLE           0x00000020
 #define DISPLAY_DEVICE_MODESPRUNED         0x08000000
-
-#if (_WIN32_WINNT >= 0x0500)
-#define NTM_NONNEGATIVE_AC  0x00010000
-#define NTM_PS_OPENTYPE     0x00020000
-#define NTM_TT_OPENTYPE     0x00040000
-#define NTM_MULTIPLEMASTER  0x00080000
-#define NTM_TYPE1           0x00100000
-#define NTM_DSIG            0x00200000
-#endif
-
-#if (_WIN32_WINNT >= 0x0500)
-#define GGI_MARK_NONEXISTING_GLYPHS 1
-#endif
 
 #ifndef RC_INVOKED
 typedef struct _ABC {
@@ -1548,19 +1417,16 @@ typedef struct _devicemodeA {
     DWORD  dmNup;
   } DUMMYUNIONNAME2;
   DWORD  dmDisplayFrequency; 
-#if(WINVER >= 0x0400) 
   DWORD  dmICMMethod;
   DWORD  dmICMIntent;
   DWORD  dmMediaType;
   DWORD  dmDitherType;
   DWORD  dmReserved1;
   DWORD  dmReserved2;
-#if (WINVER >= 0x0500) || (_WIN32_WINNT >= 0x0400)
   DWORD  dmPanningWidth;
   DWORD  dmPanningHeight;
-#endif
-#endif /* WINVER >= 0x0400 */
 } DEVMODEA,*LPDEVMODEA,*PDEVMODEA;
+
 typedef struct _devicemodeW { 
   WCHAR   dmDeviceName[CCHDEVICENAME]; 
   WORD   dmSpecVersion; 
@@ -1601,19 +1467,16 @@ typedef struct _devicemodeW {
     DWORD  dmNup;
   } DUMMYUNIONNAME2;
   DWORD  dmDisplayFrequency; 
-#if(WINVER >= 0x0400) 
   DWORD  dmICMMethod;
   DWORD  dmICMIntent;
   DWORD  dmMediaType;
   DWORD  dmDitherType;
   DWORD  dmReserved1;
   DWORD  dmReserved2;
-#if (WINVER >= 0x0500) || (_WIN32_WINNT >= 0x0400)
   DWORD  dmPanningWidth;
   DWORD  dmPanningHeight;
-#endif
-#endif /* WINVER >= 0x0400 */
 } DEVMODEW,*LPDEVMODEW,*PDEVMODEW;
+
 typedef struct tagDIBSECTION {
 	BITMAP dsBm;
 	BITMAPINFOHEADER dsBmih;
@@ -2210,15 +2073,15 @@ typedef struct tagENHMETAHEADER {
 	DWORD nPalEntries;
 	SIZEL szlDevice;
 	SIZEL szlMillimeters;
-#if (WINVER >= 0x0400)
 	DWORD cbPixelFormat;
 	DWORD offPixelFormat;
 	DWORD bOpenGL;
-#endif
-#if (WINVER >= 0x0500)
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
 	SIZEL szlMicrometers;
 #endif
+
 } ENHMETAHEADER,*LPENHMETAHEADER;
+
 typedef struct tagMETARECORD {
 	DWORD rdSize;
 	WORD rdFunction;
@@ -2318,21 +2181,7 @@ typedef struct _GLYPHMETRICS {
 	short gmCellIncX;
 	short gmCellIncY;
 } GLYPHMETRICS,*LPGLYPHMETRICS;
-#if (_WIN32_WINNT >= 0x0500)
-typedef struct tagWCRANGE
-{
-	WCHAR wcLow;
-	USHORT cGlyphs;
-} WCRANGE, *PWCRANGE, *LPWCRANGE;
-typedef struct tagGLYPHSET
-{
-	DWORD cbThis;
-	DWORD flAccel;
-	DWORD cGlyphsSupported;
-	DWORD cRanges;
-	WCRANGE ranges[1];
-} GLYPHSET, *PGLYPHSET, *LPGLYPHSET;
-#endif
+
 typedef struct tagKERNINGPAIR {
 	WORD wFirst;
 	WORD wSecond;
@@ -2633,18 +2482,7 @@ typedef struct _DESIGNVECTOR {
 	DWORD dvNumAxes;
 	LONG dvValues[MM_MAX_NUMAXES];
 } DESIGNVECTOR, *PDESIGNVECTOR, FAR *LPDESIGNVECTOR;
-#if _WIN32_WINNT >= 0x0500
-typedef struct tagENUMLOGFONTEXDVA
-{
-	ENUMLOGFONTEXA elfEnumLogfontEx;
-	DESIGNVECTOR elfDesignVector;
-} ENUMLOGFONTEXDVA, *PENUMLOGFONTEXDVA, *LPENUMLOGFONTEXDVA;
-typedef struct tagENUMLOGFONTEXDVW
-{
-	ENUMLOGFONTEXW elfEnumLogfontEx;
-	DESIGNVECTOR elfDesignVector;
-} ENUMLOGFONTEXDVW, *PENUMLOGFONTEXDVW, *LPENUMLOGFONTEXDVW;
-#endif /* _WIN32_WINNT >= 0x0500 */
+
 typedef USHORT COLOR16;
 typedef struct _TRIVERTEX {
 	LONG x;
@@ -2715,11 +2553,7 @@ WINGDIAPI int WINAPI AbortDoc(HDC);
 WINGDIAPI BOOL WINAPI AbortPath(HDC);
 WINGDIAPI int WINAPI AddFontResourceA(LPCSTR);
 WINGDIAPI int WINAPI AddFontResourceW(LPCWSTR);
-#if (_WIN32_WINNT >= 0x0500)
-WINGDIAPI HANDLE WINAPI AddFontMemResourceEx(PVOID,DWORD,PVOID,DWORD *);
-WINGDIAPI int WINAPI AddFontResourceExA(LPCSTR,DWORD,PVOID);
-WINGDIAPI int WINAPI AddFontResourceExW(LPCWSTR,DWORD,PVOID);
-#endif
+
 WINGDIAPI BOOL WINAPI AngleArc(HDC,int,int,DWORD,FLOAT,FLOAT);
 WINGDIAPI BOOL WINAPI AnimatePalette(HPALETTE,UINT,UINT,const PALETTEENTRY*);
 WINGDIAPI BOOL WINAPI Arc(HDC,int,int,int,int,int,int,int,int);
@@ -2733,10 +2567,7 @@ WINGDIAPI int WINAPI ChoosePixelFormat(HDC,CONST PIXELFORMATDESCRIPTOR*);
 WINGDIAPI HENHMETAFILE WINAPI CloseEnhMetaFile(HDC);
 WINGDIAPI BOOL WINAPI CloseFigure(HDC);
 WINGDIAPI HMETAFILE WINAPI CloseMetaFile(HDC);
-#if (_WIN32_WINDOWS >= 0x0410 || _WIN32_WINNT >= 0x0500)
-WINGDIAPI BOOL WINAPI ColorCorrectPalette(HDC,HPALETTE,DWORD,DWORD);
-WINGDIAPI BOOL WINAPI ColorMatchToTarget(HDC,HDC,DWORD);
-#endif
+
 WINGDIAPI int WINAPI CombineRgn(HRGN,HRGN,HRGN,int);
 WINGDIAPI BOOL WINAPI CombineTransform(LPXFORM,const XFORM*,const XFORM*);
 WINGDIAPI HENHMETAFILE WINAPI CopyEnhMetaFileA(HENHMETAFILE,LPCSTR);
@@ -2856,10 +2687,7 @@ WINGDIAPI HANDLE WINAPI GetColorSpace(HDC);
 WINGDIAPI HGDIOBJ WINAPI GetCurrentObject(HDC,UINT);
 WINGDIAPI BOOL WINAPI GetCurrentPositionEx(HDC,LPPOINT);
 WINGDIAPI HCURSOR WINAPI GetCursor(void);
-#if (WINVER >= 0x0500)
-WINGDIAPI COLORREF WINAPI GetDCBrushColor(HDC);
-WINGDIAPI COLORREF WINAPI GetDCPenColor(HDC);
-#endif
+
 WINGDIAPI BOOL WINAPI GetDCOrgEx(HDC,LPPOINT);
 WINGDIAPI int WINAPI GetDeviceCaps(HDC,int);
 WINGDIAPI BOOL WINAPI GetDeviceGammaRamp(HDC,PVOID);
@@ -2920,9 +2748,7 @@ WINGDIAPI BOOL WINAPI GetTextExtentExPointA(HDC,LPCSTR,int,int,LPINT,LPINT,LPSIZ
 WINGDIAPI BOOL WINAPI GetTextExtentExPointW( HDC,LPCWSTR,int,int,LPINT,LPINT,LPSIZE );
 WINGDIAPI BOOL WINAPI GetTextExtentPointA(HDC,LPCSTR,int,LPSIZE);
 WINGDIAPI BOOL WINAPI GetTextExtentPointW(HDC,LPCWSTR,int,LPSIZE);
-#if (_WIN32_WINNT >= 0x0500)
-WINGDIAPI BOOL WINAPI GetTextExtentExPointI(HDC, LPWORD, int, int, LPINT, LPINT, LPSIZE);
-#endif
+
 #ifdef _WIN32_WCE
 extern BOOL GetTextExtentPoint32A(HDC,LPCSTR,int,LPSIZE);
 extern BOOL GetTextExtentPoint32W( HDC,LPCWSTR,int,LPSIZE);
@@ -2930,6 +2756,7 @@ extern BOOL GetTextExtentPoint32W( HDC,LPCWSTR,int,LPSIZE);
 WINGDIAPI BOOL WINAPI GetTextExtentPoint32A(HDC,LPCSTR,int,LPSIZE);
 WINGDIAPI BOOL WINAPI GetTextExtentPoint32W( HDC,LPCWSTR,int,LPSIZE);
 #endif
+
 WINGDIAPI int WINAPI GetTextFaceA(HDC,int,LPSTR);
 WINGDIAPI int WINAPI GetTextFaceW(HDC,int,LPWSTR);
 WINGDIAPI BOOL WINAPI GetTextMetricsA(HDC,LPTEXTMETRICA);
@@ -2979,11 +2806,7 @@ WINGDIAPI BOOL WINAPI RectInRegion(HRGN,LPCRECT);
 WINGDIAPI BOOL WINAPI RectVisible(HDC,LPCRECT);
 WINGDIAPI BOOL WINAPI RemoveFontResourceA(LPCSTR);
 WINGDIAPI BOOL WINAPI RemoveFontResourceW(LPCWSTR);
-#if (_WIN32_WINNT >= 0x0500)
-WINGDIAPI BOOL WINAPI RemoveFontMemResourceEx(HANDLE);
-WINGDIAPI BOOL WINAPI RemoveFontResourceExA(LPCSTR,DWORD,PVOID);
-WINGDIAPI BOOL WINAPI RemoveFontResourceExW(LPCWSTR,DWORD,PVOID);
-#endif
+
 WINGDIAPI HDC WINAPI ResetDCA(HDC,const DEVMODEA*);
 WINGDIAPI HDC WINAPI ResetDCW(HDC,const DEVMODEW*);
 WINGDIAPI BOOL WINAPI ResizePalette(HPALETTE,UINT);
@@ -3006,10 +2829,7 @@ WINGDIAPI UINT WINAPI SetBoundsRect(HDC,LPCRECT,UINT);
 WINGDIAPI BOOL WINAPI SetBrushOrgEx(HDC,int,int,LPPOINT);
 WINGDIAPI BOOL WINAPI SetColorAdjustment(HDC,const COLORADJUSTMENT*);
 WINGDIAPI BOOL WINAPI SetColorSpace(HDC,HCOLORSPACE);
-#if (_WIN32_WINNT >= 0x0500)
-WINGDIAPI COLORREF WINAPI SetDCBrushColor(HDC,COLORREF);
-WINGDIAPI COLORREF WINAPI SetDCPenColor(HDC,COLORREF);
-#endif
+
 WINGDIAPI BOOL WINAPI SetDeviceGammaRamp(HDC,PVOID);
 WINGDIAPI UINT WINAPI SetDIBColorTable(HDC,UINT,UINT,const RGBQUAD*);
 WINGDIAPI int WINAPI SetDIBits(HDC,HBITMAP,UINT,UINT,PCVOID,const BITMAPINFO*,UINT);
@@ -3077,180 +2897,257 @@ WINGDIAPI BOOL WINAPI wglUseFontBitmapsA(HDC,DWORD,DWORD,DWORD);
 WINGDIAPI BOOL WINAPI wglUseFontBitmapsW(HDC,DWORD,DWORD,DWORD);
 WINGDIAPI BOOL WINAPI wglUseFontOutlinesA(HDC,DWORD,DWORD,DWORD,FLOAT,FLOAT,int,LPGLYPHMETRICSFLOAT);
 WINGDIAPI BOOL WINAPI wglUseFontOutlinesW(HDC,DWORD,DWORD,DWORD,FLOAT,FLOAT,int,LPGLYPHMETRICSFLOAT);
-#if (WINVER >= 0x0410)
+
+/* Cannot use __AW(). */
+#ifdef UNICODE
+typedef WCHAR BCHAR;
+#else
+typedef BYTE BCHAR;
+#endif
+
+typedef __AW(DOCINFO) DOCINFO, *LPDOCINFO;
+typedef __AW(LOGFONT) LOGFONT,*PLOGFONT,*LPLOGFONT;
+typedef __AW(TEXTMETRIC) TEXTMETRIC,*PTEXTMETRIC,*LPTEXTMETRIC;
+#define ICMENUMPROC __AW(ICMENUMPROC)
+#define FONTENUMPROC __AW(FONTENUMPROC)
+typedef __AW(DEVMODE) DEVMODE,*PDEVMODE,*LPDEVMODE;
+typedef __AW(EXTLOGFONT) EXTLOGFONT,*PEXTLOGFONT,*LPEXTLOGFONT;
+typedef __AW(GCP_RESULTS) GCP_RESULTS,*LPGCP_RESULTS;
+typedef __AW(OUTLINETEXTMETRIC) OUTLINETEXTMETRIC,*POUTLINETEXTMETRIC,*LPOUTLINETEXTMETRIC;
+typedef __AW(POLYTEXT) POLYTEXT,*PPOLYTEXT,*LPPOLYTEXT;
+typedef __AW(LOGCOLORSPACE) LOGCOLORSPACE,*LPLOGCOLORSPACE;
+typedef __AW(NEWTEXTMETRIC) NEWTEXTMETRIC,*PNEWTEXTMETRIC,*LPNEWTEXTMETRIC;
+typedef __AW(NEWTEXTMETRICEX) NEWTEXTMETRICEX;
+typedef __AW(ENUMLOGFONT) ENUMLOGFONT,*LPENUMLOGFONT;
+typedef __AW(ENUMLOGFONTEX) ENUMLOGFONTEX,*LPENUMLOGFONTEX;
+typedef __AW(DISPLAY_DEVICE) DISPLAY_DEVICE, *PDISPLAY_DEVICE, *LPDISPLAY_DEVICE;
+#define AddFontResource __AW(AddFontResource)
+
+#define CopyEnhMetaFile __AW(CopyEnhMetaFile)
+#define CopyMetaFile __AW(CopyMetaFile)
+#define CreateColorSpace __AW(CreateColorSpace)
+#define CreateDC __AW(CreateDC)
+#define CreateEnhMetaFile __AW(CreateEnhMetaFile)
+#define CreateFont __AW(CreateFont)
+#define CreateFontIndirect __AW(CreateFontIndirect)
+#define CreateIC __AW(CreateIC)
+#define CreateMetaFile __AW(CreateMetaFile)
+#define CreateScalableFontResource __AW(CreateScalableFontResource)
+#define DeviceCapabilities __AW(DeviceCapabilities)
+#define EnumFontFamilies __AW(EnumFontFamilies)
+#define EnumFontFamiliesEx __AW(EnumFontFamiliesEx)
+#define EnumFonts __AW(EnumFonts)
+#define EnumICMProfiles __AW(EnumICMProfiles)
+#define ExtTextOut __AW(ExtTextOut)
+#define GetCharABCWidthsFloat __AW(GetCharABCWidthsFloat)
+#define GetCharABCWidths __AW(GetCharABCWidths)
+#define GetCharacterPlacement __AW(GetCharacterPlacement)
+#define GetCharWidth32 __AW(GetCharWidth32)
+#define GetCharWidthFloat __AW(GetCharWidthFloat)
+#define GetCharWidth __AW(GetCharWidth)
+#define GetEnhMetaFile __AW(GetEnhMetaFile)
+#define GetEnhMetaFileDescription __AW(GetEnhMetaFileDescription)
+#define GetGlyphOutline __AW(GetGlyphOutline)
+#define GetICMProfile __AW(GetICMProfile)
+#define GetKerningPairs __AW(GetKerningPairs)
+#define GetLogColorSpace __AW(GetLogColorSpace)
+#define GetMetaFile __AW(GetMetaFile)
+#define GetObject __AW(GetObject)
+#define GetOutlineTextMetrics __AW(GetOutlineTextMetrics)
+#define GetTextExtentPoint __AW(GetTextExtentPoint)
+#define GetTextExtentExPoint __AW(GetTextExtentExPoint)
+#define GetTextExtentPoint32 __AW(GetTextExtentPoint32)
+#define GetTextFace __AW(GetTextFace)
+#define GetTextMetrics __AW(GetTextMetrics)
+#define PolyTextOut __AW(PolyTextOut)
+#define RemoveFontResource __AW(RemoveFontResource)
+
+#define ResetDC __AW(ResetDC)
+#define SetICMProfile __AW(SetICMProfile)
+#define StartDoc __AW(StartDoc)
+#define TextOut __AW(TextOut)
+#define UpdateICMRegKey __AW(UpdateICMRegKey)
+#define wglUseFontBitmaps __AW(wglUseFontBitmaps)
+#define wglUseFontOutlines __AW(wglUseFontOutlines)
+
+#endif /* RC_INVOKED */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN98)
+
+#ifndef RC_INVOKED
+WINGDIAPI BOOL WINAPI ColorCorrectPalette(HDC,HPALETTE,DWORD,DWORD);
+WINGDIAPI BOOL WINAPI ColorMatchToTarget(HDC,HDC,DWORD);
 WINGDIAPI BOOL WINAPI AlphaBlend(HDC,int,int,int,int,HDC,int,int,int,int,BLENDFUNCTION);
 WINGDIAPI BOOL WINAPI GradientFill(HDC,PTRIVERTEX,ULONG,PVOID,ULONG,ULONG);
 WINGDIAPI BOOL WINAPI TransparentBlt(HDC,int,int,int,int,HDC,int,int,int,int,UINT);
-#endif
-#if (_WIN32_WINNT >= 0x0500)
+#endif /* ! RC_INVOKED */
+
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN98) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+#define FR_PRIVATE 0x10
+#define FR_NOT_ENUM 0x20
+#define CLEARTYPE_QUALITY 5
+#define DC_PERSONALITY	25
+#define DC_PRINTRATE	26
+#define DC_PRINTRATEUNIT	27
+#define DC_PRINTERMEM	28
+#define DC_MEDIAREADY	29
+#define DC_STAPLE	30
+#define DC_PRINTRATEPPM	31
+#define DC_COLORDEVICE	32
+#define DC_NUP	33
+#define ETO_PDY 0x2000
+#define SHADEBLENDCAPS 120
+#define SB_NONE 0x00
+#define SB_CONST_ALPHA 0x01
+#define SB_PIXEL_ALPHA 0x02
+#define SB_PREMULT_ALPHA 0x04
+#define SB_GRAD_RECT 0x10
+#define SB_GRAD_TRI 0x20
+#define COLORMGMTCAPS 121
+#define CM_NONE 0x00
+#define CM_DEVICE_ICM 0x01
+#define CM_GAMMA_RAMP 0x02
+#define CM_CMYK_COLOR 0x04
+#define GGO_UNHINTED 256
+#define DC_BRUSH	18
+#define DC_PEN	19
+#define DMPAPER_DBL_JAPANESE_POSTCARD	69
+#define DMPAPER_A6	70
+#define DMPAPER_JENV_KAKU2	71
+#define DMPAPER_JENV_KAKU3	72
+#define DMPAPER_JENV_CHOU3	73
+#define DMPAPER_JENV_CHOU4	74
+#define DMPAPER_LETTER_ROTATED	75
+#define DMPAPER_A3_ROTATED	76
+#define DMPAPER_A4_ROTATED	77
+#define DMPAPER_A5_ROTATED	78
+#define DMPAPER_B4_JIS_ROTATED	79
+#define DMPAPER_B5_JIS_ROTATED	80
+#define DMPAPER_JAPANESE_POSTCARD_ROTATED	81
+#define DMPAPER_DBL_JAPANESE_POSTCARD_ROTATED	82
+#define DMPAPER_A6_ROTATED	83
+#define DMPAPER_JENV_KAKU2_ROTATED	84
+#define DMPAPER_JENV_KAKU3_ROTATED	85
+#define DMPAPER_JENV_CHOU3_ROTATED	86
+#define DMPAPER_JENV_CHOU4_ROTATED	87
+#define DMPAPER_B6_JIS	88
+#define DMPAPER_B6_JIS_ROTATED	89
+#define DMPAPER_12X11	90
+#define DMPAPER_JENV_YOU4	91
+#define DMPAPER_JENV_YOU4_ROTATED	92
+#define DMPAPER_P16K	93
+#define DMPAPER_P32K	94
+#define DMPAPER_P32KBIG	95
+#define DMPAPER_PENV_1	96
+#define DMPAPER_PENV_2	97
+#define DMPAPER_PENV_3	98
+#define DMPAPER_PENV_4	99
+#define DMPAPER_PENV_5	100
+#define DMPAPER_PENV_6	101
+#define DMPAPER_PENV_7	102
+#define DMPAPER_PENV_8	103
+#define DMPAPER_PENV_9	104
+#define DMPAPER_PENV_10	105
+#define DMPAPER_P16K_ROTATED	106
+#define DMPAPER_P32K_ROTATED	107
+#define DMPAPER_P32KBIG_ROTATED	108
+#define DMPAPER_PENV_1_ROTATED	109
+#define DMPAPER_PENV_2_ROTATED	110
+#define DMPAPER_PENV_3_ROTATED	111
+#define DMPAPER_PENV_4_ROTATED	112
+#define DMPAPER_PENV_5_ROTATED	113
+#define DMPAPER_PENV_6_ROTATED	114
+#define DMPAPER_PENV_7_ROTATED	115
+#define DMPAPER_PENV_8_ROTATED	116
+#define DMPAPER_PENV_9_ROTATED	117
+#define DMPAPER_PENV_10_ROTATED	118
+#undef DMPAPER_LAST
+#define DMPAPER_LAST	118
+#define DM_PANNINGWIDTH 0x08000000
+#define DM_PANNINGHEIGHT 0x10000000
+#define GRADIENT_FILL_RECT_H 0x00
+#define GRADIENT_FILL_RECT_V 0x01
+#define GRADIENT_FILL_TRIANGLE 0x02
+#define GRADIENT_FILL_OP_FLAG 0xff
+#define COLORMATCHTOTARGET_EMBEDED 0x00000001
+#define CREATECOLORSPACE_EMBEDED   0x00000001
+#define SETICMPROFILE_EMBEDED      0x00000001
+#define NTM_NONNEGATIVE_AC  0x00010000
+#define NTM_PS_OPENTYPE     0x00020000
+#define NTM_TT_OPENTYPE     0x00040000
+#define NTM_MULTIPLEMASTER  0x00080000
+#define NTM_TYPE1           0x00100000
+#define NTM_DSIG            0x00200000
+#define GGI_MARK_NONEXISTING_GLYPHS 1
+
+#ifndef RC_INVOKED
+typedef struct tagWCRANGE
+{
+	WCHAR wcLow;
+	USHORT cGlyphs;
+} WCRANGE, *PWCRANGE, *LPWCRANGE;
+typedef struct tagGLYPHSET
+{
+	DWORD cbThis;
+	DWORD flAccel;
+	DWORD cGlyphsSupported;
+	DWORD cRanges;
+	WCRANGE ranges[1];
+} GLYPHSET, *PGLYPHSET, *LPGLYPHSET;
+typedef struct tagENUMLOGFONTEXDVA
+{
+	ENUMLOGFONTEXA elfEnumLogfontEx;
+	DESIGNVECTOR elfDesignVector;
+} ENUMLOGFONTEXDVA, *PENUMLOGFONTEXDVA, *LPENUMLOGFONTEXDVA;
+typedef struct tagENUMLOGFONTEXDVW
+{
+	ENUMLOGFONTEXW elfEnumLogfontEx;
+	DESIGNVECTOR elfDesignVector;
+} ENUMLOGFONTEXDVW, *PENUMLOGFONTEXDVW, *LPENUMLOGFONTEXDVW;
+WINGDIAPI HANDLE WINAPI AddFontMemResourceEx(PVOID,DWORD,PVOID,DWORD *);
+WINGDIAPI int WINAPI AddFontResourceExA(LPCSTR,DWORD,PVOID);
+WINGDIAPI int WINAPI AddFontResourceExW(LPCWSTR,DWORD,PVOID);
+WINGDIAPI COLORREF WINAPI GetDCBrushColor(HDC);
+WINGDIAPI COLORREF WINAPI GetDCPenColor(HDC);
+WINGDIAPI BOOL WINAPI GetTextExtentExPointI(HDC, LPWORD, int, int, LPINT, LPINT, LPSIZE);
+WINGDIAPI BOOL WINAPI RemoveFontMemResourceEx(HANDLE);
+WINGDIAPI BOOL WINAPI RemoveFontResourceExA(LPCSTR,DWORD,PVOID);
+WINGDIAPI BOOL WINAPI RemoveFontResourceExW(LPCWSTR,DWORD,PVOID);
+WINGDIAPI COLORREF WINAPI SetDCBrushColor(HDC,COLORREF);
+WINGDIAPI COLORREF WINAPI SetDCPenColor(HDC,COLORREF);
 WINGDIAPI DWORD WINAPI GetFontUnicodeRanges(HDC,LPGLYPHSET);
 WINGDIAPI DWORD WINAPI GetGlyphIndicesA(HDC,LPCSTR,int,LPWORD,DWORD);
 WINGDIAPI DWORD WINAPI GetGlyphIndicesW(HDC,LPCWSTR,int,LPWORD,DWORD);
-#endif
-#if (WINVER >= 0x0500)
 WINGDIAPI DWORD WINAPI GetLayout(HDC);
 WINGDIAPI DWORD WINAPI SetLayout(HDC, DWORD);
-#endif
+typedef __AW(ENUMLOGFONTEXDV) ENUMLOGFONTEXDV;
+typedef __AW(PENUMLOGFONTEXDV) PENUMLOGFONTEXDV;
+typedef __AW(LPENUMLOGFONTEXDV) LPENUMLOGFONTEXDV;
+#define AddFontResourceEx __AW(AddFontResourceEx)
+#define RemoveFontResourceEx __AW(RemoveFontResourceEx)
+#define GetGlyphIndices  __AW(GetGlyphIndices)
+#endif /* ! RC_INVOKED */
 
-#ifdef UNICODE
-typedef WCHAR BCHAR;
-typedef DOCINFOW DOCINFO, *LPDOCINFO;
-typedef LOGFONTW LOGFONT,*PLOGFONT,*LPLOGFONT;
-typedef TEXTMETRICW TEXTMETRIC,*PTEXTMETRIC,*LPTEXTMETRIC;
-#define ICMENUMPROC ICMENUMPROCW
-#define FONTENUMPROC FONTENUMPROCW
-typedef DEVMODEW DEVMODE,*PDEVMODE,*LPDEVMODE;
-#if _WIN32_WINNT >= 0x0500
-typedef ENUMLOGFONTEXDVW ENUMLOGFONTEXDV;
-typedef PENUMLOGFONTEXDVW PENUMLOGFONTEXDV;
-typedef LPENUMLOGFONTEXDVW LPENUMLOGFONTEXDV;
-#endif
-typedef EXTLOGFONTW EXTLOGFONT,*PEXTLOGFONT,*LPEXTLOGFONT;
-typedef GCP_RESULTSW GCP_RESULTS,*LPGCP_RESULTS;
-typedef OUTLINETEXTMETRICW OUTLINETEXTMETRIC,*POUTLINETEXTMETRIC,*LPOUTLINETEXTMETRIC;
-typedef POLYTEXTW POLYTEXT,*PPOLYTEXT,*LPPOLYTEXT;
-typedef LOGCOLORSPACEW LOGCOLORSPACE,*LPLOGCOLORSPACE;
-typedef NEWTEXTMETRICW NEWTEXTMETRIC,*PNEWTEXTMETRIC,*LPNEWTEXTMETRIC;
-typedef NEWTEXTMETRICEXW NEWTEXTMETRICEX;
-typedef ENUMLOGFONTW ENUMLOGFONT,*LPENUMLOGFONT;
-typedef ENUMLOGFONTEXW ENUMLOGFONTEX,*LPENUMLOGFONTEX;
-typedef DISPLAY_DEVICEW DISPLAY_DEVICE, *PDISPLAY_DEVICE, *LPDISPLAY_DEVICE;
-#define AddFontResource AddFontResourceW
-#if (_WIN32_WINNT >= 0x0500)
-#define AddFontResourceEx AddFontResourceExW
-#endif
-#define CopyEnhMetaFile CopyEnhMetaFileW
-#define CopyMetaFile CopyMetaFileW
-#define CreateColorSpace CreateColorSpaceW
-#define CreateDC CreateDCW
-#define CreateEnhMetaFile CreateEnhMetaFileW
-#define CreateFont CreateFontW
-#define CreateFontIndirect CreateFontIndirectW
-#define CreateIC CreateICW
-#define CreateMetaFile CreateMetaFileW
-#define CreateScalableFontResource CreateScalableFontResourceW
-#define DeviceCapabilities DeviceCapabilitiesW
-#define EnumFontFamilies EnumFontFamiliesW
-#define EnumFontFamiliesEx EnumFontFamiliesExW
-#define EnumFonts EnumFontsW
-#define EnumICMProfiles EnumICMProfilesW
-#define ExtTextOut ExtTextOutW
-#define GetCharABCWidthsFloat GetCharABCWidthsFloatW
-#define GetCharABCWidths GetCharABCWidthsW
-#define GetCharacterPlacement GetCharacterPlacementW
-#define GetCharWidth32 GetCharWidth32W
-#define GetCharWidthFloat GetCharWidthFloatW
-#define GetCharWidth GetCharWidthW
-#define GetEnhMetaFile GetEnhMetaFileW
-#define GetEnhMetaFileDescription GetEnhMetaFileDescriptionW
-#define GetGlyphOutline GetGlyphOutlineW
-#define GetICMProfile GetICMProfileW
-#define GetKerningPairs GetKerningPairsW
-#define GetLogColorSpace GetLogColorSpaceW
-#define GetMetaFile GetMetaFileW
-#define GetObject GetObjectW
-#define GetOutlineTextMetrics GetOutlineTextMetricsW
-#define GetTextExtentPoint GetTextExtentPointW
-#define GetTextExtentExPoint GetTextExtentExPointW
-#define GetTextExtentPoint32 GetTextExtentPoint32W
-#define GetTextFace GetTextFaceW
-#define GetTextMetrics GetTextMetricsW
-#define PolyTextOut PolyTextOutW
-#define RemoveFontResource RemoveFontResourceW
-#if (_WIN32_WINNT >= 0x0500)
-#define RemoveFontResourceEx RemoveFontResourceExW
-#endif
-#define ResetDC ResetDCW
-#define SetICMProfile SetICMProfileW
-#define StartDoc StartDocW
-#define TextOut TextOutW
-#define UpdateICMRegKey UpdateICMRegKeyW
-#define wglUseFontBitmaps wglUseFontBitmapsW
-#define wglUseFontOutlines wglUseFontOutlinesW
-#if (_WIN32_WINNT >= 0x0500)
-#define GetGlyphIndices  GetGlyphIndicesW
-#endif
-#else  /* UNICODE */
-typedef BYTE BCHAR;
-typedef DOCINFOA DOCINFO, *LPDOCINFO;
-typedef LOGFONTA LOGFONT,*PLOGFONT,*LPLOGFONT;
-typedef TEXTMETRICA TEXTMETRIC,*PTEXTMETRIC,*LPTEXTMETRIC;
-#define ICMENUMPROC ICMENUMPROCA
-#define FONTENUMPROC FONTENUMPROCA
-typedef DEVMODEA DEVMODE,*PDEVMODE,*LPDEVMODE;
-#if _WIN32_WINNT >= 0x0500
-typedef ENUMLOGFONTEXDVA ENUMLOGFONTEXDV;
-typedef PENUMLOGFONTEXDVA PENUMLOGFONTEXDV;
-typedef LPENUMLOGFONTEXDVA LPENUMLOGFONTEXDV;
-#endif
-typedef EXTLOGFONTA EXTLOGFONT,*PEXTLOGFONT,*LPEXTLOGFONT;
-typedef GCP_RESULTSA GCP_RESULTS,*LPGCP_RESULTS;
-typedef OUTLINETEXTMETRICA OUTLINETEXTMETRIC,*POUTLINETEXTMETRIC,*LPOUTLINETEXTMETRIC;
-typedef POLYTEXTA POLYTEXT,*PPOLYTEXT,*LPPOLYTEXT;
-typedef LOGCOLORSPACEA LOGCOLORSPACE,*LPLOGCOLORSPACE;
-typedef NEWTEXTMETRICA NEWTEXTMETRIC,*PNEWTEXTMETRIC,*LPNEWTEXTMETRIC;
-typedef NEWTEXTMETRICEXA NEWTEXTMETRICEX;
-typedef ENUMLOGFONTA ENUMLOGFONT,*LPENUMLOGFONT;
-typedef ENUMLOGFONTEXA ENUMLOGFONTEX,*LPENUMLOGFONTEX;
-typedef DISPLAY_DEVICEA DISPLAY_DEVICE, *PDISPLAY_DEVICE, *LPDISPLAY_DEVICE;
-#define AddFontResource AddFontResourceA
-#if (_WIN32_WINNT >= 0x0500)
-#define AddFontResourceEx AddFontResourceExA
-#endif
-#define CopyEnhMetaFile CopyEnhMetaFileA
-#define CopyMetaFile CopyMetaFileA
-#define CreateColorSpace CreateColorSpaceA
-#define CreateDC CreateDCA
-#define CreateEnhMetaFile CreateEnhMetaFileA
-#define CreateFont CreateFontA
-#define CreateFontIndirect CreateFontIndirectA
-#define CreateIC CreateICA
-#define CreateMetaFile CreateMetaFileA
-#define CreateScalableFontResource CreateScalableFontResourceA
-#define DeviceCapabilities DeviceCapabilitiesA
-#define EnumFontFamilies EnumFontFamiliesA
-#define EnumFontFamiliesEx EnumFontFamiliesExA
-#define EnumFonts EnumFontsA
-#define EnumICMProfiles EnumICMProfilesA
-#define ExtTextOut ExtTextOutA
-#define GetCharWidthFloat GetCharWidthFloatA
-#define GetCharWidth GetCharWidthA
-#define GetCharacterPlacement GetCharacterPlacementA
-#define GetCharABCWidths GetCharABCWidthsA
-#define GetCharABCWidthsFloat GetCharABCWidthsFloatA
-#define GetCharWidth32 GetCharWidth32A
-#define GetEnhMetaFile GetEnhMetaFileA
-#define GetEnhMetaFileDescription GetEnhMetaFileDescriptionA
-#define GetGlyphOutline GetGlyphOutlineA
-#define GetICMProfile GetICMProfileA
-#define GetKerningPairs GetKerningPairsA
-#define GetLogColorSpace GetLogColorSpaceA
-#define GetMetaFile GetMetaFileA
-#define GetObject GetObjectA
-#define GetOutlineTextMetrics GetOutlineTextMetricsA
-#define GetTextExtentPoint GetTextExtentPointA
-#define GetTextExtentExPoint GetTextExtentExPointA
-#define GetTextExtentPoint32 GetTextExtentPoint32A
-#define GetTextFace GetTextFaceA
-#define GetTextMetrics GetTextMetricsA
-#define PolyTextOut PolyTextOutA
-#define RemoveFontResource RemoveFontResourceA
-#if (_WIN32_WINNT >= 0x0500)
-#define RemoveFontResourceEx RemoveFontResourceExA
-#endif
-#define ResetDC ResetDCA
-#define SetICMProfile SetICMProfileA
-#define StartDoc StartDocA
-#define TextOut TextOutA
-#define UpdateICMRegKey UpdateICMRegKeyA
-#define wglUseFontBitmaps wglUseFontBitmapsA
-#define wglUseFontOutlines wglUseFontOutlinesA
-#if (_WIN32_WINNT >= 0x0500)
-#define GetGlyphIndices  GetGlyphIndicesA
-#endif
-#endif /* UNICODE */
-#endif /* RC_INVOKED */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
+#define DC_MEDIATYPENAMES	34
+#define DC_MEDIATYPES	35
+#define DM_DISPLAYFIXEDOUTPUT 0x20000000
+#define DM_DISPLAYORIENTATION 0x00000080
+#define DMDO_DEFAULT 0x00000000
+#define DMDO_90 0x00000001
+#define DMDO_180 0x00000002
+#define DMDO_270 0x00000003
+#define DMDFO_DEFAULT 0x00000000
+#define DMDFO_STRETCH 0x00000001
+#define DMDFO_CENTER 0x00000002
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

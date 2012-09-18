@@ -24,15 +24,16 @@
 #ifndef _UNKNWN_H
 #define _UNKNWN_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>
 #endif
 
-
 #ifdef __cplusplus
 extern "C"{
 #endif
+
 #include <objfwd.h>
 #include <wtypes.h>
 
@@ -40,6 +41,7 @@ void * __RPC_USER MIDL_user_allocate(size_t);
 void __RPC_USER MIDL_user_free(void*);
 EXTERN_C const IID IID_IUnknown;
 EXTERN_C const IID IID_IClassFactory;
+
 #ifndef __IUnknown_INTERFACE_DEFINED__
 #define __IUnknown_INTERFACE_DEFINED__
 #define INTERFACE IUnknown
@@ -52,6 +54,7 @@ DECLARE_INTERFACE(IUnknown)
 #undef INTERFACE
 typedef IUnknown *LPUNKNOWN;
 #endif
+
 #ifndef __IClassFactory_INTERFACE_DEFINED__
 #define __IClassFactory_INTERFACE_DEFINED__
 #define INTERFACE IClassFactory
@@ -66,6 +69,7 @@ DECLARE_INTERFACE_(IClassFactory,IUnknown)
 #undef INTERFACE
 typedef IClassFactory *LPCLASSFACTORY;
 #endif
+
 HRESULT STDMETHODCALLTYPE IUnknown_QueryInterface_Proxy(IUnknown*,REFIID,void**);
 void __RPC_STUB IUnknown_QueryInterface_Stub(LPRPCSTUBBUFFER,LPRPCCHANNELBUFFER,PRPC_MESSAGE,PDWORD);
 ULONG STDMETHODCALLTYPE IUnknown_AddRef_Proxy(IUnknown*);
@@ -92,7 +96,9 @@ HRESULT STDMETHODCALLTYPE IClassFactory_LockServer_Stub(IClassFactory*,BOOL);
 #define IClassFactory_CreateInstance(T,p,r,O) (T)->lpVtbl->CreateInstance(T,p,r,O)
 #define IClassFactory_LockServer(T,f) (T)->lpVtbl->LockServer(T,f)
 #endif /* COBJMACROS */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif

@@ -24,6 +24,7 @@
 #ifndef _WINSVC_H
 #define _WINSVC_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef WINADVAPI
 #define WINADVAPI
@@ -32,6 +33,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define SERVICES_ACTIVE_DATABASEA "ServicesActive"
 #define SERVICES_ACTIVE_DATABASEW L"ServicesActive"
 #define SERVICES_FAILED_DATABASEA "ServicesFailed"
@@ -263,72 +265,40 @@ WINADVAPI BOOL WINAPI StartServiceCtrlDispatcherW(LPSERVICE_TABLE_ENTRYW);
 WINADVAPI BOOL WINAPI StartServiceW(SC_HANDLE,DWORD,LPCWSTR*);
 WINADVAPI BOOL WINAPI UnlockServiceDatabase(SC_LOCK);
 
-#ifdef UNICODE
-typedef ENUM_SERVICE_STATUSW ENUM_SERVICE_STATUS,*LPENUM_SERVICE_STATUS;
-typedef ENUM_SERVICE_STATUS_PROCESSW ENUM_SERVICE_STATUS_PROCESS;
-typedef LPENUM_SERVICE_STATUS_PROCESSW LPENUM_SERVICE_STATUS_PROCESS;
-typedef QUERY_SERVICE_CONFIGW QUERY_SERVICE_CONFIG,*LPQUERY_SERVICE_CONFIG;
-typedef QUERY_SERVICE_LOCK_STATUSW QUERY_SERVICE_LOCK_STATUS,*LPQUERY_SERVICE_LOCK_STATUS;
-typedef SERVICE_TABLE_ENTRYW SERVICE_TABLE_ENTRY,*LPSERVICE_TABLE_ENTRY;
-typedef LPSERVICE_MAIN_FUNCTIONW LPSERVICE_MAIN_FUNCTION;
-typedef SERVICE_DESCRIPTIONW SERVICE_DESCRIPTION;
-typedef LPSERVICE_DESCRIPTIONW LPSERVICE_DESCRIPTION;
-typedef SERVICE_FAILURE_ACTIONSW SERVICE_FAILURE_ACTIONS;
-typedef LPSERVICE_FAILURE_ACTIONSW LPSERVICE_FAILURE_ACTIONS;
-#define SERVICES_ACTIVE_DATABASE SERVICES_ACTIVE_DATABASEW
-#define SERVICES_FAILED_DATABASE SERVICES_FAILED_DATABASEW
-#define SC_GROUP_IDENTIFIER SC_GROUP_IDENTIFIERW
-#define ChangeServiceConfig ChangeServiceConfigW
-#define ChangeServiceConfig2 ChangeServiceConfig2W
-#define CreateService CreateServiceW
-#define EnumDependentServices EnumDependentServicesW
-#define EnumServicesStatus EnumServicesStatusW
-#define EnumServicesStatusEx  EnumServicesStatusExW
-#define GetServiceDisplayName GetServiceDisplayNameW
-#define GetServiceKeyName GetServiceKeyNameW
-#define OpenSCManager OpenSCManagerW
-#define OpenService OpenServiceW
-#define QueryServiceConfig QueryServiceConfigW
-#define QueryServiceConfig2 QueryServiceConfig2W
-#define QueryServiceLockStatus QueryServiceLockStatusW
-#define RegisterServiceCtrlHandler RegisterServiceCtrlHandlerW
-#define RegisterServiceCtrlHandlerEx RegisterServiceCtrlHandlerExW
-#define StartService StartServiceW
-#define StartServiceCtrlDispatcher StartServiceCtrlDispatcherW
-#else
-typedef ENUM_SERVICE_STATUSA ENUM_SERVICE_STATUS,*LPENUM_SERVICE_STATUS;
-typedef ENUM_SERVICE_STATUS_PROCESSA ENUM_SERVICE_STATUS_PROCESS;
-typedef LPENUM_SERVICE_STATUS_PROCESSA LPENUM_SERVICE_STATUS_PROCESS;
-typedef QUERY_SERVICE_CONFIGA QUERY_SERVICE_CONFIG,*LPQUERY_SERVICE_CONFIG;
-typedef QUERY_SERVICE_LOCK_STATUSA QUERY_SERVICE_LOCK_STATUS,*LPQUERY_SERVICE_LOCK_STATUS;
-typedef SERVICE_TABLE_ENTRYA SERVICE_TABLE_ENTRY,*LPSERVICE_TABLE_ENTRY;
-typedef LPSERVICE_MAIN_FUNCTIONA LPSERVICE_MAIN_FUNCTION;
-typedef SERVICE_DESCRIPTIONA SERVICE_DESCRIPTION;
-typedef LPSERVICE_DESCRIPTIONA LPSERVICE_DESCRIPTION;
-typedef SERVICE_FAILURE_ACTIONSA SERVICE_FAILURE_ACTIONS;
-typedef LPSERVICE_FAILURE_ACTIONSA LPSERVICE_FAILURE_ACTIONS;
-#define SERVICES_ACTIVE_DATABASE SERVICES_ACTIVE_DATABASEA
-#define SERVICES_FAILED_DATABASE SERVICES_FAILED_DATABASEA
-#define SC_GROUP_IDENTIFIER SC_GROUP_IDENTIFIERA
-#define ChangeServiceConfig ChangeServiceConfigA
-#define ChangeServiceConfig2 ChangeServiceConfig2A
-#define CreateService CreateServiceA
-#define EnumDependentServices EnumDependentServicesA
-#define EnumServicesStatus EnumServicesStatusA
-#define EnumServicesStatusEx  EnumServicesStatusExA
-#define GetServiceDisplayName GetServiceDisplayNameA
-#define GetServiceKeyName GetServiceKeyNameA
-#define OpenSCManager OpenSCManagerA
-#define OpenService OpenServiceA
-#define QueryServiceConfig QueryServiceConfigA
-#define QueryServiceConfig2 QueryServiceConfig2A
-#define QueryServiceLockStatus QueryServiceLockStatusA
-#define RegisterServiceCtrlHandler RegisterServiceCtrlHandlerA
-#define RegisterServiceCtrlHandlerEx RegisterServiceCtrlHandlerExA
-#define StartService StartServiceA
-#define StartServiceCtrlDispatcher StartServiceCtrlDispatcherA
-#endif
+typedef __AW(ENUM_SERVICE_STATUS) ENUM_SERVICE_STATUS,*LPENUM_SERVICE_STATUS;
+typedef __AW(ENUM_SERVICE_STATUS_PROCESS) ENUM_SERVICE_STATUS_PROCESS;
+typedef __AW(LPENUM_SERVICE_STATUS_PROCESS) LPENUM_SERVICE_STATUS_PROCESS;
+typedef __AW(QUERY_SERVICE_CONFIG) QUERY_SERVICE_CONFIG,*LPQUERY_SERVICE_CONFIG;
+typedef __AW(QUERY_SERVICE_LOCK_STATUS) QUERY_SERVICE_LOCK_STATUS,*LPQUERY_SERVICE_LOCK_STATUS;
+typedef __AW(SERVICE_TABLE_ENTRY) SERVICE_TABLE_ENTRY,*LPSERVICE_TABLE_ENTRY;
+typedef __AW(LPSERVICE_MAIN_FUNCTION) LPSERVICE_MAIN_FUNCTION;
+typedef __AW(SERVICE_DESCRIPTION) SERVICE_DESCRIPTION;
+typedef __AW(LPSERVICE_DESCRIPTION) LPSERVICE_DESCRIPTION;
+typedef __AW(SERVICE_FAILURE_ACTIONS) SERVICE_FAILURE_ACTIONS;
+typedef __AW(LPSERVICE_FAILURE_ACTIONS) LPSERVICE_FAILURE_ACTIONS;
+#define SERVICES_ACTIVE_DATABASE __AW(SERVICES_ACTIVE_DATABASE)
+#define SERVICES_FAILED_DATABASE __AW(SERVICES_FAILED_DATABASE)
+#define SC_GROUP_IDENTIFIER __AW(SC_GROUP_IDENTIFIER)
+#define ChangeServiceConfig __AW(ChangeServiceConfig)
+#define ChangeServiceConfig2 __AW(ChangeServiceConfig2)
+#define CreateService __AW(CreateService)
+#define EnumDependentServices __AW(EnumDependentServices)
+#define EnumServicesStatus __AW(EnumServicesStatus)
+#define EnumServicesStatusEx  __AW(EnumServicesStatusEx)
+#define GetServiceDisplayName __AW(GetServiceDisplayName)
+#define GetServiceKeyName __AW(GetServiceKeyName)
+#define OpenSCManager __AW(OpenSCManager)
+#define OpenService __AW(OpenService)
+#define QueryServiceConfig __AW(QueryServiceConfig)
+#define QueryServiceConfig2 __AW(QueryServiceConfig2)
+#define QueryServiceLockStatus __AW(QueryServiceLockStatus)
+#define RegisterServiceCtrlHandler __AW(RegisterServiceCtrlHandler)
+#define RegisterServiceCtrlHandlerEx __AW(RegisterServiceCtrlHandlerEx)
+#define StartService __AW(StartService)
+#define StartServiceCtrlDispatcher __AW(StartServiceCtrlDispatcher)
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif /* _WINSVC_H */

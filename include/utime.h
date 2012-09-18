@@ -24,6 +24,7 @@
 #ifndef _UTIME_H
 #define _UTIME_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <sys/utime.h>
 

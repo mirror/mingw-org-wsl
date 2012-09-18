@@ -24,6 +24,7 @@
 #ifndef _VALUES_H
 #define _VALUES_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * TODO: Nothing here yet. Should provide UNIX compatibility constants

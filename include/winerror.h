@@ -24,6 +24,7 @@
 #ifndef _WINERROR_H
 #define _WINERROR_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define _HRESULT_TYPEDEF_(_sc) ((HRESULT)_sc)
 
@@ -205,9 +206,11 @@
 #define ERROR_VC_DISCONNECTED 240L
 #define ERROR_INVALID_EA_NAME 254L
 #define ERROR_EA_LIST_INCONSISTENT 255L
+
 #ifndef WAIT_TIMEOUT /* also in winbase.h */
 #define WAIT_TIMEOUT 258L
 #endif
+
 #define ERROR_NO_MORE_ITEMS 259L
 #define ERROR_CANNOT_COPY 266L
 #define ERROR_DIRECTORY 267L

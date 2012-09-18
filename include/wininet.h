@@ -24,11 +24,14 @@
 #ifndef _WININET_H
 #define _WININET_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #include <windows.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #define INTERNET_INVALID_PORT_NUMBER 0
 #define INTERNET_DEFAULT_FTP_PORT 21
 #define INTERNET_DEFAULT_GOPHER_PORT 70
@@ -752,27 +755,15 @@ typedef struct {
 	DWORD dwFlags;
 } INTERNET_CONNECTED_INFO, * LPINTERNET_CONNECTED_INFO;
 
-#ifdef UNICODE
-typedef URL_COMPONENTSW URL_COMPONENTS;
-typedef LPURL_COMPONENTSW LPURL_COMPONENTS;
-typedef GOPHER_FIND_DATAW GOPHER_FIND_DATA;
-typedef LPGOPHER_FIND_DATAW LPGOPHER_FIND_DATA;
-typedef INTERNET_CACHE_ENTRY_INFOW INTERNET_CACHE_ENTRY_INFO;
-typedef LPINTERNET_CACHE_ENTRY_INFOW LPINTERNET_CACHE_ENTRY_INFO;
-typedef INTERNET_BUFFERSW INTERNET_BUFFERS,*LPINTERNET_BUFFERS;
-typedef INTERNET_CACHE_GROUP_INFOW INTERNET_CACHE_GROUP_INFO;
-typedef LPINTERNET_CACHE_GROUP_INFOW LPINTERNET_CACHE_GROUP_INFO;
-#else
-typedef URL_COMPONENTSA URL_COMPONENTS;
-typedef LPURL_COMPONENTSA LPURL_COMPONENTS;
-typedef GOPHER_FIND_DATAA GOPHER_FIND_DATA;
-typedef LPGOPHER_FIND_DATAA LPGOPHER_FIND_DATA;
-typedef INTERNET_CACHE_ENTRY_INFOA INTERNET_CACHE_ENTRY_INFO;
-typedef LPINTERNET_CACHE_ENTRY_INFOA LPINTERNET_CACHE_ENTRY_INFO;
-typedef INTERNET_BUFFERSA INTERNET_BUFFERS,*LPINTERNET_BUFFERS;
-typedef INTERNET_CACHE_GROUP_INFOA INTERNET_CACHE_GROUP_INFO;
-typedef LPINTERNET_CACHE_GROUP_INFOA LPINTERNET_CACHE_GROUP_INFO;
-#endif
+typedef __AW(URL_COMPONENTS) URL_COMPONENTS;
+typedef __AW(LPURL_COMPONENTS) LPURL_COMPONENTS;
+typedef __AW(GOPHER_FIND_DATA) GOPHER_FIND_DATA;
+typedef __AW(LPGOPHER_FIND_DATA) LPGOPHER_FIND_DATA;
+typedef __AW(INTERNET_CACHE_ENTRY_INFO) INTERNET_CACHE_ENTRY_INFO;
+typedef __AW(LPINTERNET_CACHE_ENTRY_INFO) LPINTERNET_CACHE_ENTRY_INFO;
+typedef __AW(INTERNET_BUFFERS) INTERNET_BUFFERS,*LPINTERNET_BUFFERS;
+typedef __AW(INTERNET_CACHE_GROUP_INFO) INTERNET_CACHE_GROUP_INFO;
+typedef __AW(LPINTERNET_CACHE_GROUP_INFO) LPINTERNET_CACHE_GROUP_INFO;
 BOOL WINAPI InternetTimeFromSystemTime(SYSTEMTIME*,DWORD,LPSTR,DWORD);
 BOOL WINAPI InternetTimeToSystemTime(LPCSTR,SYSTEMTIME*,DWORD);
 BOOL WINAPI InternetDebugGetLocalTime(SYSTEMTIME*,PDWORD);
@@ -903,111 +894,59 @@ BOOL WINAPI GetUrlCacheGroupAttributeW(GROUPID,DWORD,DWORD,LPINTERNET_CACHE_GROU
 BOOL WINAPI SetUrlCacheGroupAttributeA(GROUPID,DWORD,DWORD,LPINTERNET_CACHE_GROUP_INFOA,LPVOID);
 BOOL WINAPI SetUrlCacheGroupAttributeW(GROUPID,DWORD,DWORD,LPINTERNET_CACHE_GROUP_INFOW,LPVOID);
 
-#ifdef UNICODE
-#define InternetCrackUrl InternetCrackUrlW
-#define InternetCreateUrl InternetCreateUrlW
-#define InternetCanonicalizeUrl InternetCanonicalizeUrlW
-#define InternetCheckConnection InternetCheckConnectionW
-#define InternetCombineUrl InternetCombineUrlW
-#define InternetOpen InternetOpenW
-#define InternetConnect InternetConnectW
-#define InternetOpenUrl InternetOpenUrlW
-#define InternetFindNextFile InternetFindNextFileW
-#define InternetQueryOption InternetQueryOptionW
-#define InternetSetOption InternetSetOptionW
-#define InternetSetOptionEx InternetSetOptionExW
-#define InternetGetLastResponseInfo InternetGetLastResponseInfoW
-#define InternetReadFileEx  InternetReadFileExW
-#define FtpFindFirstFile FtpFindFirstFileW
-#define FtpGetFile FtpGetFileW
-#define FtpPutFile FtpPutFileW
-#define FtpDeleteFile FtpDeleteFileW
-#define FtpRenameFile FtpRenameFileW
-#define FtpOpenFile FtpOpenFileW
-#define FtpCreateDirectory FtpCreateDirectoryW
-#define FtpRemoveDirectory FtpRemoveDirectoryW
-#define FtpSetCurrentDirectory FtpSetCurrentDirectoryW
-#define FtpGetCurrentDirectory FtpGetCurrentDirectoryW
-#define FtpCommand FtpCommandW
-#define GopherGetLocatorType GopherGetLocatorTypeW
-#define GopherCreateLocator GopherCreateLocatorW
-#define GopherFindFirstFile GopherFindFirstFileW
-#define GopherOpenFile GopherOpenFileW
-#define GopherGetAttribute GopherGetAttributeW
-#define HttpSendRequest HttpSendRequestW
-#define HttpOpenRequest HttpOpenRequestW
-#define HttpAddRequestHeaders HttpAddRequestHeadersW
-#define HttpQueryInfo HttpQueryInfoW
-#define InternetSetCookie InternetSetCookieW
-#define InternetGetCookie InternetGetCookieW
-#define CreateUrlCacheEntry CreateUrlCacheEntryW
-#define RetrieveUrlCacheEntryStream RetrieveUrlCacheEntryStreamW
-#define FindNextUrlCacheEntry FindNextUrlCacheEntryW
-#define CommitUrlCacheEntry CommitUrlCacheEntryW
-#define GetUrlCacheEntryInfo GetUrlCacheEntryInfoW
-#define SetUrlCacheEntryInfo SetUrlCacheEntryInfoW
-#define FindFirstUrlCacheEntry FindFirstUrlCacheEntryW
-#define RetrieveUrlCacheEntryFile RetrieveUrlCacheEntryFileW
-#define HttpSendRequestEx	 HttpSendRequestExW
-#define HttpEndRequest		 HttpEndRequestW
-#define GetUrlCacheGroupAttribute  GetUrlCacheGroupAttributeW
-#define SetUrlCacheGroupAttribute  SetUrlCacheGroupAttributeW
-#define DeleteUrlCacheEntry  DeleteUrlCacheEntryW
-
-#else
-#define GopherGetAttribute GopherGetAttributeA
-#define InternetCrackUrl InternetCrackUrlA
-#define InternetCreateUrl InternetCreateUrlA
-#define InternetCanonicalizeUrl InternetCanonicalizeUrlA
-#define InternetCheckConnection InternetCheckConnectionA
-#define InternetCombineUrl InternetCombineUrlA
-#define InternetOpen InternetOpenA
-#define InternetConnect InternetConnectA
-#define InternetOpenUrl InternetOpenUrlA
-#define InternetFindNextFile InternetFindNextFileA
-#define InternetQueryOption InternetQueryOptionA
-#define InternetSetOption InternetSetOptionA
-#define InternetSetOptionEx InternetSetOptionExA
-#define InternetGetLastResponseInfo InternetGetLastResponseInfoA
-#define InternetReadFileEx  InternetReadFileExA
-#define FtpFindFirstFile FtpFindFirstFileA
-#define FtpGetFile FtpGetFileA
-#define FtpPutFile FtpPutFileA
-#define FtpDeleteFile FtpDeleteFileA
-#define FtpRenameFile FtpRenameFileA
-#define FtpOpenFile FtpOpenFileA
-#define FtpCreateDirectory FtpCreateDirectoryA
-#define FtpRemoveDirectory FtpRemoveDirectoryA
-#define FtpSetCurrentDirectory FtpSetCurrentDirectoryA
-#define FtpGetCurrentDirectory FtpGetCurrentDirectoryA
-#define FtpCommand FtpCommandA
-#define GopherGetLocatorType GopherGetLocatorTypeA
-#define GopherCreateLocator GopherCreateLocatorA
-#define GopherFindFirstFile GopherFindFirstFileA
-#define GopherOpenFile GopherOpenFileA
-#define HttpSendRequest HttpSendRequestA
-#define HttpOpenRequest HttpOpenRequestA
-#define HttpAddRequestHeaders HttpAddRequestHeadersA
-#define HttpQueryInfo HttpQueryInfoA
-#define InternetSetCookie InternetSetCookieA
-#define InternetGetCookie InternetGetCookieA
-#define CreateUrlCacheEntry CreateUrlCacheEntryA
-#define RetrieveUrlCacheEntryStream RetrieveUrlCacheEntryStreamA
-#define FindNextUrlCacheEntry FindNextUrlCacheEntryA
-#define CommitUrlCacheEntry CommitUrlCacheEntryA
-#define GetUrlCacheEntryInfo GetUrlCacheEntryInfoA
-#define SetUrlCacheEntryInfo SetUrlCacheEntryInfoA
-#define FindFirstUrlCacheEntry FindFirstUrlCacheEntryA
-#define RetrieveUrlCacheEntryFile RetrieveUrlCacheEntryFileA
-#define HttpSendRequestEx	 HttpSendRequestExA
-#define HttpEndRequest		 HttpEndRequestA
-#define GetUrlCacheGroupAttribute  GetUrlCacheGroupAttributeA
-#define SetUrlCacheGroupAttribute  SetUrlCacheGroupAttributeA
-#define DeleteUrlCacheEntry  DeleteUrlCacheEntryA
-
-#endif /* UNICODE */
+#define InternetCrackUrl __AW(InternetCrackUrl)
+#define InternetCreateUrl __AW(InternetCreateUrl)
+#define InternetCanonicalizeUrl __AW(InternetCanonicalizeUrl)
+#define InternetCheckConnection __AW(InternetCheckConnection)
+#define InternetCombineUrl __AW(InternetCombineUrl)
+#define InternetOpen __AW(InternetOpen)
+#define InternetConnect __AW(InternetConnect)
+#define InternetOpenUrl __AW(InternetOpenUrl)
+#define InternetFindNextFile __AW(InternetFindNextFile)
+#define InternetQueryOption __AW(InternetQueryOption)
+#define InternetSetOption __AW(InternetSetOption)
+#define InternetSetOptionEx __AW(InternetSetOptionEx)
+#define InternetGetLastResponseInfo __AW(InternetGetLastResponseInfo)
+#define InternetReadFileEx  __AW(InternetReadFileEx)
+#define FtpFindFirstFile __AW(FtpFindFirstFile)
+#define FtpGetFile __AW(FtpGetFile)
+#define FtpPutFile __AW(FtpPutFile)
+#define FtpDeleteFile __AW(FtpDeleteFile)
+#define FtpRenameFile __AW(FtpRenameFile)
+#define FtpOpenFile __AW(FtpOpenFile)
+#define FtpCreateDirectory __AW(FtpCreateDirectory)
+#define FtpRemoveDirectory __AW(FtpRemoveDirectory)
+#define FtpSetCurrentDirectory __AW(FtpSetCurrentDirectory)
+#define FtpGetCurrentDirectory __AW(FtpGetCurrentDirectory)
+#define FtpCommand __AW(FtpCommand)
+#define GopherGetLocatorType __AW(GopherGetLocatorType)
+#define GopherCreateLocator __AW(GopherCreateLocator)
+#define GopherFindFirstFile __AW(GopherFindFirstFile)
+#define GopherOpenFile __AW(GopherOpenFile)
+#define GopherGetAttribute __AW(GopherGetAttribute)
+#define HttpSendRequest __AW(HttpSendRequest)
+#define HttpOpenRequest __AW(HttpOpenRequest)
+#define HttpAddRequestHeaders __AW(HttpAddRequestHeaders)
+#define HttpQueryInfo __AW(HttpQueryInfo)
+#define InternetSetCookie __AW(InternetSetCookie)
+#define InternetGetCookie __AW(InternetGetCookie)
+#define CreateUrlCacheEntry __AW(CreateUrlCacheEntry)
+#define RetrieveUrlCacheEntryStream __AW(RetrieveUrlCacheEntryStream)
+#define FindNextUrlCacheEntry __AW(FindNextUrlCacheEntry)
+#define CommitUrlCacheEntry __AW(CommitUrlCacheEntry)
+#define GetUrlCacheEntryInfo __AW(GetUrlCacheEntryInfo)
+#define SetUrlCacheEntryInfo __AW(SetUrlCacheEntryInfo)
+#define FindFirstUrlCacheEntry __AW(FindFirstUrlCacheEntry)
+#define RetrieveUrlCacheEntryFile __AW(RetrieveUrlCacheEntryFile)
+#define HttpSendRequestEx	 __AW(HttpSendRequestEx)
+#define HttpEndRequest		 __AW(HttpEndRequest)
+#define GetUrlCacheGroupAttribute  __AW(GetUrlCacheGroupAttribute)
+#define SetUrlCacheGroupAttribute  __AW(SetUrlCacheGroupAttribute)
+#define DeleteUrlCacheEntry  __AW(DeleteUrlCacheEntry)
 #endif /* RC_INVOKED */
+
 #ifdef __cplusplus
 }
 #endif
+
 #endif
