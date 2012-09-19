@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __WINDDK_H
+#define __WINDDK_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Windows Device Driver Kit
  */
-
-#ifndef __WINDDK_H
-#define __WINDDK_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {
@@ -45,12 +45,15 @@ extern "C" {
 #ifndef NTOSAPI
 #define NTOSAPI DECL_EXPORT
 #endif
+
 #define DECLARE_INTERNAL_OBJECT(x) typedef struct _##x; typedef struct _##x *P##x;
 #define DECLARE_INTERNAL_OBJECT2(x,y) typedef struct _##x; typedef struct _##x *P##y;
 #else
+
 #ifndef NTOSAPI
 #define NTOSAPI DECL_IMPORT
 #endif
+
 #define DECLARE_INTERNAL_OBJECT(x) struct _##x; typedef struct _##x *P##x;
 #define DECLARE_INTERNAL_OBJECT2(x,y) struct _##x; typedef struct _##x *P##y;
 #endif

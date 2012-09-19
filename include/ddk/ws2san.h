@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __WS2SAN_H
+#define __WS2SAN_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * WinSock Direct (SAN) support
  */
-
-#ifndef __WS2SAN_H
-#define __WS2SAN_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

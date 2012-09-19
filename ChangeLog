@@ -2,6 +2,98 @@
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.
 
+	* include/ddk/atm.h (_mingw.h): Include.
+	* include/ddk/batclass.h: Ditto.
+	* include/ddk/cfg.h: Ditto.
+	* include/ddk/cfgmgr32.h: Ditto.
+	* include/ddk/d4drvif.h: Ditto.
+	* include/ddk/d4iface.h: Ditto.
+	* include/ddk/ddkmapi.h: Ditto.
+	* include/ddk/hidclass.h: Ditto.
+	* include/ddk/hidpi.h: Ditto.
+	* include/ddk/hidsdi.h: Ditto.
+	* include/ddk/hidusage.h: Ditto.
+	* include/ddk/kbdmou.h: Ditto.
+	* include/ddk/mcd.h: Ditto.
+	* include/ddk/miniport.h: Ditto.
+	* include/ddk/minitape.h: Ditto.
+	* include/ddk/mountdev.h: Ditto.
+	* include/ddk/mountmgr.h: Ditto.
+	* include/ddk/ndis.h: Ditto.
+	* include/ddk/ndisguid.h: Ditto.
+	* include/ddk/ndistapi.h: Ditto.
+	* include/ddk/ndiswan.h: Ditto.
+	* include/ddk/netevent.h: Ditto.
+	* include/ddk/netpnp.h: Ditto.
+	* include/ddk/newdev.h: Ditto.
+	* include/ddk/ntapi.h: Ditto.
+	* include/ddk/ntdd8042.h: Ditto.
+	* include/ddk/ntddbeep.h: Ditto.
+	* include/ddk/ntddcdrm.h: Ditto.
+	* include/ddk/ntddcdvd.h: Ditto.
+	* include/ddk/ntddchgr.h: Ditto.
+	* include/ddk/ntdddisk.h: Ditto.
+	* include/ddk/ntddk.h: Ditto.
+	* include/ddk/ntddkbd.h: Ditto.
+	* include/ddk/ntddmou.h: Ditto.
+	* include/ddk/ntddndis.h: Ditto.
+	* include/ddk/ntddpar.h: Ditto.
+	* include/ddk/ntddpcm.h: Ditto.
+	* include/ddk/ntddscsi.h: Ditto.
+	* include/ddk/ntddser.h: Ditto.
+	* include/ddk/ntddstor.h: Ditto.
+	* include/ddk/ntddtape.h: Ditto.
+	* include/ddk/ntddtdi.h: Ditto.
+	* include/ddk/ntddvdeo.h: Ditto.
+	* include/ddk/ntddvol.h: Ditto.
+	* include/ddk/ntifs.h: Ditto.
+	* include/ddk/ntpoapi.h: Ditto.
+	* include/ddk/ntstatus.h: Ditto.
+	* include/ddk/parallel.h: Ditto.
+	* include/ddk/pfhook.h: Ditto.
+	* include/ddk/poclass.h: Ditto.
+	* include/ddk/scsi.h: Ditto.
+	* include/ddk/scsiscan.h: Ditto.
+	* include/ddk/scsiwmi.h: Ditto.
+	* include/ddk/smbus.h: Ditto.
+	* include/ddk/srb.h: Ditto.
+	* include/ddk/storport.h: Ditto.
+	* include/ddk/tdi.h: Ditto.
+	* include/ddk/tdiinfo.h: Ditto.
+	* include/ddk/tdikrnl.h: Ditto.
+	* include/ddk/tdistat.h: Ditto.
+	* include/ddk/tvout.h: Ditto.
+	* include/ddk/upssvc.h: Ditto.
+	* include/ddk/usb.h: Ditto.
+	* include/ddk/usb100.h: Ditto.
+	* include/ddk/usbcamdi.h: Ditto.
+	* include/ddk/usbdi.h: Ditto.
+	* include/ddk/usbioctl.h: Ditto.
+	* include/ddk/usbiodef.h: Ditto.
+	* include/ddk/usbscan.h: Ditto.
+	* include/ddk/usbuser.h: Ditto.
+	* include/ddk/video.h: Ditto.
+	* include/ddk/videoagp.h: Ditto.
+	* include/ddk/win2k.h: Ditto.
+	* include/ddk/winddi.h: Ditto.
+	* include/ddk/winddk.h: Ditto.
+	* include/ddk/winnt4.h: Ditto.
+	* include/ddk/winxp.h: Ditto.
+	* include/ddk/ws2san.h: Ditto.
+	* include/ddk/xfilter.h: Ditto.
+
+	* include/ddk/cfgmgr32.h (UNICODE): Use __AW() macro for mapping
+	non-specific symbols.
+	* include/ddk/newdev.h: Ditto.
+
+	* include/ddk/kbdmou.h (GCC system_header): Add pragma.
+
+	* TODO: Add entries.
+
+2012-09-19  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
 	* include/sys/fcntl.h (_mingw.h): Include.
 	* include/sys/file.h: Ditto.
 	* include/sys/param.h: Ditto.

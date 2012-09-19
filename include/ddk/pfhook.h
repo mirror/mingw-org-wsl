@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __PFHOOK_H
+#define __PFHOOK_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Packet filter API
  */
-
-#ifndef __PFHOOK_H
-#define __PFHOOK_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

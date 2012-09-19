@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDD8042_H
+#define __NTDD8042_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * i8042 IOCTL interface.
  */
-
-#ifndef __NTDD8042_H
-#define __NTDD8042_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

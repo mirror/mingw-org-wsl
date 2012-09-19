@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDSTOR_H
+#define __NTDDSTOR_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Storage class IOCTL interface.
  */
-
-#ifndef __NTDDSTOR_H
-#define __NTDDSTOR_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

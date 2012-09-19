@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDMOU_H
+#define __NTDDMOU_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Mouse device IOCTL interface.
  */
-
-#ifndef __NTDDMOU_H
-#define __NTDDMOU_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

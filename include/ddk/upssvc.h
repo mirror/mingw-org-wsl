@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __UPSSVC_H
+#define __UPSSVC_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * UPS service interface
  */
-
-#ifndef __UPSSVC_H
-#define __UPSSVC_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

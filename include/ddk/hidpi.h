@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __HIDPI_H
+#define __HIDPI_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Public Interface for HID parsing library.
  */
-
-#ifndef __HIDPI_H
-#define __HIDPI_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

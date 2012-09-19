@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __CFGMGR32_H
+#define __CFGMGR32_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * PnP configuration manager
  */
-
-#ifndef __CFGMGR32_H
-#define __CFGMGR32_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {
@@ -142,13 +142,8 @@ typedef DEVNODE *PDEVNODE, *PDEVINST;
 typedef CHAR *DEVNODEID_A, *DEVINSTID_A;
 typedef WCHAR *DEVNODEID_W, *DEVINSTID_W;
 
-#ifdef UNICODE
-typedef DEVNODEID_W DEVNODEID;
-typedef DEVINSTID_W DEVINSTID;
-#else
-typedef DEVNODEID_A DEVNODEID;
-typedef DEVINSTID_A DEVINSTID;
-#endif
+typedef __AW(DEVNODEID_) DEVNODEID;
+typedef __AW(DEVINSTID_) DEVINSTID;
 
 typedef ULONG REGDISPOSITION;
 
@@ -555,15 +550,8 @@ typedef struct _CONFLICT_DETAILS_W {
   WCHAR  CD_szDescription[MAX_PATH];
 } CONFLICT_DETAILS_W , *PCONFLICT_DETAILS_W;
 
-#ifdef UNICODE
-typedef CONFLICT_DETAILS_W CONFLICT_DETAILS;
-typedef PCONFLICT_DETAILS_W PCONFLICT_DETAILS;
-#else
-typedef CONFLICT_DETAILS_A CONFLICT_DETAILS;
-typedef PCONFLICT_DETAILS_A PCONFLICT_DETAILS;
-#endif
-
-
+typedef __AW(CONFLICT_DETAILS_) CONFLICT_DETAILS;
+typedef __AW(PCONFLICT_DETAILS_) PCONFLICT_DETAILS;
 
 /* CM_Add_Empty_Log_Conf.ulFlags constants */
 #define PRIORITY_EQUAL_FIRST  						0x00000008
@@ -630,13 +618,8 @@ CM_Add_IDW(
   /*IN*/ ULONG  ulFlags,
   /*IN*/ HMACHINE  hMachine);
 
-#ifdef UNICODE
-#define CM_Add_ID CM_Add_IDW
-#define CM_Add_ID_Ex CM_Add_ID_ExW
-#else
-#define CM_Add_ID CM_Add_IDA
-#define CM_Add_ID_Ex CM_Add_ID_ExA
-#endif /* UNICODE */
+#define CM_Add_ID __AW(CM_Add_ID)
+#define CM_Add_ID_Ex __AW(CM_Add_ID_Ex)
 
 /* FIXME: Obsolete CM_Add_Range */
 
@@ -677,11 +660,7 @@ CM_Connect_MachineW(
   /*IN*/ PCWSTR  UNCServerName,
   /*OUT*/ PHMACHINE  phMachine);
 
-#ifdef UNICODE
-#define CM_Connect_Machine CM_Connect_MachineW
-#else
-#define CM_Connect_Machine CM_Connect_MachineA
-#endif /* UNICODE */
+#define CM_Connect_Machine __AW(CM_Connect_Machine)
 
 /* FIXME: Obsolete CM_Create_DevNode */
 /* FIXME: Obsolete CM_Create_DevNodeEx */
@@ -760,13 +739,8 @@ CM_Enumerate_EnumeratorsW(
   /*IN OUT*/ PULONG  pulLength,
   /*IN*/ ULONG  ulFlags);
 
-#ifdef UNICODE
-#define CM_Enumerate_Enumerators CM_Enumerate_EnumeratorsW
-#define CM_Enumerate_Enumerators_Ex CM_Enumerate_Enumerators_ExW
-#else
-#define CM_Enumerate_Enumerators CM_Enumerate_EnumeratorsA
-#define CM_Enumerate_Enumerators_Ex CM_Enumerate_Enumerators_ExW
-#endif /* UNICODE */
+#define CM_Enumerate_Enumerators __AW(CM_Enumerate_Enumerators)
+#define CM_Enumerate_Enumerators_Ex __AW(CM_Enumerate_Enumerators_Ex)
 
 /* FIXME: Obsolete CM_Find_Range */
 /* FIXME: Obsolete CM_First_Range */
@@ -901,13 +875,8 @@ CM_Get_Device_IDW(
   /*IN*/ ULONG  BufferLen,
   /*IN*/ ULONG  ulFlags);
 
-#ifdef UNICODE
-#define CM_Get_Device_ID CM_Get_Device_IDW
-#define CM_Get_Device_ID_Ex CM_Get_Device_ID_ExW
-#else
-#define CM_Get_Device_ID CM_Get_Device_IDA
-#define CM_Get_Device_ID_Ex CM_Get_Device_ID_ExW
-#endif /* UNICODE */
+#define CM_Get_Device_ID __AW(CM_Get_Device_ID)
+#define CM_Get_Device_ID_Ex __AW(CM_Get_Device_ID_Ex)
 
 CMAPI
 CONFIGRET
@@ -947,13 +916,8 @@ CM_Get_Device_ID_ListW(
   /*IN*/ ULONG  BufferLen,
   /*IN*/ ULONG  ulFlags);
 
-#ifdef UNICODE
-#define CM_Get_Device_ID_List CM_Get_Device_ID_ListW
-#define CM_Get_Device_ID_List_Ex CM_Get_Device_ID_List_ExW
-#else
-#define CM_Get_Device_ID_List CM_Get_Device_ID_ListA
-#define CM_Get_Device_ID_List_Ex CM_Get_Device_ID_List_ExA
-#endif /* UNICODE */
+#define CM_Get_Device_ID_List __AW(CM_Get_Device_ID_List)
+#define CM_Get_Device_ID_List_Ex __AW(CM_Get_Device_ID_List_Ex)
 
 CMAPI
 CONFIGRET
@@ -989,13 +953,8 @@ CM_Get_Device_ID_List_SizeW(
   /*IN*/ PCWSTR  pszFilter, /*OPTIONAL*/
   /*IN*/ ULONG  ulFlags);
 
-#ifdef UNICODE
-#define CM_Get_Device_ID_List_Size CM_Get_Device_ID_List_SizeW
-#define CM_Get_Device_ID_List_Size_Ex CM_Get_Device_ID_List_Size_ExW
-#else
-#define CM_Get_Device_ID_List_Size CM_Get_Device_ID_List_SizeA
-#define CM_Get_Device_ID_List_Size_Ex CM_Get_Device_ID_List_Size_ExA
-#endif /* UNICODE */
+#define CM_Get_Device_ID_List_Size __AW(CM_Get_Device_ID_List_Size)
+#define CM_Get_Device_ID_List_Size_Ex __AW(CM_Get_Device_ID_List_Size_Ex)
 
 CMAPI
 CONFIGRET
@@ -1211,11 +1170,7 @@ CM_Get_Resource_Conflict_DetailsW(
   /*IN*/ ULONG  ulIndex,
   /*IN OUT*/ PCONFLICT_DETAILS_W  pConflictDetails);
 
-#ifdef UNICODE
-#define CM_Get_Resource_Conflict_Details CM_Get_Resource_Conflict_DetailsW
-#else
-#define CM_Get_Resource_Conflict_Details CM_Get_Resource_Conflict_DetailsA
-#endif /* UNICODE */
+#define CM_Get_Resource_Conflict_Details __AW(CM_Get_Resource_Conflict_Details)
 
 CMAPI
 CONFIGRET
@@ -1303,17 +1258,10 @@ CM_Locate_DevNodeW(
 #define CM_Locate_DevInst_ExA CM_Locate_DevNode_ExA
 #define CM_Locate_DevInst_ExW CM_Locate_DevNode_ExW
 
-#ifdef UNICODE
-#define CM_Locate_DevNode CM_Locate_DevNodeW
-#define CM_Locate_DevInst CM_Locate_DevNodeW
-#define CM_Locate_DevNode_Ex CM_Locate_DevNode_ExW
-#define CM_Locate_DevInst_Ex CM_Locate_DevNode_ExW
-#else
-#define CM_Locate_DevNode CM_Locate_DevNodeA
-#define CM_Locate_DevInst CM_Locate_DevNodeA
-#define CM_Locate_DevNode_Ex CM_Locate_DevNode_ExA
-#define CM_Locate_DevInst_Ex CM_Locate_DevNode_ExA
-#endif /* UNICODE */
+#define CM_Locate_DevNode __AW(CM_Locate_DevNode)
+#define CM_Locate_DevInst __AW(CM_Locate_DevNode)
+#define CM_Locate_DevNode_Ex __AW(CM_Locate_DevNode_Ex)
+#define CM_Locate_DevInst_Ex __AW(CM_Locate_DevNode_Ex)
 
 /* FIXME: Obsolete CM_Merge_Range_List */
 
@@ -1490,13 +1438,8 @@ CM_Request_Device_EjectW(
   /*IN*/ ULONG  ulNameLength,
   /*IN*/ ULONG  ulFlags);
 
-#ifdef UNICODE
-#define CM_Request_Device_Eject CM_Request_Device_EjectW
-#define CM_Request_Device_Eject_Ex CM_Request_Device_Eject_ExW
-#else
-#define CM_Request_Device_Eject CM_Request_Device_EjectA
-#define CM_Request_Device_Eject_Ex CM_Request_Device_Eject_ExA
-#endif /* UNICODE */
+#define CM_Request_Device_Eject __AW(CM_Request_Device_Eject)
+#define CM_Request_Device_Eject_Ex __AW(CM_Request_Device_Eject_Ex)
 
 /* FIXME: Obsolete CM_Request_Eject_PC */
 /* FIXME: Obsolete CM_Request_Eject_PC_Ex */

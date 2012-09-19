@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDPAR_H
+#define __NTDDPAR_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Parallel port driver interface
  */
-
-#ifndef __NTDDPAR_H
-#define __NTDDPAR_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

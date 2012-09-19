@@ -24,6 +24,7 @@
 #ifndef __NETEVENT_H
 #define __NETEVENT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #define EVENT_TRANSPORT_REGISTER_FAILED  0xC000232CL
 

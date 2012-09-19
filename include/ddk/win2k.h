@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __WIN2K_H
+#define __WIN2K_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Definitions only used in Windows 2000 and earlier versions
  */
-
-#ifndef __WIN2K_H
-#define __WIN2K_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

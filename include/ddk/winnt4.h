@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __WINNT4_H
+#define __WINNT4_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Definitions only used in Windows NT 4.0 and earlier versions
  */
-
-#ifndef __WINNT4_H
-#define __WINNT4_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

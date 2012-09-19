@@ -24,6 +24,7 @@
 #ifndef __USB_H
 #define __USB_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __USBDI_H
 #error usbdi.h cannot be included with usb.h

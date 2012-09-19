@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDNDIS_H
+#define __NTDDNDIS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * NDIS device driver interface
  */
-
-#ifndef __NTDDNDIS_H
-#define __NTDDNDIS_H
-#pragma GCC system_header
 
 #pragma pack(push,4)
 

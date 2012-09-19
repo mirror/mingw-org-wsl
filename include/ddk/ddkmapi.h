@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __DDKMAPI_H
+#define __DDKMAPI_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * DirectDraw support for DxApi function
  */
-
-#ifndef __DDKMAPI_H
-#define __DDKMAPI_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

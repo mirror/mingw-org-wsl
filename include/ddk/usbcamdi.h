@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __USBCAMDI_H
+#define __USBCAMDI_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * USB Camera driver interface.
  */
-
-#ifndef __USBCAMDI_H
-#define __USBCAMDI_H
-#pragma GCC system_header
 
 #if !defined(__USB_H) && !defined(__USBDI_H)
 #error include usb.h or usbdi.h before usbcamdi.h

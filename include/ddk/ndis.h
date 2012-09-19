@@ -21,6 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NDIS_H
+#define __NDIS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Network Device Interface Specification definitions
@@ -32,9 +36,6 @@
  *          NDIS50_MINIPORT      - Building NDIS 5.0 miniport driver
  *          NDIS51_MINIPORT      - Building NDIS 5.1 miniport driver
  */
-#ifndef __NDIS_H
-#define __NDIS_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

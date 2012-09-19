@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDCDRM_H
+#define __NTDDCDRM_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * CDROM IOCTL interface.
  */
-
-#ifndef __NTDDCDRM_H
-#define __NTDDCDRM_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

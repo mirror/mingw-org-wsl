@@ -70,3 +70,8 @@
 ** gdiplus/gdiplusimpl.h: FIXME
 ** gdiplus/gdiplusmetaheader.h: FIXME
 ** gdiplus/gdiplustypes.h: FIXME
+** ddk/atm.h: FIXME
+** ddk/cfgmgr32.h: FIXME
+** ddk/ntapi.h: FIXME
+** ddk/ntifs.h: _GNU_NTIFS_, VER_PRODUCTBUILD, _ALPHA_
+** ddk/ws2san.h: FIXME

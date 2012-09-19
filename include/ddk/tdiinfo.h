@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __TDIINFO_H
+#define __TDIINFO_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * TDI set and query information interface
  */
-
-#ifndef __TDIINFO_H
-#define __TDIINFO_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

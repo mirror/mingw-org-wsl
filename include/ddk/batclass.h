@@ -24,6 +24,7 @@
 #ifndef __BATCLASS_H
 #define __BATCLASS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

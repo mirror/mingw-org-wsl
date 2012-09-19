@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NEWDEV_H
+#define __NEWDEV_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Driver installation DLL interface
  */
-
-#ifndef __NEWDEV_H
-#define __NEWDEV_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,11 +56,7 @@ UpdateDriverForPlugAndPlayDevicesW(
   DWORD  InstallFlags,
   PBOOL  bRebootRequired  /*OPTIONAL*/);
 
-#ifdef UNICODE
-#define UpdateDriverForPlugAndPlayDevices UpdateDriverForPlugAndPlayDevicesW
-#else
-#define UpdateDriverForPlugAndPlayDevices UpdateDriverForPlugAndPlayDevicesA
-#endif /* UNICODE */
+#define UpdateDriverForPlugAndPlayDevices __AW(UpdateDriverForPlugAndPlayDevices)
 
 #ifdef __cplusplus
 }

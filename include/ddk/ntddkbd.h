@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDKBD_H
+#define __NTDDKBD_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Keyboard IOCTL interface
  */
-
-#ifndef __NTDDKBD_H
-#define __NTDDKBD_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

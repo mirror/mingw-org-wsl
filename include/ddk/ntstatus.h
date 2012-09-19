@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef _NTSTATUS_H
+#define _NTSTATUS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Windows NT status codes 
  */
-
-#ifndef _NTSTATUS_H
-#define _NTSTATUS_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,6 +37,7 @@ extern "C" {
 #if !defined(STATUS_SUCCESS)
 #define STATUS_SUCCESS ((NTSTATUS)0x00000000L) 
 #endif /* !STATUS_SUCCESS */
+
 #define FACILITY_DEBUGGER 0x1
 #define FACILITY_RPC_RUNTIME 0x2
 #define FACILITY_RPC_STUBS 0x3

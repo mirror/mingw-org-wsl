@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __SCSISCAN_H
+#define __SCSISCAN_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * SCSI scanner driver interface
  */
-
-#ifndef __SCSISCAN_H
-#define __SCSISCAN_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

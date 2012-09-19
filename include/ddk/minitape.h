@@ -24,6 +24,7 @@
 #ifndef __MINITAPE_H
 #define __MINITAPE_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -75,6 +76,7 @@ typedef enum _TAPE_STATUS {
 } TAPE_STATUS, *PTAPE_STATUS;
 
 #define INQUIRYDATABUFFERSIZE 36
+
 #ifndef _INQUIRYDATA_DEFINED /* also in scsi.h */
 #define _INQUIRYDATA_DEFINED
 typedef struct _INQUIRYDATA {

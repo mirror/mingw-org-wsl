@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __XFILTER_H
+#define __XFILTER_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Address filtering for NDIS MACs
  */
-
-#ifndef __XFILTER_H
-#define __XFILTER_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

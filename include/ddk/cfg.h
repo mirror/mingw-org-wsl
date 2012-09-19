@@ -21,15 +21,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __CFG_H
+#define __CFG_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * PnP Configuration Manager shared definitions between user mode and
  * kernel mode code
  */
-
-#ifndef __CFG_H
-#define __CFG_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

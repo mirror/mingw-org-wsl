@@ -21,15 +21,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
-/*
- * Windows NT Filesystem Driver Developer Kit
- */
-
 #ifndef _NTIFS_
 #define _NTIFS_
 #define _GNU_NTIFS_
 #pragma GCC system_header
+#include <_mingw.h>
+
+/*
+ * Windows NT Filesystem Driver Developer Kit
+ */
 
 #ifdef __cplusplus
 extern "C" {

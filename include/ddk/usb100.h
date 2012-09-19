@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __USB100_H
+#define __USB100_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * USB 1.0 support
  */
-
-#ifndef __USB100_H
-#define __USB100_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

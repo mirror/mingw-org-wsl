@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __POCLASS_H
+#define __POCLASS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Power policy driver interface
  */
-
-#ifndef __POCLASS_H
-#define __POCLASS_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

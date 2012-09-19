@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __USBDI_H
+#define __USBDI_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * USBD and USB device driver definitions
  */
-
-#ifndef __USBDI_H
-#define __USBDI_H
-#pragma GCC system_header
 
 #ifdef __USB_H
 #error usb.h cannot be included with usbdi.h

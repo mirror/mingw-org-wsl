@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDDISK_H
+#define __NTDDDISK_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Disk IOCTL interface.
  */
-
-#ifndef __NTDDDISK_H
-#define __NTDDDISK_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

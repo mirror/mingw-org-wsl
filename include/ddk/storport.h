@@ -24,6 +24,7 @@
 #ifndef __STORPORT_H
 #define __STORPORT_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

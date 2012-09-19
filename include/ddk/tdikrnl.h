@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __TDIKRNL_H
+#define __TDIKRNL_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * TDI kernel mode definitions
  */
-
-#ifndef __TDIKRNL_H
-#define __TDIKRNL_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

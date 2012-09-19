@@ -21,6 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __NTDDK_H
+#define __NTDDK_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Windows Device Driver Kit
@@ -30,10 +34,6 @@
  *    _X86_           - X86 environment
  *   __USE_NTOSKRNL__ - Use ntoskrnl.exe exports instead of kernel32.dll
  */
-
-#ifndef __NTDDK_H
-#define __NTDDK_H
-#pragma GCC system_header
 
 #ifndef __USE_NTOSKRNL__
 #define __USE_NTOSKRNL__ 1

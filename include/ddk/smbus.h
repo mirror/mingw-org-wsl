@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __SMBUS_H
+#define __SMBUS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * System Management Bus driver interface
  */
-
-#ifndef __SMBUS_H
-#define __SMBUS_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

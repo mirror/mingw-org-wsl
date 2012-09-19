@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __SCSI_H
+#define __SCSI_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * SCSI port and class interface.
  */
-
-#ifndef __SCSI_H
-#define __SCSI_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

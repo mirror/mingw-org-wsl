@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __MCD_H
+#define __MCD_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Media changer driver interface
  */
-
-#ifndef __MCD_H
-#define __MCD_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {

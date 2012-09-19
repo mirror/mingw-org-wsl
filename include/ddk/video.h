@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __VIDEO_H
+#define __VIDEO_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * Video port and miniport driver interface
  */
-
-#ifndef __VIDEO_H
-#define __VIDEO_H
-#pragma GCC system_header
 
 #ifdef __WINDDI_H
 #error winddi.h cannot be included with video.h

@@ -24,6 +24,7 @@
 #ifndef __HIDCLASS_H
 #define __HIDCLASS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

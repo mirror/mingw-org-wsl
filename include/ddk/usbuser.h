@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __USBUSER_H
+#define __USBUSER_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * USB user mode IOCTL interface
  */
-
-#ifndef __USBUSER_H
-#define __USBUSER_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,6 +47,7 @@ extern "C" {
 #ifndef IOCTL_USB_DIAGNOSTIC_MODE_ON
 #define IOCTL_USB_DIAGNOSTIC_MODE_ON      USB_CTL(HCD_DIAGNOSTIC_MODE_ON) 
 #endif
+
 #ifndef IOCTL_USB_DIAGNOSTIC_MODE_OFF
 #define IOCTL_USB_DIAGNOSTIC_MODE_OFF     USB_CTL(HCD_DIAGNOSTIC_MODE_OFF) 
 #endif
@@ -54,6 +55,7 @@ extern "C" {
 #ifndef IOCTL_USB_GET_ROOT_HUB_NAME
 #define IOCTL_USB_GET_ROOT_HUB_NAME       USB_CTL(HCD_GET_ROOT_HUB_NAME) 
 #endif
+
 #ifndef IOCTL_GET_HCD_DRIVERKEY_NAME
 #define IOCTL_GET_HCD_DRIVERKEY_NAME      USB_CTL(HCD_GET_DRIVERKEY_NAME) 
 #endif
