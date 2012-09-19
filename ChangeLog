@@ -348,51 +348,55 @@
 	* include/scrnsave.h: Ditto.
 	* include/security.h: Ditto.
 	* include/servprov.h: Ditto.
-
-	* include/search.h (_mingw.h): Remove comment and move to top of file.
-	* include/setjmp.h: Ditto.
-	* include/share.h: Ditto.
-
-	* include/rasdlg.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/rasdlg.h: Ditto.
 	* include/richedit.h: Ditto.
 	* include/rpcdce2.h: Ditto.
 	* include/rpcdcep.h: Ditto.
 	* include/rpcnsi.h: Ditto.
 	* include/setupapi.h: Ditto.
-
-	* include/reason.h (_mingw.h): Include.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
+	* include/reason.h: Ditto.
 	* include/routprot.h: Ditto.
+	* include/shellapi.h: Ditto.
+	* include/shldisp.h: Ditto.
+	* include/rpcdce.h: Ditto.
+	* include/shlobj.h: Ditto.
 
-	* include/shellapi.h (_mingw.h): Include.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/search.h (_mingw.h): Remove comment and move to top of file.
+	* include/setjmp.h: Ditto.
+	* include/share.h: Ditto.
 
-	* include/shldisp.h (_mingw.h): Include.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer.
-
-	* include/rpcdce.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
+	* include/rasdlg.h (UNICODE): Use __AW() macro for mapping
+	non-specific symbols.
+	* include/richedit.h: Ditto.
+	* include/rpcdce2.h: Ditto.
+	* include/rpcdcep.h: Ditto.
+	* include/rpcnsi.h: Ditto.
+	* include/setupapi.h: Ditto.
+	* include/shellapi.h: Ditto.
+	* include/rpcdce.h: Ditto.
 	* include/rtutils.h: Ditto.
 	* include/sddl.h: Ditto.
 	* include/secext.h: Ditto.
 	* include/shlguid.h: Ditto.
+	* include/ras.h: Ditto.
+	* include/shlobj.h: Ditto.
 
-	* include/ras.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
-	(WINVER): Use _WIN32_WINNT instead.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
+	* include/reason.h (_WIN32_WINNT): Use MACRO constant for comparison
+	instead of integer and move filters to the end of the file.
+	* include/routprot.h: Ditto.
+	* include/shellapi.h: Ditto.
+	* include/shldisp.h: Ditto.
+	* include/rpcdce.h: Ditto.
+	* include/rtutils.h: Ditto.
+	* include/sddl.h: Ditto.
+	* include/secext.h: Ditto.
+	* include/shlguid.h: Ditto.
+	* include/ras.h: Ditto.
+	* include/shlobj.h: Ditto.
 
-	* include/shlobj.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
-	(_WIN32_IE): Move filters to the end of the file.
+	* include/ras.h (WINVER): Use _WIN32_WINNT instead.
+
+	* include/shlobj.h (_WIN32_IE): Move filters to the end of the file.
 
 	* include/sdkddkver.h (_WIN32_WINNT_WIN4E): Add new symbol.
 	(_mingw.h): Document to not include the file since _mingw.h includes
@@ -431,18 +435,27 @@
 	* include/pbt.h: Ditto.
 	* include/powrprof.h: Ditto.
 	* include/qedit.h: Ditto.
+	* include/mq.h: Ditto.
+	* include/ntdsapi.h: Ditto.
+	* include/ntdsbcli.h: Ditto.
+	* include/objsel.h: Ditto.
+	* include/msacm.h: Ditto.
+	* include/nddeapi.h: Ditto.
+	* include/nspapi.h: Ditto.
+	* include/oleacc.h: Ditto.
+	* include/oledlg.h: Ditto.
+	* include/prsht.h: Ditto.
 
 	* include/process.h (_mingw.h): Remove comment and move to top of file.
 
-	* include/mq.h (_mingw.h): Include.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
+	* include/mq.h (_WIN32_WINNT): Use MACRO constant for comparison
+	instead of integer and move filters to the end of the file.
 	* include/ntdsapi.h: Ditto.
 	* include/ntdsbcli.h: Ditto.
 	* include/objsel.h: Ditto.
 
-	* include/msacm.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/msacm.h (UNICODE): Use __AW() macro for mapping
+	non-specific symbols.
 	* include/nddeapi.h: Ditto.
 	* include/nspapi.h: Ditto.
 	* include/oleacc.h: Ditto.
@@ -490,33 +503,34 @@
 	* include/mlang.h: Ditto.
 	* include/mmreg.h: Ditto.
 	* include/mpegtype.h: Ditto.
-
-	* include/mgm.h (_mingw.h): Include.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
+	* include/mgm.h: Ditto.
 	* include/mprapi.h: Ditto.
+	* include/lzexpand.h: Ditto.
+	* include/mmsystem.h: Ditto.
 
 	* include/locale.h (_mingw.h): Remove comment and move to top of file.
+	* include/malloc.h: Ditto.
+	* include/math.h: Ditto.
 
-	* include/malloc.h (_mingw.h): Remove comment and move to top of file.
-	(__MSVCRT_VERSION__): Remove as unneeded.
+	* include/mgm.h (_WIN32_WINNT): Use MACRO constant for comparison
+	instead of integer and move filters to the end of the file.
+	* include/mprapi.h: Ditto.
+	* include/mmsystem.h: Ditto.
 
-	* include/math.h (_mingw.h): Remove comment and move to top of file.
-	(__MSVCRT_VERSION__): Remove as unneeded.
-	(__GNUC__): Assume we are using a version >= 3.4.5
+	* include/malloc.h (__MSVCRT_VERSION__): Remove as unneeded.
+	* include/math.h: Ditto.
 
-	* include/lzexpand.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
+	* include/math.h (__GNUC__): Assume we are using a version >= 3.4.5
+
+	* include/lzexpand.h (UNICODE): Use __AW() macro for mapping
+	non-specific symbols.
+	* include/mmsystem.h: Ditto.
 
 	* include/lmcons.h (_mingw.h): Include.
 	(LMSTR): Correct filter for definition determination.
 	(LMCSTR): Ditto.
 
-	* include/mmsystem.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
-	(WINVER): Use _WIN32_WINNT instead.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
+	* include/mmsystem.h (WINVER): Use _WIN32_WINNT instead.
 
 	* include/_mingw.h (FORCE_UNICODE): Another filter for determining
 	UNICODE for __AW and __STR.
@@ -528,25 +542,8 @@
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.
 
 	* include/icm.h (_mingw.h): Include.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
-	* include/imm.h: Ditto.
-
 	* include/iphlpapi.h (_mingw.h): Include.
-	(_WIN32_WINNT): Use MACRO constant for comparison instead of integer
-	and move filters to the end of the file.
-	* include/iptypes.h: Ditto.
-	* include/ipxconst.h: Ditto.
-	* include/ipxrtdef.h: Ditto.
-
 	* include/imagehlp.h (_mingw.h): Include.
-	(UNICODE): Use __AW() macro for mapping non-specific symbols.
-	* include/intshcut.h: Ditto.
-
-	* include/inttypes.h (_mingw.h): Remove comment and move to top of file.
-	* include/libgen.h: Ditto.
-
 	* include/idispids.h (_mingw.h): Include.
 	* include/il21dec.h: Ditto.
 	* include/initguid.h: Ditto.
@@ -558,23 +555,40 @@
 	* include/ks.h: Ditto.
 	* include/ksmedia.h: Ditto.
 	* include/largeint.h: Ditto.
+	* include/ipxtfflt.h: Ditto.
+	* include/intshcut.h: Ditto.
 
-	* include/io.h (_mingw.h): Remove comment and move to top of file.
-	(_findfirst*): What a mess.  Reworked.
+	* include/inttypes.h (_mingw.h): Remove comment and move to top of file.
+	* include/libgen.h: Ditto.
+	* include/io.h: Ditto.
+	* include/limits.h: Ditto.
+
+	* include/iphlpapi.h (_WIN32_WINNT): Use MACRO constant for comparison
+	instead of integer and move filters to the end of the file.
+	* include/icm.h: Ditto.
+	* include/iptypes.h: Ditto.
+	* include/ipxconst.h: Ditto.
+	* include/ipxrtdef.h: Ditto.
+
+	* include/imagehlp.h (UNICODE): Use __AW() macro for mapping
+	non-specific symbols.
+	* include/intshcut.h: Ditto.
+	* include/icm.h: Ditto.
+
+	* include/io.h (__MSVCRT_VERSION__): Removed throughout.
+
+	* include/io.h (_findfirst*): What a mess.  Reworked.
 	(_wfindfirst*): Ditto.
 	(_findnext*): Ditto.
 	(_wfindnext*): Ditto.
 	(_finddata*_t): Ditto.
 	(_wfinddata*_t): Ditto.
 	(_FINDDATA_T_DEFINED): Add filter.
-	(__MSVCRT_VERSION__): Removed throughout.
 
-	* include/ipxtfflt.h (_mingw.h): Include.
-	(_IPX_TRAFFIC_FILTER_INFO): Add structure.
+	* include/ipxtfflt.h (_IPX_TRAFFIC_FILTER_INFO): Add structure.
 	(_IPX_TRAFFIC_FILTER_GLOBAL_INFO): Ditto.
 
-	* include/limits.h (_mingw.h): Remove comment and move to top of file.
-	(__STRICT_ANSI__): Remove filters as unneeded.
+	* include/limits.h (__STRICT_ANSI__): Remove filters as unneeded.
 	(_CHAR_UNSIGNED): Add as a user defined filter for unsigned char.
 
 	* include/sdkddkver.h (_WIN32_WINNT_WIN98): Correct value.
