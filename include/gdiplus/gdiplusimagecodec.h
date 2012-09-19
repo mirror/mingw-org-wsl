@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_IMAGECODEC_H
+#define __GDIPLUS_IMAGECODEC_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ image decoders and encoders
  */
-
-#ifndef __GDIPLUS_IMAGECODEC_H
-#define __GDIPLUS_IMAGECODEC_H
-#pragma GCC system_header
 
 static __inline__ GpStatus GetImageDecoders(UINT numDecoders, UINT size,
 		ImageCodecInfo *decoders)

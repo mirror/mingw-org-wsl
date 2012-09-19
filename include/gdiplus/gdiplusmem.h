@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_MEM_H
+#define __GDIPLUS_MEM_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ memory allocation
  */
-
-#ifndef __GDIPLUS_MEM_H
-#define __GDIPLUS_MEM_H
-#pragma GCC system_header
 
 #ifdef __cplusplus
 namespace DllExports {

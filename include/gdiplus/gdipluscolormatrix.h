@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_COLORMATRIX_H
+#define __GDIPLUS_COLORMATRIX_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ color mappings
  */
-
-#ifndef __GDIPLUS_COLORMATRIX_H
-#define __GDIPLUS_COLORMATRIX_H
-#pragma GCC system_header
 
 typedef enum ColorAdjustType {
 	ColorAdjustTypeDefault = 0,

@@ -24,6 +24,7 @@
 #ifndef __GDIPLUS_H
 #define __GDIPLUS_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef RC_INVOKED
 

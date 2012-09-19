@@ -1,3 +1,72 @@
+2012-09-19  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/sys/fcntl.h (_mingw.h): Include.
+	* include/sys/file.h: Ditto.
+	* include/sys/param.h: Ditto.
+	* include/sys/time.h: Ditto.
+	* include/sys/unistd.h: Ditto.
+	* include/directx/d3d9.h: Ditto.
+	* include/directx/d3d9caps.h: Ditto.
+	* include/directx/d3d9types.h: Ditto.
+	* include/directx/dxerr8.h: Ditto.
+	* include/directx/dxerr9.h: Ditto.
+	* include/gdiplus/gdiplus.h: Ditto.
+	* include/gdiplus/gdiplusbase.h: Ditto.
+	* include/gdiplus/gdiplusbrush.h: Ditto.
+	* include/gdiplus/gdipluscolor.h: Ditto.
+	* include/gdiplus/gdipluscolormatrix.h: Ditto.
+	* include/gdiplus/gdipluseffects.h: Ditto.
+	* include/gdiplus/gdiplusenums.h: Ditto.
+	* include/gdiplus/gdiplusflat.h: Ditto.
+	* include/gdiplus/gdiplusgpstubs.h: Ditto.
+	* include/gdiplus/gdiplusgraphics.h: Ditto.
+	* include/gdiplus/gdiplusheaders.h: Ditto.
+	* include/gdiplus/gdiplusimageattributes.h: Ditto.
+	* include/gdiplus/gdiplusimagecodec.h: Ditto.
+	* include/gdiplus/gdiplusimaging.h: Ditto.
+	* include/gdiplus/gdiplusimpl.h: Ditto.
+	* include/gdiplus/gdiplusinit.h: Ditto.
+	* include/gdiplus/gdipluslinecaps.h: Ditto.
+	* include/gdiplus/gdiplusmatrix.h: Ditto.
+	* include/gdiplus/gdiplusmem.h: Ditto.
+	* include/gdiplus/gdiplusmetafile.h: Ditto.
+	* include/gdiplus/gdiplusmetaheader.h: Ditto.
+	* include/gdiplus/gdipluspath.h: Ditto.
+	* include/gdiplus/gdipluspen.h: Ditto.
+	* include/gdiplus/gdipluspixelformats.h: Ditto.
+	* include/gdiplus/gdiplusstringformat.h: Ditto.
+	* include/gdiplus/gdiplustypes.h: Ditto.
+
+	* include/sys/locking.h (_mingw.h): Remove comment and move to top of
+	file.
+	* include/sys/stat.h: Ditto.
+	* include/sys/timeb.h: Ditto.
+	* include/sys/types.h: Ditto.
+	* include/sys/utime.h: Ditto.
+
+	* include/sys/locking.h (GCC system_header): Add pragma.
+	* include/sys/param.h: Ditto.
+	* include/sys/stat.h: Ditto.
+	* include/sys/time.h: Ditto.
+	* include/sys/timeb.h: Ditto.
+	* include/sys/types.h: Ditto.
+	* include/sys/unistd.h: Ditto.
+	* include/sys/utime.h: Ditto.
+
+	* include/directx/dxerr8.h (UNICODE): Use __AW() macro for mapping
+	non-specific symbols.
+	* include/directx/dxerr9.h: Ditto.
+
+	* include/sys/timeb.h (__MSVCRT_VERSION__): Remove needless filter.
+	* include/sys/types.h: Ditto.
+	* include/sys/utime.h: Ditto.
+
+	* include/sys/unistd.h (io.h): Replace with include next unistd.h.
+
+	* TODO: Add entries.
+
 2012-09-18  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.

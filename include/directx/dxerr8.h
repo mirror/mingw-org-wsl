@@ -24,6 +24,7 @@
 #ifndef _DXERR8_H
 #define _DXERR8_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,15 +37,9 @@ const WCHAR* WINAPI DXGetErrorDescription8W(HRESULT);
 HRESULT WINAPI DXTraceA(const char*,DWORD,HRESULT,const char*,BOOL);
 HRESULT WINAPI DXTraceW(const char*,DWORD,HRESULT,const WCHAR*,BOOL);
 
-#ifdef UNICODE
-#define DXGetErrorString8 DXGetErrorString8W
-#define DXGetErrorDescription8 DXGetErrorDescription8W
-#define DXTrace DXTraceW
-#else
-#define DXGetErrorString8 DXGetErrorString8A
-#define DXGetErrorDescription8 DXGetErrorDescription8A
-#define DXTrace DXTraceA
-#endif 
+#define DXGetErrorString8 __AW(DXGetErrorString8)
+#define DXGetErrorDescription8 __AW(DXGetErrorDescription8)
+#define DXTrace __AW(DXTrace)
 
 #if defined(DEBUG) || defined(_DEBUG)
 #define DXTRACE_MSG(str)	DXTrace(__FILE__,(DWORD)__LINE__,0,str,FALSE)
@@ -59,4 +54,5 @@ HRESULT WINAPI DXTraceW(const char*,DWORD,HRESULT,const WCHAR*,BOOL);
 #ifdef __cplusplus
 }
 #endif
+
 #endif

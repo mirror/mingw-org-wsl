@@ -23,6 +23,9 @@
  */
 #ifndef _SYS_TIME_H_
 #define _SYS_TIME_H_
+#pragma GCC system_header
+#include <_mingw.h>
+
 #include <time.h>
 
 #ifdef	__cplusplus
@@ -65,6 +68,5 @@ int __cdecl __MINGW_NOTHROW gettimeofday(struct timeval *__restrict__,
 #ifdef	__cplusplus
 }
 #endif
-
 
 #endif /* _SYS_TIME_H_ */

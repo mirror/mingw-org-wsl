@@ -21,6 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_HEADERS_H
+#define __GDIPLUS_HEADERS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ Bitmap, CachedBitmap, CustomLineCap, Font, FontCollection,
@@ -28,10 +32,6 @@
  *      Region class definitions.
  *      Implementation of these classes is in gdiplusimpl.h.
  */
-
-#ifndef __GDIPLUS_HEADERS_H
-#define __GDIPLUS_HEADERS_H
-#pragma GCC system_header
 
 #ifndef __cplusplus
 #error "A C++ compiler is required to include gdiplusheaders.h."

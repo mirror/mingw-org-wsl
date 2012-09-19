@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_INIT_H
+#define __GDIPLUS_INIT_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ Initialization
  */
-
-#ifndef __GDIPLUS_INIT_H
-#define __GDIPLUS_INIT_H
-#pragma GCC system_header
 
 typedef struct GdiplusStartupInput {
 	UINT32 GdiplusVersion;

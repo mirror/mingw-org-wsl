@@ -23,8 +23,7 @@
  */
 #ifndef	_TYPES_H_
 #define	_TYPES_H_
-
-/* All the headers include this file. */
+#pragma GCC system_header
 #include <_mingw.h>
 
 #define __need_wchar_t
@@ -48,15 +47,16 @@ typedef __int64 __time64_t;
 
 #ifndef _TIME_T_DEFINED
 /* FIXME __STRICT_ANSI__ ! */
-#if __MSVCRT_VERSION__ >= 0x0800
+
 #ifndef _USE_32BIT_TIME_T
 typedef	__time64_t time_t;
 #else
+
 typedef	__time32_t time_t;
 #endif /* !_USE_32BIT_TIME_T */
+
 #else
 typedef	__time32_t time_t;
-#endif /* __MSVCRT_VERSION__ >= 0x0800 */
 #define _TIME_T_DEFINED
 #endif
 

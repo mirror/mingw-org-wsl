@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_PEN_H
+#define __GDIPLUS_PEN_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ Pen class
  */
-
-#ifndef __GDIPLUS_PEN_H
-#define __GDIPLUS_PEN_H
-#pragma GCC system_header
 
 #ifndef __cplusplus
 #error "A C++ compiler is required to include gdipluspen.h."

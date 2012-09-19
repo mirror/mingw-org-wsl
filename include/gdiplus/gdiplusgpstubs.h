@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_GPSTUBS_H
+#define __GDIPLUS_GPSTUBS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ Gp* type declarations
  */
-
-#ifndef __GDIPLUS_GPSTUBS_H
-#define __GDIPLUS_GPSTUBS_H
-#pragma GCC system_header
 
 typedef Point GpPoint;
 typedef PointF GpPointF;

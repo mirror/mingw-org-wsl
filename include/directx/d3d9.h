@@ -24,6 +24,7 @@
 #ifndef _D3D9_H
 #define _D3D9_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef DIRECT3D_VERSION
 #define DIRECT3D_VERSION  0x0900
@@ -86,6 +87,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 extern const GUID IID_IDirect3D9;
 extern const GUID IID_IDirect3DDevice9;
 extern const GUID IID_IDirect3DVolume9;
@@ -103,6 +105,7 @@ extern const GUID IID_IDirect3DVertexShader9;
 extern const GUID IID_IDirect3DPixelShader9;
 extern const GUID IID_IDirect3DStateBlock9;
 extern const GUID IID_IDirect3DQuery9;
+
 #ifdef __cplusplus
 };
 #endif
@@ -1293,5 +1296,6 @@ extern "C" IDirect3D9* WINAPI Direct3DCreate9(UINT SDKVersion);
 extern IDirect3D9* WINAPI Direct3DCreate9(UINT SDKVersion);
 #endif
 
-#endif
+#endif /* (DIRECT3D_VERSION >= 0x0900) */
+
 #endif

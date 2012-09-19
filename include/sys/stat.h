@@ -23,8 +23,7 @@
  */
 #ifndef _STAT_H_
 #define _STAT_H_
-
-/* All the headers include this file. */
+#pragma GCC system_header
 #include <_mingw.h>
 
 #define __need_size_t

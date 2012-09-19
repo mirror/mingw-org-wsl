@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_EFFECTS_H
+#define __GDIPLUS_EFFECTS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ filters and effects
  */
-
-#ifndef __GDIPLUS_EFFECTS_H
-#define __GDIPLUS_EFFECTS_H
-#pragma GCC system_header
 
 typedef enum CurveAdjustments {
 	AdjustExposure = 0,

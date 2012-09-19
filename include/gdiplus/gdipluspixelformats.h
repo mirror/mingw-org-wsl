@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_PIXELFORMATS_H
+#define __GDIPLUS_PIXELFORMATS_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ pixel formats
  */
-
-#ifndef __GDIPLUS_PIXELFORMATS_H
-#define __GDIPLUS_PIXELFORMATS_H
-#pragma GCC system_header
 
 typedef DWORD ARGB;
 typedef INT PixelFormat;

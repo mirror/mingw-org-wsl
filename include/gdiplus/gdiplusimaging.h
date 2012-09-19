@@ -21,14 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_IMAGING_H
+#define __GDIPLUS_IMAGING_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ Imaging and image metadata
  */
-
-#ifndef __GDIPLUS_IMAGING_H
-#define __GDIPLUS_IMAGING_H
-#pragma GCC system_header
 
 typedef enum ImageCodecFlags {
 	ImageCodecFlagsEncoder = 0x00000001,

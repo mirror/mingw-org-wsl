@@ -21,16 +21,16 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_IMPL_H
+#define __GDIPLUS_IMPL_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ Bitmap, CachedBitmap, CustomLineCap, Font, FontCollection, FontFamily,
  *      Image, InstalledFontCollection, PrivateFontCollection, Region
  *      implementation.  Definitions of these classes are in gdiplusheaders.h.
  */
-
-#ifndef __GDIPLUS_IMPL_H
-#define __GDIPLUS_IMPL_H
-#pragma GCC system_header
 
 #ifndef __cplusplus
 #error "A C++ compiler is required to include gdiplusimpl.h."

@@ -21,15 +21,14 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#ifndef __GDIPLUS_METAHEADER_H
+#define __GDIPLUS_METAHEADER_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * GDI+ metafile header structure
  */
-
-#ifndef __GDIPLUS_METAHEADER_H
-#define __GDIPLUS_METAHEADER_H
-#pragma GCC system_header
-
 
 /*
  * FIXME: is 1 the correct value for GDIP_EMFPLUSFLAGS_DISPLAY? This number

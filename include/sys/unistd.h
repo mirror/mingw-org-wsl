@@ -21,8 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#pragma GCC system_header
+#include <_mingw.h>
 
 /*
  * unistd.h maps (roughly) to io.h
  */
-#include <io.h>
+#include_next <unistd.h>

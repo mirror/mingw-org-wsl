@@ -63,3 +63,10 @@
 ** winuser.h: __W32API_USE_DLLIMPORT__
 ** ws2tcpip.h: GetNameInfoW - Add declaration.
 ** wspiapi.h: Add file.
+** sys/timeb.h - _USE_32BIT_TIME_T
+** sys/types.h - _USE_32BIT_TIME_T
+** sys/utime.h - _USE_32BIT_TIME_T
+** gdiplus/gdiplusenums.h: FIXME
+** gdiplus/gdiplusimpl.h: FIXME
+** gdiplus/gdiplusmetaheader.h: FIXME
+** gdiplus/gdiplustypes.h: FIXME

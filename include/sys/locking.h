@@ -23,8 +23,7 @@
  */
 #ifndef	_LOCKING_H_
 #define	_LOCKING_H_
-
-/* All the headers include this file. */
+#pragma GCC system_header
 #include <_mingw.h>
 
 #define	_LK_UNLCK	0	/* Unlock */

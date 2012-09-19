@@ -24,6 +24,7 @@
 #ifndef _D3D9_TYPES_H
 #define _D3D9_TYPES_H
 #pragma GCC system_header
+#include <_mingw.h>
 
 #ifndef DIRECT3D_VERSION
 #define DIRECT3D_VERSION  0x0900
@@ -1277,5 +1278,6 @@ typedef struct _D3DVOLUME_DESC {
 
 #include <poppack.h>
 
-#endif
+#endif /* (DIRECT3D_VERSION >= 0x0900) */
+
 #endif
