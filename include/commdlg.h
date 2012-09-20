@@ -529,8 +529,6 @@ typedef __AW(PRINTDLG) PRINTDLG,*LPPRINTDLG;
 #define START_PAGE_GENERAL	0XFFFFFFFF
 #define OPENFILENAME_SIZE_VERSION_400  76
 #ifndef _OBJC_NO_COM
-typedef __AW(PRINTDLGEX) PRINTDLGEX, *LPPRINTDLGEX;
-#define PrintDlgEx __AW(PrintDlgEx)
 #include <unknwn.h>  /* for LPUNKNOWN  */ 
 #include <prsht.h>   /* for HPROPSHEETPAGE  */
 typedef struct tagPRINTPAGERANGE {
@@ -583,8 +581,10 @@ typedef struct tagPDEXW {
    DWORD nStartPage;
    DWORD dwResultAction;
 } PRINTDLGEXW, *LPPRINTDLGEXW;
+typedef __AW(PRINTDLGEX) PRINTDLGEX, *LPPRINTDLGEX;
 HRESULT WINAPI PrintDlgExA(LPPRINTDLGEXA);
 HRESULT WINAPI PrintDlgExW(LPPRINTDLGEXW);
+#define PrintDlgEx __AW(PrintDlgEx)
 #endif /* _OBJC_NO_COM */
 #endif /* WINVER >= 0x0500 */
 

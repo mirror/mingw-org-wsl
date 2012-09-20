@@ -22,6 +22,7 @@
  * DEALINGS IN THE SOFTWARE.
  */
 /* Perform simple test of headers to avoid typos and such */
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <d3d9.h>
 #include <d3d9caps.h>

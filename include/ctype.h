@@ -108,6 +108,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _toupper(int);
 
 
 # if __MSVCRT_VERSION__ <= 0x0700
+  /* FIXME: What is _ctype[]? */
   __MINGW_IMPORT unsigned short _ctype[];
 # endif
   __MINGW_IMPORT unsigned short* _pctype;

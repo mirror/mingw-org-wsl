@@ -1,3 +1,28 @@
+2012-09-20  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Redo the filters based on assumptions discussed in mingw-dvlpr list.
+
+	* include/_mingw.h: Remove default setting of __MSVCRT_VERSION__ since
+	it is no longer used.
+	* include/commdlg.h (PRINTDLGEX): Move to below definition of struct.
+	(PrintDlgEx): Move to below function declaration.
+	* include/ctype.h: Add FIXME.
+	* include/lmcons.h: Correct filter syntax.
+	* include/ras.h: Move definitions and declarations based on dependencies
+	of definition order.
+	* include/rpcdce.h: Add comments and remove unintentional filter for
+	UNICODE.
+	* include/sys/stat.h: Remove __MSVCRT_VERSION__ filters.
+	* include/sys/timeb.h: Remove FIXME.
+	* include/sys/utime.h: Ditto.
+	* include/sys/types.h: Clean code for defining time_t and
+	_TIME_T_DEFINED.
+	* include/winbase.h: Correct comment from RC_DEFINED to RC_INVOKED.
+	Add RC_INVOKED guards for SetThreadExecutionState and OpenThread.
+	(EXECUTION_STATE): Move definition to the _WIN32_WINNT_WIN98 guard.
+	* tests/Makefile.in (CFLAGS): Add -DNTDDI_VERSION=0x06010000 to get rid
+	of warnings and for maximum coverage of tests.
+
 2012-09-19  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.

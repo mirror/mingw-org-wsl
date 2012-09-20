@@ -55,8 +55,6 @@ typedef	__time64_t time_t;
 typedef	__time32_t time_t;
 #endif /* !_USE_32BIT_TIME_T */
 
-#else
-typedef	__time32_t time_t;
 #define _TIME_T_DEFINED
 #endif
 

@@ -26,7 +26,7 @@
 #pragma GCC system_header
 #include <_mingw.h>
 
-#if (_WIN32_WINNT >= _WIN32_WINNT_WIN95) {
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN95)
 #warning WARNING Winsock.h is included instead of winsock2.h.
 #endif
 

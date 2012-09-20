@@ -64,7 +64,6 @@ extern "C" {
 _CRTIMP int __cdecl __MINGW_NOTHROW	_utime (const char*, struct _utimbuf*);
 
 #ifndef	_NO_OLDNAMES
-/* FIXME for __MSVCRT_VERSION__ >= 0x0800 */
 _CRTIMP int __cdecl __MINGW_NOTHROW	utime (const char*, struct utimbuf*);
 #endif	/* Not _NO_OLDNAMES */
 

@@ -29,6 +29,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 #include <basetyps.h>
 
 #ifndef _NO_W32_PSEUDO_MODIFIERS
@@ -39,7 +40,7 @@ extern "C" {
 #define OPTIONAL
 #endif
 
-#endif
+#endif /* ! _NO_W32_PSEUDO_MODIFIERS */
 
 #define uuid_t UUID
 #define rpc_binding_handle_t RPC_BINDING_HANDLE
@@ -250,7 +251,6 @@ RPC_STATUS RPC_ENTRY DceErrorInqTextW(RPC_STATUS,unsigned short*);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqNextA(RPC_EP_INQ_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE*,UUID*,unsigned char**);
 RPC_STATUS RPC_ENTRY RpcMgmtEpEltInqNextW(RPC_EP_INQ_HANDLE,RPC_IF_ID*,RPC_BINDING_HANDLE*,UUID*,unsigned short**);
 
-#ifdef UNICODE
 #define RPC_PROTSEQ_VECTOR __AW(RPC_PROTSEQ_VECTOR)
 #define SEC_WINNT_AUTH_IDENTITY __AW(SEC_WINNT_AUTH_IDENTITY_)
 #define PSEC_WINNT_AUTH_IDENTITY __AW(PSEC_WINNT_AUTH_IDENTITY_)
@@ -386,4 +386,4 @@ RPC_STATUS RPC_ENTRY UuidCreateSequential(UUID*);
 }
 #endif
 
-#endif
+#endif /* ! _RPCDCE_H */

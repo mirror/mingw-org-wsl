@@ -77,7 +77,6 @@ extern "C" {
 _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb*);
 
 #ifndef	_NO_OLDNAMES
-/* FIXME for __MSVCRT_VERSION__ >= 0x0800 */
 _CRTIMP void __cdecl __MINGW_NOTHROW	ftime (struct timeb*);
 #endif	/* Not _NO_OLDNAMES */
 
