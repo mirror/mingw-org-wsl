@@ -146,7 +146,9 @@
 #  ifdef WINVER
 #    define _WIN32_WINNT WINVER
 #  else
-#    warning _WIN32_WINNT is defaulting to _WIN32_WINNT_WIN2K
+#    ifdef _WARN_DEFAULTS
+#      warning _WIN32_WINNT is defaulting to _WIN32_WINNT_WIN2K
+#    endif
 #    define _WIN32_WINNT _WIN32_WINNT_WIN2K
 #  endif
 #endif
@@ -156,7 +158,9 @@
 #endif
 
 #ifndef NTDDI_VERSION
-#  warning NTDDI_VERSION is defaulting to _WIN32_WINNT version SPK0
+#  ifdef _WARN_DEFAULTS
+#    warning NTDDI_VERSION is defaulting to _WIN32_WINNT version SPK0
+#  endif
 #  define NTDDI_VERSION NTDDI_VERSION_FROM_WIN32_WINNT(_WIN32_WINNT)
 #endif
 

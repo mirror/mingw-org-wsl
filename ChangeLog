@@ -1,3 +1,17 @@
+2012-09-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in (ofmt_stub.o): Add stub to libmsvcrt.a through
+	libmsvcr71d.a.
+	(libmoldname*.a): Change the DLLNAME to msvcr*.dll as appropriate.
+	* include/sdkddkver.h (_WARN_DEFAULTS): New macro filter for warning
+	about defaults to enable building binutils.
+	* include/sys/stat.h: Rework structure definitions and declarations to
+	allow building binutils.
+	(_fstat64i32): New inline function.
+	(_stat64i32): Ditto.
+	* include/winsock.h (_WARN_WINSOCK_H): New macro filter for warning
+	about inclusion of winsock.h to allow building binutils.
+
 2012-09-20  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Redo the filters based on assumptions discussed in mingw-dvlpr list.
