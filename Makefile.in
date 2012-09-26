@@ -157,7 +157,7 @@ libscrnsave_a_OBJECTS := $(libscrnsave_a_SOURCES:.c=.o)
 scrnsave_o_CFLAGS := -UUNICODE
 
 libscrnsavw_a_SOURCES := src/libscrnsave/scrnsave.c
-libscrnsavw_a_OBJECTS := src/libscrnsave/srcnsavw.o
+libscrnsavw_a_OBJECTS := src/libscrnsave/scrnsavw.o
 scrnsavw_o_CFLAGS := -DUNICODE
 
 liblargeint_a_SOURCES := src/liblargeint/largeint.c
@@ -171,6 +171,11 @@ libdxguid_a_OBJECTS := $(libdxguid_a_SOURCES:.c=.o)
 
 libstrmiids_a_SOURCES := misc/src/libstrmiids/strmiids.c
 libstrmiids_a_OBJECTS := $(libstrmiids_a_SOURCES:.c=.o)
+
+libws2_32_a_SOURCES := src/libws2_32/ws2_32.c
+libws2_32_a_OBJECTS := $(libws2_32_a_SOURCES:.c=.o)
+
+extra_OBJECTS := $(libws2_32_a_OBJECTS) src/libcrt/crt/ofmt_stub.o
 
 msvcrt_DEF = \
   msvcrt.def msvcr70.def msvcr71.def msvcr80.def msvcr90.def msvcr100.def \
@@ -616,7 +621,7 @@ ALL_SOURCES := \
   $(libdxerr8_a_SOURCES) \
   $(libdxerr9_a_SOURCES)
 
-all: $(msvcrt_DEF) $(moldname_DEF) $(lib_LIBRARIES) $(bin_LIBRARIES) $(lib_OBJECTS)
+all: $(msvcrt_DEF) $(moldname_DEF) $(lib_LIBRARIES) $(bin_LIBRARIES) $(lib_OBJECTS) $(extra_OBJECTS)
 
 $(msvcrt_DEF): lib/lib32/msvcrt.def.in
 	N=`echo $@ | sed -e 's|\([a-z]*\)\([0-9]*\).*|\1|'`; \
@@ -697,7 +702,7 @@ lib%.a: %.def
 	fi
 	$(RANLIB) $@
 
-lib%.a: %.o
+lib%.a: src/lib%/%.o
 	@echo Making library $@ from $?.
 	$(AR) rc $@ $*.o
 	$(RANLIB) $@
@@ -736,7 +741,7 @@ libmingw32.a: $(libmingw32_a_OBJECTS)
 	$(AR) rc $@ $(libmingw32_a_OBJECTS)
 	$(RANLIB) $@
 
-libmingwex.a: $(libmingwex_a_OBJECTS) $(winapi_lib_LIBRARIES)
+libmingwex.a: $(libmingwex_a_OBJECTS)
 	$(AR) rc $@ $(libmingwex_a_OBJECTS)
 	$(RANLIB) $@
 
@@ -775,14 +780,11 @@ libdinput.a libdinput8.a: $(libdinput_a_OBJECTS)
 	$(AR) rc $@ $(libdinput_a_OBJECTS)
 	$(RANLIB) $@
 
-$(libdinput_a_OBJECTS) \
-$(libdmoguids_a_OBJECTS) \
-$(libdxguid_a_OBJECTS) \
-$(libstrmiids_a_OBJECTS): \
-  $(libdinput_a_SOURCES) \
-  $(libdmoguids_a_SOURCES) \
-  $(libdxguid_a_SOURCES) \
-  $(libstrmiids_a_SOURCES)
+$(libdinput_a_OBJECTS) : $(libdinput_a_SOURCES)
+$(libdmoguids_a_OBJECTS) : $(libdmoguids_a_SOURCES)
+$(libdxguid_a_OBJECTS) : $(libdxguid_a_SOURCES)
+$(libstrmiids_a_OBJECTS) : $(libstrmiids_a_SOURCES)
+$(libws2_32_a_OBJECTS) : $(libws2_32_a_SOURCES)
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
@@ -804,6 +806,14 @@ libdxguid.a: $(libdxguid_a_OBJECTS)
 
 libstrmiids.a: $(libstrmiids_a_OBJECTS)
 	$(AR) rc $@ $(libstrmiids_a_OBJECTS)
+	$(RANLIB) $@
+
+# Note this target will override the previous global rules and give a warning
+# from the make process. It is needed due to the extra ws2_32.o object file.
+libws2_32.a: lib/lib32/ws2_32.def $(libws2_32_a_OBJECTS)
+	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
+	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@
+	$(AR) rc $@ $(libws2_32_a_OBJECTS)
 	$(RANLIB) $@
 
 _libm_dummy.c:

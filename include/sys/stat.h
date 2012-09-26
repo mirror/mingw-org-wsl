@@ -110,25 +110,6 @@ struct _stat32
 	__time32_t st_ctime;	/* Creation time */
 };
 
-#ifndef	_NO_OLDNAMES
-/* NOTE: Must be the same as _stat above. */
-struct xstat
-{
-	dev_t	st_dev;		/* Equivalent to drive number 0=A 1=B ... */
-	ino_t	st_ino;		/* Always zero ? */
-	mode_t	st_mode;	/* See above constants */
-	short	st_nlink;	/* Number of links. */
-	short	st_uid;		/* User: Maybe significant on NT ? */
-	short	st_gid;		/* Group: Ditto */
-	dev_t	st_rdev;	/* Seems useless (not even filled in) */
-	off_t	st_size;	/* File size in bytes */
-	time_t	st_atime;	/* Accessed date (always 00:00 hrs local
-				 * on FAT) */
-	time_t	st_mtime;	/* Modified time */
-	time_t	st_ctime;	/* Creation time */
-};
-#endif /* _NO_OLDNAMES */
-
 struct _stat64 {
 	dev_t	st_dev;		/* Equivalent to drive number 0=A 1=B ... */
 	ino_t	st_ino;		/* Always zero ? */
@@ -207,11 +188,11 @@ extern "C" {
 _CRTIMP int __cdecl __MINGW_NOTHROW _stat32 (const char*, struct _stat32*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _stat64 (const char*, struct _stat64*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _stat32i64 (const char*, struct _stat32i64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _stat64i32 (const char*, struct _stat64i32*);
+int __cdecl __MINGW_NOTHROW _stat64i32 (const char*, struct _stat64i32*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _fstat32 (int, struct _stat32*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _fstat64 (int, struct _stat64*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _fstat32i64 (int, struct _stat32i64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
+int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
 #ifndef __NO_INLINE__
   __CRT_INLINE int __cdecl _fstat64i32(int desc, struct _stat64i32 *_stat)
   {
@@ -255,8 +236,12 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
     _stat->st_ctime = st.st_ctime;
     return ret;
   }
+#else
+#define _stat64i32 _stat64
+#define _fstat64i32 _fstat64
 #endif
-#if !defined(__NO_INLINE__) && !defined(__STRICT_ANSI__)
+
+#if !defined(_NO_OLDNAMES) && !defined(__STRICT_ANSI__)
 #ifdef _USE_32BIT_TIME_T
 #define stat(a,b) _stat32(a,b)
 #define fstat(a,b) _fstat32(a,b)
@@ -266,22 +251,47 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
 #endif
 #define stat _stat
 #define fstat _fstat
-#endif /* !defined(__NO_INLINE__) && !defined(__STRICT_ANSI__) */
+#endif /* !defined(_NO_OLDNAMES) && !defined(__STRICT_ANSI__) */
 
 #if !defined ( _WSTAT_DEFINED) /* also declared in wchar.h */
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat32 (const wchar_t*, struct _stat32*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct _stat64*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat32i64 (const wchar_t*, struct _stat32i64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
+int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
+#ifndef __NO_INLINE__
+  __CRT_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i32 *_stat)
+  {
+    struct _stat64 st;
+    int ret = _wstat64(fname, &st);
+    if (ret == -1) {
+      memset(_stat, 0, sizeof(struct _stat64i32));
+      return -1;
+    }
+    _stat->st_dev = st.st_dev;
+    _stat->st_ino = st.st_ino;
+    _stat->st_mode = st.st_mode;
+    _stat->st_nlink = st.st_nlink;
+    _stat->st_uid = st.st_uid;
+    _stat->st_gid = st.st_gid;
+    _stat->st_rdev = st.st_rdev;
+    _stat->st_size = (_off_t) st.st_size;
+    _stat->st_atime = st.st_atime;
+    _stat->st_mtime = st.st_mtime;
+    _stat->st_ctime = st.st_ctime;
+    return ret;
+  }
+#else
+#define _wstat64i32 _wstat64
+#endif
 
 #ifdef _USE_32BIT_TIME_T
 #define _wstat      _wstat32
 #define _wstati64   _wstat32i64
-#else
+#else /* !_USE_32BIT_TIME_T */
 
 #define _wstat      _wstat64i32
 #define _wstati64   _wstat64
-#endif /* !_USE_32BIT_TIME_T */
+#endif /* _USE_32BIT_TIME_T */
 
 #define _WSTAT_DEFINED
 #endif /* _WSTAT_DEFIND */

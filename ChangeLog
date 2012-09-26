@@ -1,4 +1,43 @@
+2012-09-26  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Make the changes work.
+
+	* include/sys/stat.h (stat, fstat): Change __NO_INLINE__ filter to
+	_NO_OLDNAMES.
+	(_fstat64i32, _stat64i32): Define to be equal to _fstat64 and _stat64
+	respectively when __NO_INLINE__ is defined.
+	Remove _CRTIMP from declaration due to inline function.
+	(_wstat64i32): Define an inline function or define to _wstat64 since it
+	is missing from libmsvcrt.a.
+	Remove _CRTIMP from declaration due to inline function.
+	(xstat): Remove.
+	* include/commctrl.h (tagTVINSERTSTRUCTA, tagTVINSERTSTRUCTW): Move to
+	after the definition of TVITEMXA and TVITEMXW.
+	(TVINSERTSTRUCT, TV_INSERTSTRUCT): Move UNICODE amp to after the
+	definition of TVINSERTSTRUCTA and TVINSERTSTRUCTW.
+	* include/winuser.h (INPUT_MOUSE, INPUT_KEYBOARD, INPUT_HARDWARE):
+	Move to always define based on assumption of lowest supported OS.
+	These appeared in NT version 4 service pack 3.
+	(tagMOUSEINPUT, tagKEYBDINPUT, tagHARDWAREINPUT, tagINPUT): Ditto.
+	(SendInput): Ditto.
+	* include/time.h (_HAVE_32BIT_TIME_T): New macro stating that
+	msvcrt.dll contains the 32bit time functions.
+	(_USE_32BIT_TIME_T): If set then determine if _HAVE_32BIT_TIME_T is set
+	and use the 32bit time functions else use the 64bit time functions and
+	force datatype conversions.
+	* include/wchar.h: Match stat components to sys/stat.h.
+	* include/string.h (strcasecmp, strncasecmp): When __NO_INLINE__ defined
+	map functions to _stricmp and _strincmp respectfully.
+	* Makefile.in (libws2_32.a): Add src/libws2_32/ws2_32.o symbols to the
+	library.  Override global target with a specific one.
+	(libscrnsavw_a_OBJECTS): Correct typo.
+	(extra_OBJECTS): New variable containing extra objects to build.
+	(libdinput_a_OBJECTS, libdmoguids_a_OBJECTS, libdxguid_a_OBJECTS,
+	libstrmiids_a_OBJECTS, libws2_32_a_OBJECTS): Correctly define targets.
+
 2012-09-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Make the changes work.
 
 	* Makefile.in (ofmt_stub.o): Add stub to libmsvcrt.a through
 	libmsvcr71d.a.

@@ -450,26 +450,23 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	  _wrmdir (const wchar_t*);
  * invalid, they will cause localtime et. al. to return NULL. And calling
  * asctime with a NULL pointer causes an Invalid Page Fault. So watch it!
  */
-struct _stat
+struct _stat32
 {
-	_dev_t	st_dev;		/* Equivalent to drive number 0=A 1=B ... */
-	_ino_t	st_ino;		/* Always zero ? */
-	_mode_t	st_mode;	/* See above constants */
-	short	st_nlink;	/* Number of links. */
-	short	st_uid;		/* User: Maybe significant on NT ? */
-	short	st_gid;		/* Group: Ditto */
-	_dev_t	st_rdev;	/* Seems useless (not even filled in) */
-	_off_t	st_size;	/* File size in bytes */
-	time_t	st_atime;	/* Accessed date (always 00:00 hrs local
+	_dev_t	   st_dev;	/* Equivalent to drive number 0=A 1=B ... */
+	_ino_t	   st_ino;	/* Always zero ? */
+	_mode_t	   st_mode;	/* See above constants */
+	short	   st_nlink;	/* Number of links. */
+	short	   st_uid;	/* User: Maybe significant on NT ? */
+	short	   st_gid;	/* Group: Ditto */
+	_dev_t	   st_rdev;	/* Seems useless (not even filled in) */
+	_off_t	   st_size;	/* File size in bytes */
+	__time32_t st_atime;	/* Accessed date (always 00:00 hrs local
 				 * on FAT) */
-	time_t	st_mtime;	/* Modified time */
-	time_t	st_ctime;	/* Creation time */
+	__time32_t st_mtime;	/* Modified time */
+	__time32_t st_ctime;	/* Creation time */
 };
 
-#ifndef	_NO_OLDNAMES
-/* NOTE: Must be the same as _stat above. */
-struct stat
-{
+struct _stat64 {
 	dev_t	st_dev;		/* Equivalent to drive number 0=A 1=B ... */
 	ino_t	st_ino;		/* Always zero ? */
 	mode_t	st_mode;	/* See above constants */
@@ -477,30 +474,14 @@ struct stat
 	short	st_uid;		/* User: Maybe significant on NT ? */
 	short	st_gid;		/* Group: Ditto */
 	dev_t	st_rdev;	/* Seems useless (not even filled in) */
-	off_t	st_size;	/* File size in bytes */
-	time_t	st_atime;	/* Accessed date (always 00:00 hrs local
+	__int64 st_size;	/* File size in bytes */
+	__time64_t st_atime;	/* Accessed date (always 00:00 hrs local
 				 * on FAT) */
-	time_t	st_mtime;	/* Modified time */
-	time_t	st_ctime;	/* Creation time */
+	__time64_t st_mtime;	/* Modified time */
+	__time64_t st_ctime;	/* Creation time */
 };
-#endif /* _NO_OLDNAMES */
 
 struct _stati64 {
-    _dev_t st_dev;
-    _ino_t st_ino;
-    unsigned short st_mode;
-    short st_nlink;
-    short st_uid;
-    short st_gid;
-    _dev_t st_rdev;
-    __int64 st_size;
-    time_t st_atime;
-    time_t st_mtime;
-    time_t st_ctime;
-};
-
-struct __stat64
-{
     _dev_t st_dev;
     _ino_t st_ino;
     _mode_t st_mode;
@@ -509,24 +490,9 @@ struct __stat64
     short st_gid;
     _dev_t st_rdev;
     __int64 st_size;
-    __time64_t st_atime;
-    __time64_t st_mtime;
-    __time64_t st_ctime;
-};
-
-struct __stat32
-{
-	_dev_t		st_dev;
-	_ino_t		st_ino;
-	_mode_t		st_mode;
-	short		st_nlink;
-	short		st_uid;
-	short		st_gid;
-	_dev_t		st_rdev;
-	__int32		st_size;
-	__time32_t	st_atime;
-	__time32_t	st_mtime;
-	__time32_t	st_ctime;
+    time_t st_atime;
+    time_t st_mtime;
+    time_t st_ctime;
 };
 struct _stat32i64 {
 	_dev_t		st_dev;
@@ -555,29 +521,63 @@ struct _stat64i32 {
 	__time64_t	st_ctime;
 };
 
+#define __stat64 _stat64
+#ifdef _USE_32BIT_TIME_T
+#define _fstat      _fstat32
+#define _fstati64   _fstat32i64
+#define _stat       _stat32
+#define _stati64    _stat32i64
+#else  /* !_USE_32BIT_TIME_T */
+#define _fstat      _fstat64i32
+#define _fstati64   _fstat64
+#define _stat       _stat64i32
+#define _stati64    _stat64
+#endif /* _USE_32BIT_TIME_T */
 #define _STAT_DEFINED
 #endif /* _STAT_DEFINED */
 
-#if !defined ( _WSTAT_DEFINED)
-/* also declared in sys/stat.h */
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t*, struct _stat*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t*, struct _stati64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct __stat64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wstat32 (const wchar_t*, struct __stat32*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wstat32i64 (const wchar_t*, struct _stat32i64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wstat64i32 (const wchar_t*, struct _stat64i32*);
+#if !defined ( _WSTAT_DEFINED) /* also declared in sys/stat.h */
+_CRTIMP int __cdecl __MINGW_NOTHROW _wstat32 (const wchar_t*, struct _stat32*);
+_CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct _stat64*);
+_CRTIMP int __cdecl __MINGW_NOTHROW _wstat32i64 (const wchar_t*, struct _stat32i64*);
+int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
+#ifndef __NO_INLINE__
+  __CRT_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i32 *_stat)
+  {
+    struct _stat64 st;
+    int ret = _wstat64(fname, &st);
+    if (ret == -1) {
+      memset(_stat, 0, sizeof(struct _stat64i32));
+      return -1;
+    }
+    _stat->st_dev = st.st_dev;
+    _stat->st_ino = st.st_ino;
+    _stat->st_mode = st.st_mode;
+    _stat->st_nlink = st.st_nlink;
+    _stat->st_uid = st.st_uid;
+    _stat->st_gid = st.st_gid;
+    _stat->st_rdev = st.st_rdev;
+    _stat->st_size = (_off_t) st.st_size;
+    _stat->st_atime = st.st_atime;
+    _stat->st_mtime = st.st_mtime;
+    _stat->st_ctime = st.st_ctime;
+    return ret;
+  }
+#else
+#define _wstat64i32 _wstat64
+#endif
 
-#ifndef _USE_32BIT_TIME_T
-_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t* _v1, struct _stat* _v2)	     { return(_wstat64i32 (_v1,(struct _stat64i32*)_v2)); }
-_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t* _v1, struct _stati64* _v2) { return(_wstat64 (_v1,(struct __stat64*)_v2)); }
+#ifdef _USE_32BIT_TIME_T
+#define _wstat      _wstat32
+#define _wstati64   _wstat32i64
 #else
 
-_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstat (const wchar_t* _v1, struct _stat* _v2)	     { return(_wstat32 (_v1,(struct __stat32*)_v2)); }
-_CRTALIAS int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t* _v1, struct _stati64* _v2) { return(_wstat32i64 (_v1,(struct _stat32i64*)_v2)); }
+#define _wstat      _wstat64i32
+#define _wstati64   _wstat64
 #endif /* !_USE_32BIT_TIME_T */
 
 #define _WSTAT_DEFINED
-#endif /* ! _WSTAT_DEFIND  */
+#endif /* _WSTAT_DEFIND */
 
 #ifndef _WLOCALE_DEFINED  /* also declared in locale.h */
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wsetlocale (int, const wchar_t*);

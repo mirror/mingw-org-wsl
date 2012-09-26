@@ -106,6 +106,8 @@ int __cdecl __MINGW_NOTHROW strcasecmp (const char*, const char *);
 __CRT_INLINE int __cdecl __MINGW_NOTHROW
 strcasecmp (const char * __sz1, const char * __sz2)
   {return _stricmp (__sz1, __sz2);}
+#else
+#define strcasecmp _stricmp
 #endif
 
 _CRTIMP int __cdecl __MINGW_NOTHROW	stricoll (const char*, const char*);
@@ -117,6 +119,8 @@ int  __cdecl __MINGW_NOTHROW strncasecmp (const char *, const char *, size_t);
 __CRT_INLINE int __cdecl __MINGW_NOTHROW
 strncasecmp (const char * __sz1, const char * __sz2, size_t __sizeMaxCompare)
   {return _strnicmp (__sz1, __sz2, __sizeMaxCompare);}
+#else
+#define strncasecmp _strnicmp
 #endif
 
 _CRTIMP char* __cdecl __MINGW_NOTHROW	strnset (char*, int, size_t);
