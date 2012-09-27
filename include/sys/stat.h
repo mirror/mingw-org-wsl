@@ -166,7 +166,7 @@ struct _stat64i32 {
 };
 
 #define __stat64 _stat64
-#ifdef _USE_32BIT_TIME_T
+#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
 #define _fstat      _fstat32
 #define _fstati64   _fstat32i64
 #define _stat       _stat32
@@ -242,7 +242,7 @@ int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
 #endif
 
 #if !defined(_NO_OLDNAMES) && !defined(__STRICT_ANSI__)
-#ifdef _USE_32BIT_TIME_T
+#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
 #define stat(a,b) _stat32(a,b)
 #define fstat(a,b) _fstat32(a,b)
 #else
@@ -284,7 +284,7 @@ int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
 #define _wstat64i32 _wstat64
 #endif
 
-#ifdef _USE_32BIT_TIME_T
+#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
 #define _wstat      _wstat32
 #define _wstati64   _wstat32i64
 #else /* !_USE_32BIT_TIME_T */

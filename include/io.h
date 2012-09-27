@@ -109,7 +109,7 @@ struct _finddata64i32_t {
 	_fsize_t	size;
 	char		name[FILENAME_MAX];
 };
-#ifdef _USE_32BIT_TIME_T
+#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
 #define _finddata_t _finddata32_t
 #define _finddatai64_t _finddata32i64_t
 #define _findfirst _findfirst32
@@ -164,7 +164,7 @@ struct _wfinddata64i32_t {
 	__int32		size;
 	wchar_t		name[FILENAME_MAX];
 };
-#ifdef _USE_32BIT_TIME_T
+#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
 #define _wfinddata_t _wfinddata32_t
 #define _wfinddatai64_t _wfinddata32i64_t
 #define _wfindfirst _wfindfirst32

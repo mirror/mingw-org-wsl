@@ -93,11 +93,11 @@ _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime64 (struct __timeb64*);
 
 _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime32 (struct __timeb32*);
 
-#ifndef _USE_32BIT_TIME_T
-_CRTALIAS void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb* _v) { return(_ftime64 ((struct __timeb64*)_v)); }
+#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+_CRTALIAS void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb* _v) { return(_ftime32 ((struct __timeb32*)_v)); }
 #else
 
-_CRTALIAS void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb* _v) { return(_ftime32 ((struct __timeb32*)_v)); }
+_CRTALIAS void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb* _v) { return(_ftime64 ((struct __timeb64*)_v)); }
 #endif
 
 #ifdef	__cplusplus

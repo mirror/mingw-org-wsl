@@ -1,3 +1,20 @@
+2012-09-27  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	_USE_32BIT_TIME_T resolution and prepare for release.
+
+	* include/io.h: Add _HAVE_32BIT_TIME_T to filters.
+	* include/sys/stat.h: Ditto.
+	* include/sys/timeb.h: Ditto.
+	* include/sys/types.h: Ditto.
+	* include/wchar.h: Ditto.
+	* include/time.h: Rework _HAVE_32BIT_TIME_T to always use 64bit time_t
+	when not defined.
+	* Makefile.in (extra_OBJECTS): Move to the front of the dependency list.
+	(%.o : %.s): Create rules.
+	* lib/lib32/msvcrt.def.in: Remove needless __MSVCRT_VERSION__ filter
+	and previous endif to continue the previous filter.
+	* NEWS: New file.
+
 2012-09-26  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Make the changes work.

@@ -48,12 +48,12 @@ typedef __int64 __time64_t;
 #ifndef _TIME_T_DEFINED
 /* FIXME __STRICT_ANSI__ ! */
 
-#ifndef _USE_32BIT_TIME_T
-typedef	__time64_t time_t;
+#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+typedef	__time32_t time_t;
 #else
 
-typedef	__time32_t time_t;
-#endif /* !_USE_32BIT_TIME_T */
+typedef	__time64_t time_t;
+#endif /* _USE_32BIT_TIME_T */
 
 #define _TIME_T_DEFINED
 #endif

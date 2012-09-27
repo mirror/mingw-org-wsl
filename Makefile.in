@@ -621,7 +621,7 @@ ALL_SOURCES := \
   $(libdxerr8_a_SOURCES) \
   $(libdxerr9_a_SOURCES)
 
-all: $(msvcrt_DEF) $(moldname_DEF) $(lib_LIBRARIES) $(bin_LIBRARIES) $(lib_OBJECTS) $(extra_OBJECTS)
+all: $(extra_OBJECTS) $(msvcrt_DEF) $(moldname_DEF) $(lib_LIBRARIES) $(bin_LIBRARIES) $(lib_OBJECTS)
 
 $(msvcrt_DEF): lib/lib32/msvcrt.def.in
 	N=`echo $@ | sed -e 's|\([a-z]*\)\([0-9]*\).*|\1|'`; \
@@ -708,6 +708,10 @@ lib%.a: src/lib%/%.o
 	$(RANLIB) $@
 
 %.o : %.c
+	$(MKDIR_P) $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+%.o : %.s
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 

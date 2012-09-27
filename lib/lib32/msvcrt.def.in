@@ -851,8 +851,6 @@ _fseeki64
 _ftelli64
 _fseeki64_nolock
 _ftelli64_nolock
-#endif /* 8.0 */
-#if __MSVCRT_VERSION__ >= 0x0800
 _ctime32
 _difftime32
 _difftime64
