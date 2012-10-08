@@ -994,7 +994,7 @@ dist-mingwrt-doc: dist-mingwrt-install
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/mingwrt
 
 dist-mingwrt-src:
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
 	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
@@ -1149,7 +1149,7 @@ dist-w32api-doc: dist-w32api-install
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/w32api/CONTRIBUTIONS share/doc/w32api/TODO
 
 dist-w32api-src:
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
 	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
@@ -1236,7 +1236,7 @@ dist-wsl-doc: dist-wsl-install
 	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/mingw.org-wsl/README
 
 dist-wsl-src: dist-wsl-install
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
 	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \

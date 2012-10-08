@@ -1,3 +1,8 @@
+2012-10-08  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in (dist-mingwrt-src, dist-mingw32-src, dist-wsl-src):
+	Copy top_srcdir to a specific mingw.org-wsl directory.
+
 2012-09-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	_USE_32BIT_TIME_T resolution and prepare for release.
