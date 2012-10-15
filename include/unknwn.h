@@ -26,8 +26,12 @@
 #pragma GCC system_header
 #include <_mingw.h>
 
+#include <rpc.h>
+#include <rpcndr.h>
+
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>
+#include <ole2.h>
 #endif
 
 #ifdef __cplusplus

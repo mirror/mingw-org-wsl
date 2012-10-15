@@ -1,3 +1,191 @@
+2012-10-15  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Create a more modern windows.h
+
+	* include/windows.h (NOWINDRES): Use to filter inclusion of winresrc.h.
+	(NOATOM, NOCOMM, NOCRYPT, NOGDI, NOGDICAPMASKS, NOKANJI, NOMCX,
+	NOMETAFILE, NOMINMAX, NOMSG, NOOPENFILE, NOWN, NORASTEROPS, NOSCROLL,
+	NOSOUND, NOSYSMETRICS, NOTEXTMETRIC): Define if RC_INVOKED and
+	NOWINRES is defined.
+	(excpt.h, stdarg.h): Include if not RC_INVOKED.
+	(wincon.h, winnetwk.h): Move location of inclusion.
+	(wingdi.h): Include regardless of NOGDI.
+	(imm.h): Move inclusion and guard with not defined NOIME.
+	(winsock.h): Move inclusion and remove guard.
+	(wincrypt.h, winefs.h, winscard.h): Add inclusion filtered by NOCRYPT.
+	(commdlg.h): Move location of inclusion.
+	(ole.h, ole2.h): Included filtered by INC_OLE1 inside
+	WIN32_LEAN_AND_MEAN filter.  Include ole2.h outside WIN32_LEAN_AN_MEAN
+	filter but filtered by INC_OLE2.
+	(winsvc.h): Move location of inclusion filtered by NOSERVICE.
+	(mcx.h): Add inclusion filtered by NOMCX.
+	* include/_mingw.h (__MINGW_DEPRECATED): New macro.
+	(__MINGW_IMPORT): Ditto.
+	(__MINGW_EXPORT): Ditto.
+	* include/rpc.h (sdkddkver.h): Remove inclusion.
+	* include/rpcndr.h (error_status_t): Add type define.
+	* include/wtypes.h (rpc.h, rpcndr.h) Move inclusion to before file
+	header guard.
+	* include/winefs.h: New file.
+	* include/winscard.h: Ditto.
+	* include/winsmcrd.h: Ditto.
+	* include/scarderr.h: Ditto.
+	* include/stralign.h: Ditto.
+
+2012-10-15  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Make rpc.h and friends more current.
+
+	* include/rpcasync.h: New file.
+	* include/_mingw.h (__PSHPACK1, __POPPACK1, __PSHPACK8, __POPPACK8):
+	New macros to avoid including files just for the #pragma.
+	(_M_IX86, _M_X64, _M_AMD64, _M_IX86_FP, _X86_, _ALPHA_, _PPC_, _MIPS_,
+	_68K_): Moved declarations from windows.h and winnt.h.
+	* include/commdlg.h (IID_IPrintDialogCallback): New for WIN2K.
+	(IID_IPrintDialogServices): Ditto.
+	(GUID_DEFS_ONLY): New filter guard.
+	(IUnknown, LPUNKNOWN): Temporary coded added to allow compilation.
+	It should be noted that unknwn.h used to be included but has been
+	removed.
+	(__PSHPACK1, __POPPACK1): Add ! _WIN64 guard.
+	(windef.h): Remove inclusion.
+	(EH_NONCONTINUABLE, EH_UNWINDING, EH_EXIT_UNWIND, EH_STACK_INVALID,
+	EH_NESTED_CALL): Remove.  Cannot find references.
+	(RC_INVOKED): Removed guard.
+	* include/ole2.h (olectlid.h): Remov inclusion.
+	(__PSHPACK8, __POPPACK8): Use instead of direct use to be consistent.
+	* include/rpc.h (windows.h, sdkddkver.h): Move before file include guard
+	due to circular dependency.
+	(basetsd.h): Include.
+	(__RPC_WIN64__, __RPC_WIN32__): Definitions based on _WIN64 defined.
+	(DECLSPEC_IMPORT, DECLSPEC_EXPORT): Define based on MIDL_PASS.
+	(RPCRTAPI): Define based on _RPCRT4_.
+	(excpt.h): Include.
+	(FIXME): Added for SEH support.
+	(RpcImpersonateClient): Move to rpcdce.h.
+	(RpcRevertToSelf): Ditto.
+	(I_RpcMapWin32Status): Remove.
+	(rpcasync.h): Include based on ! RPC_NO_WINDOWS_H or
+	RPC_NEED_RPCASYNC_H.
+	* include/rpcdce.h (RPCRTAPI): Define based on _RPCRT4_.
+	(___RPC_ENTRY__, ___RPC_VOID__, ___RPC_INT__, ___RPC_USHORT__,
+	___RPC_LONG__, ___RPC_ULONG__): Private macros for used for code
+	reduction.
+	(IN, OUT): Add guards.
+	(uuid_t): Move define.
+	(UUID): Type define.
+	(DECLSPEC_NORETURN): Define based on MIDL_PASS.
+	(specstrings.h): Include.
+	(RPC_CSTR, RPC_WSTR): Type define based on RPC_USE_NATIVE_WCHAR and
+	_NATIVE_WCHAR_T_DEFINED.
+	(guiddef.h): Include if ! GUID_DEFINED.
+	(RPC_BINDING_HANDLE, handle_t, RPC_BINDING_VECTOR, UUID_VECTOR,
+	RPC_IF_ID): Move code location.
+	(RPC_C_USE_INTERNET_PORT, RPC_C_USE_INTRANET_PORT): Redefine as hex.
+	(RPC_C_DONT_FAIL, RPC_C_RPCHTTP_USE_LOAD_BALANCE): New defines.
+	(RPC_C_MQ_TEMPORARY, RPC_C_MQ_PERMANENT, RPC_C_MQ_CLEAR_ON_OPEN,
+	RPC_C_MQ_USE_EXISTING_SECURITY, RPC_C_MQ_AUTHN_LEVEL_NONE,
+	RPC_C_MQ_AUTHN_LEVEL_PKT_INTEGRITY, RPC_C_MQ_AUTHN_LEVEL_PKT_PRIVACY,
+	RPC_C_MQ_EXPRESS, RPC_C_MQ_RECOVERABLE, RPC_C_MQ_JOURNAL_NONE,
+	RPC_C_MQ_JOURNAL_DEADLETTER, RPC_C_MQ_JOURNAL_ALWAYS,
+	RPC_C_OPT_MQ_DELIVERY, RPC_C_OPT_MQ_PRIORITY, RPC_C_OPT_MQ_JOURNAL,
+	RPC_C_OPT_MQ_ACKNOWLEDGE, RPC_C_OPT_MQ_AUTHN_SERVICE,
+	RPC_C_OPT_MQ_AUTHN_LEVEL, RPC_C_OPT_MQ_TIME_TO_REACH_QUEUE,
+	RPC_C_OPT_MQ_TIME_TO_BE_RECEIVED): New for less than VISTA.
+	(RPC_C_OPT_MAX_OPTIONS): Define based on OS version, 12 < WIN2K, 14 <
+	WS03, 17 otherwise.
+	(RPC_C_OPT_CALL_TIMEOUT, RPC_C_OPT_DONT_LINGER): New for WIN2K.
+	(RPC_C_OPT_TRANS_SEND_BUFFER_SIZE, RPC_C_OPT_TRUST_PEER,
+	RPC_C_OPT_ASYNC_BLOCK, RPC_C_OPT_OPTIMIZE_TIME): New for WS03.
+	(RPC_C_FULL_CERT_CHAIN, RPC_C_PARAM_MAX_PACKET_LENGTH,
+	RPC_C_PARAM_BUFFER_LENGTH): New defines.
+	(RPC_IF_AUTOLISTEN, RPC_IF_OLE): Redefine with hex.
+	(RPC_IF_ALLOW_UNKNOWN_AUTHORITY, RPC_IF_ALLOW_SECURE_ONLY,
+	RPC_IF_ALLOW_CALLBACKS_WITH_NO_AUTH, RPC_IF_ALLOW_LOCAL_ONLY,
+	RPC_IF_SEC_NO_CACHE): New defines.
+	(RPC_C_NO_CREDENTIALS): Ditto.
+	(RpcImpersonateClient, RpcRevertToSelf): Moved from rpc.h.
+	(RpcRevertToSelfEx): New declaration.
+	(RPC_IF_CALLBACK_FN): Correct type define.
+	(RPC_SECURITY_CALLBACK_FN): New type define.
+	(SEC_WINNT_AUTH_IDENTITY_A, SEC_WINNT_AUTH_IDENTITY_W): Correct struct.
+	(RPC_C_SECUIRTY_QOS_VERSION_2, RPC_C_AUTH_INFO_TYPE_HTTP,
+	RPC_C_HTTP_AUTHN_TARGET_SERVER, RPC_C_HTTP_AUTHN_SCHEME_BASIC,
+	RPC_C_HTTP_AUTHN_SCHEME_NTLM, RPC_C_HTTP_AUTHN_SCHEME_DIGEST,
+	RPC_C_HTTP_AUTHN_SCHEME_NEGOTIATE, RPC_C_HTTP_FLAG_USE_SSL,
+	RPC_C_HTTP_FLAG_USE_FIRST_AUTH_SCHEME): New defines for WINXP.
+	(RPC_HTTP_TRANSPORT_CREDENTIALS_[AW]): New structs for WINXP.
+	(RPC_HTTP_TRANSPORT_CREDENTIALS, PRPC_HTTP_TRANSPORT_CREDENTIALS,
+	_RPC_HTTP_TRANSPORT_CREDENTIALS): New defines for WINXP based on
+	UNICODE.
+	(RPC_SECURITY_QOS_V2_[AW]): New structs for WINXP.
+	(RPC_SECURITY_QOS_V2, PRPC_SECURITY_QOS_V2, _RPC_SECURITY_QOS_V2):
+	New defines for WINXP based on UNICODE.
+	(RPC_C_HTTP_AUTHN_SCHEME_CERT, RPC_HTTP_FLAG_IGNORE_CERT_CN_INVALID,
+	RPC_C_SECURITY_QOS_VERSION_3): New defines for WS03.
+	(RPC_SECURITY_QOS_V3_[AW]): New structure for WS03.
+	(RPC_SECURITY_QOS_V3, PRPC_SECURITY_QOS_V3, _RPC_SECURITY_QOS_V3):
+	New defines for WS03 based on UNICODE.
+	(RPC_HTTP_REDIRECTOR_STAGE): New enumeration for WS03.
+	(RPC_STATUS): Modified type define for WS03.
+	(RPC_C_HTTP_AUTHN_TARGET_PROXY,
+	RPC_C_HTTP_FLAG_ENABLE_CERT_REVOCATION_CHECK,
+	RPC_C_SECURITY_QOS_VERSION_4): New defines for VISTA.
+	(RPC_HTTP_TRANSPORT_CREDENTIALS_V2_[AW], RPC_SECURITY_QOS_V4_[AW]):
+	New structures for VISTA.
+	(RPC_HTTP_TRANSPORT_CREDENTIALS_V2, PRPC_HTTP_TRANSPORT_CREDENTIALS_V2,
+	_RPC_HTTP_TRANSPORT_CREDENTIALS_V2, RPC_SECURITY_QOS_V4,
+	PRPC_SECURITY_QOS_V4, _RPC_SECURITY_QOS_V4): New defins for VISTA based
+	on UNICODE.
+	(RPC_HTTP_TRANSPORT_CREDENTIALS_V3_[AW]): New structures for WIN7.
+	(RPC_HTTP_TRANSPORT_CREDENTIALS_V3, PRPC_HTTP_TRANSPORT_CREDENTIALS_V3,
+	_RPC_HTTP_TRANSPORT_CREDENTIALS_V3): New defines for WIN7 based on
+	UNICODE.
+	(RPC_CLIENT_INFORMATION1): Filter for >= WINXP.
+	(RPC_STATUS RPC_ENTRY): Substitute with ___RPC_ENTRY__ to properly
+	declare functions throughout.
+	(void RPC_ENTRY): Substitute with ___RPC_VOID__ to properly declare
+	functions throughout.
+	(int RPC_ENTRY): Substitute with ___RPC_INT__ to properly declare
+	functions throughout.
+	(unsigned short RPC_ENTRY): Substitute with ___RPC_USHORT__ to properly
+	declare functions throughout.
+	(unsigned long RPC_ENTRY): Substitute with ___RPC_ULONG__ to properly
+	declare functions throughout.
+	(RPC_AUTH_KEY_RETRIEVAL_FN): New type define.
+	(RpcServerYield): New declaration.
+	(RPC_C_AUTHN_DIGEST_21): New define for WINXP.
+	(RPC_C_QOS_CAPABILITIES_IGNORE_DELEGATE_FAILURE,
+	RPC_C_QOS_CAPABILITIES_LOCAL_MA_HINT) New definse for WS03.
+	(RPC_C_QOS_CAPABILITIES_SCHANNEL_FULL_AUTH_IDENTITY, RPC_PROTSEQ_TCP,
+	RPC_PROTSEQ_NMP, RPC_PROTSEQ_LRPC, RPC_PROTSEQ_HTTP,
+	RPC_BHT_OBJECT_UUID_VALID, RPC_BHO_NONCAUSAL, RPC_BHO_DONTLINGER,
+	RPC_BHO_EXCLUSIVE_AND_GUARANTEED, RPC_IF_SEC_CACHE_PER_PROC,
+	RPC_IF_ASYNC_CALLBACK, RPC_FW_IF_FLAG_DCOM): New defines for VISTA.
+	(RPC_BINDING_HANDLE_TEMPLATE_V1_[AW]): New structures for VISTA.
+	(RPC_BINDING_HANDLE_TEMPLATE_V1, PRPC_BINDING_HANDLE_TEMPLATE_V1,
+	_RPC_BINDING_HANDLE_TEMPLATE_V1): New defines for VISTA based on
+	UNICODE.
+	(RPC_BINDING_HANDLE_SECURITY_V1_[AW]): New structures for VISTA.
+	(RPC_BINDING_HANDLE_SECURITY_V1, PRPC_BINDING_HANDLE_SECURITY_V1,
+	_RPC_BINDING_HANDLE_SECURITY_V1): New defines for VISTA based on
+	UNICODE.
+	(RpcBindingCreate[AW]): New declaration for VISTA.
+	(RpcBindingCreate): New define for VISTA based on UNICODE.
+	(RpcBindingGetTraningContextHandle, RpcServerInqBindingHandle,
+	RpcExceptionFilter): New declarations for Vista.
+	(RPC_C_AUTHN_KERNLE): New define for WIN7.
+	* include/rpcdcep.h (I_RpcMapWin32Status): Correct declaration.
+	* include/rpcndr.h (__PSHPACK8): Add pack push pragma.
+	(basetsd.h): Include.
+	(objfwd.h): Remove include.
+	(__POPPACK8): Add pack pop pragma.
+	* include/unknwn.h (rpc.h, rpcndr.h, ole2.h): Add includes.
+	* include/windows.h (_M_IX86, _X86_, _ALHPA_, _PPC_, _MIPS_, _68K_):
+	Moved definitions to _mingw.h.
+	* include/winnt.h: Ditto.
+	* .gitignore (obscure/*, junk/*, temp/*): Add items to ignore.
+
 2012-10-08  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in (dist-mingwrt-src, dist-mingw32-src, dist-wsl-src):

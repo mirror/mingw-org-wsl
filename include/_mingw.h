@@ -35,8 +35,7 @@
 #define __MINGW_MINOR_VERSION       0
 #define __MINGW_PATCHLEVEL          0
 
-// These four macros are deprecated and will be removed in the next major
-// version release.
+// These four macros are deprecated and will be removed in the next release.
 #define __MINGW32_VERSION           3.20
 #define __MINGW32_MAJOR_VERSION     3
 #define __MINGW32_MINOR_VERSION     20
@@ -48,6 +47,44 @@
 
 #if (__GNUC__ < 3 || !defined(__GNUC_MINOR__) || (__GNUC__ == 3 && __GNUC_MINOR__ < 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4 && __GNUC_PATCHLEVEL__ < 5))
 #error ERROR: You must use a GNU Compiler version >= 3.4.5.
+#endif
+
+/* translate GCC target defines to MS equivalents. */
+#if defined(__i686__) && !defined(_M_IX86)
+#define _M_IX86 600
+#elif defined(__i586__) && !defined(_M_IX86)
+#define _M_IX86 500
+#elif defined(__i486__) && !defined(_M_IX86)
+#define _M_IX86 400
+#elif defined(__i386__) && !defined(_M_IX86)
+#define _M_IX86 300
+#elif defined(__amd64__)
+# if !defined(_M_X64)
+#  define _M_X64
+# endif
+# if !defined(_M_AMD64)
+#  define _M_AMD64
+# endif
+#endif
+
+#if defined(__SSE2_MATH__) && !defined(_M_IX86_FP)
+#define _M_IX86_FP 2
+#elif defined(__SSE_MATH__) && !defined(_M_IX86_FP)
+#define _M_IX86_FP 1
+#elif !defined(_M_IX86_FP)
+#define _M_IX86_FP 0
+#endif
+
+#if defined(_M_IX86) && !defined(_X86_)
+#define _X86_
+#elif defined(_M_ALPHA) && !defined(_ALPHA_)
+#define _ALPHA_
+#elif defined(_M_PPC) && !defined(_PPC_)
+#define _PPC_
+#elif defined(_M_MRX000) && !defined(_MIPS_)
+#define _MIPS_
+#elif defined(_M_M68K) && !defined(_68K_)
+#define _68K_
 #endif
 
 /* These are defined by the user (or the compiler)
@@ -149,8 +186,10 @@
 #define __MINGW_ATTRIB_PURE __attribute__ ((__pure__))
 #define __MINGW_ATTRIB_NONNULL(arg) __attribute__ ((__nonnull__ (arg)))
 #define __MINGW_ATTRIB_DEPRECATED __attribute__ ((__deprecated__))
+#define __MINGW_DEPRECATED __attribute__ ((__deprecated__))
 #define __MINGW_NOTHROW __attribute__ ((__nothrow__))
-
+#define __MINGW_IMPORT __declspec(dllimport)
+#define __MINGW_EXPORT __declspec(dllexport)
 
 /* TODO: Mark (almost) all CRT functions as __MINGW_NOTHROW.  This will
 allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
@@ -205,6 +244,18 @@ typedef struct localeinfo_struct {
 #else
 #define __AW(AW) __AW__(AW, A)
 #define __STR(AW) __AW__(, AW)
+#endif
+
+#ifndef RC_INVOKED
+#define __PSHPACK1 _Pragma("pack(push,1)")
+#define __POPPACK1 _Pragma("pack(pop)")
+#define __PSHPACK8 _Pragma("pack(push,8)")
+#define __POPPACK8 _Pragma("pack(pop)")
+#else
+#define __PSHPACK1
+#define __POPPACK1
+#define __PSHPACK8
+#define __POPPACK8
 #endif
 
 #endif /* __MINGW_H */

@@ -26,84 +26,104 @@
 #pragma GCC system_header
 #include <_mingw.h>
 
-/* translate GCC target defines to MS equivalents. Keep this synchronized
-   with winnt.h. */
-#if defined(__i686__) && !defined(_M_IX86)
-#define _M_IX86 600
-#elif defined(__i586__) && !defined(_M_IX86)
-#define _M_IX86 500
-#elif defined(__i486__) && !defined(_M_IX86)
-#define _M_IX86 400
-#elif defined(__i386__) && !defined(_M_IX86)
-#define _M_IX86 300
-#endif
-
-#if defined(_M_IX86) && !defined(_X86_)
-#define _X86_
-#elif defined(_M_ALPHA) && !defined(_ALPHA_)
-#define _ALPHA_
-#elif defined(_M_PPC) && !defined(_PPC_)
-#define _PPC_
-#elif defined(_M_MRX000) && !defined(_MIPS_)
-#define _MIPS_
-#elif defined(_M_M68K) && !defined(_68K_)
-#define _68K_
-#endif
-
-#ifdef RC_INVOKED
+#ifdef RC_INVOKED && !defined(NOWINRES)
 /* winresrc.h includes the necessary headers */
 #include <winresrc.h>
 #else
+#ifdef RC_INVOKED
+#define NOATOM
+#define NOCOMM
+#define NOCRYPT
+#define NOGDI
+#define NOGDICAPMASKS
+#define NOKANJI
+#define NOMCX
+#define NOMETAFILE
+#define NOMINMAX
+#define NOMSG
+#define NOOPENFILE
+#define NOWN
+#define NORASTEROPS
+#define NOSCROLL
+#define NOSOUND
+#define NOSYSMETRICS
+#define NOTEXTMETRIC
+#endif /* def RC_INVOKED */
+#endif /* def RC_INVOKED && !defined(NOWINRES) */
 
+#ifndef RC_INVOKED
+#include <excpt.h>
 #include <stdarg.h>
+#endif /* ndef RC_INVOKED */
+
 #include <windef.h>
-#include <wincon.h>
 #include <winbase.h>
-#ifndef NOGDI
 #include <wingdi.h>
-#endif
 #include <winuser.h>
 #include <winnls.h>
+#include <wincon.h>
 #include <winver.h>
-#include <winnetwk.h>
 #include <winreg.h>
-#include <winsvc.h>
+#include <winnetwk.h>
 
 #ifndef WIN32_LEAN_AND_MEAN
 #include <cderr.h>
 #include <dde.h>
 #include <ddeml.h>
 #include <dlgs.h>
-#include <imm.h>
 #include <lzexpand.h>
 #include <mmsystem.h>
 #include <nb30.h>
 #include <rpc.h>
 #include <shellapi.h>
 #include <winperf.h>
-
-#ifndef NOGDI
-#include <commdlg.h>
-#include <winspool.h>
-#endif
-
-/* __USE_W32_SOCKETS is a __CYGWIN__ guard */
-#if defined(__USE_W32_SOCKETS) || !(defined(__CYGWIN__) || defined(__MSYS__))
 #include <winsock.h>
-#endif
+
+#ifndef NOCRYPT
+#include <wincrypt.h>
+#include <winefs.h>
+#include <winscard.h>
+#endif /* ndef NOCRYPT */
 
 #ifndef NOGDI
+#include <winspool.h>
+
 /* In older versions we disallowed COM declarations in __OBJC__
    because of conflicts with @interface directive.  Define _OBJC_NO_COM
    to keep this behaviour.  */ 
-#if !defined (_OBJC_NO_COM) 
+#ifndef _OBJC_NO_COM
+
+#ifdef INC_OLE1
+#include <ole.h>
+#else /* ndef INC_OLE1 */
+
 #include <ole2.h>
-#endif /* _OBJC_NO_COM */
-#endif
+#endif /* def INC_OLE1 */
+
+#endif /* ndef _OBJC_NO_COM */
+
+#include <commdlg.h>
+#endif /* ndef NOGDI */
 
 #endif /* WIN32_LEAN_AND_MEAN */
 
-#endif /* RC_INVOKED */
+#include <stralign.h>
+
+#ifdef INC_OLE2
+#include <ole2.h>
+#endif /* def INC_OLE2 */
+
+#ifndef NOSERVICE
+#include <winsvc.h>
+#endif /* ndef NOSERVICE */
+
+#ifndef NOMCX
+#include <mcx.h>
+#endif /* ndef NOMCX */
+
+#ifndef NOIME
+#include <imm.h>
+#endif /* ndef NOIME */
 
 #ifdef __OBJC__
 /* FIXME: Not undefining BOOL here causes all BOOLs to be WINBOOL (int),

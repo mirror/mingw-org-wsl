@@ -26,10 +26,9 @@
 #pragma GCC system_header
 #include <_mingw.h>
 
-#pragma pack(push,8)
+__PSHPACK8
 #include <winerror.h>
 #include <objbase.h>
-#include <olectlid.h>
 #include <oleauto.h>
 
 #ifdef __cplusplus
@@ -131,6 +130,6 @@ WINOLEAPI OleConvertOLESTREAMToIStorageEx(LPOLESTREAM,LPSTORAGE,CLIPFORMAT*,LONG
 }
 #endif
 
-#pragma pack(pop)
+__POPPACK8
 
 #endif

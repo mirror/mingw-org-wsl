@@ -26,10 +26,48 @@
 #pragma GCC system_header
 #include <_mingw.h>
 
+#if (_WIN32_WINNT >= _WIN32_WINNT_WIN2K)
+#ifdef DEFINE_GUID
+DEFINE_GUID(IID_IPrintDialogCallback, 0x5852a2c3, 0x6530, 0x11d1, 0xb6, 0xa3, 0x0, 0x0, 0xf8, 0x75, 0x7b, 0xf9);
+DEFINE_GUID(IID_IPrintDialogServices, 0x509aaeda, 0x5639, 0x11d1, 0xb6, 0xa1, 0x0, 0x0, 0xf8, 0x75, 0x7b, 0xf9);
+#endif /* DEFINE_GUID */
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_WIN2K) */
+
+#ifndef GUID_DEFS_ONLY
+
+#include <prsht.h>   /* for HPROPSHEETPAGE  */
+
+/* FIXME: This needs to be removed. */
+#include <basetyps.h>
+#ifndef __IUnknown_INTERFACE_DEFINED__
+#define __IUnknown_INTERFACE_DEFINED__
+#define INTERFACE IUnknown
+DECLARE_INTERFACE(IUnknown)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+};
+#undef INTERFACE
+typedef IUnknown *LPUNKNOWN;
+#endif
+/* End FIXME */
+
+#ifndef _WIN64
+__PSHPACK1
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-#pragma pack(push,1)
+
+#ifndef WINCOMMDLGAPI
+#ifndef _COMDLG32_
+#define WINCOMDLGAPI DECLSPEC_IMPORT
+#else /* _COMDLG32_ */
+#define WINCOMDLGAPI
+#endif /* ndef _COMDLG32_ */
+#endif /* ndef WINCOMMDLGAPI */
 
 #define LBSELCHSTRINGA  "commdlg_LBSelChangedNotify"
 #define SHAREVISTRINGA  "commdlg_ShareViolation"
@@ -529,8 +567,6 @@ typedef __AW(PRINTDLG) PRINTDLG,*LPPRINTDLG;
 #define START_PAGE_GENERAL	0XFFFFFFFF
 #define OPENFILENAME_SIZE_VERSION_400  76
 #ifndef _OBJC_NO_COM
-#include <unknwn.h>  /* for LPUNKNOWN  */ 
-#include <prsht.h>   /* for HPROPSHEETPAGE  */
 typedef struct tagPRINTPAGERANGE {
    DWORD  nFromPage;
    DWORD  nToPage;
@@ -593,4 +629,11 @@ HRESULT WINAPI PrintDlgExW(LPPRINTDLGEXW);
 #ifdef __cplusplus
 }
 #endif
+
+#ifndef _WIN64
+__POPPACK1
+#endif
+
+#endif /* ndef GUID_DEFS_ONLY */
+
 #endif

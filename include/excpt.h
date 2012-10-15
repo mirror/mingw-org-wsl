@@ -26,43 +26,19 @@
 #pragma GCC system_header
 #include <_mingw.h>
 
-/*
- * Support for operating system level structured exception handling.
- *
- * NOTE: This is very preliminary stuff. I am also pretty sure it is
- *       completely Intel specific.
- */
+__PSHPACK8
 
-#include <windef.h>
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
-/*
- * NOTE: The constants structs and typedefs below should be defined in the
- *       Win32 API headers.
- */
-#define	EH_NONCONTINUABLE	0x01
-#define	EH_UNWINDING		0x02
-#define	EH_EXIT_UNWIND		0x04
-#define	EH_STACK_INVALID	0x08
-#define	EH_NESTED_CALL		0x10
 
-#ifndef	RC_INVOKED
-
-typedef enum {
+typedef enum _EXCEPTION_DISPOSITION {
 	ExceptionContinueExecution,
 	ExceptionContinueSearch,
 	ExceptionNestedException,
 	ExceptionCollidedUnwind
 } EXCEPTION_DISPOSITION;
-
-
-/*
- * End of stuff that should be in the Win32 API files.
- */
-
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
 
 /*
  * The type of function that is expected as an exception handler to be
@@ -126,6 +102,5 @@ typedef PEXCEPTION_REGISTRATION PEXCEPTION_REGISTRATION_RECORD;
 }
 #endif
 
-#endif	/* Not RC_INVOKED */
-
+__POPPACK8
 #endif	/* _EXCPT_H_ not defined */

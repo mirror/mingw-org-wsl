@@ -21,29 +21,33 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/**
+ * Must include windows.h before defining the header guard to avoid circular
+ * dependency issues.
+ */
+#ifndef RPC_NO_WINDOWS_H
+#include <windows.h>
+#endif /* RPC_NO_WINDOWS_H */
+
 #ifndef _RPC_H
 #define _RPC_H
 #pragma GCC system_header
 #include <_mingw.h>
 
-#ifndef RPC_NO_WINDOWS_H
-#include <windows.h>
-#endif
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define __RPC_WIN32__
-#ifndef _WIN95
-#define __RPC_NT__
-#define RPC_UNICODE_SUPPORTED
+#include <basetsd.h>
+
+#if defined(_WIN64)
+# define __RPC_WIN64__
+#else
+# define __RPC_WIN32__
 #endif
 
-#ifdef _RPCRT4_
-#define RPCRTAPI DECLSPEC_EXPORT
-#else
-#define RPCRTAPI DECLSPEC_IMPORT
+#if defined(__RPC_WIN64__)
+__PSHPACK8
 #endif
 
 #ifndef __MIDL_USER_DEFINED
@@ -51,21 +55,47 @@ extern "C" {
 #define midl_user_free     MIDL_user_free
 #define __MIDL_USER_DEFINED
 #endif
+
+typedef void *I_RPC_HANDLE;
+typedef long RPC_STATUS;
+
 #define RPC_UNICODE_SUPPORTED
+
 #define __RPC_FAR
 #define __RPC_API  __stdcall
 #define __RPC_USER __stdcall
 #define __RPC_STUB __stdcall
 #define RPC_ENTRY  __stdcall
-typedef void *I_RPC_HANDLE;
-typedef long RPC_STATUS;
+
+#ifndef DECLSPEC_IMPORT
+#ifndef MIDL_PASS
+#define DECLSPEC_IMPORT __declspec(dllimport)
+#else
+#define DECLSPEC_IMPORT
+#endif
+#endif
+
+#ifndef DECLSPEC_EXPORT
+#ifndef MIDL_PASS
+#define DECLSPEC_EXPORT __declspec(dllexport)
+#else
+#define DECLSPEC_EXPORT
+#endif
+#endif
+
+#ifdef _RPCRT4_
+#define RPCRTAPI
+#else
+#define RPCRTAPI DECLSPEC_IMPORT
+#endif
 
 #include <rpcdce.h>
 #include <rpcnsi.h>
 #include <rpcnterr.h>
-
+#include <excpt.h>
 #include <winerror.h>
 
+/* FIXME: These should be defined regardless */
 /* SEH is not supported */
 #if 0
 #include <excpt.h>
@@ -79,9 +109,13 @@ typedef long RPC_STATUS;
 #define RpcAbnormalTermination() AbnormalTermination()
 #endif /* 0 */
 
-RPC_STATUS RPC_ENTRY RpcImpersonateClient(RPC_BINDING_HANDLE);
-RPC_STATUS RPC_ENTRY RpcRevertToSelf(void);
-long RPC_ENTRY I_RpcMapWin32Status(RPC_STATUS);
+#if !defined(RPC_NO_WINDOWS_H) || defined(RPC_NEED_RPCASYNC_H)
+#include <rpcasync.h>
+#endif
+
+#if defined(__RPC_WIN64__)
+__POPPACK8
+#endif
 
 #ifdef __cplusplus
 }

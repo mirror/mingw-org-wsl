@@ -21,13 +21,17 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/**
+ * Must include rpc.h and rpcndr.h before defining header guard due to circular
+ * dependencies.
+ */
+#include <rpc.h>
+#include <rpcndr.h>
+
 #ifndef _WTYPES_H
 #define _WTYPES_H
 #pragma GCC system_header
 #include <_mingw.h>
-
-#include <rpc.h>
-#include <rpcndr.h>
 
 #ifdef __cplusplus
 extern "C" {

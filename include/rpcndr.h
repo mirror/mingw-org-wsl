@@ -31,13 +31,13 @@
 #define __RPCNDR_H_VERSION__        ( 450 )
 #endif /* __RPCNDR_H_VERSION__ */
 
+__PSHPACK8
+#include <basetsd.h>
 #include <rpcnsip.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <objfwd.h>
 
 #define DECLSPEC_UUID(x)
 #define MIDL_INTERFACE(x) struct
@@ -93,6 +93,7 @@ typedef unsigned char boolean;
 #define MIDL_ascii_strlen(string) strlen(string)
 #define MIDL_ascii_strcpy(target,source) strcpy(target,source)
 #define MIDL_memset(s,c,n) memset(s,c,n)
+typedef unsigned long error_status_t;
 #define _midl_ma1( p, cast ) *(*( cast **)&p)++
 #define _midl_ma2( p, cast ) *(*( cast **)&p)++
 #define _midl_ma4( p, cast ) *(*( cast **)&p)++
@@ -549,5 +550,7 @@ void RPC_ENTRY NdrUserMarshalFree(PMIDL_STUB_MESSAGE,unsigned char*,PFORMAT_STRI
 #ifdef __cplusplus
 }
 #endif
+
+__POPPACK8
 
 #endif

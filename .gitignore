@@ -1,11 +1,11 @@
 Makefile
-aclocal.m4
 configure
+config.status
 .*.swp
 *~
 *.log
 *.bak
-autom4te.cache
-missing
-depcomp
-install-sh
+autom4te.cache/*
+obscure/*
+junk/*
+temp/*

@@ -146,6 +146,8 @@ long __stdcall I_RpcServerUnregisterEndpointW(unsigned short*,unsigned short*);
 
 #define I_RpcServerUnregisterEndpoint __AW(I_RpcServerUnregisterEndpoint)
 
+___RPC_LONG__ I_RpcMapWin32Status(RPC_STATUS);
+
 #ifdef __cplusplus
 }
 
