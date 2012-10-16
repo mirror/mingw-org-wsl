@@ -44,6 +44,7 @@
 #define OSVER(ver) ((ver) & OSVERSION_MASK)
 #define SPVER(ver) (((ver) & SPVERSION_MASK) >> 8)
 #define SUBVER(ver) ((ver) & SUBVERSION_MASK)
+#define WINNTVER(ver) ((ver) / 0x00010000)
 
 /**
  * Macros to create the minimal NTDDI version from _WIN32_WINNT value.
@@ -135,7 +136,7 @@
 #      error The _WIN32_WINNT value does not match NTDDI_VERSION
 #    endif
 #  else
-#    define _WIN32_WINNT OSVER(NTDDI_VERSION)
+#    define _WIN32_WINNT WINNTVER(NTDDI_VERSION)
 #    ifndef WINVER
 #      define WINVER _WIN32_WINNT
 #    endif

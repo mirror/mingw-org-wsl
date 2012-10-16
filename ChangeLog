@@ -1,3 +1,15 @@
+2012-10-16  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/sdkddkver.h (WINNTVER): New macro.
+	(_WIN32_WINNT): Correct default value based on NTDDI_VERSION.
+	* include/stdio.h (_get_output_format): Base declaration or define on
+	VISTA.
+	(_set_output_format): Ditto.
+	(_get_printf_count_output): Ditto.
+	(_set_printf_count_output): Ditto.
+	* misc/src/libcrt/stdio/pformat.c: Remove needless code since we only
+	care about Windows.
+
 2012-10-08  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in (dist-mingwrt-src, dist-mingw32-src, dist-wsl-src):

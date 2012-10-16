@@ -2,7 +2,6 @@
  * prepared to support the POSIX-XSI additions to the C99 standard.
  */
 #undef   WITH_XSI_FEATURES
-#define __MSVCRT_VERSION__ 0x0800
 
 /* pformat.c
  *
@@ -141,7 +140,6 @@
  */
 #define PFORMAT_INFNAN      -32768
 
-#ifdef _WIN32
 /*
  * The Microsoft standard for printing `%e' format exponents is
  * with a minimum of three digits, unless explicitly set otherwise,
@@ -150,22 +148,6 @@
  * The following macro allows us to replicate this behaviour.
  */
 # define PFORMAT_MINEXP    __pformat_exponent_digits()
- /*
-  * However, this feature is unsupported for versions of the
-  * MSVC runtime library prior to msvcr80.dll, and by default,
-  * MinGW uses an earlier version, (equivalent to msvcr60.dll),
-  * for which `_TWO_DIGIT_EXPONENT' will be undefined.
-  */
-# ifndef _TWO_DIGIT_EXPONENT
- /*
-  * This hack works around the lack of the `_set_output_format()'
-  * feature, when supporting versions of the MSVC runtime library
-  * prior to msvcr80.dll; it simply enforces Microsoft's original
-  * convention, for all cases where the feature is unsupported.
-  */
-#  define _get_output_format()  0
-#  define _TWO_DIGIT_EXPONENT   1
-# endif
 /*
  * Irrespective of the MSVCRT version supported, *we* will add
  * an additional capability, through the following inline function,
@@ -183,13 +165,6 @@ int __pformat_exponent_digits( void )
     : 3
     ;
 }
-#else
-/*
- * When we don't care to mimic Microsoft's standard behaviour,
- * we adopt the C99/POSIX standard of two digit exponents.
- */
-# define PFORMAT_MINEXP         2
-#endif
 
 typedef union
 {
@@ -722,10 +697,6 @@ typedef union
   unsigned long          __pformat_fpreg_bits;
 } __pformat_fpreg_t;
 
-#ifdef _WIN32
-/* TODO: make this unconditional in final release...
- * (see note at head of associated `#else' block.
- */
 #include "gdtoa.h"
 
 static
@@ -806,61 +777,6 @@ char *__pformat_fcvt( long double x, int precision, int *dp, int *sign )
  */
 #define __pformat_ecvt_release( value ) __freedtoa( value )
 #define __pformat_fcvt_release( value ) __freedtoa( value )
-
-#else
-/*
- * TODO: remove this before final release; it is included here as a
- * convenience for testing, without requiring a working `__gdtoa()'.
- */
-static __inline__
-char *__pformat_ecvt( long double x, int precision, int *dp, int *sign )
-{
-  /* Define in terms of `ecvt()'...
-   */
-  char *retval = ecvt( (double)(x), precision, dp, sign );
-  if( isinf( x ) || isnan( x ) )
-  {
-    /* emulating `__gdtoa()' reporting for infinities and NaN.
-     */
-    *dp = PFORMAT_INFNAN;
-    if( *retval == '-' )
-    {
-      /* Need to force the `sign' flag, (particularly for NaN).
-       */
-      ++retval; *sign = 1;
-    }
-  }
-  return retval;
-}
-
-static __inline__
-char *__pformat_fcvt( long double x, int precision, int *dp, int *sign )
-{
-  /* Define in terms of `fcvt()'...
-   */
-  char *retval = fcvt( (double)(x), precision, dp, sign );
-  if( isinf( x ) || isnan( x ) )
-  {
-    /* emulating `__gdtoa()' reporting for infinities and NaN.
-     */
-    *dp = PFORMAT_INFNAN;
-    if( *retval == '-' )
-    {
-      /* Need to force the `sign' flag, (particularly for NaN).
-       */
-      ++retval; *sign = 1;
-    }
-  }
-  return retval;
-}
-
-/* No memory pool clean up needed, for these emulated cases...
- */
-#define __pformat_ecvt_release( value ) /* nothing to be done */
-#define __pformat_fcvt_release( value ) /* nothing to be done */
-
-/* TODO: end of conditional to be removed. */
-#endif
 
 static __inline__
 void __pformat_emit_radix_point( __pformat_t *stream )
@@ -2175,8 +2091,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    state = PFORMAT_END;
 	    break;
 	  
-#	  ifdef _WIN32
-
 	    case 'I':
 	      /*
 	       * The MSVCRT implementation of the printf() family of
@@ -2210,8 +2124,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	      state = PFORMAT_END;
 	      break;
 
-#	  endif
-	  
 	  case 'l':
 	    /*
 	     * Interpret the argument as explicitly of a
@@ -2231,7 +2143,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	       */
 	      length = PFORMAT_LENGTH_LONG;
 
-#           ifndef _WIN32
 	      /*
 	       * Microsoft's MSVCRT implementation also uses `l'
 	       * as a modifier for `long double'; if we don't want
@@ -2239,10 +2150,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	       */
 	      state = PFORMAT_END;
 	      break;
-
-	      /* otherwise, we simply fall through...
-	       */
-#	    endif
 
 	  case 'L':
 	    /*
