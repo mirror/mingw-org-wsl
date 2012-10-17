@@ -39,10 +39,11 @@ headers-directx.o:
 headers-test.o:
 	$(CC) -o $@ -c $(srcdir)/headers/test.c $(CFLAGS)
 
-libcrt: libcrt-sitest.exe libcrt-testwmem.exe libcrt-tst-aligned-malloc.exe
+libcrt: libcrt-sitest.exe libcrt-testwmem.exe libcrt-tst-aligned-malloc.exe libcrt-test-asinh.exe
 	libcrt-sitest.exe
 	libcrt-testwmem.exe
 	libcrt-tst-aligned-malloc.exe
+	libcrt-test-asinh.exe
 
 BEGIN = ../src/libcrt/crt/crt2.o `$(CC) -print-file-name=crtbegin.o`
 END = `$(CC) -print-file-name=crtend.o`
@@ -62,6 +63,9 @@ libcrt-testwmem.exe: libcrt-testwmem.o $(LIBFILES)
 libcrt-tst-aligned-malloc.exe: libcrt-tst-aligned-malloc.o $(LIBFILES)
 	$(CC) -o $@ $(BEGIN) $< $(LDFLAGS) $(LIBS) $(END)
 
+libcrt-test-asinh.exe: libcrt-test-asinh.o $(LIBFILES)
+	$(CC) -o $@ $(BEGIN) $< $(LDFLAGS) $(LIBS) $(END)
+
 libcrt-sitest.o:
 	$(CC) -o $@ -c $(srcdir)/libcrt/sitest.c $(CFLAGS)
 
@@ -70,6 +74,9 @@ libcrt-testwmem.o:
 
 libcrt-tst-aligned-malloc.o:
 	$(CC) -o $@ -c $(srcdir)/libcrt/tst-aligned-malloc.c $(CFLAGS)
+
+libcrt-test-asinh.o:
+	$(CC) -o $@ -c $(srcdir)/libcrt/test-asinh.c $(CFLAGS)
 
 clean:
 	rm -f *.o *.exe

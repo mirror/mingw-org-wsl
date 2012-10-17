@@ -1,3 +1,13 @@
+2012-10-17  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* tests/Makefile.in (libcrt-test-asinh): Add test.
+
+2012-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/index.php?func=detail&aid=2117590&group_id=2435&atid=102435
+
+	* tests/libcrt/test-asinh.c: New file.
+
 2012-10-16  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/sdkddkver.h (WINNTVER): New macro.
