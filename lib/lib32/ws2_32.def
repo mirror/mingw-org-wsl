@@ -125,6 +125,7 @@ WSAStringToAddressA@20
 WSAStringToAddressW@20
 WSAUnadvertiseProvider@4
 WSAWaitForMultipleEvents@20
+WSAPoll@12
 WSCDeinstallProvider@8
 WSCEnableNSProvider@8
 WSCEnumProtocols@16
