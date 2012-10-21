@@ -87,6 +87,10 @@ typedef CONST char *PCSZ;
 /* Definitions only in Windows NT 4 */
 #include "winnt4.h"
 
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+ULONG KeQueryActiveProcessorCount(PKAFFINITY);
+#endif
+
 #ifdef __cplusplus
 }
 #endif

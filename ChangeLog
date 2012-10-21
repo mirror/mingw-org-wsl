@@ -1,3 +1,10 @@
+2012-10-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=2004630&group_id=2435&atid=102435
+
+	* include/ddk/ntddk.h (KeQueryActiveProcessors): New VISTA declaration.
+	* lib/lib32/ddk/ntoskrnl.def: New VISTA import.
+
 2012-10-19  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	https://sourceforge.net/tracker/?func=detail&aid=3554826&group_id=2435&atid=102435
