@@ -1,3 +1,9 @@
+2012-10-22  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=2567153&group_id=2435&atid=102435
+
+	* include/sys/types.h (off_t): Type define regardless of _NO_OLDNAMES.
+
 2012-10-21  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	https://sourceforge.net/tracker/?func=detail&aid=2004630&group_id=2435&atid=102435

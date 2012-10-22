@@ -61,10 +61,7 @@ typedef	__time64_t time_t;
 #ifndef	_OFF_T_
 #define	_OFF_T_
 typedef long _off_t;
-
-#ifndef	_NO_OLDNAMES
 typedef _off_t	off_t;
-#endif
 #endif	/* Not _OFF_T_ */
 
 
