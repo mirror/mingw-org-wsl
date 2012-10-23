@@ -50,7 +50,7 @@ typedef _COM_interface IEnumMoniker *LPENUMMONIKER;
 typedef _COM_interface IEnumFORMATETC *LPENUMFORMATETC;
 typedef _COM_interface IEnumSTATDATA *LPENUMSTATDATA;
 typedef _COM_interface IEnumSTATSTG *LPENUMSTATSTG;
-typedef _COM_interface IEnumSTATPROPSTG LPENUMSTATPROPSTG;
+typedef _COM_interface IEnumSTATPROPSTG *LPENUMSTATPROPSTG;
 typedef _COM_interface IEnumString *LPENUMSTRING;
 typedef _COM_interface IEnumUnknown *LPENUMUNKNOWN;
 typedef _COM_interface IStorage *LPSTORAGE;

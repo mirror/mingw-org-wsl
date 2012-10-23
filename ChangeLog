@@ -1,3 +1,10 @@
+2012-10-23  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3437216&group_id=2435&atid=102435
+
+	* include/objfwd.h (LPENUMSTATPROPSTG): Properly type define with as a
+	pointer.
+
 2012-10-22  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	https://sourceforge.net/tracker/?func=detail&aid=2567153&group_id=2435&atid=102435
