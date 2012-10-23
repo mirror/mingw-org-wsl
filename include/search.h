@@ -81,13 +81,13 @@ typedef struct node {
 
 void * __cdecl tdelete (const void * __restrict__, void ** __restrict__,
 			int (*)(const void *, const void *))
-			__MINGW_ATTRIB_NONNULL (1)  __MINGW_ATTRIB_NONNULL (3);
+			__MINGW_ATTRIB_NONNULL (2)  __MINGW_ATTRIB_NONNULL (3);
 void * __cdecl tfind (const void *, void * const *,
 		      int (*)(const void *, const void *))
-		      __MINGW_ATTRIB_NONNULL (1)  __MINGW_ATTRIB_NONNULL (3);
+		      __MINGW_ATTRIB_NONNULL (2)  __MINGW_ATTRIB_NONNULL (3);
 void * __cdecl tsearch (const void *, void **, 
 			int (*)(const void *, const void *))
-			__MINGW_ATTRIB_NONNULL (1)  __MINGW_ATTRIB_NONNULL (3);
+			__MINGW_ATTRIB_NONNULL (2)  __MINGW_ATTRIB_NONNULL (3);
 void __cdecl twalk (const void *, void (*)(const void *, VISIT, int));
 
 #ifndef	_NO_OLDNAMES

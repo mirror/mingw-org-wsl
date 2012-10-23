@@ -1,5 +1,11 @@
 2012-10-23  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	https://sourceforge.net/tracker/?func=detail&aid=3166132&group_id=2435&atid=102435
+
+	* include/search.h (tdelete, tfind, tsearch): Correct declaration.
+
+2012-10-23  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	https://sourceforge.net/tracker/?func=detail&aid=3437558&group_id=2435&atid=102435
 
 	* include/amvideo.h (VIDEOINFO): Correct structure coding.
