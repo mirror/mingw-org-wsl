@@ -74,10 +74,10 @@ typedef struct tagVIDEOINFOHEADER {
 	BITMAPINFOHEADER bmiHeader;
 } VIDEOINFOHEADER;
 typedef struct tagVIDEOINFO {
-	RECT rcSource,
-	RECT rcTarget,
-	DWORD dwBitRate,
-	DWORD dwBitErrorRate,
+	RECT rcSource;
+	RECT rcTarget;
+	DWORD dwBitRate;
+	DWORD dwBitErrorRate;
 	REFERENCE_TIME AvgTimePerFrame;
 	BITMAPINFOHEADER bmiHeader;
 	union {
