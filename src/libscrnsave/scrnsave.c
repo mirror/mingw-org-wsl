@@ -217,12 +217,17 @@ static int LaunchScreenSaver(HWND hParent)
     }
   else
     {
-      style = WS_POPUP;
+      style = WS_POPUP | WS_VISIBLE;
       rc.left = GetSystemMetrics(SM_XVIRTUALSCREEN);
       rc.top = GetSystemMetrics(SM_YVIRTUALSCREEN);
       rc.right = GetSystemMetrics(SM_CXVIRTUALSCREEN);
       rc.bottom = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-      style |= WS_VISIBLE;
+
+      if (rc.right == 0)
+	rc.right = GetSystemMetrics(SM_CXSCREEN);
+
+      if (rc.bottom == 0)
+	rc.bottom = GetSystemMetrics(SM_CYSCREEN);
     }
 
   /* create main screen saver window */
