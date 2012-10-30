@@ -1,3 +1,30 @@
+2012-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Use C compiler selected by running configure script.
+
+	* Makefile.in (CC): Missing AC_SUBST definition; add it.
+	Adjust spacing within adjacent defines, for improved readability.
+	(DLLTOOL_FLAGS): Avoid unnecessary use of := operator.
+
+2012-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rationalise .gitignore entries.
+
+	* .gitignore (build): Ignore local build directory.
+	(config.status): Ignore this; it is a build-time generated file.
+	(aclocal.m4): Do not ignore this; as a user maintained file, which
+	requires manual editing, (we do not use automake), it must be tracked.
+	(missing depcomp install-sh): Do not ignore; these should be tracked
+	as build-aux component files, within the scope of the appropriate
+	submodule; they do not appear as normal package component files.
+
+2012-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add configuration files for Mercurial support.
+
+	* .hgsub: New file; it represents the equivalent of .gitmodules
+	* .hgignore: New file; it is the equivalent of .gitignore
+
 2012-10-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	https://sourceforge.net/tracker/?func=detail&aid=3567092&group_id=2435&atid=102435

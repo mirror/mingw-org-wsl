@@ -39,13 +39,14 @@ docdir=@docdir@
 
 mkinstalldirs=@MKDIR_P@
 
-CFLAGS=@CFLAGS@
-RANLIB=@RANLIB@
-AS=@AS@
-DLLTOOL=@DLLTOOL@
-DLLTOOL_FLAGS := --as $(AS) -k --dllname
-INSTALL=@INSTALL@
-MKDIR_P=@MKDIR_P@
+CC = @CC@
+CFLAGS = @CFLAGS@
+RANLIB = @RANLIB@
+AS = @AS@
+DLLTOOL = @DLLTOOL@
+DLLTOOL_FLAGS = --as $(AS) -k --dllname
+INSTALL = @INSTALL@
+MKDIR_P = @MKDIR_P@
 
 INCLUDES=-I$(top_srcdir)/include -I$(srcdir)/include \
   -I$(top_srcdir)/src/libcrt/include -I$(top_srcdir)/misc/src/include \

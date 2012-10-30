@@ -1,0 +1,11 @@
+syntax: glob
+build/
+Makefile
+configure
+autom4te.cache/
+config.status
+**.swp
+**.log
+**.bak
+**.o
+**~
