@@ -1,3 +1,12 @@
+2012-10-31  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct DllMain() declarations and definitions.
+
+	* src/libcrt/crt/dllcrt1.c: Correct DllMain declaration.
+	* src/libcrt/crt/dllmain.c: Correct DllMain definition.
+	* src/libcrt/crt/mthr_init.c: Remove DllMain declaration.
+	Correct DllMain definition.
+
 2012-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Work around Microsoft breakage of command line globbing.

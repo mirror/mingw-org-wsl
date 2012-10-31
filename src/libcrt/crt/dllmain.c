@@ -30,7 +30,7 @@
 #include <windows.h>
 
 BOOL WINAPI 
-DllMain (HANDLE hDll, DWORD dwReason, LPVOID lpReserved)
+DllMain (HINSTANCE hDll, DWORD dwReason, LPVOID lpReserved)
 {
   return TRUE;
 }

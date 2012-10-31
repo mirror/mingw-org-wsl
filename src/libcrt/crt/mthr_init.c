@@ -46,9 +46,6 @@
 #undef WIN32_LEAN_AND_MEAN
 #include <stdio.h>
 
-BOOL APIENTRY DllMain (HANDLE hDllHandle, DWORD reason, 
-                       LPVOID reserved /* Not used. */ );
-
 /*
  *----------------------------------------------------------------------
  *
@@ -67,7 +64,7 @@ BOOL APIENTRY DllMain (HANDLE hDllHandle, DWORD reason,
  *----------------------------------------------------------------------
  */
 BOOL APIENTRY
-DllMain (HANDLE hDllHandle /* Library instance handle. */,
+DllMain (HINSTANCE hDllHandle /* Library instance handle. */,
 	 DWORD reason /* Reason this function is being called. */,
 	 LPVOID reserved /* Not used. */)
 {

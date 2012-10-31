@@ -53,7 +53,7 @@ __dll_exit (void);
 p_atexit_fn __dllonexit (p_atexit_fn, p_atexit_fn**, p_atexit_fn**);
 
 
-extern BOOL WINAPI DllMain (HANDLE, DWORD, LPVOID);
+extern BOOL WINAPI DllMain (HINSTANCE, DWORD, LPVOID);
 
 extern void _pei386_runtime_relocator (void);
 
