@@ -929,8 +929,6 @@ install-mingwrt-dirs: $(need-DESTDIR-compatibility)
 	$(mkinstalldirs) $(DESTDIR)$(includedir)/sys
 
 mingwrt_bin_LIBRARIES := mingwm10.dll
-mingwrt_lib_LIBRARIES := $(wildcard libmsvcr*.a)
-mingwrt_lib_LIBRARIES += $(wildcard libmoldname*.a)
 mingwrt_lib_INCLUDES := \
   _mingw.h   dirent.h  glob.h      getopt.h    math.h    setjmp.h  strings.h \
   assert.h   dos.h     inttypes.h  mbctype.h   share.h   wchar.h   varargs.h \

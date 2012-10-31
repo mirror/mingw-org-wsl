@@ -1,5 +1,13 @@
 2012-10-31  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	https://sourceforge.net/tracker/?func=detail&aid=3408074&group_id=2435&atid=102435
+
+	* Makefile.in (mingwrt_lib_LIBRARIES): Remove incorrect variable
+	assignment.
+	* src/libcrt/search/tdelete.c: Remove incorrect assertion about vkey.
+
+2012-10-31  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	Correct DllMain() declarations and definitions.
 
 	* src/libcrt/crt/dllcrt1.c: Correct DllMain declaration.
