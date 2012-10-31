@@ -1,3 +1,37 @@
+2012-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Work around Microsoft breakage of command line globbing.
+
+	* include/glob.h: New file; it declares the API for a (mostly) POSIX
+	compatible path name globbing facility for use in MinGW applications.
+
+	* src/libcrt/misc/glob.c: New file; it implements the glob API...
+	(__mingw_glob, __mingw_globfree): ...through this pair of functions.
+
+	* Makefile.in (misc_SOURCES): Add glob.c
+	(mingwrt_lib_INCLUDES): Add glob.h
+
+	* include/_mingw.h (BEGIN_C_DECLS, END_C_DECLS): New macros;
+	they facilitate...
+	[__cplusplus]: ...demarcation of 'extern "C"' declarations for this.
+	(__CRT_GLOB_ESCAPE_CHAR__): New manifest constant; define it.
+	(__CRT_GLOB_USE_MSVCRT__, __CRT_GLOB_USE_MINGW__): Likewise; these act
+	as mutually exclusive feature selectors for assignment in CRTglob.c
+	(__CRT_GLOB_USE_SINGLE_QUOTE__, __CRT_GLOB_BRACKET_GROUPS__):
+	(__CRT_GLOB_CASE_SENSITIVE__): New bit-flag definitions; with...
+	[_CRT_glob & __CRT_GLOB_USE_MINGW__]: ...they enable additional
+	command line globbing capabilities.
+
+	* src/libcrt/crt/CRTglob.c (_CRT_glob): New default value; enable...
+	[_CRT_glob & __CRT_GLOB_USE_MINGW__]: ...this feature preference.
+
+	* src/libcrt/crt/init.c (_CRT_GLOB_OPT, ARGV_INLINE): New macros.
+	(ARGV_ESCAPE, ARGV_SQUOTE, ARGV_NOGROUP): New manifest constants;
+	define them as aliases for the new bit-flags from _mingw.h
+	(do_glob, backslash, unquote, __mingw_setargv): New static functions.
+	(_mingw32_init_mainargs): Use them to implement globbing, when...
+	[_CRT_glob & __CRT_GLOB_USE_MINGW__]: ...this is enabled.
+
 2012-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Use C compiler selected by running configure script.

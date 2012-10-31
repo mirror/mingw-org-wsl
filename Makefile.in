@@ -1,6 +1,6 @@
 ##
 # @file Makefile.in
-# @copy 2012 MinGW.org project
+# Copyright (C) 2012 MinGW.org Project
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -21,6 +21,9 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 ##
+#
+# @configure_input@
+#
 VPATH=$(srcdir)
 PACKAGE_TARNAME=@PACKAGE_TARNAME@
 PACKAGE_VERSION=@PACKAGE_VERSION@
@@ -488,7 +491,8 @@ misc_SOURCES := \
   $(SRCDIR)/getopt.c \
   $(SRCDIR)/membarrier.c \
   $(SRCDIR)/mingw-aligned-malloc.c \
-  $(SRCDIR)/mingw-fseek.c
+  $(SRCDIR)/mingw-fseek.c \
+  $(SRCDIR)/glob.c
 
 SRCDIR := src/libcrt/posix/libgen
 posix_libgen_SOURCES := $(SRCDIR)/basename.c $(SRCDIR)/dirname.c
@@ -928,9 +932,9 @@ mingwrt_bin_LIBRARIES := mingwm10.dll
 mingwrt_lib_LIBRARIES := $(wildcard libmsvcr*.a)
 mingwrt_lib_LIBRARIES += $(wildcard libmoldname*.a)
 mingwrt_lib_INCLUDES := \
-  _mingw.h   dirent.h  getopt.h    math.h      setjmp.h  strings.h  varargs.h \
-  assert.h   dos.h     inttypes.h  mbctype.h   share.h   wchar.h \
-  complex.h  errno.h   io.h        mbstring.h  signal.h  tchar.h    wctype.h \
+  _mingw.h   dirent.h  glob.h      getopt.h    math.h    setjmp.h  strings.h \
+  assert.h   dos.h     inttypes.h  mbctype.h   share.h   wchar.h   varargs.h \
+  complex.h  errno.h   io.h        mbstring.h  signal.h  tchar.h   wctype.h \
   conio.h    excpt.h   libgen.h    mem.h       stdint.h  time.h \
   ctype.h    fcntl.h   limits.h    memory.h    stdio.h   unistd.h \
   dir.h      fenv.h    locale.h    process.h   stdlib.h  utime.h \
