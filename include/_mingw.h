@@ -27,8 +27,8 @@
  * all other WSL header files.
  * -------------------------------------------------------------------------
  */
-#ifndef _MINGW_H
-#define _MINGW_H
+#ifndef __MINGW_H
+#define __MINGW_H
 #pragma GCC system_header
 #include <sdkddkver.h>
 
@@ -272,4 +272,4 @@ typedef struct localeinfo_struct {
 # define __STR(AW) __AW__(, AW)
 #endif
 
-#endif /* _MINGW_H */
+#endif /* __MINGW_H */
