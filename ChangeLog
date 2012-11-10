@@ -1,3 +1,9 @@
+2012-11-10  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3572971&group_id=2435&atid=102435
+
+	* include/wchar.h (_vscwprintf): Add declaration.
+
 2012-11-09  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	https://sourceforge.net/tracker/?func=detail&aid=3559134&group_id=2435&atid=102435
