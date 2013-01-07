@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+ /* Created by Danny Smith <dannysmith@users.sourceforge.net> */
 #ifndef _COMPLEX_H_
 #define _COMPLEX_H_
 #pragma GCC system_header

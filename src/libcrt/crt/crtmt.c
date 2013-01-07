@@ -23,6 +23,8 @@
  */
 
 /*
+ * Created by Mumit Khan  <khan@nanotech.wisc.edu>
+ *
  * This object file defines _CRT_MT to have a value of 1, which will
  * turn on MT support in GCC runtime. This is only linked in when
  * you specify -mthreads when linking with gcc. The Mingw support

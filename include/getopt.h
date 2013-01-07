@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Contributed by Keith Marshall <keithmarshall@users.sourceforge.net> */
 #ifndef _GETOPT_H
 #define _GETOPT_H
 #pragma GCC system_header

@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Casper S. Hornstrup <chorns@users.sourceforge.net> */
 #ifndef __USBCAMDI_H
 #define __USBCAMDI_H
 #pragma GCC system_header

@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Written by Filip Navara <xnavara@volny.cz> */
 #ifndef _D3D9_H
 #define _D3D9_H
 #pragma GCC system_header

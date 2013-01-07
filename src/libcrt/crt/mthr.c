@@ -25,6 +25,8 @@
 /* @FIXME - Is this used by current GCC? */
 
 /*
+ * Created by Mumit Khan  <khan@nanotech.wisc.edu>
+ *
  * Implement Mingw thread-support DLL .
  *
  * This file is used iff the following conditions are met:

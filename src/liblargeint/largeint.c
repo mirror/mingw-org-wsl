@@ -21,6 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/*
+  Large (64 bits) integer arithmetics library
+
+  Written by Anders Norlander <anorland@hem2.passagen.se>
+*/
 #define __COMPILING_LARGEINT
 
 #include <largeint.h>

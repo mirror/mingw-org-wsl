@@ -21,6 +21,11 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/*
+ * Contributed by Egor Duda  <deo@logos-m.ru>
+ * Modified by addition of runtime_pseudo_reloc version 2
+ * by Kai Tietz  <kai.tietz@onevision.com>
+*/
 #include <windows.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Written by Anders Norlander <anorland@hem2.passagen.se> */
 #ifndef _WINDOWS_H
 #define _WINDOWS_H
 #pragma GCC system_header

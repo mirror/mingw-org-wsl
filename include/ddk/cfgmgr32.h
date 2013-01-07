@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Casper S. Hornstrup <chorns@users.sourceforge.net> */
 #ifndef __CFGMGR32_H
 #define __CFGMGR32_H
 #pragma GCC system_header

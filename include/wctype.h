@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Mumit Khan <khan@xraylith.wisc.edu> */
 #ifndef _WCTYPE_H
 #define _WCTYPE_H
 #pragma GCC system_header

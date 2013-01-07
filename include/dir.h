@@ -21,6 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/*
+ * Created by Colin Peters <colin@bird.fu.is.saga-u.ac.jp>
+ *            Mumit Khan <khan@xraylith.wisc.edu>
+ */
 #ifndef _DIR_H
 #define _DIR_H
 #pragma GCC system_header

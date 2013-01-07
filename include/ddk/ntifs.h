@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Bo Brantén <bosse@acc.umu.se> */
 #ifndef _NTIFS_
 #define _NTIFS_
 #define _GNU_NTIFS_

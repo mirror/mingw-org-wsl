@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Danny Smith <danny_r_smith_2001@yahoo.co.nz> */
 #ifndef _STDINT_H
 #define _STDINT_H
 #pragma GCC system_header

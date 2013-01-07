@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Casper S. Hornstrup <chorns@users.sourceforge.net> */
 #ifndef __NTDDKBD_H
 #define __NTDDKBD_H
 #pragma GCC system_header

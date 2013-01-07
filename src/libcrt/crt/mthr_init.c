@@ -25,6 +25,8 @@
 /* FIXME - Is this still used by GCC? */
 
 /*
+ * Created by Mumit Khan  <khan@nanotech.wisc.edu>
+ *
  * Do the thread-support DLL initialization.
  *
  * This file is used iff the following conditions are met:

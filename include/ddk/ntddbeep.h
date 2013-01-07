@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Casper S. Hornstrup <chorns@users.sourceforge.net> */
 #ifndef __NTDDBEEP_H
 #define __NTDDBEEP_H
 #pragma GCC system_header

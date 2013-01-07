@@ -21,6 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/*
+  Screen saver library by Anders Norlander <anorland@hem2.passagen.se>
+*/
 #include <windows.h>
 #include <scrnsave.h>
 #include <regstr.h>

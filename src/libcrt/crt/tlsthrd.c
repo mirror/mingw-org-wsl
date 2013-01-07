@@ -24,6 +24,9 @@
 
 /*
  * This file is used by if gcc is built with --enable-threads=win32.
+ *
+ * Written by Kai Tietz  <kai.tietz@onevision.com>
+ * Based on version created by Mumit Khan  <khan@nanotech.wisc.edu>
  */
 
 #ifndef WIN32_LEAN_AND_MEAN

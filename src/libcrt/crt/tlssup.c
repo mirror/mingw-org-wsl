@@ -21,6 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/*
+ * Written by Kai Tietz  <kai.tietz@onevision.com>
+*/
 #include <windows.h>
 #include <stdio.h>
 #include <memory.h>

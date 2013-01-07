@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Anders Norlander <anorland@hem2.passagen.se> */
 #ifndef _SCRNSAVE_H
 #define _SCRNSAVE_H
 #pragma GCC system_header

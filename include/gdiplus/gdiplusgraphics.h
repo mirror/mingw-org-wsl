@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Markus Koenig <markus@stber-koenig.de> */
 #ifndef __GDIPLUS_GRAPHICS_H
 #define __GDIPLUS_GRAPHICS_H
 #pragma GCC system_header

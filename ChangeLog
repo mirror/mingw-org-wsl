@@ -1,3 +1,18 @@
+2013-01-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/complex.h, include/ddk/*.h, include/dir.h,
+	include/directx/*.h, include/gdiplus/*.h, include/getopt.h,
+	include/imagehlp.h, include/ntldap.h, include/psapi.h,
+	include/scrnsave.h, include/search.h, include/snmp.h,
+	include/tlhelp32.h, include/wctype.h, include/winber.h,
+	include/windows.h, include/winldap.h, include/winsnmp.h,
+	include/winsock2.h, src/libcrt/crt/crtmt.c, src/libcrt/crt/crtst.c,
+	src/libcrt/crt/mthr.c, src/libcrt/crt/mthr_init.c,
+	src/libcrt/crt/pseudo-reloc.c, src/libcrt/crt/tlsmcrt.c,
+	src/libcrt/crt/tlsmthread.c, src/libcrt/crt/tlssup.c,
+	src/libcrt/crt/tlsthrd.c, src/liblargeint/largeint.c,
+	src/libscrnsave/scrnsave.c: Insert removed author attribution.
+
 2012-11-10  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	https://sourceforge.net/tracker/?func=detail&aid=3572971&group_id=2435&atid=102435
