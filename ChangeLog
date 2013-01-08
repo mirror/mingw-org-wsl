@@ -1,3 +1,8 @@
+2013-01-08  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* config.h.in, configure.ac, README, include/*, src/*, tests/*:
+	Modify "@copy 2012" to read "Copyright 2012, 2013".
+
 2013-01-07  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/complex.h, include/ddk/*.h, include/dir.h,
