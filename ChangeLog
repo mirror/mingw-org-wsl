@@ -1,3 +1,7 @@
+2013-02-16  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/stdlib.h (_MAX_ENV): Define if not __STRICT_ANSI__.
+
 2013-01-08  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* config.h.in, configure.ac, README, include/*, src/*, tests/*:

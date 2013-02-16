@@ -63,6 +63,7 @@
 #define _MAX_DIR 256
 #define _MAX_FNAME 256
 #define _MAX_EXT 256
+#define _MAX_ENV 32767
 
 #endif /* Not __STRICT_ANSI__ */
 
