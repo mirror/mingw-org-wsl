@@ -1,3 +1,7 @@
+2013 02-20  F. Mensik  <pepezdepa@users.sourceforge.net>
+
+	* include/winnls.h (LONG_PTR): Add _WIN64 typedef.
+
 2013-02-16  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/stdlib.h (_MAX_ENV): Define if not __STRICT_ANSI__.

@@ -430,8 +430,12 @@ extern "C" {
 #define IS_SURROGATE_PAIR(hc,lc) (IS_HIGH_SURROGATE(hc) && IS_LOW_SURROGATE(lc))
 
 #ifndef  _BASETSD_H
+# ifdef _WIN64
+typedef __int64 LONG_PTR;
+# else
 typedef long LONG_PTR;
-#endif 
+# endif /* def _WIN64 */
+#endif /* ndef _BASETSD_H */
 
 #ifndef RC_INVOKED
 typedef DWORD LCTYPE;
