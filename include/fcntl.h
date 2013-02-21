@@ -80,6 +80,7 @@
 #define O_NOINHERIT	_O_NOINHERIT
 #define O_SEQUENTIAL	_O_SEQUENTIAL
 #define	O_RANDOM	_O_RANDOM
+#define O_RAW		_O_RAW
 
 #endif	/* Not _NO_OLDNAMES */
 

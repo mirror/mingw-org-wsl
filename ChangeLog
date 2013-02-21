@@ -3,6 +3,7 @@
 	* include/oleauto.h (RegisterTypeLibForUser, UnRegisterTypeLibForUser):
 	Add declarations.
 	* lib/lib32/oleaut32.def: Ditto.
+	* include/fcntl.h (O_RAW): Add definition within ndef NO_MOLDAMES path.
 
 2013-02-20  F. Mensik  <pepezdepa@users.sourceforge.net>
 
