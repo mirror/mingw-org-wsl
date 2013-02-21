@@ -1,4 +1,10 @@
-2013 02-20  F. Mensik  <pepezdepa@users.sourceforge.net>
+2013-02-22  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/oleauto.h (RegisterTypeLibForUser, UnRegisterTypeLibForUser):
+	Add declarations.
+	* lib/lib32/oleaut32.def: Ditto.
+
+2013-02-20  F. Mensik  <pepezdepa@users.sourceforge.net>
 
 	* include/winnls.h (LONG_PTR): Add _WIN64 typedef.
 
