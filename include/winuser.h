@@ -2907,10 +2907,16 @@ typedef struct tagINPUT {
 #define MAKEWPARAM(l,h) ((WPARAM)MAKELONG(l,h))
 #define MAKELRESULT(l,h) ((LRESULT)MAKELONG(l,h))
 #define POINTSTOPOINT(p,ps) { \
-  (p).x=LOWORD(*(DWORD *)&ps); \
-  (p).y=HIWORD(*(DWORD *)&ps); \
+  (p).x=(LONG)(SHORT)LOWORD(*(LONG*)&ps); \
+  (p).y=(LONG)(SHORT)HIWORD(*(LONG*)&ps); \
 }
-#define POINTTOPOINTS(p) ((POINTS)MAKELONG((p).x,(p).y))
+/* NOTE: MSDN states POINTTOPOINTS returns the POINTS structure but usage
+ * proves otherswise.  Removing the cast allows the user the choice to cast
+ * the result to the POINTS structure themselves or use the long that is
+ * returned instead.  See Issues ticket #1402 for discussion.
+#define POINTTOPOINTS(p) ((POINTS)MAKELONG((short)(p).x,(short)(p).y))
+ */
+#define POINTTOPOINTS(p) (MAKELONG((short)(p).x,(short)(p).y))
 	
 #ifndef _LPCGUID_DEFINED
 #define _LPCGUID_DEFINED

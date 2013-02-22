@@ -34,6 +34,8 @@
 extern "C" {
 #endif
 
+#include <reason.h>
+
 #define HKEY_CLASSES_ROOT	((HKEY)0x80000000)
 #define HKEY_CURRENT_USER	((HKEY)0x80000001)
 #define HKEY_LOCAL_MACHINE	((HKEY)0x80000002)

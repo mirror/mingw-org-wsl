@@ -1,5 +1,15 @@
 2013-02-22  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	* include/float.h (_MCW_DN, _DN_SAVE, _DN_FLUSH): Add definitions.
+	* include/winuser.h (POINTTOPOINTS, POINTSTOPOINT): Adjust parameters
+	with type specificity.
+	* include/windef.h(MAKEWORD, MAKELONG, LOWORD, HIWORD, LOBYTE, HIBYTE):
+	Ditto. Also use DWORD_PTR instead of DWORD.
+	* include/winuser.h (POINTTOPOINTS): Remove the cast to POINTS struct.
+	* include/winreg.h (reason.h): Include.
+
+2013-02-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	* include/oleauto.h (RegisterTypeLibForUser, UnRegisterTypeLibForUser):
 	Add declarations.
 	* lib/lib32/oleaut32.def: Ditto.
