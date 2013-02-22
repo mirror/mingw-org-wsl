@@ -7,6 +7,9 @@
 	Ditto. Also use DWORD_PTR instead of DWORD.
 	* include/winuser.h (POINTTOPOINTS): Remove the cast to POINTS struct.
 	* include/winreg.h (reason.h): Include.
+	* include/oaidl.h (ICreateTypeInfo, ICreateTypeInfo2): Declare
+	INTERFACE.
+	(ICreateTypeLib, ICreateTypeLib2): Ditto.
 
 2013-02-21  Earnie Boyd  <earnie@users.sourceforge.net>
 
