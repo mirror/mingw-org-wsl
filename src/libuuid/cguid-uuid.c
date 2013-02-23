@@ -39,3 +39,4 @@ DEFINE_OLEGUID(IID_IPSFactory,0x9,0,0);
 DEFINE_OLEGUID(CLSID_StaticDib,0x316,0,0);
 // Picture (Metafile) CLSID
 DEFINE_OLEGUID(CLSID_StaticMetafile,0x315,0,0);
+DEFINE_OLEGUID(CLSID_StdGlobalInterfaceTable,0x323,0,0);

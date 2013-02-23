@@ -1,3 +1,13 @@
+2013-02-23  Johann Hanne  <jonnyh33@users.sourceforge.net>
+
+	Add missing UUID Interface Definitions.
+
+	* src/libuuid/cguid-uuid.c (CLSID_StdGlobalInterfaceTable): Define.
+	* src/libuuid/objidl-uuid.c (IID_IGlobalInterfaceTable): Define.
+	(FMTID_DocSummaryInformation): Ditto.
+	(FMTID_SummaryInformation): Ditto.
+	(FMTID_UserDefinedProperties): Ditto.
+
 2013-02-22  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/float.h (_MCW_DN, _DN_SAVE, _DN_FLUSH): Add definitions.
