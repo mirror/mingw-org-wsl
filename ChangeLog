@@ -2,6 +2,7 @@
 
 	* README: Add references for reporting bugs and submitting patches.
 	Correct the @FILENAME@ cut/paste issue.
+	* NEWS: Add and adjust release notes for 4.0.
 
 2013-02-23  Johann Hanne  <jonnyh33@users.sourceforge.net>
 
