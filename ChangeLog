@@ -1,3 +1,8 @@
+2013-02-23  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* README: Add references for reporting bugs and submitting patches.
+	Correct the @FILENAME@ cut/paste issue.
+
 2013-02-23  Johann Hanne  <jonnyh33@users.sourceforge.net>
 
 	Add missing UUID Interface Definitions.
