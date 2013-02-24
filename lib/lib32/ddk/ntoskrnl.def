@@ -547,8 +547,8 @@ KeNumberProcessors DATA
 ;KeProfileInterrupt
 ;KeProfileInterruptWithSource
 KePulseEvent@12
-;KeQueryActiveProcessors
-KeQueryActiveProccsorCount@4
+KeQueryActiveProcessors@0
+KeQueryActiveProcessorCount@4
 KeQueryInterruptTime@0
 KeQueryPriorityThread@4
 ;KeQueryRuntimeThread

@@ -140,8 +140,18 @@ O_RAW is now declared if ndef _NO_MOLDNAMES in fcntl.h.
 CRYPT_KEY_PROV_INFO and CRYPT_KEY_PROV_PARAM are now defined in wincrypt.h.
 KeQueryActiveProcessorCount is now declared in ddk/ntddk.h; but still is
   broken.  See Issue [#1183].
-The stat and fstat declarations in sys/stat.h have been reworked to provide
-  definitions for the functions related to 32bit versus 64bit file system
-  functions.
 Remove ndef _NO_OLDNAMES guard from off_t in sys/types.h so that it is always
   defined.
+Added definitions of _MCW_DN, _DN_SAVE and _DN_FLUSH to float.h.
+The stat functions were modified to use the various _stat32, _stat64,
+  _stat64i32, etc functions.  Using _stat will resolve to the correct structure.
+  The resolution is a result of _USE_32BIT_TIME_T and _HAVE_32BIT_TIME_T user
+  land initiated definitions.  See sys/stat.h for the implementation.
+The POINTTOPOINTS returned data type was changed from a POINTS structure to the
+  value of MAKELONG based on user experience with the macro.
+The POINTSTOPOINT, MAKEWORD, MAKELONG, LOWORD, HIWORD, LOBYTE, HIBYTE macros
+  were corrected to use the correct data type casts.
+Correct the tdelete, tfind and tsearch declarations in search.h
+Correct the LaunchScreenSaver implementation in src/libscrnsave/scrnsave.c to
+  allow operation on systems older than Windows 2000.
+Correct the typo defining LPENUMSTATPROPSTG as a pointer in objfwd.h.
