@@ -155,3 +155,19 @@ Correct the tdelete, tfind and tsearch declarations in search.h
 Correct the LaunchScreenSaver implementation in src/libscrnsave/scrnsave.c to
   allow operation on systems older than Windows 2000.
 Correct the typo defining LPENUMSTATPROPSTG as a pointer in objfwd.h.
+Correct the constants in gd_qnan.h to produce the correct NaN results.
+Added declaration and import of WSAPoll function.
+Added declaration and import of CertEnumCRLsInStore function.
+Corrected declarations and definitions for DllMain [#1670].
+Added declaration of _vscwprintf.
+Include reason.h in winreg.h so that the public definitions are defined by
+  including windows.h.
+Define LONG_PTR specific to _WIN64 versus _WIN32.
+Define _MAX_ENV if not __STRICT_ANSI__.
+Define interfaced declarations for ICreateTypeInfo, ICreateTypeInfo2,
+  ICreateTypeLib and ICreateTypeLib2.
+Provide implementations for IID_IGlobalInterface, FMTID_DocSummaryInformation,
+  FMTID_SummaryInformation, FMTID_UserDefinedProperties, and
+  CLSID_StdGlobalInterfaceTable.
+Added declaration and import of RegisterTypeLibForUser and
+  UnRegisterTypeLibForUser.

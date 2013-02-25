@@ -1,3 +1,7 @@
+2013-02-25  Earnie Boyd  <earnie@usres.sourceforge.net>
+
+	* NEWS: Add and adjust release notes for 4.0.
+
 2013-02-24  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* lib/lib32/ddk/ntoskrnl.def (KeQueryActiveProcessorCount): Correct
