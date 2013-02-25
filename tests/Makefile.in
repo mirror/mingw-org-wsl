@@ -49,7 +49,7 @@ BEGIN = ../src/libcrt/crt/crt2.o `$(CC) -print-file-name=crtbegin.o`
 END = `$(CC) -print-file-name=crtend.o`
 
 LDFLAGS = -Bdynamic -nostdlib -L .. -L `$(CC) -print-file-name=`
-LIBS = -lmingw32 -lmoldname -lmingwex -lgcc -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32
+LIBS = -lmingwex -lmingw32 -lmoldname -lgcc -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32
 
 LIBFILES = ../libmingw32.a ../libmoldname.a ../libmingwex.a ../libmsvcrt.a \
   ../libadvapi32.a ../libshell32.a ../libuser32.a ../libkernel32.a

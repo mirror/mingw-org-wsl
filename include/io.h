@@ -109,23 +109,28 @@ struct _finddata64i32_t {
 	_fsize_t	size;
 	char		name[FILENAME_MAX];
 };
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T)
 #define _finddata_t _finddata32_t
 #define _finddatai64_t _finddata32i64_t
 #define _findfirst _findfirst32
 #define _findnext _findnext32
 #define _findfirsti64 _findfirst32i64
 #define _findnexti64 _findnext32i64
-#else
+#else /* !_USE_32BIT_TIME_T */
 #define _finddata_t _finddata64i32_t
 #define _finddatai64_t __finddata64_t
 #define _findfirst _findfirst64i32
 #define _findnext _findnext64i32
 #define _findfirsti64 _findfirst64
 #define _findnexti64 _findnext64
-#endif
+#endif /* _USE_32BIT_TIME_T */
+#else /* !_HAVE_32BIT_TIME_T */
+#define _finddata_t _finddata64i32_t
+#define _finddatai64_t __finddata64_t
+#endif /* _HAVE_32BIT_TIME_T */
 #define _FINDDATA_T_DEFINED
-#endif
+#endif /* !_FINDDATA_T_DEFINED */
 
 #ifndef _WFINDDATA_T_DEFINED
 struct _wfinddata32_t {
@@ -164,7 +169,8 @@ struct _wfinddata64i32_t {
 	__int32		size;
 	wchar_t		name[FILENAME_MAX];
 };
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T)
 #define _wfinddata_t _wfinddata32_t
 #define _wfinddatai64_t _wfinddata32i64_t
 #define _wfindfirst _wfindfirst32
@@ -179,8 +185,12 @@ struct _wfinddata64i32_t {
 #define _wfindfirsti64 _wfindfirst64
 #define _wfindnexti64 _wfindnext64
 #endif /* _USE_32BIT_TIME_T */
+#else /* ! _HAVE_32BIT_TIME_T */
+#define _wfinddata_t _wfinddata64i32_t
+#define _wfinddatai64_t _wfinddata64_t
+#endif /* _HAVE_32BIT_TIME_T */
 #define _WFINDDATA_T_DEFINED
-#endif
+#endif /* ! _WFINDDATA_T_DEFINED */
 
 #ifdef	__cplusplus
 extern "C" {

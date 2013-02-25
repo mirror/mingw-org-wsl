@@ -1,6 +1,9 @@
 2013-02-25  Earnie Boyd  <earnie@usres.sourceforge.net>
 
 	* NEWS: Add and adjust release notes for 4.0.
+	* tests/Makefile.in: Correct order of libraries in LIBS.
+	* include/io.h: Correct declarations for _findfirst/_findnext when
+	not _HAVE_32BIT_TIME_T.
 
 2013-02-24  Earnie Boyd  <earnie@users.sourceforge.net>
 
