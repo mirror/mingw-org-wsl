@@ -28,6 +28,8 @@ VPATH=$(srcdir)
 PACKAGE_TARNAME=@PACKAGE_TARNAME@
 PACKAGE_VERSION=@PACKAGE_VERSION@
 PACKAGE_RELEASE=@PACKAGE_RELEASE@
+RELEASE_STATUS=@RELEASE_STATUS@
+RELEASE_REFERENCE=@RELEASE_REFERENCE@
 srcdir=@srcdir@
 top_srcdir=@top_srcdir@
 top_builddir=@top_builddir@
@@ -977,26 +979,48 @@ dist-mingwrt-install: all
 	$(MAKE) prefix=./dist/mingwrt/installed install-mingwrt
 
 dist-mingwrt-dll: dist-mingwrt-mkdir dist-mingwrt-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/mingwrt/installed ; \
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dll.tar.lzma bin/*.dll
+else
+	cd ./dist/mingwrt/installed ; \
+	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dll.tar.lzma bin/*.dll
+endif
 
 dist-mingwrt-dev: dist-mingwrt-mkdir dist-mingwrt-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/mingwrt/installed ; \
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dev.tar.lzma include/ lib/
+else
+	cd ./dist/mingwrt/installed ; \
+	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dev.tar.lzma include/ lib/
+endif
 
 $(DESTDIR)$(prefix)/share/doc/mingwrt/DISCLAIMER: dist-mingwrt-mkdir dist-mingwrt-install
 	cp $(top_srcdir)/doc/historical/mingw/DISCLAIMER $(DESTDIR)$(prefix)/share/doc/mingwrt/
 
 dist-mingwrt-lic: $(DESTDIR)$(prefix)/share/doc/mingwrt/DISCLAIMER
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/mingwrt/installed ; \
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-lic.tar.lzma share/doc/mingwrt/DISCLAIMER
+else
+	cd ./dist/mingwrt/installed ; \
+	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-lic.tar.lzma share/doc/mingwrt/DISCLAIMER
+endif
 
 dist-mingwrt-doc: dist-mingwrt-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/mingwrt/installed ; \
 	rm -f share/doc/mingwrt/DISCLAIMER ; \
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/mingwrt
+else
+	cd ./dist/mingwrt/installed ; \
+	rm -f share/doc/mingwrt/DISCLAIMER ; \
+	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-doc.tar.lzma share/doc/mingwrt
+endif
 
 dist-mingwrt-src:
+ifeq ($(RELEASE_STATUS),prod)
 	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
 	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
 	rm -rf .git autom4te.cache ; \
@@ -1010,6 +1034,21 @@ dist-mingwrt-src:
 	rm -rf mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	mv mingw.org-wsl mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
+else
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
+	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	rm -rf .git autom4te.cache ; \
+	rm -f config.log config.status config.cache config.h ; \
+	rm -f .gitignore core a.out Makefile ; \
+	find . -type f -name \*~ -delete ; \
+	find . -type f -name \*.log -delete ; \
+	find . -type f -name \*.bak -delete ; \
+	find . -type f -name .\*.swp -delete ; \
+	cd .. ; \
+	rm -rf mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	mv mingw.org-wsl mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
+endif
 
 install-w32api-dirs: $(need-DESTDIR-compatibility)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
@@ -1140,18 +1179,34 @@ dist-w32api-install: all dist-w32api-mkdir
 	$(MAKE) prefix=./dist/w32api/installed install-w32api
 
 dist-w32api-dev: dist-w32api-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/w32api/installed ; \
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dev.tar.lzma include/ lib/
+else
+	cd ./dist/w32api/installed ; \
+	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dev.tar.lzma include/ lib/
+endif
 
 dist-w32api-lic: dist-w32api-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/w32api/installed ; \
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-lic.tar.lzma share/doc/w32api/README.w32api
+else
+	cd ./dist/w32api/installed ; \
+	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-lic.tar.lzma share/doc/w32api/README.w32api
+endif
 
 dist-w32api-doc: dist-w32api-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/w32api/installed ; \
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/w32api/CONTRIBUTIONS share/doc/w32api/TODO
+else
+	cd ./dist/w32api/installed ; \
+	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-doc.tar.lzma share/doc/w32api/CONTRIBUTIONS share/doc/w32api/TODO
+endif
 
 dist-w32api-src:
+ifeq ($(RELEASE_STATUS),prod)
 	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
 	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
 	rm -rf .git autom4te.cache ; \
@@ -1165,6 +1220,21 @@ dist-w32api-src:
 	rm -rf w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	mv mingw.org-wsl w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
+else
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
+	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	rm -rf .git autom4te.cache ; \
+	rm -f config.log config.status config.cache config.h ; \
+	rm -f .gitignore core a.out Makefile ; \
+	find . -type f -name \*~ -delete ; \
+	find . -type f -name \*.log -delete ; \
+	find . -type f -name \*.bak -delete ; \
+	find . -type f -name .\*.swp -delete ; \
+	cd .. ; \
+	rm -rf w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	mv mingw.org-wsl w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
+endif
 
 install-wsl-dirs: $(need-DESTDIR-compatibility)
 	$(mkinstalldirs) $(DESTDIR)$(bindir)
@@ -1223,22 +1293,43 @@ dist-wsl-install: all dist-wsl-mkdir
 	$(MAKE) prefix=./dist/wsl/installed install-wsl
 
 dist-wsl-dll: dist-wsl-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
 	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dll.tar.lzma bin/*.dll ;
+else
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dll.tar.lzma bin/*.dll ;
+endif
 
 dist-wsl-dev: dist-wsl-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
 	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dev.tar.lzma include/ lib/
+else
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dev.tar.lzma include/ lib/
+endif
 
 dist-wsl-lic: dist-wsl-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
 	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-lic.tar.lzma share/doc/mingw.org-wsl/LICENSE
+else
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-lic.tar.lzma share/doc/mingw.org-wsl/LICENSE
+endif
 
 dist-wsl-doc: dist-wsl-install
+ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
 	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/mingw.org-wsl/README
+else
+	cd ./dist/wsl/installed ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-doc.tar.lzma share/doc/mingw.org-wsl/README
+endif
 
 dist-wsl-src: dist-wsl-install
+ifeq ($(RELEASE_STATUS),prod)
 	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
 	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
 	rm -rf .git autom4te.cache ; \
@@ -1252,3 +1343,18 @@ dist-wsl-src: dist-wsl-install
 	rm -rf mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	mv mingw.org-wsl mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
+else
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
+	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	rm -rf .git autom4te.cache ; \
+	rm -f config.log config.status config.cache config.h ; \
+	rm -f .gitignore core a.out Makefile ; \
+	find . -type f -name \*~ -delete ; \
+	find . -type f -name \*.log -delete ; \
+	find . -type f -name \*.bak -delete ; \
+	find . -type f -name .\*.swp -delete ; \
+	cd .. ; \
+	rm -rf mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	mv mingw.org-wsl mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
+endif

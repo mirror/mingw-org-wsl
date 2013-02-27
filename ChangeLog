@@ -1,4 +1,12 @@
-2013-02-25  Earnie Boyd  <earnie@usres.sourceforge.net>
+2013-02-27  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in: Add variables for RELEASE_STATUS and RELEASE_REFERENCE.
+	Add conditionals for RELEASE_STATUS not equal "prod" for dist-mingwrt,
+	dist-w32api and dist-wsl targets.
+	* configure.ac: Add declaration of RELEASE_STATUS and RELEASE_REFERENCE
+	variables.
+
+2013-02-25  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* NEWS: Add and adjust release notes for 4.0.
 	* tests/Makefile.in: Correct order of libraries in LIBS.

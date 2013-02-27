@@ -26,7 +26,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([MinGW.org WSL], [4.0], [http://www.mingw.org/report_bugs], [mingw.org-wsl], [http://www.mingw.org])
+AC_INIT([MinGW.org WSL], [4.0], [http://www.mingw.org/report_bugs], [mingw-org-wsl], [http://www.mingw.org])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_PREFIX_DEFAULT([/mingw])
 AC_CONFIG_SRCDIR([include/_mingw.h])
@@ -43,6 +43,13 @@ AC_CHECK_TOOL([DLLTOOL], [dlltool], [dlltool])
 
 AC_ARG_VAR([PACKAGE_RELEASE], [Release serial number for the current PACKAGE_VERSION])
 AC_SUBST([PACKAGE_RELEASE], [${PACKAGE_RELEASE-"1"}])
+
+#When set to prod, meaning production release, the RELEASE_STATUS and
+#RELEASE_REFERENCE are ignored.
+AC_ARG_VAR([RELEASE_STATUS], [Release package status, prod, rc, alpha, etc])
+AC_SUBST([RELEASE_STATUS], [${RELEASE_STATUS-"prod"}])
+AC_ARG_VAR([RELEASE_REFERENCE], [Reference serial number for the release status])
+AC_SUBST([RELEASE_REFERENCE], [${RELEASE_REFERENCE-"1"}])
 
 # Checks for libraries.
 
