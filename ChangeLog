@@ -1,3 +1,20 @@
+2013-03-13  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* LICENSE: Update copyright notice adding year 2013.
+	* README: Update copyright notice adding year 2013.
+	Add text to explain where release notes can be found.
+	* Makefile.in: Update copyright notice adding year 2013.
+	(mingwrtdocdir): New variable used in dist-mingwrt target.
+	(w32apidocdir): New variable used in dist-w32api target.
+	(doc_DOCUMENTS): Add ChangeLog, NEWS, TODO, and NOTES.
+	(install-mingwrt-dirs, install-w32api-dirs): Correct creation of doc
+	directory using mingwrtdocdir or w32apidocdir respectfully.
+	(install-mingwrt, install-w32api): Correct copy of historical
+	documentation.
+	(dist-mingwrt*, dist-w32api*): For RELEASE_STATUS != prod modify the
+	package name to include the RELEASE_STATUS to satisfy the rules of
+	mingw-get.
+
 2013-02-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in: Add variables for RELEASE_STATUS and RELEASE_REFERENCE.

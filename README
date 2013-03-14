@@ -1,6 +1,6 @@
 ;;
 ; @file README
-; Copyright 2012, 2013 MinGW.org project
+; Copyright 2012-2013 MinGW.org project
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a
 ; copy of this software and associated documentation files (the "Software"),
@@ -33,6 +33,12 @@ has its own implementation of the C++ standard and the documentation you find
 for stdc++ on the http://gcc.gnu.org site will be your best source of informa-
 tion for it.  Note that some of the C++ API will not able to be used on Windows
 due to lack of implementation for the Windows platform.
+
+Changes between versions are being given in the following file:
+c:\mingw\share\doc\mingwrt\NEWS or c:\mingw\share\doc\w32api\NEWS.
+Note that these two files are exactly the same since the source has now been
+combined.  Changes for versions earlier than 4.0 you will need to look at the
+source files for the historical ChangeLog.
 
 Bug Reports: http://www.mingw.org/Reporting_Bugs
 Submit Patches: http://www.mingw.org/wiki/SubmitPatches
