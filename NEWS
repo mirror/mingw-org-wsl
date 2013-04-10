@@ -2,7 +2,7 @@ mingwrt-4.0
 w32api-4.0
 -----
 We have combined the source libraries for winsup/mingw and winsup/w32api into
-our own repository named mingw.org-wsl.  This change allows us to maintain our
+our own repository named mingw-org-wsl.  This change allows us to maintain our
 repositories locally and provide the MinGW users a better maintenance plan.
 
 We have a new license for all files that fell into public domain originally. The
@@ -12,29 +12,29 @@ license are stored in the misc directory in the repository.  The move of the
 repository files does not change the location of the distributed files.
 
 All include files now include the _mingw.h file in order to make use of some new
-macros as explained later.
+macros as explained later.  The w32api.h file is now deprecated and should not
+be used.  If you are using it you will receive a warning telling you to not use
+the file.
 
 All filters for OS version now check only _WIN32_WINNT and use a named macro as
 defined in the new file include/sdkddkver.h and the filters were moved to the
 end of the file if possible to reduce the noise caused by the filter.
 
 A new macro named __AW() and defined in _mingw.h is used to suffix a symbol with
-the UNICODE versus ANSI A or W declarations and definitions.  This reduced the
+the ANSI versus UNICODE A or W declarations and definitions.  This reduced the
 number of lines in an include file by significant amounts dependent on the
 number of symbols which are specific to ANSI versus UNICODE.
-
-File include/w32api.h is deprecated and you will receive a warning telling you
-to not use the file.
 
 You should now always define NTDDI_VERSION with the least OS version you wish
 your application to support.  We determine a default based on the _WIN32_WINNT
 value suffixed with 0000 (service pack 0).  If _WIN32_WINNT is not defined we
-determine a default for it based on WINVER if it is defined or
+determine a default for it based on WINVER if it is defined otherwise
 _WIN32_WINNT_WIN2K.  If NTDDI_VERSION is defined then _WIN32_WINNT is checked
 for a match if defined and give an error if they do not match.  If NTDDI_VERSION
 is defined but _WIN32_WINNT not defined _WIN32_WINNT takes on the
 OSDIR(NTDDI_VERSION) value.  The windows.h header file will include sdkddkver.h
-but you may need to specify the include in your source.
+but you may need to specify the include in your source in order to use the
+definitions in that file to set the NTDDI_VERSION.
 
 CRTDLL is no longer supported.  We have removed the creation of the library and
 the filters from the code.  This also removes startup object files that you
@@ -52,14 +52,14 @@ need to define __MSVCRT_VERSION__ correctly.
 We now assume that GCC is the only compiler used with the MinGW.org WSL
 (Windows System Libraries) and that the minimum supported version of GCC is
 3.5.4.  This allowed for futher code refactoring reducing the number of lines
-in a header file.  You will receive an error if a __GNUC__ is not defined or
+in a header file.  You will receive an error if __GNUC__ is not defined or
 if the GCC version isn't 3.5.4.
 
 The build system was revamped in order to take advantage of the combined MinGW
 runtime and w32api source.  We will currently continue to release both the
 mingwrt and the w32api library packages for the time being.  We will eventually
 do away with the dual release packages and have a release under the
-mingw.org-wsl name.
+mingw-org-wsl name.
 
 A new macro _HAVE_32BIT_TIME_T can be used if you are needing _USE_32BIT_TIME_T
 and have a library that contains the symbols (e.g. _localtime32).  Otherwise the
@@ -70,6 +70,10 @@ have discovered that the SysWOW64/msvcrt.dll contains the 32bit time_t functions
 but we do not deliver libmsvcrt.a with these imports as this is not available on
 all systems.  However, you could possibly (needs testing) use the msvcrt.dll
 directly to link against and define _HAVE_32BIT_TIME_T during the compile. 
+
+We have an ABI incompatibility due to a reworking of the dirent.c which provides
+opendir() and friends.  You will need to rebuild all libraries to that use
+these functions.
 
 Issues resolved:
 gdtoa/gd_qnan.h: Make NAN constants positive valued.
@@ -129,6 +133,41 @@ Correct GCP_RESULTSW definition in include/wingdi.h.
 Define STACK_SIZE_PARAM_IS_A_RESERVATION in include/winbase.h.
 Removed PACKED macro from incldue/windef.h.
 Replace PACKED in include/wincon.h with __attribute__((packed)).
-Correct PREAD_PROCESS_MEMORY_ROUTINE definition in include/imagehlp.h.
-Define DOMAIN_ALIAS_RID_REMOTE_DESKTOP_USERS in include/winnt.h.
-Some new functions and definitions in include/userenv.h.
+Correct PREAD_PROCESS_MEMORY_ROUTINE definition in imagehlp.h.
+Define DOMAIN_ALIAS_RID_REMOTE_DESKTOP_USERS in winnt.h.
+Some new functions and definitions in userenv.h.
+O_RAW is now declared if ndef _NO_MOLDNAMES in fcntl.h.
+CRYPT_KEY_PROV_INFO and CRYPT_KEY_PROV_PARAM are now defined in wincrypt.h.
+KeQueryActiveProcessorCount is now declared in ddk/ntddk.h; but still is
+  broken.  See Issue [#1183].
+Remove ndef _NO_OLDNAMES guard from off_t in sys/types.h so that it is always
+  defined.
+Added definitions of _MCW_DN, _DN_SAVE and _DN_FLUSH to float.h.
+The stat functions were modified to use the various _stat32, _stat64,
+  _stat64i32, etc functions.  Using _stat will resolve to the correct structure.
+  The resolution is a result of _USE_32BIT_TIME_T and _HAVE_32BIT_TIME_T user
+  land initiated definitions.  See sys/stat.h for the implementation.
+The POINTTOPOINTS returned data type was changed from a POINTS structure to the
+  value of MAKELONG based on user experience with the macro.
+The POINTSTOPOINT, MAKEWORD, MAKELONG, LOWORD, HIWORD, LOBYTE, HIBYTE macros
+  were corrected to use the correct data type casts.
+Correct the tdelete, tfind and tsearch declarations in search.h
+Correct the LaunchScreenSaver implementation in src/libscrnsave/scrnsave.c to
+  allow operation on systems older than Windows 2000.
+Correct the typo defining LPENUMSTATPROPSTG as a pointer in objfwd.h.
+Correct the constants in gd_qnan.h to produce the correct NaN results.
+Added declaration and import of WSAPoll function.
+Added declaration and import of CertEnumCRLsInStore function.
+Corrected declarations and definitions for DllMain [#1670].
+Added declaration of _vscwprintf.
+Include reason.h in winreg.h so that the public definitions are defined by
+  including windows.h.
+Define LONG_PTR specific to _WIN64 versus _WIN32.
+Define _MAX_ENV if not __STRICT_ANSI__.
+Define interfaced declarations for ICreateTypeInfo, ICreateTypeInfo2,
+  ICreateTypeLib and ICreateTypeLib2.
+Provide implementations for IID_IGlobalInterface, FMTID_DocSummaryInformation,
+  FMTID_SummaryInformation, FMTID_UserDefinedProperties, and
+  CLSID_StdGlobalInterfaceTable.
+Added declaration and import of RegisterTypeLibForUser and
+  UnRegisterTypeLibForUser.

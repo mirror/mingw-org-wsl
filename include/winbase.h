@@ -1,6 +1,6 @@
 /**
  * @file winbase.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -1048,6 +1048,7 @@ int APIENTRY WinMain(HINSTANCE,HINSTANCE,LPSTR,int);
 int APIENTRY WinMain(HINSTANCE,HINSTANCE,LPWSTR,int);
 #endif
 
+BOOL WINAPI DllMain(HINSTANCE, DWORD, LPVOID);
 int APIENTRY wWinMain(HINSTANCE,HINSTANCE,LPWSTR,int);
 WINBASEAPI long WINAPI _hread(HFILE,LPVOID,long);
 WINBASEAPI long WINAPI _hwrite(HFILE,LPCSTR,long);

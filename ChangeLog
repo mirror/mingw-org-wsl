@@ -1,3 +1,5 @@
+RELEASE 4.1:
+
 2013-04-10  Earnie Boyd  <earnie@users.sourceforge.net>
 	* include/windows.h (NOWH): Correct typo in macro name.
 	* include/excpt.h (_EXCEPTION_DISPOSITION): Adjust indentation.
@@ -204,6 +206,285 @@
 	Moved definitions to _mingw.h.
 	* include/winnt.h: Ditto.
 	* .gitignore (obscure/*, junk/*, temp/*): Add items to ignore.
+
+RELEASE 4.0:
+
+2013-04-09  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in: Adjust distributed package names when RELEASE_STATUS is
+	not equal "dist".
+
+2013-03-13  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* LICENSE: Update copyright notice adding year 2013.
+	* README: Update copyright notice adding year 2013.
+	Add text to explain where release notes can be found.
+	* Makefile.in: Update copyright notice adding year 2013.
+	(mingwrtdocdir): New variable used in dist-mingwrt target.
+	(w32apidocdir): New variable used in dist-w32api target.
+	(doc_DOCUMENTS): Add ChangeLog, NEWS, TODO, and NOTES.
+	(install-mingwrt-dirs, install-w32api-dirs): Correct creation of doc
+	directory using mingwrtdocdir or w32apidocdir respectfully.
+	(install-mingwrt, install-w32api): Correct copy of historical
+	documentation.
+	(dist-mingwrt*, dist-w32api*): For RELEASE_STATUS != prod modify the
+	package name to include the RELEASE_STATUS to satisfy the rules of
+	mingw-get.
+
+2013-02-27  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in: Add variables for RELEASE_STATUS and RELEASE_REFERENCE.
+	Add conditionals for RELEASE_STATUS not equal "prod" for dist-mingwrt,
+	dist-w32api and dist-wsl targets.
+	* configure.ac: Add declaration of RELEASE_STATUS and RELEASE_REFERENCE
+	variables.
+
+2013-02-25  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* NEWS: Add and adjust release notes for 4.0.
+	* tests/Makefile.in: Correct order of libraries in LIBS.
+	* include/io.h: Correct declarations for _findfirst/_findnext when
+	not _HAVE_32BIT_TIME_T.
+
+2013-02-24  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* lib/lib32/ddk/ntoskrnl.def (KeQueryActiveProcessorCount): Correct
+	typo.
+	(KeQueryActiveProcessors): Add import.
+	* NEWS: Add and adjust release notes for 4.0.
+
+2013-02-23  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* README: Add references for reporting bugs and submitting patches.
+	Correct the @FILENAME@ cut/paste issue.
+	* NEWS: Add and adjust release notes for 4.0.
+
+2013-02-23  Johann Hanne  <jonnyh33@users.sourceforge.net>
+
+	Add missing UUID Interface Definitions.
+
+	* src/libuuid/cguid-uuid.c (CLSID_StdGlobalInterfaceTable): Define.
+	* src/libuuid/objidl-uuid.c (IID_IGlobalInterfaceTable): Define.
+	(FMTID_DocSummaryInformation): Ditto.
+	(FMTID_SummaryInformation): Ditto.
+	(FMTID_UserDefinedProperties): Ditto.
+
+2013-02-22  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/float.h (_MCW_DN, _DN_SAVE, _DN_FLUSH): Add definitions.
+	* include/winuser.h (POINTTOPOINTS, POINTSTOPOINT): Adjust parameters
+	with type specificity.
+	* include/windef.h(MAKEWORD, MAKELONG, LOWORD, HIWORD, LOBYTE, HIBYTE):
+	Ditto. Also use DWORD_PTR instead of DWORD.
+	* include/winuser.h (POINTTOPOINTS): Remove the cast to POINTS struct.
+	* include/winreg.h (reason.h): Include.
+	* include/oaidl.h (ICreateTypeInfo, ICreateTypeInfo2): Declare
+	INTERFACE.
+	(ICreateTypeLib, ICreateTypeLib2): Ditto.
+
+2013-02-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/oleauto.h (RegisterTypeLibForUser, UnRegisterTypeLibForUser):
+	Add declarations.
+	* lib/lib32/oleaut32.def: Ditto.
+	* include/fcntl.h (O_RAW): Add definition within ndef NO_MOLDAMES path.
+
+2013-02-20  F. Mensik  <pepezdepa@users.sourceforge.net>
+
+	* include/winnls.h (LONG_PTR): Add _WIN64 typedef.
+
+2013-02-16  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/stdlib.h (_MAX_ENV): Define if not __STRICT_ANSI__.
+
+2013-01-08  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* config.h.in, configure.ac, README, include/*, src/*, tests/*:
+	Modify "@copy 2012" to read "Copyright 2012, 2013".
+
+2013-01-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/complex.h, include/ddk/*.h, include/dir.h,
+	include/directx/*.h, include/gdiplus/*.h, include/getopt.h,
+	include/imagehlp.h, include/ntldap.h, include/psapi.h,
+	include/scrnsave.h, include/search.h, include/snmp.h,
+	include/tlhelp32.h, include/wctype.h, include/winber.h,
+	include/windows.h, include/winldap.h, include/winsnmp.h,
+	include/winsock2.h, src/libcrt/crt/crtmt.c, src/libcrt/crt/crtst.c,
+	src/libcrt/crt/mthr.c, src/libcrt/crt/mthr_init.c,
+	src/libcrt/crt/pseudo-reloc.c, src/libcrt/crt/tlsmcrt.c,
+	src/libcrt/crt/tlsmthread.c, src/libcrt/crt/tlssup.c,
+	src/libcrt/crt/tlsthrd.c, src/liblargeint/largeint.c,
+	src/libscrnsave/scrnsave.c: Insert removed author attribution.
+
+2012-11-10  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3572971&group_id=2435&atid=102435
+
+	* include/wchar.h (_vscwprintf): Add declaration.
+
+2012-11-09  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3559134&group_id=2435&atid=102435
+
+	* include/wincrypt.h (CertEnumCRLsInStore): Add declaration.
+	* lib/lib32/crypt32.def (CertEnumCRLsInStore): Add import definition.
+
+2012-11-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* include/_mingw.h (_MINGW_H): Revert to consistent use of...
+	(__MINGW_H): ...this, as multiple inclusion guard macro.
+
+2012-10-31  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3408074&group_id=2435&atid=102435
+
+	* Makefile.in (mingwrt_lib_LIBRARIES): Remove incorrect variable
+	assignment.
+	* src/libcrt/search/tdelete.c: Remove incorrect assertion about vkey.
+
+2012-10-31  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct DllMain() declarations and definitions.
+
+	* src/libcrt/crt/dllcrt1.c: Correct DllMain declaration.
+	* src/libcrt/crt/dllmain.c: Correct DllMain definition.
+	* src/libcrt/crt/mthr_init.c: Remove DllMain declaration.
+	Correct DllMain definition.
+
+2012-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Work around Microsoft breakage of command line globbing.
+
+	* include/glob.h: New file; it declares the API for a (mostly) POSIX
+	compatible path name globbing facility for use in MinGW applications.
+
+	* src/libcrt/misc/glob.c: New file; it implements the glob API...
+	(__mingw_glob, __mingw_globfree): ...through this pair of functions.
+
+	* Makefile.in (misc_SOURCES): Add glob.c
+	(mingwrt_lib_INCLUDES): Add glob.h
+
+	* include/_mingw.h (BEGIN_C_DECLS, END_C_DECLS): New macros;
+	they facilitate...
+	[__cplusplus]: ...demarcation of 'extern "C"' declarations for this.
+	(__CRT_GLOB_ESCAPE_CHAR__): New manifest constant; define it.
+	(__CRT_GLOB_USE_MSVCRT__, __CRT_GLOB_USE_MINGW__): Likewise; these act
+	as mutually exclusive feature selectors for assignment in CRTglob.c
+	(__CRT_GLOB_USE_SINGLE_QUOTE__, __CRT_GLOB_BRACKET_GROUPS__):
+	(__CRT_GLOB_CASE_SENSITIVE__): New bit-flag definitions; with...
+	[_CRT_glob & __CRT_GLOB_USE_MINGW__]: ...they enable additional
+	command line globbing capabilities.
+
+	* src/libcrt/crt/CRTglob.c (_CRT_glob): New default value; enable...
+	[_CRT_glob & __CRT_GLOB_USE_MINGW__]: ...this feature preference.
+
+	* src/libcrt/crt/init.c (_CRT_GLOB_OPT, ARGV_INLINE): New macros.
+	(ARGV_ESCAPE, ARGV_SQUOTE, ARGV_NOGROUP): New manifest constants;
+	define them as aliases for the new bit-flags from _mingw.h
+	(do_glob, backslash, unquote, __mingw_setargv): New static functions.
+	(_mingw32_init_mainargs): Use them to implement globbing, when...
+	[_CRT_glob & __CRT_GLOB_USE_MINGW__]: ...this is enabled.
+
+2012-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Use C compiler selected by running configure script.
+
+	* Makefile.in (CC): Missing AC_SUBST definition; add it.
+	Adjust spacing within adjacent defines, for improved readability.
+	(DLLTOOL_FLAGS): Avoid unnecessary use of := operator.
+
+2012-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rationalise .gitignore entries.
+
+	* .gitignore (build): Ignore local build directory.
+	(config.status): Ignore this; it is a build-time generated file.
+	(aclocal.m4): Do not ignore this; as a user maintained file, which
+	requires manual editing, (we do not use automake), it must be tracked.
+	(missing depcomp install-sh): Do not ignore; these should be tracked
+	as build-aux component files, within the scope of the appropriate
+	submodule; they do not appear as normal package component files.
+
+2012-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add configuration files for Mercurial support.
+
+	* .hgsub: New file; it represents the equivalent of .gitmodules
+	* .hgignore: New file; it is the equivalent of .gitignore
+
+2012-10-30  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3567092&group_id=2435&atid=102435
+
+	* include/winbase.h (DllMain): Add declaration.
+
+2012-10-25  Frank Fesevur  <ffes@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3367548&group_id=2435&atid=102435
+
+	* lib/scnsave.c: Multi-monitor support for Win95 and NT4.
+
+2012-10-23  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3166132&group_id=2435&atid=102435
+
+	* include/search.h (tdelete, tfind, tsearch): Correct declaration.
+
+2012-10-23  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3437558&group_id=2435&atid=102435
+
+	* include/amvideo.h (VIDEOINFO): Correct structure coding.
+
+2012-10-23  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3437216&group_id=2435&atid=102435
+
+	* include/objfwd.h (LPENUMSTATPROPSTG): Properly type define with as a
+	pointer.
+
+2012-10-22  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=2567153&group_id=2435&atid=102435
+
+	* include/sys/types.h (off_t): Type define regardless of _NO_OLDNAMES.
+
+2012-10-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=2004630&group_id=2435&atid=102435
+
+	* include/ddk/ntddk.h (KeQueryActiveProcessors): New VISTA declaration.
+	* lib/lib32/ddk/ntoskrnl.def: New VISTA import.
+
+2012-10-19  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/?func=detail&aid=3554826&group_id=2435&atid=102435
+
+	* include/mswsock.h (WSAPoll): New declaration.
+	* lib/lib32/ws2_32.def (WSAPoll@12): New import.
+
+2012-10-17  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* tests/Makefile.in (libcrt-test-asinh): Add test.
+
+2012-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	https://sourceforge.net/tracker/index.php?func=detail&aid=2117590&group_id=2435&atid=102435
+
+	* tests/libcrt/test-asinh.c: New file.
+
+2012-10-16  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/sdkddkver.h (WINNTVER): New macro.
+	(_WIN32_WINNT): Correct default value based on NTDDI_VERSION.
+	* include/stdio.h (_get_output_format): Base declaration or define on
+	VISTA.
+	(_set_output_format): Ditto.
+	(_get_printf_count_output): Ditto.
+	(_set_printf_count_output): Ditto.
+	* misc/src/libcrt/stdio/pformat.c: Remove needless code since we only
+	care about Windows.
 
 2012-10-08  Earnie Boyd  <earnie@users.sourceforge.net>
 

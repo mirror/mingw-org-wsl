@@ -1,6 +1,6 @@
 /**
  * @file scrnsave.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,6 +21,9 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/*
+  Screen saver library by Anders Norlander <anorland@hem2.passagen.se>
+*/
 #include <windows.h>
 #include <scrnsave.h>
 #include <regstr.h>
@@ -217,12 +220,17 @@ static int LaunchScreenSaver(HWND hParent)
     }
   else
     {
-      style = WS_POPUP;
+      style = WS_POPUP | WS_VISIBLE;
       rc.left = GetSystemMetrics(SM_XVIRTUALSCREEN);
       rc.top = GetSystemMetrics(SM_YVIRTUALSCREEN);
       rc.right = GetSystemMetrics(SM_CXVIRTUALSCREEN);
       rc.bottom = GetSystemMetrics(SM_CYVIRTUALSCREEN);
-      style |= WS_VISIBLE;
+
+      if (rc.right == 0)
+	rc.right = GetSystemMetrics(SM_CXSCREEN);
+
+      if (rc.bottom == 0)
+	rc.bottom = GetSystemMetrics(SM_CYSCREEN);
     }
 
   /* create main screen saver window */

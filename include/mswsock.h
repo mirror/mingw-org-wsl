@@ -1,6 +1,6 @@
 /**
  * @file mswsock.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -120,6 +120,10 @@ typedef struct wsacmsghdr {
 
 BOOL PASCAL DisconnectEx(SOCKET,LPOVERLAPPED,DWORD,DWORD);
 int PASCAL WSARecvMsg(SOCKET,LPWSAMSG,LPDWORD,LPWSAOVERLAPPED,LPWSAOVERLAPPED_COMPLETION_ROUTINE);
+
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+int WSAAPI WSAPoll(WSAPOLLFD, ULONG, INT);
+#endif
 
 #endif /* _WINSOCK2_H */
 

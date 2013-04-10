@@ -1,6 +1,6 @@
 /**
  * @file crtmt.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -23,6 +23,8 @@
  */
 
 /*
+ * Created by Mumit Khan  <khan@nanotech.wisc.edu>
+ *
  * This object file defines _CRT_MT to have a value of 1, which will
  * turn on MT support in GCC runtime. This is only linked in when
  * you specify -mthreads when linking with gcc. The Mingw support

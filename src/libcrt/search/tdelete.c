@@ -1,6 +1,6 @@
 /**
  * @file tdelete.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -40,7 +40,6 @@ tdelete(const void *vkey,	/* key to be deleted */
 	node_t *p, *q, *r;
 	int  cmp;
 
-	_DIAGASSERT(vkey != NULL);
 	_DIAGASSERT(compar != NULL);
 
 	if (rootp == NULL || (p = *rootp) == NULL)

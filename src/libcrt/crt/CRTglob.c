@@ -1,6 +1,6 @@
 /**
  * @file CRTglob.c
- * @copy 2012 MinGW.org project
+ * Copyright (C) 2004, 2012, MinGW.org Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,14 +21,23 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
-/*
- * Include this object file to set _CRT_glob to a state that will
- * turn on command line globbing by default.  NOTE: _CRT_glob has a default
- * state of on.  Specify CRT_noglob.o to turn off globbing by default.
+ 
+/* ---------------------------------------------------------------------------
  *
- * To use this object include the object file in your link command:
- * gcc -o foo.exe foo.o CRTglob.o
+ * This file is implicitly linked into any executable using libmingwex.a; it
+ * defines the global variable, _CRT_glob, with a default value which enables
+ * globbing of command line arguments, using mingw32's basic implementation
+ * of the POSIX globbing algorithm.  To override this default behaviour:
+ *
+ * - Explicitly include the object module CRTnoglob.o in your link command;
+ *   this defines _CRT_glob = 0, so disabling command line globbing.
+ *
+ * - Alternatively, explicitly define _CRT_glob as a global variable in one
+ *   of your own source modules, assigning any of the related values defined
+ *   in _mingw.h, to enable alternative globbing algorithms and/or features,
+ *   or zero to disable globbing.
+ *
  */
+#include <_mingw.h>
 
-int _CRT_glob = -1;
+int _CRT_glob = __CRT_GLOB_USE_MINGW__;

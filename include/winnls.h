@@ -1,6 +1,6 @@
 /**
  * @file winnls.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -430,8 +430,12 @@ extern "C" {
 #define IS_SURROGATE_PAIR(hc,lc) (IS_HIGH_SURROGATE(hc) && IS_LOW_SURROGATE(lc))
 
 #ifndef  _BASETSD_H
+# ifdef _WIN64
+typedef __int64 LONG_PTR;
+# else
 typedef long LONG_PTR;
-#endif 
+# endif /* def _WIN64 */
+#endif /* ndef _BASETSD_H */
 
 #ifndef RC_INVOKED
 typedef DWORD LCTYPE;

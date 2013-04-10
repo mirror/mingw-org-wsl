@@ -1,6 +1,6 @@
 /**
  * @file tlsmcrt.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,8 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
-/* We support TLS cleanup code in any case. If shared version of libgcc is used
+/*
+ * Written by Kai Tietz  <kai.tietz@onevision.com>
+ *
+ * We support TLS cleanup code in any case. If shared version of libgcc is used
  * _CRT_MT has value 1, otherwise we do tls cleanup in runtime and _CRT_MT has
  * value 2.
  */

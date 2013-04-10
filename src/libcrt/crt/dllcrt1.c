@@ -1,6 +1,6 @@
 /**
  * @file dllcrt1.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -53,7 +53,7 @@ __dll_exit (void);
 p_atexit_fn __dllonexit (p_atexit_fn, p_atexit_fn**, p_atexit_fn**);
 
 
-extern BOOL WINAPI DllMain (HANDLE, DWORD, LPVOID);
+extern BOOL WINAPI DllMain (HINSTANCE, DWORD, LPVOID);
 
 extern void _pei386_runtime_relocator (void);
 

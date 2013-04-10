@@ -1,6 +1,6 @@
 /**
  * @file amvideo.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -74,10 +74,10 @@ typedef struct tagVIDEOINFOHEADER {
 	BITMAPINFOHEADER bmiHeader;
 } VIDEOINFOHEADER;
 typedef struct tagVIDEOINFO {
-	RECT rcSource,
-	RECT rcTarget,
-	DWORD dwBitRate,
-	DWORD dwBitErrorRate,
+	RECT rcSource;
+	RECT rcTarget;
+	DWORD dwBitRate;
+	DWORD dwBitErrorRate;
 	REFERENCE_TIME AvgTimePerFrame;
 	BITMAPINFOHEADER bmiHeader;
 	union {

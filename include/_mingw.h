@@ -1,6 +1,6 @@
 /**
  * @file _mingw.h
- * @copy 2012 MinGW.org project
+ * Copyright (C) 2012 MinGW.org Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,21 +21,25 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#ifndef _MINGW_H
-#define _MINGW_H
+
+/* -------------------------------------------------------------------------
+ * Implementation of MinGW specific macros; these are to be included by
+ * all other WSL header files.
+ * -------------------------------------------------------------------------
+ */
+#ifndef __MINGW_H
+#define __MINGW_H
 #pragma GCC system_header
 #include <sdkddkver.h>
-
-/*
- * Mingw specific macros.
- */
 
 #define __MINGW_VERSION             4.0
 #define __MINGW_MAJOR_VERSION       4
 #define __MINGW_MINOR_VERSION       0
 #define __MINGW_PATCHLEVEL          0
 
-// These four macros are deprecated and will be removed in the next release.
+/* The following four macros are deprecated and will be removed
+ * in the release greater than 4.1.
+ */
 #define __MINGW32_VERSION           3.20
 #define __MINGW32_MAJOR_VERSION     3
 #define __MINGW32_MINOR_VERSION     20
@@ -88,28 +92,85 @@
 #endif
 
 /* These are defined by the user (or the compiler)
-   to specify how identifiers are imported from a DLL.
+ * to specify how identifiers are imported from a DLL.
+ *
+ * __MINGW_IMPORT                  The attribute definition to specify imported
+ *                                 variables/functions.
+ * _CRTIMP                         As above.  For MS compatibility.
+ * __MINGW_VERSION                 Runtime version.
+ * __MINGW_MAJOR_VERSION           Runtime major version.
+ * __MINGW_MINOR_VERSION           Runtime minor version.
+ * __MINGW_BUILD_DATE              Runtime build date.
+ *
+ * Macros to enable MinGW features which deviate from standard MSVC
+ * compatible behaviour; these may be specified directly in user code,
+ * activated implicitly, (e.g. by specifying _POSIX_C_SOURCE or such),
+ * or by inclusion in __MINGW_FEATURES__:
+ *
+ * __USE_MINGW_ANSI_STDIO          Select a more ANSI C99 compatible
+ *                                 implementation of printf() and friends.
+ *
+ * Other macros:
+ *
+ * __int64                         define to be long long.  Using a typedef
+ *                                 doesn't work for "unsigned __int64"
+ *
+ *
+ * Manifest definitions for flags to control globbing of the command line
+ * during application start up, (before main() is called).  The first pair,
+ * when assigned as bit flags within _CRT_glob, select the globbing algorithm
+ * to be used; (the MINGW algorithm overrides MSCVRT, if both are specified).
+ * Prior to mingwrt-3.21, only the MSVCRT option was supported; this choice
+ * may produce different results, depending on which particular version of
+ * MSVCRT.DLL is in use; (in recent versions, it seems to have become
+ * definitively broken, when globbing within double quotes).
+ */
+#define __CRT_GLOB_USE_MSVCRT__  	0x0001
 
-   __MINGW_IMPORT                  The attribute definition to specify imported
-                                   variables/functions.
-   _CRTIMP                         As above.  For MS compatibility.
-   __MINGW_VERSION                 Runtime version.
-   __MINGW_MAJOR_VERSION           Runtime major version.
-   __MINGW_MINOR_VERSION           Runtime minor version.
-   __MINGW_BUILD_DATE              Runtime build date.
+/* From mingwrt-3.21 onward, this should be the preferred choice; it will
+ * produce consistent results, regardless of the MSVCRT.DLL version in use.
+ */
+#define __CRT_GLOB_USE_MINGW__   	0x0002
 
-   Macros to enable MinGW features which deviate from standard MSVC
-   compatible behaviour; these may be specified directly in user code,
-   activated implicitly, (e.g. by specifying _POSIX_C_SOURCE or such),
-   or by inclusion in __MINGW_FEATURES__:
+/* When the __CRT_GLOB_USE_MINGW__ flag is set, within _CRT_glob, the
+ * following additional options are also available, (but are not enabled
+ * by default):
+ *
+ *    __CRT_GLOB_USE_SINGLE_QUOTE__	allows use of single (apostrophe)
+ *    					quoting characters, analogously to
+ *    					POSIX usage, as an alternative to
+ *    					double quotes, for collection of
+ *    					arguments separated by white space
+ *    					into a single logical argument.
+ *
+ *    __CRT_GLOB_BRACKET_GROUPS__	enable interpretation of bracketed
+ *    					character groups as POSIX compatible
+ *    					globbing patterns, matching any one
+ *    					character which is either included
+ *    					in, or excluded from the group.
+ *
+ *    __CRT_GLOB_CASE_SENSITIVE__	enable case sensitive matching for
+ *    					globbing patterns; this is default
+ *    					behaviour for POSIX, but because of
+ *    					the case insensitive nature of the
+ *    					MS-Windows file system, it is more
+ *    					appropriate to use case insensitive
+ *    					globbing as the MinGW default.
+ *
+ */
+#define __CRT_GLOB_USE_SINGLE_QUOTE__	0x0010
+#define __CRT_GLOB_BRACKET_GROUPS__	0x0020
+#define __CRT_GLOB_CASE_SENSITIVE__	0x0040
 
-   __USE_MINGW_ANSI_STDIO          Select a more ANSI C99 compatible
-                                   implementation of printf() and friends.
+/* The MinGW globbing algorithm uses the ASCII DEL control code as a marker
+ * for globbing characters which were embedded within quoted arguments; (the
+ * quotes are stripped away BEFORE the argument is globbed; the globbing code
+ * treats the marked character as immutable, and strips out the DEL markers,
+ * before storing the resultant argument).  The DEL code is mapped to this
+ * function here; DO NOT change it, without rebuilding the runtime.
+ */
+#define __CRT_GLOB_ESCAPE_CHAR__	(char)(127)
 
-   Other macros:
-
-   __int64                         define to be long long.  Using a typedef
-                                   doesn't work for "unsigned __int64"
 
 /* Manifest definitions identifying the flag bits, controlling activation
  * of MinGW features, as specified by the user in __MINGW_FEATURES__.
@@ -127,8 +188,9 @@
 #undef __attribute__
 
 #ifndef __MINGW_IMPORT
-  /* Note the extern. This is needed to work around GCC's
-     limitations in handling dllimport attribute.  */
+ /* Note the extern. This is needed to work around GCC's
+  * limitations in handling dllimport attribute.
+  */
 # define __MINGW_IMPORT  extern __attribute__ ((__dllimport__))
 #endif
 #ifndef _CRTIMP
@@ -159,8 +221,7 @@
 #endif
 
 #define __MINGW_GNUC_PREREQ(major, minor) \
-  (__GNUC__ > (major) \
-   || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
+ (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
 
 #ifdef __cplusplus
 # define __CRT_INLINE inline
@@ -175,9 +236,13 @@
 #define _CRTALIAS __CRT_INLINE __attribute__ ((__always_inline__))
 
 #ifdef __cplusplus
+# define   BEGIN_C_DECLS	extern "C" {
 # define __UNUSED_PARAM(x)
+# define   END_C_DECLS		}
 #else
-# define __UNUSED_PARAM(x) x __attribute__ ((__unused__))
+# define   BEGIN_C_DECLS
+# define __UNUSED_PARAM(x) 	x __attribute__ ((__unused__))
+# define   END_C_DECLS
 #endif
 
 #define __MINGW_ATTRIB_NORETURN __attribute__ ((__noreturn__))
@@ -191,10 +256,10 @@
 #define __MINGW_IMPORT __declspec(dllimport)
 #define __MINGW_EXPORT __declspec(dllexport)
 
-/* TODO: Mark (almost) all CRT functions as __MINGW_NOTHROW.  This will
-allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
-
 /* Activation of MinGW specific extended features:
+ *
+ * TODO: Mark (almost) all CRT functions as __MINGW_NOTHROW.  This will
+ * allow GCC to optimize away some EH unwind code, at least in DW2 case.
  */
 #ifndef __USE_MINGW_ANSI_STDIO
 /*
@@ -237,13 +302,14 @@ typedef struct localeinfo_struct {
  (!defined(__TEST_SQL_NOUNICODEMAP) && defined(UNICODE)) || \
  (!defined(__TEST_SQL_NOUNICODEMAP) && defined(_UNICODE)) || \
  defined(FORCE_UNICODE) || \
- (defined(__TEST_SQL_NOUNICODEMAP) && !defined(SQL_NOUNICODEMAP) && (defined(UNICODE) || defined(_UNICODE))) \
-)
-#define __AW(AW) __AW__(AW, W)
-#define __STR(AW) __AW__(L, AW)
+ (defined(__TEST_SQL_NOUNICODEMAP) && !defined(SQL_NOUNICODEMAP) && \
+   (defined(UNICODE) || defined(_UNICODE))) \
+ )
+# define __AW(AW) __AW__(AW, W)
+# define __STR(AW) __AW__(L, AW)
 #else
-#define __AW(AW) __AW__(AW, A)
-#define __STR(AW) __AW__(, AW)
+# define __AW(AW) __AW__(AW, A)
+# define __STR(AW) __AW__(, AW)
 #endif
 
 #ifndef RC_INVOKED

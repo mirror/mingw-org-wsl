@@ -1,6 +1,6 @@
 /**
  * @file mthr_init.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25,6 +25,8 @@
 /* FIXME - Is this still used by GCC? */
 
 /*
+ * Created by Mumit Khan  <khan@nanotech.wisc.edu>
+ *
  * Do the thread-support DLL initialization.
  *
  * This file is used iff the following conditions are met:
@@ -46,9 +48,6 @@
 #undef WIN32_LEAN_AND_MEAN
 #include <stdio.h>
 
-BOOL APIENTRY DllMain (HANDLE hDllHandle, DWORD reason, 
-                       LPVOID reserved /* Not used. */ );
-
 /*
  *----------------------------------------------------------------------
  *
@@ -67,7 +66,7 @@ BOOL APIENTRY DllMain (HANDLE hDllHandle, DWORD reason,
  *----------------------------------------------------------------------
  */
 BOOL APIENTRY
-DllMain (HANDLE hDllHandle /* Library instance handle. */,
+DllMain (HINSTANCE hDllHandle /* Library instance handle. */,
 	 DWORD reason /* Reason this function is being called. */,
 	 LPVOID reserved /* Not used. */)
 {

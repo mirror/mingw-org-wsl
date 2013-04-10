@@ -1,6 +1,6 @@
 /**
  * @file objfwd.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -50,7 +50,7 @@ typedef _COM_interface IEnumMoniker *LPENUMMONIKER;
 typedef _COM_interface IEnumFORMATETC *LPENUMFORMATETC;
 typedef _COM_interface IEnumSTATDATA *LPENUMSTATDATA;
 typedef _COM_interface IEnumSTATSTG *LPENUMSTATSTG;
-typedef _COM_interface IEnumSTATPROPSTG LPENUMSTATPROPSTG;
+typedef _COM_interface IEnumSTATPROPSTG *LPENUMSTATPROPSTG;
 typedef _COM_interface IEnumString *LPENUMSTRING;
 typedef _COM_interface IEnumUnknown *LPENUMUNKNOWN;
 typedef _COM_interface IStorage *LPSTORAGE;

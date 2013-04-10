@@ -49,6 +49,7 @@ OleTranslateColor@12
 QueryPathOfRegTypeLib@20
 RegisterActiveObject@16
 RegisterTypeLib@12
+RegisterTypeLibForUser@12
 RevokeActiveObject@8
 SafeArrayAccessData@8
 SafeArrayAllocData@4
@@ -90,6 +91,7 @@ SysStringByteLen@4
 SysStringLen@4
 SystemTimeToVariantTime@8
 UnRegisterTypeLib@20
+UnRegisterTypeLibForUser@20
 UserBSTR_free_inst@4
 UserBSTR_free_local@4
 UserBSTR_from_local@8

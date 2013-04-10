@@ -1,6 +1,6 @@
 /**
  * @file objidl-uuid.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -64,3 +64,7 @@ DEFINE_GUID(IID_IProgressNotify,0xa9d758a0,0x4617,0x11cf,0x95,0xfc,0,0xaa,0,0x68
 DEFINE_OLEGUID(IID_IClientSecurity,0x13D,0,0);
 DEFINE_OLEGUID(IID_IMallocSpy,0x1d,0,0);
 DEFINE_OLEGUID(IID_IServerSecurity,0x13E,0,0);
+DEFINE_OLEGUID(IID_IGlobalInterfaceTable,0x146,0,0);
+DEFINE_GUID(FMTID_DocSummaryInformation,0xd5cdd502,0x2e9c,0x101b,0x93,0x97,0x8,0,0x2b,0x2c,0xf9,0xae);
+DEFINE_GUID(FMTID_SummaryInformation,0xf29f85e0,0x4ff9,0x1068,0xab,0x91,0x8,0,0x2b,0x27,0xb3,0xd9);
+DEFINE_GUID(FMTID_UserDefinedProperties,0xd5cdd505,0x2e9c,0x101b,0x93,0x97,0x8,0,0x2b,0x2c,0xf9,0xae);

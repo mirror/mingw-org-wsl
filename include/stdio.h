@@ -1,6 +1,6 @@
 /**
  * @file stdio.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -489,13 +489,20 @@ _CRTIMP FILE* __cdecl __MINGW_NOTHROW	_fsopen (const char*, const char*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_getmaxstdio (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_setmaxstdio (int);
 
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA) || defined(HAVE_GET_OUTPUT_FORMAT)
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _get_output_format (void);
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _set_output_format (unsigned int);
-
-#define _TWO_DIGIT_EXPONENT  1
-
 _CRTIMP int __cdecl __MINGW_NOTHROW _get_printf_count_output (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW _set_printf_count_output (int);
+
+#else
+#define _get_output_format() 0
+#define _set_output_format(x) 0
+#define _get_printf_count_output() 0
+#define _set_printf_count_output(x) 0
+#endif /* (_WIN32_WINNT >= _WIN32_WINNT_VISTA) || defined(HAVE_GET_OUTPUT_FORMAT) */
+
+#define _TWO_DIGIT_EXPONENT 1
 
 #ifndef _NO_OLDNAMES
 _CRTIMP int __cdecl __MINGW_NOTHROW	fgetchar (void);

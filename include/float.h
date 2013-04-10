@@ -1,6 +1,6 @@
 /**
  * @file float.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -68,8 +68,11 @@
 #define	_MCW_IC		0x00040000	/* Infinity */
 #define	_MCW_RC		0x00000300	/* Rounding */
 #define	_MCW_PC		0x00030000	/* Precision */
+#define _MCW_DN		0x03000000	/* Denormal */
 
 /* Control word values for unNew (use with related unMask above) */
+#define _DN_SAVE	0x00000000
+#define _DN_FLUSH	0x01000000
 #define	_EM_INVALID	0x00000010
 #define	_EM_DENORMAL	0x00080000
 #define	_EM_ZERODIVIDE	0x00000008

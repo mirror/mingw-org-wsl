@@ -1,6 +1,6 @@
 /**
  * @file fcntl.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -80,6 +80,7 @@
 #define O_NOINHERIT	_O_NOINHERIT
 #define O_SEQUENTIAL	_O_SEQUENTIAL
 #define	O_RANDOM	_O_RANDOM
+#define O_RAW		_O_RAW
 
 #endif	/* Not _NO_OLDNAMES */
 

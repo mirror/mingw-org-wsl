@@ -1,11 +1,12 @@
+build
 Makefile
 configure
+autom4te.cache
 config.status
 .*.swp
-*~
 *.log
 *.bak
-autom4te.cache/*
+*~
 obscure/*
 junk/*
 temp/*

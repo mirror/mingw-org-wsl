@@ -1,6 +1,6 @@
 /**
  * @file oleauto.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -360,6 +360,8 @@ WINOLEAUTAPI LoadRegTypeLib(REFGUID,WORD,WORD,LCID,LPTYPELIB*);
 WINOLEAUTAPI QueryPathOfRegTypeLib(REFGUID,unsigned short,unsigned short,LCID,LPBSTR);
 WINOLEAUTAPI RegisterTypeLib(LPTYPELIB,OLECHAR*,OLECHAR*);
 WINOLEAUTAPI UnRegisterTypeLib(REFGUID,WORD,WORD,LCID,SYSKIND);
+WINOLEAUTAPI RegisterTypeLibForUser(LPTYPELIB,OLECHAR*,OLECHAR*);
+WINOLEAUTAPI UnRegisterTypeLibForUser(REFGUID,WORD,WORD,LCID,SYSKIND);
 WINOLEAUTAPI CreateTypeLib(SYSKIND,const OLECHAR*,LPCREATETYPELIB*);
 WINOLEAUTAPI DispGetParam(DISPPARAMS*,UINT,VARTYPE,VARIANT*,UINT*);
 WINOLEAUTAPI DispGetIDsOfNames(LPTYPEINFO,OLECHAR**,UINT,DISPID*);

@@ -1,6 +1,6 @@
 /**
  * @file search.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Danny Smith  <dannysmith@users.sourceforge.net> */
 #ifndef _SEARCH_H
 #define _SEARCH_H
 #pragma GCC system_header
@@ -81,13 +82,13 @@ typedef struct node {
 
 void * __cdecl tdelete (const void * __restrict__, void ** __restrict__,
 			int (*)(const void *, const void *))
-			__MINGW_ATTRIB_NONNULL (1)  __MINGW_ATTRIB_NONNULL (3);
+			__MINGW_ATTRIB_NONNULL (2)  __MINGW_ATTRIB_NONNULL (3);
 void * __cdecl tfind (const void *, void * const *,
 		      int (*)(const void *, const void *))
-		      __MINGW_ATTRIB_NONNULL (1)  __MINGW_ATTRIB_NONNULL (3);
+		      __MINGW_ATTRIB_NONNULL (2)  __MINGW_ATTRIB_NONNULL (3);
 void * __cdecl tsearch (const void *, void **, 
 			int (*)(const void *, const void *))
-			__MINGW_ATTRIB_NONNULL (1)  __MINGW_ATTRIB_NONNULL (3);
+			__MINGW_ATTRIB_NONNULL (2)  __MINGW_ATTRIB_NONNULL (3);
 void __cdecl twalk (const void *, void (*)(const void *, VISIT, int));
 
 #ifndef	_NO_OLDNAMES

@@ -1,6 +1,6 @@
 /**
  * @file dir.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -20,6 +20,10 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
+ */
+/*
+ * Created by Colin Peters <colin@bird.fu.is.saga-u.ac.jp>
+ *            Mumit Khan <khan@xraylith.wisc.edu>
  */
 #ifndef _DIR_H
 #define _DIR_H

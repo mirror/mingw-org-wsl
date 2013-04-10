@@ -1,6 +1,6 @@
 /**
  * @file wincrypt.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25,6 +25,10 @@
 #define _WINCRYPT_H
 #pragma GCC system_header
 #include <_mingw.h>
+
+#ifndef WINCRYPT32API
+#define WINCRYPT32API DECLSPEC_IMPORT
+#endif
 
 #ifndef WINADVAPI
 #define WINADVAPI
@@ -1276,6 +1280,8 @@ typedef struct _CERT_POLICY_MAPPINGS_INFO {
 } CERT_POLICY_MAPPINGS_INFO,
  *PCERT_POLICY_MAPPINGS_INFO;
 #define MS_ENH_RSA_AES_PROV __AW(MS_ENH_RSA_AES_PROV_)
+
+WINCRYPT32API PCCRL_CONTEXT WINAPI CertEnumCRLsInStore(HCERTSTORE, PCCRL_CONTEXT);
 #endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
 
 #if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)

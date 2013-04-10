@@ -45,3 +45,4 @@ CryptSetKeyIdentifierProperty@24
 CryptEncodeObject@20
 CryptGetDefaultProviderA@20
 CryptGetDefaultProviderW@20
+CertEnumCRLsInStore@8

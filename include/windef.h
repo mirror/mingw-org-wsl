@@ -1,6 +1,6 @@
 /**
  * @file windef.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -118,12 +118,12 @@ extern "C" {
 #define DECLSPEC_NORETURN __declspec(noreturn)
 #define DECLARE_STDCALL_P( type ) __stdcall type
 
-#define MAKEWORD(a,b)	((WORD)(((BYTE)(a))|(((WORD)((BYTE)(b)))<<8)))
-#define MAKELONG(a,b)	((LONG)(((WORD)(a))|(((DWORD)((WORD)(b)))<<16)))
-#define LOWORD(l)	((WORD)((DWORD)(l)))
-#define HIWORD(l)	((WORD)(((DWORD)(l)>>16)&0xFFFF))
-#define LOBYTE(w)	((BYTE)(w))
-#define HIBYTE(w)	((BYTE)(((WORD)(w)>>8)&0xFF))
+#define MAKEWORD(a,b)	((WORD)(((BYTE)(((DWORD_PTR)(a))&0xFF))|(((WORD)((BYTE)(((DWORD_PTR)(b))&0xFF)))<<8)))
+#define MAKELONG(a,b)	((LONG)(((WORD)(((DWORD_PTR)(a))&0xFFFF))|(((DWORD)((WORD)(((DWORD_PTR)(b))&0xFFFF)))<<16)))
+#define LOWORD(l)	((WORD)(((DWORD_PTR)(l))&0xFFFF))
+#define HIWORD(l)	((WORD)(((DWORD_PTR)(l)>>16)&0xFFFF))
+#define LOBYTE(w)	((BYTE)(((DWORD_PTR)(w))&0xFF))
+#define HIBYTE(w)	((BYTE)((((DWORD_PTR)(w))>>8)&0xFF))
 
 #ifndef _export
 #define _export

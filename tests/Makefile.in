@@ -1,6 +1,6 @@
 ##
 # @file Makefile.in
-# @copy 2012 MinGW.org project
+# Copyright 2012, 2013 MinGW.org project
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -39,16 +39,17 @@ headers-directx.o:
 headers-test.o:
 	$(CC) -o $@ -c $(srcdir)/headers/test.c $(CFLAGS)
 
-libcrt: libcrt-sitest.exe libcrt-testwmem.exe libcrt-tst-aligned-malloc.exe
+libcrt: libcrt-sitest.exe libcrt-testwmem.exe libcrt-tst-aligned-malloc.exe libcrt-test-asinh.exe
 	libcrt-sitest.exe
 	libcrt-testwmem.exe
 	libcrt-tst-aligned-malloc.exe
+	libcrt-test-asinh.exe
 
 BEGIN = ../src/libcrt/crt/crt2.o `$(CC) -print-file-name=crtbegin.o`
 END = `$(CC) -print-file-name=crtend.o`
 
 LDFLAGS = -Bdynamic -nostdlib -L .. -L `$(CC) -print-file-name=`
-LIBS = -lmingw32 -lmoldname -lmingwex -lgcc -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32
+LIBS = -lmingwex -lmingw32 -lmoldname -lgcc -lmsvcrt -ladvapi32 -lshell32 -luser32 -lkernel32
 
 LIBFILES = ../libmingw32.a ../libmoldname.a ../libmingwex.a ../libmsvcrt.a \
   ../libadvapi32.a ../libshell32.a ../libuser32.a ../libkernel32.a
@@ -62,6 +63,9 @@ libcrt-testwmem.exe: libcrt-testwmem.o $(LIBFILES)
 libcrt-tst-aligned-malloc.exe: libcrt-tst-aligned-malloc.o $(LIBFILES)
 	$(CC) -o $@ $(BEGIN) $< $(LDFLAGS) $(LIBS) $(END)
 
+libcrt-test-asinh.exe: libcrt-test-asinh.o $(LIBFILES)
+	$(CC) -o $@ $(BEGIN) $< $(LDFLAGS) $(LIBS) $(END)
+
 libcrt-sitest.o:
 	$(CC) -o $@ -c $(srcdir)/libcrt/sitest.c $(CFLAGS)
 
@@ -70,6 +74,9 @@ libcrt-testwmem.o:
 
 libcrt-tst-aligned-malloc.o:
 	$(CC) -o $@ -c $(srcdir)/libcrt/tst-aligned-malloc.c $(CFLAGS)
+
+libcrt-test-asinh.o:
+	$(CC) -o $@ -c $(srcdir)/libcrt/test-asinh.c $(CFLAGS)
 
 clean:
 	rm -f *.o *.exe

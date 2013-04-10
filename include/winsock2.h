@@ -1,6 +1,6 @@
 /**
  * @file winsock2.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,12 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#if !(defined _WINSOCK2_H || defined _WINSOCK_H)
-#define _WINSOCK2_H
-#define _WINSOCK_H /* to prevent later inclusion of winsock.h */
-#pragma GCC system_header
-#include <_mingw.h>
-
 /*
  * Definitions for winsock 2
  *
@@ -35,6 +29,11 @@
  *
  * Portions Copyright (c) 1993 by Digital Equipment Corporation.
  */
+#if !(defined _WINSOCK2_H || defined _WINSOCK_H)
+#define _WINSOCK2_H
+#define _WINSOCK_H /* to prevent later inclusion of winsock.h */
+#pragma GCC system_header
+#include <_mingw.h>
 
 #define _GNU_H_WINDOWS32_SOCKETS
 

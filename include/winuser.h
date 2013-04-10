@@ -1,6 +1,6 @@
 /**
  * @file winuser.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -2907,10 +2907,16 @@ typedef struct tagINPUT {
 #define MAKEWPARAM(l,h) ((WPARAM)MAKELONG(l,h))
 #define MAKELRESULT(l,h) ((LRESULT)MAKELONG(l,h))
 #define POINTSTOPOINT(p,ps) { \
-  (p).x=LOWORD(*(DWORD *)&ps); \
-  (p).y=HIWORD(*(DWORD *)&ps); \
+  (p).x=(LONG)(SHORT)LOWORD(*(LONG*)&ps); \
+  (p).y=(LONG)(SHORT)HIWORD(*(LONG*)&ps); \
 }
-#define POINTTOPOINTS(p) ((POINTS)MAKELONG((p).x,(p).y))
+/* NOTE: MSDN states POINTTOPOINTS returns the POINTS structure but usage
+ * proves otherswise.  Removing the cast allows the user the choice to cast
+ * the result to the POINTS structure themselves or use the long that is
+ * returned instead.  See Issues ticket #1402 for discussion.
+#define POINTTOPOINTS(p) ((POINTS)MAKELONG((short)(p).x,(short)(p).y))
+ */
+#define POINTTOPOINTS(p) (MAKELONG((short)(p).x,(short)(p).y))
 	
 #ifndef _LPCGUID_DEFINED
 #define _LPCGUID_DEFINED

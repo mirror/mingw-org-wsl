@@ -1,6 +1,6 @@
 /**
  * @file cguid-uuid.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -39,3 +39,4 @@ DEFINE_OLEGUID(IID_IPSFactory,0x9,0,0);
 DEFINE_OLEGUID(CLSID_StaticDib,0x316,0,0);
 // Picture (Metafile) CLSID
 DEFINE_OLEGUID(CLSID_StaticMetafile,0x315,0,0);
+DEFINE_OLEGUID(CLSID_StdGlobalInterfaceTable,0x323,0,0);

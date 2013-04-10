@@ -1,6 +1,6 @@
 /**
  * @file stdint.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,6 +21,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Created by Danny Smith <danny_r_smith_2001@yahoo.co.nz> */
 #ifndef _STDINT_H
 #define _STDINT_H
 #pragma GCC system_header

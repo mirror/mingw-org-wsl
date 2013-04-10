@@ -1,6 +1,6 @@
 /**
  * @file tlsthrd.c
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -24,6 +24,9 @@
 
 /*
  * This file is used by if gcc is built with --enable-threads=win32.
+ *
+ * Written by Kai Tietz  <kai.tietz@onevision.com>
+ * Based on version created by Mumit Khan  <khan@nanotech.wisc.edu>
  */
 
 #ifndef WIN32_LEAN_AND_MEAN
