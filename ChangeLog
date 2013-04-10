@@ -1,3 +1,22 @@
+2013-04-10  Earnie Boyd  <earnie@users.sourceforge.net>
+	* include/windows.h (NOWH): Correct typo in macro name.
+	* include/excpt.h (_EXCEPTION_DISPOSITION): Adjust indentation.
+	(_exception_code): Add declaration.
+	(_exception_info): Ditto.
+	(_abnormal_termination): Ditto.
+	(_except_handler): Ditto.
+	(_EXCEPTION_RECORD): Ditto.
+	(_CONTEXT): Ditto.
+	(_DISPATCHER_CONTEXT): Ditto.
+	(__C_specific_handler): Ditto.
+	(GetExceptionCode): Add definition.
+	(exception_code): Ditto.
+	(GetExceptionInformation): Ditto.
+	(exception_info): Ditto.
+	(AbnormalTermination): Ditto.
+	(abnormal_Termination): Ditto.
+	(FIXME): Add FIXME notes in various places.
+
 2012-10-15  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Create a more modern windows.h

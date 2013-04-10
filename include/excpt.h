@@ -1,6 +1,6 @@
 /**
  * @file excpt.h
- * @copy 2012 MinGW.org project
+ * Copyright 2012, 2013 MinGW.org project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,14 +32,58 @@ __PSHPACK8
 extern "C" {
 #endif
 
-
 typedef enum _EXCEPTION_DISPOSITION {
-	ExceptionContinueExecution,
-	ExceptionContinueSearch,
-	ExceptionNestedException,
-	ExceptionCollidedUnwind
+  ExceptionContinueExecution,
+  ExceptionContinueSearch,
+  ExceptionNestedException,
+  ExceptionCollidedUnwind
 } EXCEPTION_DISPOSITION;
 
+#ifdef _M_IX86
+struct _EXCEPTION_RECORD;
+struct _CONTEXT;
+
+EXCEPTION_DISPOSITION __cdecl _except_handler (
+  struct _EXCEPTION_RECORD *,
+  void *,
+  struct _CONTEXT *,
+  void *
+);
+
+#elif defined(_M_X64) || defined (_M_ARM)
+struct _CONTEXT;
+struct _DISPATCHER_CONTEXT;
+struct _EXCEPTION_RECORD;
+#ifndef _M_CEE_PURE
+_CRTIMP EXCEPTION_DISPOSITION __C_specific_handler(
+  struct _EXCEPTION_RECORD *,
+  void *,
+  struct _CONTEXT *,
+  struct _DISPATCHER_CONTEXT *
+);
+#endif /* ndef _M_CEE_PURE */
+#endif /* _M_IX86 */
+
+#define GetExceptionCode _exception_code
+#define exception_code _exception_code
+#define GetExceptionInformation (struct _EXCEPTION_POINTERS *)_exception_info
+#define exception_info GetExceptionInformation
+#define AbnormalTermination _abnormal_termination
+#define abnormal_termination _abnormal_termination
+
+unsigned long __cdecl _exception_code(void);
+void * __cdecl _exception_info(void);
+int __cdecl _abnormal_termination(void);
+
+#define EXCEPTION_EXECUTE_HANDLER 1
+#define EXCEPTION_CONTINUE_SEARCH 0
+#define EXCEPTION_CONTINUE_EXECUTION -1
+
+/* FIXME:
+   Why are these here?  We probably need to move these to a _mingw-except.h
+   file.
+*/
+/* ?????????? Compiler related? */
 /*
  * The type of function that is expected as an exception handler to be
  * installed with __try1.
@@ -47,6 +91,8 @@ typedef enum _EXCEPTION_DISPOSITION {
 typedef EXCEPTION_DISPOSITION (*PEXCEPTION_HANDLER)
 		(struct _EXCEPTION_RECORD*, void*, struct _CONTEXT*, void*);
 
+/* FIXME: See above */
+/* ?????????? Compiler related? */
 /*
  * This is not entirely necessary, but it is the structure installed by
  * the __try1 primitive below.
@@ -57,9 +103,11 @@ typedef struct _EXCEPTION_REGISTRATION
 	PEXCEPTION_HANDLER		handler;
 } EXCEPTION_REGISTRATION, *PEXCEPTION_REGISTRATION;
 
+/* FIXME: See above */
 typedef EXCEPTION_REGISTRATION EXCEPTION_REGISTRATION_RECORD;
 typedef PEXCEPTION_REGISTRATION PEXCEPTION_REGISTRATION_RECORD;
 
+/* FIXME: See above */
 /*
  * A macro which installs the supplied exception handler.
  * Push the pointer to the new handler onto the stack,
@@ -77,6 +125,7 @@ typedef PEXCEPTION_REGISTRATION PEXCEPTION_REGISTRATION_RECORD;
 	"g" (pHandler));
 #endif
 
+/* FIXME: See above */
 /*
  * A macro which (despite its name) *removes* an installed
  * exception handler. Should be used only in conjunction with the above

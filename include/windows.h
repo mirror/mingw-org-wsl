@@ -42,7 +42,7 @@
 #define NOMINMAX
 #define NOMSG
 #define NOOPENFILE
-#define NOWN
+#define NOWH
 #define NORASTEROPS
 #define NOSCROLL
 #define NOSOUND
