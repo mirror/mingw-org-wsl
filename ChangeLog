@@ -1,3 +1,9 @@
+2013-05-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update build-aux submodule reference for SF host migration.
+
+	* .gitmodules (url): Relocate to git://git.code.sourceforge.net/p/
+
 2013-04-09  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in: Adjust distributed package names when RELEASE_STATUS is
