@@ -53,6 +53,7 @@ AS = @AS@
 DLLTOOL = @DLLTOOL@
 DLLTOOL_FLAGS = --as $(AS) -k --dllname
 INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
 MKDIR_P = @MKDIR_P@
 
 INCLUDES=-I$(top_srcdir)/include -I$(srcdir)/include \
@@ -887,34 +888,34 @@ install-dirs: $(need-DESTDIR-compatibility)
 
 install-libs: all
 	for LIB in $(lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/$$LIB ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/$$LIB ; \
 	done
 
 install-objs: all
 	for OBJ in $(lib_OBJECTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir) ; \
+	  $(INSTALL_DATA) $$OBJ $(DESTDIR)$(libdir) ; \
 	done
 
 install-docs:
 	for DOC in $(doc_DOCUMENTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $(top_srcdir)/$$DOC $(DESTDIR)$(docdir)/$$DOC ; \
+	  $(INSTALL_DATA) $(top_srcdir)/$$DOC $(DESTDIR)$(docdir)/$$DOC ; \
 	done
 	cp -af $(top_srcdir)/doc/historical $(DESTDIR)$(docdir) ;
 
 install-includes:
 	for INC in $(top_srcdir)/include/*.h; do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
 	done
 	for I in `find $(top_srcdir)/include/* -type d`; do \
 	  J=`basename $$I`; \
 	  for INC in $$I/*.h; do \
-	    $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/$$J ; \
+	    $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/$$J ; \
 	  done \
 	done
 
 install-bins: all
 	for BIN in $(bin_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/$$BIN ; \
+	  $(INSTALL_DATA) $$BIN $(DESTDIR)$(bindir)/$$BIN ; \
 	done
 
 install: all \
@@ -951,19 +952,19 @@ mingwrt_lib_SYS_INCLUDES := \
 
 install-mingwrt: install-mingwrt-dirs
 	for BIN in $(mingwrt_bin_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/ ; \
+	  $(INSTALL_DATA) $$BIN $(DESTDIR)$(bindir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/,$(mingwrt_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/sys/,$(mingwrt_lib_SYS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/sys/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/sys/ ; \
 	done
 	for LIB in $(mingwrt_lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/ ; \
 	done
 	for OBJ in $(mingwrt_lib_OBJECTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$OBJ $(DESTDIR)$(libdir)/ ; \
 	done
 	cp -af $(top_srcdir)/doc/historical/mingw/* $(DESTDIR)$(mingwrtdocdir)/historical/ ;
 
@@ -1157,22 +1158,22 @@ w32api_lib_LIBRARIES := \
 
 install-w32api: install-w32api-dirs
 	for INC in $(addprefix $(top_srcdir)/include/,$(w32api_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/ddk/,$(w32api_lib_DDK_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/gdiplus/,$(w32api_lib_GDIPLUS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/misc/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/GL/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/GL/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/directx/,$(w32api_lib_DIRECTX_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
 	done
 	for LIB in $(w32api_lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/ ; \
 	done
 	cp -af $(top_srcdir)/doc/historical/w32api/* $(DESTDIR)$(w32apidocdir)/historical/ ;
 
@@ -1269,34 +1270,34 @@ install-wsl-dirs: $(need-DESTDIR-compatibility)
 
 install-wsl: install-wsl-dirs
 	for BIN in $(mingwrt_bin_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/ ; \
+	  $(INSTALL_DATA) $$BIN $(DESTDIR)$(bindir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/,$(mingwrt_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/sys/,$(mingwrt_lib_SYS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/sys/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/sys/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/,$(w32api_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/ddk/,$(w32api_lib_DDK_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/gdiplus/,$(w32api_lib_GDIPLUS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/misc/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/GL/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/GL/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/directx/,$(w32api_lib_DIRECTX_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
 	done
 	for LIB in $(mingwrt_lib_LIBRARIES) $(w32api_lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/ ; \
 	done
 	for OBJ in $(mingwrt_lib_OBJECTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$OBJ $(DESTDIR)$(libdir)/ ; \
 	done
 	cp -af $(top_srcdir)/LICENSE $(DESTDIR)$(docdir)
 	cp -af $(top_srcdir)/README $(DESTDIR)$(docdir)

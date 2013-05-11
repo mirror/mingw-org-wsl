@@ -1,3 +1,11 @@
+2013-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Install non-executable files with proper attributes.
+
+	* Makefile.in (INSTALL_DATA): New macro; define it per AC_SUBST;
+	substitute it at point of use, as appropriate, in place of...
+	(INSTALL): ...this.
+
 2013-05-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update build-aux submodule reference for SF host migration.
