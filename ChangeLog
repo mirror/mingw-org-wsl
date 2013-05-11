@@ -1,5 +1,18 @@
 2013-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Avoid a potential SIGSEGV crash on CRT start-up.
+
+	* src/libcrt/misc/glob.c (glob_signed): Check only for pointer
+	aliasing, when validating a glob_t signature; checking signature
+	content via an uninitialised pointer may segfault.
+
+	* src/libcrt/crt/init.c (__mingw_setargv): Call __mingw_glob()
+	directly, then set GLOB_APPEND for later calls; do not delegate to...
+	(do_glob): ...this; it uselessly attempted to set GLOB_APPEND on the
+	basis of an uninitialised counter.  Function now unused; delete it.
+
+2013-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Install non-executable files with proper attributes.
 
 	* Makefile.in (INSTALL_DATA): New macro; define it per AC_SUBST;
