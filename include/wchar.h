@@ -544,6 +544,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct _stat64*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat32i64 (const wchar_t*, struct _stat32i64*);
 int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
 #ifndef __NO_INLINE__
+#include <string.h> /* Need memset declaration. */
   __CRT_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i32 *_stat)
   {
     struct _stat64 st;

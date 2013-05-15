@@ -1,7 +1,15 @@
+2013-05-15  Niels Kristian Bech Jensen  <nkbj@users.sourceforge.net>
+
+	* include/control.h: Correct inclusion of _mingw.h.  Issue: #1956.
+	* include/sys/stat.h: Include string.h as appropriate for memset
+	declaration.  Issue: #1956.
+	* include/wchar.h: Ditto.
+
 2013-05-15  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* .gitignore: Add nbproject folder.
 	* NEWS: Add note about the globbing change.
+	* include/_mingw.h: Correct check for GCC version >= 3.4.5. Issue: #1958.
 
 2013-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
