@@ -1,6 +1,6 @@
 /**
  * @file init.c
- * Copyright (C) 2012 MinGW.org project
+ * Copyright (C) 1997-1999, 2004, 2012-2013, MinGW.org Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,7 @@
  * Updated by Mumit Khan <khan@xraylith.wisc.edu>,
  *   Earnie Boyd <earnie@users.sourceforge.net>, and
  *   Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 1997, 1998, 1999, 2004, 2012, MinGW Project
+ * Copyright (C) 1997-1999, 2004, 2012-2013, MinGW.org Project
  *
  * This file was formerly #included by both crt1.c and dllcrt1.c;
  * it is now used only by crt1.c
@@ -68,18 +68,6 @@ extern void __getmainargs( int *, char ***, char ***, int, _startupinfo * );
 #define ARGV_ESCAPE     __CRT_GLOB_ESCAPE_CHAR__
 #define ARGV_SQUOTE     __CRT_GLOB_USE_SINGLE_QUOTE__
 #define ARGV_NOGROUP    __CRT_GLOB_BRACKET_GROUPS__
-
-ARGV_INLINE
-int do_glob( const char *pattern, int flags, int (*errfn)(), glob_t *gl_buf )
-{
-  /* Helper used by the MinGW replacement command line globbing handler,
-   * to invoke the glob() function, while ensuring that the GLOB_APPEND
-   * option is enabled at the appropriate time.
-   */
-  if( gl_buf->gl_pathc > 0 )
-    flags |= GLOB_APPEND;
-  return __mingw_glob( pattern, flags, errfn, gl_buf );
-}
 
 ARGV_INLINE
 char *backslash( int count, char *buf )
@@ -223,7 +211,8 @@ void __mingw_setargv( const char *cmdline )
 	     * now add it to the globbed argument vector.
 	     */
 	    *argptr = '\0';
-	    do_glob( argptr = cmdbuf, gl_opts, NULL, &gl_argv );
+	    __mingw_glob( argptr = cmdbuf, gl_opts, NULL, &gl_argv );
+	    gl_opts |= GLOB_APPEND;
 	    gotarg = 0;
 	  }
 	}
@@ -249,7 +238,8 @@ void __mingw_setargv( const char *cmdline )
     /* ...and add any final pending argument to the globbed vector.
      */
     *argptr = '\0';
-    do_glob( argptr = cmdbuf, gl_opts, NULL, &gl_argv );
+    __mingw_glob( argptr = cmdbuf, gl_opts, NULL, &gl_argv );
+    gl_opts |= GLOB_APPEND;
   }
   /* ...and store the resultant globbed vector into the "argc" and "argv"
    * variables to be passed to main(); note that this allows us to safely

@@ -1,6 +1,6 @@
 /**
  * @file glob.c
- * Copyright (C) 2012 MinGW.org project.
+ * Copyright (C) 2011-2013, MinGW.org project.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,7 +27,7 @@
  * globfree() API functions.
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2011, 2012, MinGW Project.
+ * Copyright (C) 2011-2013, MinGW.org Project.
  * ---------------------------------------------------------------------------
  */
 #include <glob.h>
@@ -936,8 +936,21 @@ GLOB_INLINE int glob_signed( const char *check, const char *magic )
   /* Inline helper function, used exclusively by the glob_registry()
    * function, to confirm that the gl_magic field within a glob_t data
    * structure has been set, to indicate a properly initialised state.
+   *
+   * FIXME: we'd like to be able to verify the content at "check"
+   * against the signature at "magic", but "check" is likely to be
+   * an uninitialised pointer, and MS-Windows lamely crashes when the
+   * memory it might appear to address cannot be read.  There may be a
+   * way we could trap, and effectively handle, the resulting access
+   * violation, (likely restricted to WinXP and later); in the absence
+   * of a suitable handler, we must restrict our check to require that
+   * "check" is a strict alias for "magic".  This will lose, if we have
+   * multiple copies of "glob" loaded via distinct DLLs, and we pass a
+   * "glob_t" entity which has been initialised in one DLL across the
+   * boundary of another; for now, however, checking for strict pointer
+   * aliasing seems to be the only reliably safe option available.
    */
-  return (check == magic) ? 0 : (check != NULL) ? strcmp( check, magic ) : 1;
+  return (check == magic) ? 0 : 1;
 }
 
 static glob_t *glob_registry( int request, glob_t *gl_data )

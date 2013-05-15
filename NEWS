@@ -171,3 +171,5 @@ Provide implementations for IID_IGlobalInterface, FMTID_DocSummaryInformation,
   CLSID_StdGlobalInterfaceTable.
 Added declaration and import of RegisterTypeLibForUser and
   UnRegisterTypeLibForUser.
+Resolve the shell globbing issue as describe in thread
+  http://thread.gmane.org/gmane.comp.gnu.mingw.user/38302
