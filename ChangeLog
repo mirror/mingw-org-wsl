@@ -1,3 +1,7 @@
+2013-04-10  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in: Add installation and delivery of library object files.
+
 2013-04-09  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in: Adjust distributed package names when RELEASE_STATUS is

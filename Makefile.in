@@ -94,6 +94,22 @@ mingwrt_lib_LIBRARIES = \
   libmingwex.a \
   libgmon.a
 
+OBJDIR := src/libcrt/crt
+mingwrt_lib_OBJECTS = \
+  $(OBJDIR)/CRT_fp10.o \
+  $(OBJDIR)/CRT_fp8.o \
+  $(OBJDIR)/CRT_noglob.o \
+  $(OBJDIR)/binmode.o \
+  $(OBJDIR)/crt2.o \
+  $(OBJDIR)/crtmt.o \
+  $(OBJDIR)/crtst.o \
+  $(OBJDIR)/dllcrt2.o \
+  $(OBJDIR)/txtmode.o
+
+OBJDIR2 := misc/gpl/profile
+mingwrt_lib_OBJECTS += \
+  $(OBJDIR2)/gcrt2.o 
+
 winapi_DEF := $(notdir $(wildcard ${top_srcdir}/lib/lib32/*.def))
 winapi_DDK_DEF := $(notdir $(wildcard $(top_srcdir)/lib/lib32/ddk/*.def))
 winapi_DIRECTX_DEF := $(notdir $(wildcard $(top_srcdir)/lib/lib32/directx/*.def))
@@ -149,7 +165,7 @@ mold_OBJECTS := $(mode_SOURCES:.c=.o)
 
 SRCDIR := misc/gpl/profile
 gcrt0_SOURCES := $(SRCDIR)/gcrt0.c
-gcrt0_OBJECTS := $(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o
+gcrt0_OBJECTS := $(SRCDIR)/gcrt2.o
 
 lib_OBJECTS := $(crt0_OBJECTS) $(gcrt0_OBJECTS)
 
@@ -729,8 +745,6 @@ $(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o:
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
-$(SRCDIR)/crt1.o: $(SRCDIR)/crt1.c
-$(SRCDIR)/dllcrt1.o: $(SRCDIR)/dllcrt1.c
 $(SRCDIR)/crt2.o: $(SRCDIR)/crt1.c
 $(SRCDIR)/dllcrt2.o: $(SRCDIR)/dllcrt1.c
 
@@ -748,7 +762,7 @@ $(SRCDIR)/gcrt2.o:
 	mkdir -p $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
-$(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o: $(SRCDIR)/gcrt0.c
+$(SRCDIR)/gcrt2.o: $(SRCDIR)/gcrt0.c
 
 libmingw32.a: $(libmingw32_a_OBJECTS)
 	$(AR) rc $@ $(libmingw32_a_OBJECTS)
