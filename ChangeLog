@@ -1,3 +1,8 @@
+2013-05-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in (clean-dist, clean-dist-mingwrt, clean-dist-w32api,
+	clean-dist-wsl): New targets.
+
 2013-05-15  Niels Kristian Bech Jensen  <nkbj@users.sourceforge.net>
 
 	* include/control.h: Correct inclusion of _mingw.h.  Issue: #1956.
@@ -1682,7 +1687,7 @@
 	* gpl/*: Move to misc/gpl/*.
 	* include/GL/*: Move to misc/include/GL/*.
 	* include/profile.h: Move to misc/include/profile.h.
-	* src/libcrt/math/cephes_mconf.h: Move to 
+	* src/libcrt/math/cephes_mconf.h: Move to
 	misc/src/include/cephes_mconf.h.
 	* src/libcrt/include/gdtoa.h: Move to misc/src/include/gdtoa.h.
 	* src/libcrt/gdtoa/*: Move to misc/src/libcrt/gdtoa/*.

@@ -1394,3 +1394,15 @@ else
 	mv mingw.org-wsl $(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
 	tar acf ../packages/$(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma $(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
 endif
+
+clean-dist: clean-dist-mingwrt clean-dist-w32api clean-dist-wsl
+	rm -rf dist/
+
+clean-dist-mingwrt:
+	rm -rf dist/mingwrt/
+
+clean-dist-w32api:
+	rm -rf dist/w32api/
+
+clean-dist-wsl:
+	rm -rf dist/wsl/
