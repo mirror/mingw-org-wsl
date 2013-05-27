@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -110,34 +110,38 @@ struct _stat32
 	__time32_t st_ctime;	/* Creation time */
 };
 
+#ifndef __STRICT_ANSI__
+struct stat {
+	_dev_t	   st_dev;	/* Equivalent to drive number 0=A 1=B ... */
+	_ino_t	   st_ino;	/* Always zero ? */
+	_mode_t    st_mode;	/* See above constants */
+	short	   st_nlink;	/* Number of links. */
+	short	   st_uid;	/* User: Maybe significant on NT ? */
+	short	   st_gid;	/* Group: Ditto */
+	_dev_t	   st_rdev;	/* Seems useless (not even filled in) */
+	_off_t	   st_size;	/* File size in bytes */
+	time_t	   st_atime;	/* Accessed date (always 00:00 hrs local
+				 * on FAT) */
+	time_t	   st_mtime;	/* Modified time */
+	time_t	   st_ctime;	/* Creation time */
+};
+#endif /* __STRICT_ANSI__ */
+
 struct _stat64 {
-	dev_t	st_dev;		/* Equivalent to drive number 0=A 1=B ... */
-	ino_t	st_ino;		/* Always zero ? */
-	mode_t	st_mode;	/* See above constants */
-	short	st_nlink;	/* Number of links. */
-	short	st_uid;		/* User: Maybe significant on NT ? */
-	short	st_gid;		/* Group: Ditto */
-	dev_t	st_rdev;	/* Seems useless (not even filled in) */
-	__int64 st_size;	/* File size in bytes */
+	dev_t	   st_dev;	/* Equivalent to drive number 0=A 1=B ... */
+	ino_t	   st_ino;	/* Always zero ? */
+	mode_t	   st_mode;	/* See above constants */
+	short	   st_nlink;	/* Number of links. */
+	short	   st_uid;	/* User: Maybe significant on NT ? */
+	short	   st_gid;	/* Group: Ditto */
+	dev_t	   st_rdev;	/* Seems useless (not even filled in) */
+	_off64_t   st_size;	/* File size in bytes */
 	__time64_t st_atime;	/* Accessed date (always 00:00 hrs local
 				 * on FAT) */
 	__time64_t st_mtime;	/* Modified time */
 	__time64_t st_ctime;	/* Creation time */
 };
 
-struct _stati64 {
-    _dev_t st_dev;
-    _ino_t st_ino;
-    _mode_t st_mode;
-    short st_nlink;
-    short st_uid;
-    short st_gid;
-    _dev_t st_rdev;
-    __int64 st_size;
-    time_t st_atime;
-    time_t st_mtime;
-    time_t st_ctime;
-};
 struct _stat32i64 {
 	_dev_t		st_dev;
 	_ino_t		st_ino;
@@ -146,11 +150,12 @@ struct _stat32i64 {
 	short		st_uid;
 	short		st_gid;
 	_dev_t		st_rdev;
-	__int64		st_size;
+	_off64_t	st_size;
 	__time32_t	st_atime;
 	__time32_t	st_mtime;
 	__time32_t	st_ctime;
 };
+
 struct _stat64i32 {
 	_dev_t		st_dev;
 	_ino_t		st_ino;
@@ -159,14 +164,14 @@ struct _stat64i32 {
 	short		st_uid;
 	short		st_gid;
 	_dev_t		st_rdev;
-	__int32		st_size;
+	_off_t		st_size;
 	__time64_t	st_atime;
 	__time64_t	st_mtime;
 	__time64_t	st_ctime;
 };
 
 #define __stat64 _stat64
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 #define _fstat      _fstat32
 #define _fstati64   _fstat32i64
 #define _stat       _stat32
@@ -243,13 +248,6 @@ int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
 #endif
 
 #if !defined(_NO_OLDNAMES) && !defined(__STRICT_ANSI__)
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
-#define stat(a,b) _stat32(a,b)
-#define fstat(a,b) _fstat32(a,b)
-#else
-#define stat(a,b) _stat64i32(a,b)
-#define fstat(a,b) _fstat64i32(a,b)
-#endif
 #define stat _stat
 #define fstat _fstat
 #endif /* !defined(_NO_OLDNAMES) && !defined(__STRICT_ANSI__) */
@@ -286,7 +284,7 @@ int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
 #define _wstat64i32 _wstat64
 #endif
 
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 #define _wstat      _wstat32
 #define _wstati64   _wstat32i64
 #else /* !_USE_32BIT_TIME_T */

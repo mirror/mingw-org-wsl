@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -48,12 +48,7 @@
  * not.
  */
 #include <wctype.h>
-
-#ifndef	__STRICT_ANSI__
-/* This is necessary to support the the non-ANSI wchar declarations
-   here. */
 #include <sys/types.h>
-#endif /* __STRICT_ANSI__ */
 
 #define WCHAR_MIN	0
 #define WCHAR_MAX	0xffff
@@ -201,7 +196,7 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wstrtime (wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime64 (const __time64_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime32 (const __time32_t*);
 
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_wctime32 (_v)); }
 #else
 
@@ -413,12 +408,12 @@ _CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst32i64 (const wchar_t*, struct _w
 _CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst64i32 (const wchar_t*, struct _wfinddata64i32_t*);
 _CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32i64 (long, struct _wfinddata32i64_t*);
 _CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext64i32 (long, struct _wfinddata64i32_t*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64(const wchar_t*, struct __wfinddata64_t*); 
+_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64(const wchar_t*, struct __wfinddata64_t*);
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindnext64(intptr_t, struct __wfinddata64_t*);
 _CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst32 (const wchar_t*, struct __wfinddata32_t*);
 _CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32 (long, struct __wfinddata32_t*);
 
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 _CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)	 { return(_wfindfirst32 (_v1,(struct __wfinddata32_t*)_v2)); }
 _CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext (long _v1, struct _wfinddata_t* _v2)			 { return(_wfindnext32  (_v1,(struct __wfinddata32_t*)_v2)); }
 _CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2) { return(_wfindfirst32i64 (_v1,(struct _wfinddata32i64_t*)_v2)); }
@@ -468,6 +463,23 @@ struct _stat32
 	__time32_t st_ctime;	/* Creation time */
 };
 
+#ifndef __STRICT_ANSI__
+struct stat {
+    _dev_t  st_dev;	/* Equivalent to drive number 0=A 1=B ... */
+    _ino_t  st_ino;	/* Always zero ? */
+    _mode_t st_mode;	/* See above constants */
+    short   st_nlink;	/* Number of links. */
+    short   st_uid;	/* User: Maybe significant on NT ? */
+    short   st_gid;	/* Group: Ditto */
+    _dev_t  st_rdev;	/* Seems useless (not even filled in) */
+    _off_t  st_size;	/* File size in bytes */
+    time_t  st_atime;	/* Accessed date (always 00:00 hrs local
+			 * on FAT) */
+    time_t  st_mtime;	/* Modified time */
+    time_t  st_ctime;	/* Creation time */
+} ;
+#endif /* __STRICT_ANSI__ */
+
 struct _stat64 {
 	dev_t	st_dev;		/* Equivalent to drive number 0=A 1=B ... */
 	ino_t	st_ino;		/* Always zero ? */
@@ -476,26 +488,13 @@ struct _stat64 {
 	short	st_uid;		/* User: Maybe significant on NT ? */
 	short	st_gid;		/* Group: Ditto */
 	dev_t	st_rdev;	/* Seems useless (not even filled in) */
-	__int64 st_size;	/* File size in bytes */
+	_off64_t st_size;	/* File size in bytes */
 	__time64_t st_atime;	/* Accessed date (always 00:00 hrs local
 				 * on FAT) */
 	__time64_t st_mtime;	/* Modified time */
 	__time64_t st_ctime;	/* Creation time */
 };
 
-struct _stati64 {
-    _dev_t st_dev;
-    _ino_t st_ino;
-    _mode_t st_mode;
-    short st_nlink;
-    short st_uid;
-    short st_gid;
-    _dev_t st_rdev;
-    __int64 st_size;
-    time_t st_atime;
-    time_t st_mtime;
-    time_t st_ctime;
-};
 struct _stat32i64 {
 	_dev_t		st_dev;
 	_ino_t		st_ino;
@@ -504,11 +503,12 @@ struct _stat32i64 {
 	short		st_uid;
 	short		st_gid;
 	_dev_t		st_rdev;
-	__int64		st_size;
+	_off64_t	st_size;
 	__time32_t	st_atime;
 	__time32_t	st_mtime;
 	__time32_t	st_ctime;
-};
+} ;
+
 struct _stat64i32 {
 	_dev_t		st_dev;
 	_ino_t		st_ino;
@@ -517,14 +517,14 @@ struct _stat64i32 {
 	short		st_uid;
 	short		st_gid;
 	_dev_t		st_rdev;
-	__int32		st_size;
+	_off_t		st_size;
 	__time64_t	st_atime;
 	__time64_t	st_mtime;
 	__time64_t	st_ctime;
 };
 
 #define __stat64 _stat64
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 #define _fstat      _fstat32
 #define _fstati64   _fstat32i64
 #define _stat       _stat32
@@ -570,7 +570,7 @@ int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
 #define _wstat64i32 _wstat64
 #endif
 
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 #define _wstat      _wstat32
 #define _wstati64   _wstat32i64
 #else

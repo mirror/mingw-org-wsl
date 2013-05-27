@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -242,6 +242,29 @@
 #  define __USE_MINGW_ANSI_STDIO    (__MINGW_FEATURES__ & __MINGW_ANSI_STDIO__)
 # endif
 #endif
+
+/*
+ * We need to set a default MSVCRT_VERSION which describes the MSVCRT.DLL on
+ * the users system.  We are defaulting to XP but we recommend the user define
+ * this in his config.h or Makefile file based on the minimum supported version
+ * of OS for his program.
+ * ME = 600
+ * XP = 710
+ * VISTA = 800
+ * WIN7 = 900
+ * WIN8 = 1010
+ */
+#ifndef MSVCRT_VERSION
+#define MSVCRT_VERSION 710
+#endif
+
+#ifdef _USE_32BIT_TIME_T
+#if MSVCRT_VERSION < 800
+#warning Your MSVCRT_VERSION does not support the use of _USE_32BIT_TIME_T.
+#warning You should define MSVCRT_VERSION based on your MSVCRT.DLL version.
+#warning ME = 600, XP = 710, VISTA = 800, WIN7 = 900 and WIN8 = 1010.
+#endif /* MSVCRT_VERSION < 800 */
+#endif /* _USE_32BIT_TIME_T */
 
 struct threadlocalinfostruct;
 struct threadmbinfostruct;

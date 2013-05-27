@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -80,7 +80,7 @@ _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	ftime (struct timeb*);
 #endif	/* Not _NO_OLDNAMES */
 
-/* This requires newer versions of msvcrt.dll (6.10 or higher).  */ 
+/* This requires newer versions of msvcrt.dll (6.10 or higher).  */
 struct __timeb64
 {
   __time64_t time;
@@ -93,7 +93,7 @@ _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime64 (struct __timeb64*);
 
 _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime32 (struct __timeb32*);
 
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 _CRTALIAS void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb* _v) { return(_ftime32 ((struct __timeb32*)_v)); }
 #else
 

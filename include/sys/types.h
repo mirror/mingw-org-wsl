@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -48,7 +48,7 @@ typedef __int64 __time64_t;
 #ifndef _TIME_T_DEFINED
 /* FIXME __STRICT_ANSI__ ! */
 
-#if defined(_USE_32BIT_TIME_T) && defined(_HAVE_32BIT_TIME_T)
+#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
 typedef	__time32_t time_t;
 #else
 
@@ -61,9 +61,18 @@ typedef	__time64_t time_t;
 #ifndef	_OFF_T_
 #define	_OFF_T_
 typedef long _off_t;
+#ifndef __STRICT_ANSI__
 typedef _off_t	off_t;
+#endif /* __STRICT_ANSI__ */
 #endif	/* Not _OFF_T_ */
 
+#ifndef _OFF64_T_
+#define _OFF64_T_
+typedef __int64 _off64_t;
+#ifndef __STRICT_ANSI__
+typedef __int64 off64_t;
+#endif /* __STRICT_ANSI__ */
+#endif /* ndef _OFF64_T */
 
 #ifndef _DEV_T_
 #define	_DEV_T_
@@ -121,7 +130,7 @@ typedef int _ssize_t;
 #ifndef	_NO_OLDNAMES
 typedef _ssize_t ssize_t;
 #endif
-#endif /* Not _SSIZE_T_ */ 
+#endif /* Not _SSIZE_T_ */
 
 #ifndef _FPOS64_T_
 #define _FPOS64_T_
