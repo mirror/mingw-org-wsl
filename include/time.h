@@ -143,7 +143,7 @@ _CRTIMP struct tm*  __cdecl __MINGW_NOTHROW _gmtime64 (const __time64_t*);
 _CRTIMP struct tm*  __cdecl __MINGW_NOTHROW _localtime64 (const __time64_t*);
 
 /* These require newer versions of msvcrt.dll (8.00 or higher). */
-#ifdef MSVCRT_VERSION >= 800
+#if MSVCRT_VERSION >= 800
 _CRTIMP __time32_t __cdecl __MINGW_NOTHROW	_time32     (__time32_t*);
 _CRTIMP double	   __cdecl __MINGW_NOTHROW	_difftime32 (__time32_t, __time32_t);
 _CRTIMP double	   __cdecl __MINGW_NOTHROW	_difftime64 (__time64_t, __time64_t);

@@ -1,14 +1,20 @@
+2013-05-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/time.h: Correct use of MSVCRT_VERSION.
+
 2013-05-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
-	* types.h (_USE_32BIT_TIME_T): Rework the definitions controlled by
-	_USE_32BIT_TIME_T in light of MSVCRT_VERSION being different with
-	differing OS versions.
-	* time.h (_USE_32BIT_TIME_T): Ditto.
-	* stat.h (_USE_32BIT_TIME_T): Ditto.
-	* wchar.h (_USE_32BIT_TIME_T): Ditto.
-	* _mingw.h (_USE_32BIT_TIME_T): Issue a warning when _USE_32BIT_TIME_T
-	is enabled and MSVCRT_VERSION value does not support it.
-	* msvcrt.def.in: Always define all definitions in light of MSVCRT.DLL
+	* include/sys/types.h (_USE_32BIT_TIME_T): Rework the definitions
+	controlled by _USE_32BIT_TIME_T in light of MSVCRT_VERSION being
+	different with differing OS versions.
+	* include/time.h (_USE_32BIT_TIME_T): Ditto.
+	* include/sys/stat.h (_USE_32BIT_TIME_T): Ditto.
+	* include/wchar.h (_USE_32BIT_TIME_T): Ditto.
+	* include/_mingw.h (_USE_32BIT_TIME_T): Issue a warning when
+	_USE_32BIT_TIME_T is enabled and MSVCRT_VERSION value does not
+	support it.
+	* lib/lib32/msvcrt.def.in: Always define all definitions in light of
+	MSVCRT.DLL
 	being different versions on differing OS.
 	* TODO: Add a note about needing a warning when a function is being
 	used but not defined within the MSVCRT_VERSION value.
