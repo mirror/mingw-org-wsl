@@ -1,6 +1,7 @@
 2013-05-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/time.h: Correct use of MSVCRT_VERSION.
+	Correct mistyped __MINGW_NOTHROW macro.
 
 2013-05-27  Earnie Boyd  <earnie@users.sourceforge.net>
 

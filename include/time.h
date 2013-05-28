@@ -188,12 +188,12 @@ _CRTALIAS struct tm*   __cdecl __MINGW_NOTHROW	localtime (const time_t* _v)
 #endif /* _USE_32BIT_TIME_T */
 
 #else /* MSVCRT_VERSION < 800 */
-_CRTIMP time_t     __cdecl __MINGW32_NOTHROW time       (time_t*);
-_CRTIMP double     __cdecl __MINGW32_NOTHROW difftime   (time_t, time_t);
-_CRTIMP time_t     __cdecl __MINGW32_NOTHROW mktime     (struct tm*);
-_CRTIMP char*      __cdecl __MINGW32_NOTRHOW ctime      (const time_t*);
-_CRTIMP struct tm* __cdecl __MINGW32_NOTHROW gmtime     (const time_t*);
-_CRTIMP struct tm* __cdecl __MINGW32_NOTHROW localtime  (const time_t*);
+_CRTIMP time_t     __cdecl __MINGW_NOTHROW time       (time_t*);
+_CRTIMP double     __cdecl __MINGW_NOTHROW difftime   (time_t, time_t);
+_CRTIMP time_t     __cdecl __MINGW_NOTHROW mktime     (struct tm*);
+_CRTIMP char*      __cdecl __MINGW_NOTHROW ctime      (const time_t*);
+_CRTIMP struct tm* __cdecl __MINGW_NOTHROW gmtime     (const time_t*);
+_CRTIMP struct tm* __cdecl __MINGW_NOTHROW localtime  (const time_t*);
 #endif /* MSVCRT_VERSION >= 800 */
 
 /*
