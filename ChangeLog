@@ -31,6 +31,9 @@
 	* include/wchar.h (_wctime32): Create _CRTALIAS when MSVCRT_VERSION
 	< 800.
 	(_wfindfirst32, _wfindnext32): Create _CRTALIAS.
+	* include/objdump.h: Move include of rpc.h and rpcndr.h due to
+	dependencies.
+	* include/rpc.h: Move include of windows.h due to dependencies.
 
 2013-05-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
