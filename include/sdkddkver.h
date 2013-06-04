@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,10 +57,10 @@
  * http://msdn.microsoft.com/en-us/library/windows/desktop/aa383745(v=vs.85).aspx
  */
 #define _WIN32_WINNT_NT4          0x0400
-#define _WIN32_WINNT_NT4E	  0x0401
-#define _WIN32_WINNT_WIN95	  0x0400
-#define _WIN32_WINNT_WIN98	  0x0410
-#define _WIN32_WINNT_WINME	  0x0490
+#define _WIN32_WINNT_NT4E         0x0401
+#define _WIN32_WINNT_WIN95        0x0400
+#define _WIN32_WINNT_WIN98        0x0410
+#define _WIN32_WINNT_WINME        0x0490
 #define _WIN32_WINNT_WIN2K        0x0500
 #define _WIN32_WINNT_WINXP        0x0501
 #define _WIN32_WINNT_WS03         0x0502
@@ -69,6 +69,7 @@
 #define _WIN32_WINNT_WS08         0x0600
 #define _WIN32_WINNT_LONGORN      0x0600
 #define _WIN32_WINNT_WIN7         0x0601
+#define _WIN32_WINNT_WIN8         0x0602
 
 /**
  * Version constants defining _WIN32_IE versions.

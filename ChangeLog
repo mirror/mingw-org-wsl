@@ -1,3 +1,37 @@
+2013-06-04  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/_mingw.h (MSVCRT_VERSION): Determine a value based on the
+	_WIN32_WINNT value. Add a TODO for check to see if the older
+	__MSVCRT_VERSION__ macro is defined and use it as the value for
+	MSVCRT_VERSION.  Give an error if both MSVCRT_VERSION and
+	__MSVCRT_VERSION__ are defined and the values do not match.
+	Remove warnings for value when _USE_32BIT_TIME_T is defined.
+	* include/io.h (_wfindfirst32, _wfindfirst64): Correct declaration of
+	parameter data type. Create _CRTALIAS rather than declaring _CRTIMP.
+	(_findfirst32(), _findnext32()): Create _CRTALIAS rather than declaring
+	a _CRTIMP.
+	(_findfirst64i32, _findfirst32i64, _findnext64i32, _findnext32i64):
+	Remove the _CRTIMP from the declaration, these become inline functions.
+	Also guard for __NO_INLINE__ and make appropriate defined alternatives.
+	(_wfindfirst64i32, _wfindfirst32i64, _wfindnext64i32, _wfindnext32i64):
+	Ditto.
+	* include/sdkddkver.h (_WIN32_WINNT_WIN8): Add definition.
+	* include/sys/stat.h (_stat32, _fstat32, _wstat32): Define as a
+	_CRTALIAS.
+	(_fstat32i64, _stat32i64, _wstat32i64): Add as __CRT_INLINE functions
+	and make appropriate alternative macros for __NO_INLINE__ use.
+	* include/sys/timeb.h (_time32): Create _CRTALIAS when MSVCRT_VERSION
+	< 800.
+	* include/sys/types.h (MSVCRT_VERSION): Remove guard for >= 800 with
+	_USE_32BIT_TIME_T.
+	* include/time.h (_time32, _difftime32, _mktime32, _ctime32, _gmtime32,
+	_localtime32, _wctime32): Create _CRTALIAS when MSVCRT_VERSION < 800.
+	(_difftime64, _mkgtime64): Guard declaration for MSVCRT_VERSION > 800.
+	These functions do not exist in MSVCRT.DLL before Vista.
+	* include/wchar.h (_wctime32): Create _CRTALIAS when MSVCRT_VERSION
+	< 800.
+	(_wfindfirst32, _wfindnext32): Create _CRTALIAS.
+
 2013-05-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/time.h: Correct use of MSVCRT_VERSION.

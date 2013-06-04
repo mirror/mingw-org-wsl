@@ -170,33 +170,28 @@ struct _stat64i32 {
 	__time64_t	st_ctime;
 };
 
-#define __stat64 _stat64
-#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
-#define _fstat      _fstat32
-#define _fstati64   _fstat32i64
-#define _stat       _stat32
-#define _stati64    _stat32i64
-#else  /* !_USE_32BIT_TIME_T */
-#define _fstat      _fstat64i32
-#define _fstati64   _fstat64
-#define _stat       _stat64i32
-#define _stati64    _stat64
-#endif /* _USE_32BIT_TIME_T */
-#define _STAT_DEFINED
-#endif /* _STAT_DEFINED */
-
 #ifdef	__cplusplus
 extern "C" {
 #endif
 
+/* _stat32 does not exist in MSVCRT.DLL */
+_CRTIMP int __cdecl __MINGW_NOTHROW _stat (const char*, struct _stat32*);
+_CRTALIAS int __cdecl __MINGW_NOTHROW _stat32 (const char* _v1, struct _stat32* _v2) {
+  return _stat(_v1, _v2);
+}
 
-_CRTIMP int __cdecl __MINGW_NOTHROW _stat32 (const char*, struct _stat32*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _stat64 (const char*, struct _stat64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _stat32i64 (const char*, struct _stat32i64*);
+int __cdecl __MINGW_NOTHROW _stat32i64 (const char*, struct _stat32i64*);
 int __cdecl __MINGW_NOTHROW _stat64i32 (const char*, struct _stat64i32*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _fstat32 (int, struct _stat32*);
+
+/* _fstat32 does not exist in MSVCRT.DLL */
+_CRTIMP int __cdecl __MINGW_NOTHROW _fstat (int, struct _stat32*);
+_CRTALIAS int __cdecl __MINGW_NOTHROW _fstat32 (int _v1, struct _stat32* _v2) {
+    return _fstat(_v1, _v2);
+}
+
 _CRTIMP int __cdecl __MINGW_NOTHROW _fstat64 (int, struct _stat64*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _fstat32i64 (int, struct _stat32i64*);
+int __cdecl __MINGW_NOTHROW _fstat32i64 (int, struct _stat32i64*);
 int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
 #ifndef __NO_INLINE__
 #include <string.h> /* Need memset declaration */
@@ -206,6 +201,27 @@ int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
     int ret = _fstat64(desc, &st);
     if (ret == -1) {
       memset(_stat, 0, sizeof(struct _stat64i32));
+      return -1;
+    }
+    _stat->st_dev = st.st_dev;
+    _stat->st_ino = st.st_ino;
+    _stat->st_mode = st.st_mode;
+    _stat->st_nlink = st.st_nlink;
+    _stat->st_uid = st.st_uid;
+    _stat->st_gid = st.st_gid;
+    _stat->st_rdev = st.st_rdev;
+    _stat->st_size = (_off_t) st.st_size;
+    _stat->st_atime = st.st_atime;
+    _stat->st_mtime = st.st_mtime;
+    _stat->st_ctime = st.st_ctime;
+    return ret;
+  }
+  __CRT_INLINE int __cdecl _fstat32i64(int desc, struct _stat32i64 *_stat)
+  {
+    struct _stat32 st;
+    int ret = _fstat32(desc, &st);
+    if (ret == -1) {
+      memset(_stat, 0, sizeof(struct _stat32i64));
       return -1;
     }
     _stat->st_dev = st.st_dev;
@@ -242,10 +258,48 @@ int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
     _stat->st_ctime = st.st_ctime;
     return ret;
   }
+  __CRT_INLINE int __cdecl _stat32i64(const char *fname, struct _stat32i64 *_stat)
+  {
+    struct _stat32 st;
+    int ret = _stat32(fname, &st);
+    if (ret == -1) {
+      memset(_stat, 0, sizeof(struct _stat32i64));
+      return -1;
+    }
+    _stat->st_dev = st.st_dev;
+    _stat->st_ino = st.st_ino;
+    _stat->st_mode = st.st_mode;
+    _stat->st_nlink = st.st_nlink;
+    _stat->st_uid = st.st_uid;
+    _stat->st_gid = st.st_gid;
+    _stat->st_rdev = st.st_rdev;
+    _stat->st_size = (_off_t) st.st_size;
+    _stat->st_atime = st.st_atime;
+    _stat->st_mtime = st.st_mtime;
+    _stat->st_ctime = st.st_ctime;
+    return ret;
+  }
 #else
+#define _stat32i64 _stat32
+#define _fstat32i64 _fstat32
 #define _stat64i32 _stat64
 #define _fstat64i32 _fstat64
 #endif
+
+#define __stat64 _stat64
+#if defined(_USE_32BIT_TIME_T)
+#define _fstat      _fstat32
+#define _fstati64   _fstat32i64
+#define _stat       _stat32
+#define _stati64    _stat32i64
+#else  /* !_USE_32BIT_TIME_T */
+#define _fstat      _fstat64i32
+#define _fstati64   _fstat64
+#define _stat       _stat64i32
+#define _stati64    _stat64
+#endif /* _USE_32BIT_TIME_T */
+#define _STAT_DEFINED
+#endif /* _STAT_DEFINED */
 
 #if !defined(_NO_OLDNAMES) && !defined(__STRICT_ANSI__)
 #define stat _stat
@@ -253,7 +307,12 @@ int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
 #endif /* !defined(_NO_OLDNAMES) && !defined(__STRICT_ANSI__) */
 
 #if !defined ( _WSTAT_DEFINED) /* also declared in wchar.h */
-_CRTIMP int __cdecl __MINGW_NOTHROW _wstat32 (const wchar_t*, struct _stat32*);
+/* _wstat32 does not exist in MSVCRT.DLL */
+_CRTALIAS int __cdecl __MINGW_NOTHROW _wstat32 (const wchar_t* _v1, struct _stat32* _v2) {
+    _CRTIMP int __cdecl __MINGW_NOTHROW _wstat (const wchar_t*, struct _stat32*);
+    return _wstat(_v1, _v2);
+}
+
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct _stat64*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat32i64 (const wchar_t*, struct _stat32i64*);
 int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
@@ -280,11 +339,33 @@ int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
     _stat->st_ctime = st.st_ctime;
     return ret;
   }
+  __CRT_INLINE int __cdecl _wstat32i64(const wchar_t *fname, struct _stat32i64 *_stat)
+  {
+    struct _stat32 st;
+    int ret = _wstat32(fname, &st);
+    if (ret == -1) {
+      memset(_stat, 0, sizeof(struct _stat32i64));
+      return -1;
+    }
+    _stat->st_dev = st.st_dev;
+    _stat->st_ino = st.st_ino;
+    _stat->st_mode = st.st_mode;
+    _stat->st_nlink = st.st_nlink;
+    _stat->st_uid = st.st_uid;
+    _stat->st_gid = st.st_gid;
+    _stat->st_rdev = st.st_rdev;
+    _stat->st_size = (_off_t) st.st_size;
+    _stat->st_atime = st.st_atime;
+    _stat->st_mtime = st.st_mtime;
+    _stat->st_ctime = st.st_ctime;
+    return ret;
+  }
 #else
+#define _wstat32i64 _wstat32
 #define _wstat64i32 _wstat64
 #endif
 
-#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
+#if defined(_USE_32BIT_TIME_T)
 #define _wstat      _wstat32
 #define _wstati64   _wstat32i64
 #else /* !_USE_32BIT_TIME_T */

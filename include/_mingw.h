@@ -243,6 +243,21 @@
 # endif
 #endif
 
+/* @TODO: Need to convert __MSVCRT_VERSION__ value to MSVCRT_VERSION value.
+ * HEX to DECIMAL will not work. */
+#if 0
+#ifdef __MSVCRT_VERSION__
+#ifdef MSVCRT_VERSION
+#if MSVCRT_VERSION != __MSVCRT_VERSION__
+#error You have specified __MSVCRT_VERSION__ and MSVCRT_VERSION and they are \
+not equal.
+#endif /* MSVCRT_VERSION != __MSVCRT_VERSION__ */
+#else /* ndef MSVCRT_VERSION */
+#define MSVCRT_VERSION __MSVCRT_VERSION__
+#endif /* MSVCRT_VERSION */
+#endif /* __MSVCRT_VERSION__ */
+#endif /* 0 */
+
 /*
  * We need to set a default MSVCRT_VERSION which describes the MSVCRT.DLL on
  * the users system.  We are defaulting to XP but we recommend the user define
@@ -255,16 +270,22 @@
  * WIN8 = 1010
  */
 #ifndef MSVCRT_VERSION
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN8
+#define MSVCRT_VERSION 1010
+#elif _WIN32_WINNT >= _WIN32_WINNT_WIN7
+#define MSVCRT_VERSION 900
+#elif _WIN32_WINNT >= _WIN32_WINNT_VISTA
+#define MSVCRT_VERSION 800
+#elif _WIN32_WINNT >= _WIN32_WINNT_WINXP
 #define MSVCRT_VERSION 710
-#endif
-
-#ifdef _USE_32BIT_TIME_T
-#if MSVCRT_VERSION < 800
-#warning Your MSVCRT_VERSION does not support the use of _USE_32BIT_TIME_T.
-#warning You should define MSVCRT_VERSION based on your MSVCRT.DLL version.
-#warning ME = 600, XP = 710, VISTA = 800, WIN7 = 900 and WIN8 = 1010.
-#endif /* MSVCRT_VERSION < 800 */
-#endif /* _USE_32BIT_TIME_T */
+#elif _WIN32_WINNT >= _WIN32_WINNT_WIN2K
+#define MSVCRT_VERSION 700
+#elif _WIN32_WINNT >= _WIN32_WINNT_WINME
+#define MSVCRT_VERSION 600
+#else
+#define MSVCRT_VERSION 700
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WINME */
+#endif /* ndef MSVCRT_VERSION */
 
 struct threadlocalinfostruct;
 struct threadmbinfostruct;

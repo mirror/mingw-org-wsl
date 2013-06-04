@@ -48,7 +48,7 @@ typedef __int64 __time64_t;
 #ifndef _TIME_T_DEFINED
 /* FIXME __STRICT_ANSI__ ! */
 
-#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
+#if defined(_USE_32BIT_TIME_T)
 typedef	__time32_t time_t;
 #else
 

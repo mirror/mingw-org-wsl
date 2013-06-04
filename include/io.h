@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -109,26 +109,7 @@ struct _finddata64i32_t {
 	_fsize_t	size;
 	char		name[FILENAME_MAX];
 };
-#if defined(_HAVE_32BIT_TIME_T)
-#if defined(_USE_32BIT_TIME_T)
-#define _finddata_t _finddata32_t
-#define _finddatai64_t _finddata32i64_t
-#define _findfirst _findfirst32
-#define _findnext _findnext32
-#define _findfirsti64 _findfirst32i64
-#define _findnexti64 _findnext32i64
-#else /* !_USE_32BIT_TIME_T */
-#define _finddata_t _finddata64i32_t
-#define _finddatai64_t __finddata64_t
-#define _findfirst _findfirst64i32
-#define _findnext _findnext64i32
-#define _findfirsti64 _findfirst64
-#define _findnexti64 _findnext64
-#endif /* _USE_32BIT_TIME_T */
-#else /* !_HAVE_32BIT_TIME_T */
-#define _finddata_t _finddata64i32_t
-#define _finddatai64_t __finddata64_t
-#endif /* _HAVE_32BIT_TIME_T */
+
 #define _FINDDATA_T_DEFINED
 #endif /* !_FINDDATA_T_DEFINED */
 
@@ -169,26 +150,6 @@ struct _wfinddata64i32_t {
 	__int32		size;
 	wchar_t		name[FILENAME_MAX];
 };
-#if defined(_HAVE_32BIT_TIME_T)
-#if defined(_USE_32BIT_TIME_T)
-#define _wfinddata_t _wfinddata32_t
-#define _wfinddatai64_t _wfinddata32i64_t
-#define _wfindfirst _wfindfirst32
-#define _wfindnext _wfindnext32
-#define _wfindfirsti64 _wfindfirst32i64
-#define _wfindnexti64 _wfindnext32i64
-#else /* ! _USE_32BIT_TIME_T */
-#define _wfinddata_t _wfinddata64i32_t
-#define _wfinddatai64_t _wfinddata64_t
-#define _wfindfirst _wfindfirst64i32
-#define _wfindnext _wfindnext64i32
-#define _wfindfirsti64 _wfindfirst64
-#define _wfindnexti64 _wfindnext64
-#endif /* _USE_32BIT_TIME_T */
-#else /* ! _HAVE_32BIT_TIME_T */
-#define _wfinddata_t _wfinddata64i32_t
-#define _wfinddatai64_t _wfinddata64_t
-#endif /* _HAVE_32BIT_TIME_T */
 #define _WFINDDATA_T_DEFINED
 #endif /* ! _WFINDDATA_T_DEFINED */
 
@@ -211,8 +172,8 @@ intptr_t _findfirst32i64 (const char *filespec,struct _finddata32i64_t *fileinfo
 intptr_t _findfirst64i32 (const char *filespec,struct _finddata64i32_t *fileinfo);
 
 intptr_t _wfindfirst     (const wchar_t *filespec,struct _wfinddata_t *fileinfo);
-intptr_t _wfindfirst32   (const wchar_t *filespec,struct __wfinddata32_t *fileinfo);
-intptr_t _wfindfirst64   (const wchar_t *filespec, struct __wfinddata64_t   *fileinfo);
+intptr_t _wfindfirst32   (const wchar_t *filespec,struct _wfinddata32_t *fileinfo);
+intptr_t _wfindfirst64   (const wchar_t *filespec, struct _wfinddata64_t   *fileinfo);
 intptr_t _wfindfirsti64  (const wchar_t *filespec, struct _wfinddatai64_t   *fileinfo);
 intptr_t _wfindfirst32i64(const wchar_t *filespec, struct _wfinddata32i64_t *fileinfo);
 intptr_t _wfindfirst64i32(const wchar_t *filespec, struct _wfinddata64i32_t *fileinfo);
@@ -243,8 +204,16 @@ _wfindfirst64i32	definition
 */
 
 _CRTIMP int __cdecl __MINGW_NOTHROW _findclose (intptr_t);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _findfirst32 (const char*, struct _finddata32_t*);
-_CRTIMP int  __cdecl __MINGW_NOTHROW	_findnext32 (intptr_t, struct _finddata32_t*);
+
+/* _findfirst32 and _findnext32 do not exist in MSVCRT.DLL */
+_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _findfirst (const char*, struct _finddata32_t*);
+_CRTALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirst32 (const char* _v1, struct _finddata32_t* _v2) {
+    return _findfirst(_v1, _v2);
+}
+_CRTIMP int  __cdecl __MINGW_NOTHROW _findnext (intptr_t, struct _finddata32_t*);
+_CRTALIAS int  __cdecl __MINGW_NOTHROW	_findnext32 (intptr_t _v1, struct _finddata32_t* _v2) {
+    return _findnext(_v1, _v2);
+}
 
 _CRTIMP int __cdecl __MINGW_NOTHROW _chdir (const char*);
 _CRTIMP char* __cdecl __MINGW_NOTHROW _getcwd (char*, int);
@@ -257,16 +226,87 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _findnexti64(intptr_t, struct _finddatai64_t
 _CRTIMP __int64 __cdecl __MINGW_NOTHROW _lseeki64(int, __int64, int);
 _CRTIMP __int64 __cdecl __MINGW_NOTHROW _telli64(int);
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _findfirst64(const char*, struct __finddata64_t*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _findfirst32i64(const char*, struct _finddata32i64_t*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _findfirst64i32(const char*, struct _finddata64i32_t*);
+intptr_t __cdecl __MINGW_NOTHROW _findfirst32i64(const char*, struct _finddata32i64_t*);
+intptr_t __cdecl __MINGW_NOTHROW _findfirst64i32(const char*, struct _finddata64i32_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _findnext64(intptr_t, struct __finddata64_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _findnext32i64(intptr_t, struct _finddata32i64_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _findnext64i32(intptr_t, struct _finddata64i32_t*);
+int __cdecl __MINGW_NOTHROW _findnext32i64(intptr_t, struct _finddata32i64_t*);
+int __cdecl __MINGW_NOTHROW _findnext64i32(intptr_t, struct _finddata64i32_t*);
+
+#ifndef __NO_INLINE__
+#include <string.h>
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst32i64(const char* _filename, struct _finddata32i64_t* _fdata) {
+    struct __finddata64_t fd;
+    intptr_t ret = _findfirst64(_filename, &fd);
+    if (ret == -1) {
+        memset(_fdata, 0, sizeof(struct __finddata64_t));
+        return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time32_t)fd.time_create;
+    _fdata->time_access = (__time32_t)fd.time_access;
+    _fdata->time_write  = (__time32_t)fd.time_write;
+    _fdata->size        = fd.size;
+    strncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst64i32(const char* _filename, struct _finddata64i32_t* _fdata) {
+    struct _finddata32_t fd;
+    intptr_t ret = _findfirst32(_filename, &fd);
+    if (ret == -1) {
+        memset(_fdata, 0, sizeof(struct _finddata32_t));
+        return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time64_t)fd.time_create;
+    _fdata->time_access = (__time64_t)fd.time_access;
+    _fdata->time_write  = (__time64_t)fd.time_write;
+    _fdata->size        = fd.size;
+    strncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext32i64(intptr_t _fp, struct _finddata32i64_t* _fdata) {
+    struct __finddata64_t fd;
+    int ret = _findnext64(_fp,&fd);
+    if (ret == -1) {
+      memset(_fdata, 0, sizeof(struct _finddata32i64_t));
+      return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time32_t)fd.time_create;
+    _fdata->time_access = (__time32_t)fd.time_access;
+    _fdata->time_write  = (__time32_t)fd.time_write;
+    _fdata->size        = fd.size;
+    strncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext64i32(intptr_t _fp, struct _finddata64i32_t* _fdata) {
+    struct _finddata32_t fd;
+    int ret = _findnext32(_fp, &fd);
+    if (ret == -1) {
+      memset(_fdata, 0, sizeof(struct _finddata64i32_t));
+      return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time64_t)fd.time_create;
+    _fdata->time_access = (__time64_t)fd.time_access;
+    _fdata->time_write  = (__time64_t)fd.time_write;
+    _fdata->size        = fd.size;
+    strncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+#else /* def __NO_INLINE__ */
+#define _findfirst64i32 _findfirst64
+#define _findfirst32i64 _findfirst32
+#define _findnext64i32 _findnext64
+#define _findnext32i64 _findnext32
+#endif /* ndef __NO_INLINE__ */
 
 #ifndef __NO_MINGW_LFS
 __CRT_INLINE off64_t lseek64 (int, off64_t, int);
-__CRT_INLINE off64_t lseek64 (int fd, off64_t offset, int whence)
-{
+__CRT_INLINE off64_t lseek64 (int fd, off64_t offset, int whence) {
   return _lseeki64(fd, (__int64) offset, whence);
 }
 #endif
@@ -296,7 +336,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW chmod (const char*, int);
  * it doesn't seem to hurt to add them). */
 #define	F_OK	0	/* Check for file existence */
 /* Well maybe it does hurt.  On newer versions of MSVCRT, an access mode
-   of 1 causes invalid parameter error. */   
+   of 1 causes invalid parameter error. */
 #define	X_OK	1	/* MS access() doesn't check for execute permission. */
 #define	W_OK	2	/* Check for write permission */
 #define	R_OK	4	/* Check for read permission */
@@ -360,22 +400,116 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _write (int, const void*, unsigned int);
 
 /* Wide character versions. Also declared in wchar.h. */
 #if !defined (_WIO_DEFINED)
+#define _WIO_DEFINED
 _CRTIMP int __cdecl __MINGW_NOTHROW _waccess(const wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wchmod(const wchar_t*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wcreat(const wchar_t*, int);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst32 (const wchar_t*, struct __wfinddata32_t*);
-_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32 (intptr_t, struct __wfinddata32_t*);
+
+/* _wfindfirst32 and _wfindnext32 do not exist in MSVCRT.DLL */
+_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst (const wchar_t*, struct _wfinddata32_t*);
+intptr_t __cdecl __MINGW_NOTHROW _wfindfirst32 (const wchar_t*, struct _wfinddata32_t*);
+_CRTALIAS intptr_t __cdecl __MINGW_NOTHROW _wfindfirst32 (const wchar_t* _v1, struct _wfinddata32_t* _v2) {
+    return _wfindfirst(_v1, _v2);
+}
+_CRTIMP int  __cdecl __MINGW_NOTHROW _wfindnext (intptr_t, struct _wfinddata32_t*);
+int  __cdecl __MINGW_NOTHROW	_wfindnext32 (intptr_t, struct _wfinddata32_t*);
+_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext32 (intptr_t _v1, struct _wfinddata32_t* _v2) {
+    return _wfindnext(_v1, _v2);
+}
+
 _CRTIMP int __cdecl __MINGW_NOTHROW _wunlink(const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wopen(const wchar_t*, int, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wsopen(const wchar_t*, int, int, ...);
 _CRTIMP wchar_t * __cdecl __MINGW_NOTHROW _wmktemp(wchar_t*);
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64(const wchar_t*, struct _wfinddata64_t*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst32i64 (const wchar_t*, struct _wfinddata32i64_t*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64i32 (const wchar_t*, struct _wfinddata64i32_t*);
+intptr_t __cdecl __MINGW_NOTHROW _wfindfirst32i64 (const wchar_t*, struct _wfinddata32i64_t*);
+intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64i32 (const wchar_t*, struct _wfinddata64i32_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wfindnext64(intptr_t, struct _wfinddata64_t*);
-_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32i64 (intptr_t, struct _wfinddata32i64_t*);
-_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext64i32 (intptr_t, struct _wfinddata64i32_t*);
-#define _WIO_DEFINED
+int  __cdecl __MINGW_NOTHROW	_wfindnext32i64 (intptr_t, struct _wfinddata32i64_t*);
+int  __cdecl __MINGW_NOTHROW	_wfindnext64i32 (intptr_t, struct _wfinddata64i32_t*);
+
+#ifndef __NO_INLINE__
+#include <string.h>
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _wfindfirst32i64(const wchar_t* _filename, struct _wfinddata32i64_t* _fdata) {
+    struct _wfinddata64_t fd;
+    intptr_t ret = _wfindfirst64(_filename, &fd);
+    if (ret == -1) {
+        memset(_fdata, 0, sizeof(struct _wfinddata64_t));
+        return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time32_t)fd.time_create;
+    _fdata->time_access = (__time32_t)fd.time_access;
+    _fdata->time_write  = (__time32_t)fd.time_write;
+    _fdata->size        = fd.size;
+    wcsncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _wfindfirst64i32(const wchar_t* _filename, struct _wfinddata64i32_t* _fdata) {
+    struct _wfinddata32_t fd;
+    intptr_t ret = _wfindfirst32(_filename, &fd);
+    if (ret == -1) {
+        memset(_fdata, 0, sizeof(struct _wfinddata32_t));
+        return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time64_t)fd.time_create;
+    _fdata->time_access = (__time64_t)fd.time_access;
+    _fdata->time_write  = (__time64_t)fd.time_write;
+    _fdata->size        = fd.size;
+    wcsncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _wfindnext32i64(intptr_t _fp, struct _wfinddata32i64_t* _fdata) {
+    struct _wfinddata64_t fd;
+    int ret = _wfindnext64(_fp,&fd);
+    if (ret == -1) {
+      memset(_fdata, 0, sizeof(struct _wfinddata32i64_t));
+      return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time32_t)fd.time_create;
+    _fdata->time_access = (__time32_t)fd.time_access;
+    _fdata->time_write  = (__time32_t)fd.time_write;
+    _fdata->size        = fd.size;
+    wcsncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+
+__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _wfindnext64i32(intptr_t _fp, struct _wfinddata64i32_t* _fdata) {
+    struct _wfinddata32_t fd;
+    int ret = _wfindnext32(_fp, &fd);
+    if (ret == -1) {
+      memset(_fdata, 0, sizeof(struct _wfinddata64i32_t));
+      return ret;
+    }
+    _fdata->attrib = fd.attrib;
+    _fdata->time_create = (__time64_t)fd.time_create;
+    _fdata->time_access = (__time64_t)fd.time_access;
+    _fdata->time_write  = (__time64_t)fd.time_write;
+    _fdata->size        = fd.size;
+    wcsncpy(_fdata->name, fd.name, FILENAME_MAX);
+    return ret;
+}
+
+#else /* def __NO_INLINE__ */
+#define _findfirst64i32 _findfirst64
+#define _finddata64i32_t __finddata64_t
+#define _findfirst32i64 _findfirst32
+#define _finddata32i64_t _finddata32_t
+#define _findnext64i32 _findnext64
+#define _findnext32i64 _findnext32
+
+#define _wfindfirst64i32 _wfindfirst64
+#define _wfindnext64i32 _wfindnext64
+#define _wfinddata64i32_t _wfinddata64_t
+#define _wfindfirst32i64 _wfindfirst32
+#define _wfindnext32i64 _wfindnext32
+#define _wfinddata32i64_t _wfinddata32_t
+#endif /* ndef __NO_INLINE__ */
+
 #endif /* _WIO_DEFINED */
 
 #ifndef	_NO_OLDNAMES
@@ -432,6 +566,37 @@ wchar_t * 	wmktemp(wchar_t *);
 #ifdef	__cplusplus
 }
 #endif
+
+#if defined(_USE_32BIT_TIME_T)
+#define _finddata_t _finddata32_t
+#define _finddatai64_t _finddata32i64_t
+#define _findfirst _findfirst32
+#define _findnext _findnext32
+#define _findfirsti64 _findfirst32i64
+#define _findnexti64 _findnext32i64
+#define _wfinddata_t _wfinddata32_t
+#define _wfinddatai64_t _wfinddata32i64_t
+#define _wfindfirst _wfindfirst32
+#define _wfindnext _wfindnext32
+#define _wfindfirsti64 _wfindfirst32i64
+#define _wfindnexti64 _wfindnext32i64
+
+#else /* !_USE_32BIT_TIME_T */
+#define _finddata_t _finddata64i32_t
+#define _finddatai64_t __finddata64_t
+#define _findfirst _findfirst64i32
+#define _findnext _findnext64i32
+#define _findfirsti64 _findfirst64
+#define _findnexti64 _findnext64
+#define _wfinddata_t _wfinddata64i32_t
+#define _wfinddatai64_t _wfinddata64_t
+#define _wfindfirst _wfindfirst64i32
+#define _wfindnext _wfindnext64i32
+#define _wfindfirsti64 _wfindfirst64
+#define _wfindnexti64 _wfindnext64
+
+#endif /* _USE_32BIT_TIME_T */
+
 
 #endif	/* Not RC_INVOKED */
 

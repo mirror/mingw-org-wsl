@@ -34,16 +34,9 @@
 
 #ifndef	RC_INVOKED
 
-/*
- * TODO: Structure not tested.
- */
-struct _timeb
-{
-	time_t	time;
-	short	millitm;
-	short	timezone;
-	short	dstflag;
-};
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 /*
  * TODO: Structure not tested.
@@ -56,30 +49,6 @@ struct __timeb32
 	short	dstflag;
 };
 
-#ifndef	_NO_OLDNAMES
-/*
- * TODO: Structure not tested.
- */
-struct timeb
-{
-	time_t	time;
-	short	millitm;
-	short	timezone;
-	short	dstflag;
-};
-#endif
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-/* TODO: Not tested. */
-_CRTIMP void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb*);
-
-#ifndef	_NO_OLDNAMES
-_CRTIMP void __cdecl __MINGW_NOTHROW	ftime (struct timeb*);
-#endif	/* Not _NO_OLDNAMES */
-
 /* This requires newer versions of msvcrt.dll (6.10 or higher).  */
 struct __timeb64
 {
@@ -89,16 +58,34 @@ struct __timeb64
   short dstflag;
 };
 
+#ifdef _USE_32BIT_TIME_T
+#define _timeb __timeb32
+#else
+#define _timeb __timeb64
+#endif
+
+_CRTIMP void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime64 (struct __timeb64*);
 
+#if MSVCRT_VERSION >= 800
 _CRTIMP void __cdecl __MINGW_NOTHROW	_ftime32 (struct __timeb32*);
-
-#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
-_CRTALIAS void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb* _v) { return(_ftime32 ((struct __timeb32*)_v)); }
 #else
-
-_CRTALIAS void __cdecl __MINGW_NOTHROW	_ftime (struct _timeb* _v) { return(_ftime64 ((struct __timeb64*)_v)); }
+_CRTALIAS void __cdecl __MINGW_NOTHROW  _ftime32 (struct __timeb32* _v1) {
+    return _ftime((struct _timeb *)_v1);
+}
 #endif
+
+#if defined(_USE_32BIT_TIME_T)
+#define _ftime _ftime32
+
+#else
+#define _ftime _ftime64
+#endif
+
+#ifndef	_NO_OLDNAMES
+#define ftime _ftime
+#define timeb _timeb
+#endif	/* Not _NO_OLDNAMES */
 
 #ifdef	__cplusplus
 }
