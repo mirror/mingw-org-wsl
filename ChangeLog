@@ -1,3 +1,9 @@
+2013-06-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in (libshell32.a): We needed to add src/libshell32/shell32.o
+	object to the library.
+	(lib/libshell32/shell32.o): Added a target to create this file.
+
 2013-06-04  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/_mingw.h (MSVCRT_VERSION): Determine a value based on the

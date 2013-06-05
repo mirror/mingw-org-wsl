@@ -185,6 +185,10 @@ libscrnsavw_a_SOURCES := src/libscrnsave/scrnsave.c
 libscrnsavw_a_OBJECTS := src/libscrnsave/scrnsavw.o
 scrnsavw_o_CFLAGS := -DUNICODE
 
+libshell32_a_SOURCES := src/libshell32/shell32.c
+libshell32_a_OBJECTS := src/libshell32/shell32.o
+shell32_o_CFLAGS := -DUNICODE
+
 liblargeint_a_SOURCES := src/liblargeint/largeint.c
 liblargeint_a_OBJECTS := $(liblargeint_a_SOURCES:.c=.o)
 
@@ -758,6 +762,11 @@ $(libscrnsavw_a_OBJECTS): $(libscrnsavw_a_SOURCES)
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(scrnsavw_o_CFLAGS) -o $@ $<
 
+SRCDIR := src/libshell32
+$(libshell32_a_OBJECTS): $(libshell32_a_SOURCES)
+	$(MKDIR_P) $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(shell32_o_CFLAGS) -o $@ $<
+
 SRCDIR := misc/gpl/profile
 $(SRCDIR)/gcrt2.o:
 	mkdir -p $(@D)
@@ -842,6 +851,14 @@ libws2_32.a: lib/lib32/ws2_32.def $(libws2_32_a_OBJECTS)
 	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
 	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@
 	$(AR) rc $@ $(libws2_32_a_OBJECTS)
+	$(RANLIB) $@
+
+# Note this target will override the previous global rules and give a warning
+# from the make process. It is needed due to the extra shell32.o object file.
+libshell32.a: lib/lib32/shell32.def $(libshell32_a_OBJECTS)
+	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
+	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@
+	$(AR) rc $@ $(libshell32_a_OBJECTS)
 	$(RANLIB) $@
 
 _libm_dummy.c:
