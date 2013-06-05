@@ -1,4 +1,8 @@
-2013-06-07  Earnie Boyd  <earnie@users.sourceforge.net>
+2013-06-05  Mark  <mabrand@users.sourceforge.net>
+
+	* include/shlobj.h (SHGetFolderPath): Correct typo for UNICODE define.
+
+2013-06-05  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in (libshell32.a): We needed to add src/libshell32/shell32.o
 	object to the library.
