@@ -247,21 +247,27 @@ __MINGW_IMPORT char 	*tzname[2];
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wasctime(const struct tm*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wstrdate(wchar_t*);
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wstrtime(wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW        _wctime(const time_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime64 (const __time64_t*);
-#ifdef MSVCRT_VERSION >= 800
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime32 (const __time32_t*);
+_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime64(const __time64_t*);
+#if MSVCRT_VERSION >= 800
+_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime32(const __time32_t*);
 #else
-_CRTALIAS whcar_t* __cdecl __MINGW_NOTHROW  _wctime32 (const __time32_t* _v) {
+_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW    _wctime(const time_t*);
+_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW  _wctime32(const __time32_t* _v) {
     return(_wctime((time_t)_v));
 }
 #endif /* MSVCRT_VERSION >= 800 */
 
 #ifdef _USE_32BIT_TIME_T
-_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v) { return(_wctime32 (_v)); }
-#else
-_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v) { return(_wctime64 (_v)); }
+#if MSVCRT_VERSION >= 800
+_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v) {
+    return(_wctime32 (_v));
+}
 #endif
+#else /* ndef _USE_32BIT_TIME_T */
+_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v) {
+    return(_wctime64 (_v));
+}
+#endif /* def _USE_32BIT_TIME_T */
 
 #endif /* __STRICT_ANSI__ */
 

@@ -1,3 +1,8 @@
+2013-06-07  Jan Nijtmans <nijtmans@users.sourceforge.net>
+
+	* include/time.h: Correct typos. Add MSVCRT_VERSION >= 800 guard for
+	_CRTALIAS of _wctime.
+
 2013-06-05  Mark  <mabrand@users.sourceforge.net>
 
 	* include/shlobj.h (SHGetFolderPath): Correct typo for UNICODE define.
