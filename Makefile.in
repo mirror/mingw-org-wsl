@@ -365,8 +365,6 @@ math_SOURCES := \
   $(SRCDIR)/acosl.c \
   $(SRCDIR)/asinf.c \
   $(SRCDIR)/asinh.c \
-  $(SRCDIR)/asinhf.c \
-  $(SRCDIR)/asinhl.c \
   $(SRCDIR)/asinl.c \
   $(SRCDIR)/atan2f.c \
   $(SRCDIR)/atan2l.c \
@@ -624,6 +622,10 @@ libmingwex_a_SOURCES := \
 libmingwex_a_OBJECTS := $(libmingwex_a_SOURCES:.c=.o)
 libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS:.S=.o)
 
+SRCDIR := src/libcrt/math
+libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS) $(SRCDIR)/asinhl.o
+libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS) $(SRCDIR)/asinhf.o
+
 SRCDIR := misc/src/libdinput
 libdinput_a_SOURCES := \
   $(SRCDIR)/dinput_joy.c \
@@ -744,6 +746,15 @@ lib%.a: src/lib%/%.o
 %.o : %.s
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+SRCDIR := src/libcrt/math
+$(SRCDIR)/%f.o: $(SRCDIR)/%.c
+	$(MKDIR_P) $(@D)
+	$(CC) -c -D FUNCTION=$(@F:.o=) $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+$(SRCDIR)/%l.o: $(SRCDIR)/%.c
+	$(MKDIR_P) $(@D)
+	$(CC) -c -D FUNCTION=$(@F:.o=) $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
 SRCDIR := src/libcrt/crt
 $(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o:

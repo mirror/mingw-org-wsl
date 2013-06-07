@@ -18,6 +18,20 @@
 	* include/time.h: Correct typos. Add MSVCRT_VERSION >= 800 guard for
 	_CRTALIAS of _wctime.
 
+2013-06-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Provide more robust inverse hyperbolic sine functions.
+
+	* src/libcrt/math/asinh.c: Rewritten; it now provides a generic
+	implementation for asinh(), asinhf(), and asinhl() functions; thus...
+	* src/libcrt/math/asinhf.c src/libcrt/math/asinhl.c: ...are obsolete;
+	delete them.
+
+	* Makefile.in (math_SOURCES): Remove references for asinh[fl].c
+	(libmingwex_a_OBJECTS): Add explicit references to create associated
+	object files, from the common generic source, together with build
+	rules to compile them.
+
 2013-06-05  Mark  <mabrand@users.sourceforge.net>
 
 	* include/shlobj.h (SHGetFolderPath): Correct typo for UNICODE define.
