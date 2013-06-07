@@ -1,3 +1,18 @@
+2013-06-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/_mingw.h (_CRTALIAS): Add comments explaining its purpose.
+	(__CRT_MAYBE_INLINE): New macro that may be defined as __CRT_INLINE or
+	empty depending on __NO_INLINE__.
+	* include/stat.h (_fstat64i32(), _fstat32i64(), _stat64i32(),
+	_stat32i64(), _wstat64i32(), _wstat32i64()): Use __CRT_MAYBE_INLINE
+	instead of guarding with __NO_INLINE__ since the functions need to be
+	always created.
+	* include/wchar.h (_utimbuf, _utimbuf32, _utimbuf64, _wutime(),
+	_wutime32(), _wutime64()): MSDN declares these can be declared/defined
+	by including wchar.h.
+	* include/utime.h: Care for _USE_32BIT_TIME_T in same fashion as time.h.
+
+
 2013-06-07  Jan Nijtmans <nijtmans@users.sourceforge.net>
 
 	* include/time.h: Correct typos. Add MSVCRT_VERSION >= 800 guard for

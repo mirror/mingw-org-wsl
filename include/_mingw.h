@@ -195,7 +195,21 @@
 # endif
 #endif
 
+/* _CRTALIAS will be used when we have a function whose purpose is to return
+ * the value of a similar function. This alias function will contain one line
+ * of code.
+ */
 #define _CRTALIAS __CRT_INLINE __attribute__ ((__always_inline__))
+
+/* __CRT_MAYBE_INLINE is to be used when we provide functions in the headers
+ * to provide compatibility between differing versions of MSVCRT.DLL for
+ * differing OS versions.  See stat.h for examples.
+ */
+#ifndef __NO_INLINE__
+#define __CRT_MAYBE_INLINE __CRT_INLINE
+#else /* def __NO_INLINE__ */
+#define __CRT_MAYBE_INLINE
+#endif /* ndef __NO_INLINE__ */
 
 #ifdef __cplusplus
 # define   BEGIN_C_DECLS	extern "C" {

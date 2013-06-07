@@ -98,6 +98,43 @@ struct tm {
 #define _TM_DEFINED
 #endif
 
+/*
+ * Structure used by _utime function.
+ */
+#ifndef _UTIMBUF_DEFINED
+struct _utimbuf
+{
+	time_t	actime;		/* Access time */
+	time_t	modtime;	/* Modification time */
+};
+struct __utimbuf32
+{
+	__time32_t actime;
+	__time32_t modtime;
+};
+struct __utimbuf64
+{
+	__time64_t actime;
+	__time64_t modtime;
+};
+
+
+#ifndef	_NO_OLDNAMES
+/* NOTE: Must be the same as _utimbuf above. */
+struct utimbuf
+{
+	time_t	actime;
+	time_t	modtime;
+};
+struct utimbuf32
+{
+    __time32_t actime;
+    __time32_t modtime;
+};
+#endif	/* Not _NO_OLDNAMES */
+#define _UTIMBUF_DEFINED
+#endif /* ndef _UTIMBUF_DEFINED */
+
 #ifndef _WSTDIO_DEFINED
 /*  Also in stdio.h - keep in sync */
 _CRTIMP int __cdecl __MINGW_NOTHROW	fwprintf (FILE*, const wchar_t*, ...);
@@ -226,6 +263,35 @@ _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_
 #endif /* __STRICT_ANSI__ */
 
 _CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsftime (wchar_t*, size_t, const wchar_t*, const struct tm*);
+
+#ifndef _WUTIME_DEFINED
+_CRTIMP int __cdecl __MINGW_NOTHROW	_wutime64 (const wchar_t*, struct __utimbuf64*);
+#if MSVCRT_VERSION >= 800
+_CRTIMP int __cdecl __MINGW_NOTHROW	_wutime32 (const wchar_t*, struct __utimbuf32*);
+
+#else /* MSVCRT_VERSION < 800 */
+_CRTIMP int __cdecl __MINGW_NOTHROW	_wutime (const wchar_t*, struct _utimbuf*);
+_CRTALIAS int __cdecl __MINGW_NOTHROW _wutime32 (const wchar_t* _v1, struct __utimbuf32* _v2) {
+    return _wutime(_v1, _v2);
+}
+
+#endif /* MSVCRT_VERSION >= 800 */
+#ifdef _USE_32BIT_TIME_T
+#if MSVCRT_VERSION >= 800
+_CRTALIAS int __cdecl __MINGW_NOTHROW _wutime (const wchar_t* _v1, struct _utimbuf* _v2) {
+    return(_wutime32 (_v1,(struct __utimbuf32*)_v2));
+}
+#endif /* MSVCRT_VERSION >= 800 */
+
+#else /* ndef _USE_32BIT_TIME_T */
+_CRTALIAS int __cdecl __MINGW_NOTHROW _wutime (const wchar_t* _v1, struct _utimbuf* _v2) {
+    return(_wutime64 (_v1,(struct __utimbuf64*)_v2));
+}
+
+#endif /* def _USE_32BIT_TIME_T */
+#define _WUTIME_DEFINED
+#endif /* ndef _WUTIME_DEFINED */
+
 #define _WTIME_DEFINED
 #endif /* _WTIME_DEFINED */
 
