@@ -23,7 +23,9 @@
  */
 #ifndef _STAT_H_
 #define _STAT_H_
+#ifndef __CRT_TESTING__
 #pragma GCC system_header
+#endif
 #include <_mingw.h>
 
 #define __need_size_t
@@ -33,6 +35,7 @@
 #endif /* Not RC_INVOKED */
 
 #include <sys/types.h>
+#include <string.h> /* Need memset declaration */
 
 /*
  * Constants for the stat st_mode member.
@@ -85,6 +88,10 @@
 #endif	/* Not _NO_OLDNAMES */
 
 #ifndef RC_INVOKED
+
+#ifdef	__cplusplus
+extern "C" {
+#endif
 
 #ifndef _STAT_DEFINED
 /*
@@ -170,10 +177,6 @@ struct _stat64i32 {
 	__time64_t	st_ctime;
 };
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
 /* _stat32 does not exist in MSVCRT.DLL */
 _CRTIMP int __cdecl __MINGW_NOTHROW _stat (const char*, struct _stat32*);
 _CRTALIAS int __cdecl __MINGW_NOTHROW _stat32 (const char* _v1, struct _stat32* _v2) {
@@ -193,7 +196,7 @@ _CRTALIAS int __cdecl __MINGW_NOTHROW _fstat32 (int _v1, struct _stat32* _v2) {
 _CRTIMP int __cdecl __MINGW_NOTHROW _fstat64 (int, struct _stat64*);
 int __cdecl __MINGW_NOTHROW _fstat32i64 (int, struct _stat32i64*);
 int __cdecl __MINGW_NOTHROW _fstat64i32 (int, struct _stat64i32*);
-#include <string.h> /* Need memset declaration */
+
 __CRT_MAYBE_INLINE int __cdecl _fstat64i32(int desc, struct _stat64i32 *_stat) {
   struct _stat64 st;
   int ret = _fstat64(desc, &st);
@@ -214,8 +217,7 @@ __CRT_MAYBE_INLINE int __cdecl _fstat64i32(int desc, struct _stat64i32 *_stat) {
   _stat->st_ctime = st.st_ctime;
   return ret;
 }
-__CRT_MAYBE_INLINE int __cdecl _fstat32i64(int desc, struct _stat32i64 *_stat)
-{
+__CRT_MAYBE_INLINE int __cdecl _fstat32i64(int desc, struct _stat32i64 *_stat) {
   struct _stat32 st;
   int ret = _fstat32(desc, &st);
   if (ret == -1) {
@@ -235,8 +237,7 @@ __CRT_MAYBE_INLINE int __cdecl _fstat32i64(int desc, struct _stat32i64 *_stat)
   _stat->st_ctime = st.st_ctime;
   return ret;
 }
-__CRT_MAYBE_INLINE int __cdecl _stat64i32(const char *fname, struct _stat64i32 *_stat)
-{
+__CRT_MAYBE_INLINE int __cdecl _stat64i32(const char *fname, struct _stat64i32 *_stat) {
   struct _stat64 st;
   int ret = _stat64(fname, &st);
   if (ret == -1) {
@@ -256,8 +257,7 @@ __CRT_MAYBE_INLINE int __cdecl _stat64i32(const char *fname, struct _stat64i32 *
   _stat->st_ctime = st.st_ctime;
   return ret;
 }
-__CRT_MAYBE_INLINE int __cdecl _stat32i64(const char *fname, struct _stat32i64 *_stat)
-{
+__CRT_MAYBE_INLINE int __cdecl _stat32i64(const char *fname, struct _stat32i64 *_stat) {
   struct _stat32 st;
   int ret = _stat32(fname, &st);
   if (ret == -1) {
@@ -303,17 +303,15 @@ __CRT_MAYBE_INLINE int __cdecl _stat32i64(const char *fname, struct _stat32i64 *
 
 #if !defined ( _WSTAT_DEFINED) /* also declared in wchar.h */
 /* _wstat32 does not exist in MSVCRT.DLL */
+_CRTIMP int __cdecl __MINGW_NOTHROW _wstat (const wchar_t*, struct _stat32*);
 _CRTALIAS int __cdecl __MINGW_NOTHROW _wstat32 (const wchar_t* _v1, struct _stat32* _v2) {
-    _CRTIMP int __cdecl __MINGW_NOTHROW _wstat (const wchar_t*, struct _stat32*);
     return _wstat(_v1, _v2);
 }
 
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct _stat64*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat32i64 (const wchar_t*, struct _stat32i64*);
 int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
-#include <string.h> /* Need memset declaration */
-__CRT_MAYBE_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i32 *_stat)
-{
+__CRT_MAYBE_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i32 *_stat) {
   struct _stat64 st;
   int ret = _wstat64(fname, &st);
   if (ret == -1) {
@@ -333,8 +331,7 @@ __CRT_MAYBE_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i
   _stat->st_ctime = st.st_ctime;
   return ret;
 }
-__CRT_MAYBE_INLINE int __cdecl _wstat32i64(const wchar_t *fname, struct _stat32i64 *_stat)
-{
+__CRT_MAYBE_INLINE int __cdecl _wstat32i64(const wchar_t *fname, struct _stat32i64 *_stat) {
   struct _stat32 st;
   int ret = _wstat32(fname, &st);
   if (ret == -1) {
@@ -359,14 +356,15 @@ __CRT_MAYBE_INLINE int __cdecl _wstat32i64(const wchar_t *fname, struct _stat32i
 #define _wstat      _wstat32
 #define _wstati64   _wstat32i64
 
-#else /* !_USE_32BIT_TIME_T */
+#else /* ! _USE_32BIT_TIME_T */
 #define _wstat      _wstat64i32
 #define _wstati64   _wstat64
 
 #endif /* _USE_32BIT_TIME_T */
 
 #define _WSTAT_DEFINED
-#endif /* _WSTAT_DEFIND */
+#endif /* ! _WSTAT_DEFIND */
+
 
 #ifdef	__cplusplus
 }

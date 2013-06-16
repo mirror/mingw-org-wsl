@@ -23,7 +23,9 @@
  */
 #ifndef	_WCHAR_H_
 #define	_WCHAR_H_
+#ifndef __CRT_TESTING__
 #pragma GCC system_header
+#endif
 #include <_mingw.h>
 
 #ifndef RC_INVOKED
@@ -38,7 +40,7 @@
 #define __need___va_list
 #include <stdarg.h>
 #define __VALIST __builtin_va_list
-#endif
+#endif /* ndef __VALIST */
 
 #endif /* Not RC_INVOKED */
 
@@ -55,6 +57,10 @@
 
 #ifndef WEOF
 #define	WEOF	(wchar_t)(0xFFFF)
+#endif
+
+#ifndef FILENAME_MAX
+#define FILENAME_MAX 260
 #endif
 
 #ifndef RC_INVOKED
@@ -243,13 +249,12 @@ _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW  _wctime32 (const __time32_t* _v1) {
 #endif /* MSVCRT_VERSION >= 800 */
 
 #if MSVCRT_VERSION >= 800
-#if defined(_USE_32BIT_TIME_T)
+#ifdef _USE_32BIT_TIME_T
 _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_wctime32 (_v)); }
 
-#else /* MSVCRT_VERSION < 800 */
+#else /* ! _USE_32BIT_TIME_T */
 _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_wctime64 (_v)); }
-#endif /* defined(_USE_32BIT_TIME_T) */
-#endif /* MSVCRT_VERSION >= 800 */
+#endif /* _USE_32BIT_TIME_T */
 
 #else /* MSVCRT_VERSION < 800 */
 #ifdef _USE_32BIT_TIME_T
@@ -272,7 +277,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_wutime32 (const wchar_t*, struct __utimbuf3
 #else /* MSVCRT_VERSION < 800 */
 _CRTIMP int __cdecl __MINGW_NOTHROW	_wutime (const wchar_t*, struct _utimbuf*);
 _CRTALIAS int __cdecl __MINGW_NOTHROW _wutime32 (const wchar_t* _v1, struct __utimbuf32* _v2) {
-    return _wutime(_v1, _v2);
+    return _wutime(_v1, (struct _utimbuf *)_v2);
 }
 
 #endif /* MSVCRT_VERSION >= 800 */
@@ -341,11 +346,9 @@ _CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW __wcserror(const wchar_t*);
 #ifndef	_NO_OLDNAMES
 /* NOTE: There is no _wcscmpi, but this is for compatibility. */
 int __cdecl __MINGW_NOTHROW wcscmpi (const wchar_t *, const wchar_t *);
-#ifndef __NO_INLINE__
-__CRT_INLINE int __cdecl __MINGW_NOTHROW
+_CRTALIAS int __cdecl __MINGW_NOTHROW
 wcscmpi (const wchar_t * __ws1, const wchar_t * __ws2)
   {return _wcsicmp (__ws1, __ws2);}
-#endif
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsdup (const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	wcsicmp (const wchar_t*, const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	wcsicoll (const wchar_t*, const wchar_t*);
@@ -427,7 +430,7 @@ struct _wfinddata_t {
 	time_t		time_access;	/* -1 for FAT file systems */
 	time_t		time_write;
 	_fsize_t	size;
-	wchar_t		name[260];	/* may include spaces. */
+	wchar_t		name[FILENAME_MAX];	/* may include spaces. */
 };
 struct _wfinddatai64_t {
 	unsigned    attrib;
@@ -435,7 +438,7 @@ struct _wfinddatai64_t {
 	time_t      time_access;
 	time_t      time_write;
 	__int64     size;
-	wchar_t     name[260];
+	wchar_t     name[FILENAME_MAX];
 };
 struct _wfinddata64_t {
         unsigned    attrib;
@@ -444,9 +447,8 @@ struct _wfinddata64_t {
         __time64_t  time_write;
 /* 8 bytes are returned so it can't be _fsize_t */
         __int64    size;
-        wchar_t     name[260];
+        wchar_t     name[FILENAME_MAX];
 };
-#include <stdio.h>
 struct _wfinddata32_t {
 	unsigned	attrib;
 	__time32_t	time_create;
@@ -514,7 +516,7 @@ _CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext32 (intptr_t _v1, struct _wfind
 #define _wfindfirsti64 _wfindfirst32i64
 #define _wfindnexti64 _wfindnext32i64
 
-#else /* !defined(_USE_32BIT_TIME_T)
+#else /* !defined(_USE_32BIT_TIME_T) */
 #define _wfinddata_t _wfinddata64i32_t
 #define _wfinddatai64_t _wfinddata64_t
 #define _wfindfirst _wfindfirst64i32
@@ -621,28 +623,32 @@ struct _stat64i32 {
 };
 
 #define __stat64 _stat64
-#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
+#if defined(_USE_32BIT_TIME_T)
 #define _fstat      _fstat32
 #define _fstati64   _fstat32i64
 #define _stat       _stat32
 #define _stati64    _stat32i64
-#else  /* !_USE_32BIT_TIME_T */
+#else  /* ! _USE_32BIT_TIME_T */
 #define _fstat      _fstat64i32
 #define _fstati64   _fstat64
 #define _stat       _stat64i32
 #define _stati64    _stat64
 #endif /* _USE_32BIT_TIME_T */
 #define _STAT_DEFINED
-#endif /* _STAT_DEFINED */
+#endif /* ! _STAT_DEFINED */
 
 #if !defined ( _WSTAT_DEFINED) /* also declared in sys/stat.h */
-_CRTIMP int __cdecl __MINGW_NOTHROW _wstat32 (const wchar_t*, struct _stat32*);
+/* _wstat32 does not exist in MSVCRT.DLL */
+_CRTIMP int __cdecl __MINGW_NOTHROW _wstat (const wchar_t*, struct _stat32*);
+_CRTALIAS int __cdecl __MINGW_NOTHROW _wstat32 (const wchar_t* _v1, struct _stat32* _v2) {
+    return _wstat(_v1, _v2);
+}
+
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat64 (const wchar_t*, struct _stat64*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wstat32i64 (const wchar_t*, struct _stat32i64*);
 int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
-#ifndef __NO_INLINE__
 #include <string.h> /* Need memset declaration. */
-  __CRT_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i32 *_stat)
+__CRT_MAYBE_INLINE int __cdecl _wstat64i32(const wchar_t *fname, struct _stat64i32 *_stat)
   {
     struct _stat64 st;
     int ret = _wstat64(fname, &st);
@@ -662,16 +668,33 @@ int __cdecl __MINGW_NOTHROW _wstat64i32 (const wchar_t*, struct _stat64i32*);
     _stat->st_mtime = st.st_mtime;
     _stat->st_ctime = st.st_ctime;
     return ret;
+}
+__CRT_MAYBE_INLINE int __cdecl _wstat32i64(const wchar_t *fname, struct _stat32i64 *_stat) {
+  struct _stat32 st;
+  int ret = _wstat32(fname, &st);
+  if (ret == -1) {
+    memset(_stat, 0, sizeof(struct _stat32i64));
+    return -1;
   }
-#else
-#define _wstat64i32 _wstat64
-#endif
+  _stat->st_dev = st.st_dev;
+  _stat->st_ino = st.st_ino;
+  _stat->st_mode = st.st_mode;
+  _stat->st_nlink = st.st_nlink;
+  _stat->st_uid = st.st_uid;
+  _stat->st_gid = st.st_gid;
+  _stat->st_rdev = st.st_rdev;
+  _stat->st_size = (_off_t) st.st_size;
+  _stat->st_atime = st.st_atime;
+  _stat->st_mtime = st.st_mtime;
+  _stat->st_ctime = st.st_ctime;
+  return ret;
+}
 
-#if defined(_USE_32BIT_TIME_T) && MSVCRT_VERSION >= 800
+#if defined(_USE_32BIT_TIME_T)
 #define _wstat      _wstat32
 #define _wstati64   _wstat32i64
-#else
 
+#else /* ! _USE_32BIT_TIME_T */
 #define _wstat      _wstat64i32
 #define _wstati64   _wstat64
 #endif /* _USE_32BIT_TIME_T */

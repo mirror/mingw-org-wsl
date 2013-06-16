@@ -1,3 +1,28 @@
+2013-06-16  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/_mingw.h (GCC system_header): Add a __CRT_TESTING__ filter.
+	* include/string.h (GCC system_header): Ditto.
+	* include/sys/stat.h (GCC system_header): Ditto.
+	(string.h): Move the include toward the top of the file.
+	(extern "C" {): Move above the filters so that it is not incorrectly
+	conditional.
+	Correct some comments and move the opening brace to the function
+	definition line throughout.
+	* include/sys/utime.h (utime): Move declaration to after the declaration
+	of _utime64().  Create a _CRTALIAS when _USE_32BIT_TIME_T is undefined.
+	Add datatype specifiers within the _CRTALIAS definitions throughout.
+	* include/wchar.h (GCC system_header): Add a __CRT_TESTING__ filter.
+	(FILENAME_MAX): Define macro if not already defined.
+	Correct comments throughout.
+	Correct #if...#endif misaligned pair.
+	(wcsicmp): Use _CRTALIAS instead of __CRT_INLINE since it is a one line
+	function definition.
+	(*wfinddata*): Use FILENAME_MAX throughout.
+	(_wstat32): Make a _CRTALIAS rather than a _CRTIMP.
+	(_wstat64i32): Use __CRT_MAYBE_INLINE instead of __CRT_INLINE.
+	(_wstat32i64): Define.
+	(_wstat, _wstati64): Remove the MSVCRT_VERSION >= 800 filter.
+
 2013-06-07  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/_mingw.h (_CRTALIAS): Add comments explaining its purpose.

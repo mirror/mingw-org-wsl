@@ -29,7 +29,9 @@
  */
 #ifndef __MINGW_H
 #define __MINGW_H
+#ifndef __CRT_TESTING__
 #pragma GCC system_header
+#endif
 #include <sdkddkver.h>
 
 #define __MINGW_VERSION             4.0
