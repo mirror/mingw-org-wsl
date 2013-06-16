@@ -1,5 +1,7 @@
 2013-06-16  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	* NEWS: Add text for MSVCRT_VERSION and for the _CRTALIAS 32bit time_t
+	definitions.
 	* include/_mingw.h (GCC system_header): Add a __CRT_TESTING__ filter.
 	* include/string.h (GCC system_header): Ditto.
 	* include/sys/stat.h (GCC system_header): Ditto.
