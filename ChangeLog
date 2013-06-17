@@ -1,3 +1,13 @@
+2013-06-17  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/_mingw.h (__CRT_MAYBE_INLINE): When __NO_INLINE__ defined we
+	need to make it _CRTALIAS to avoid auto export issues.
+	* include/io.h (_wfindfirst*, _wfindnext*): Remove the __NO_INLINE__
+	filter and use __CRT_MAYBE_INLINE definitions.
+	* include/wchar.h (_wfindfirst*, _wfindnext*): Correct the declarations.
+	(_wfindfirst32i64, _wfindfirst64i32, _wfindnext32i64, _wfindnext64i32):
+	Define as __CRT_MAYBE_INLINE.
+
 2013-06-16  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* NEWS: Add text for MSVCRT_VERSION and for the _CRTALIAS 32bit time_t

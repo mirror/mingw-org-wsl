@@ -210,7 +210,7 @@
 #ifndef __NO_INLINE__
 #define __CRT_MAYBE_INLINE __CRT_INLINE
 #else /* def __NO_INLINE__ */
-#define __CRT_MAYBE_INLINE
+#define __CRT_MAYBE_INLINE _CRTALIAS /* We need to inline to stop auto-export */
 #endif /* ndef __NO_INLINE__ */
 
 #ifdef __cplusplus
