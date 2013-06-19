@@ -232,9 +232,8 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _findnext64(intptr_t, struct __finddata64_t*
 int __cdecl __MINGW_NOTHROW _findnext32i64(intptr_t, struct _finddata32i64_t*);
 int __cdecl __MINGW_NOTHROW _findnext64i32(intptr_t, struct _finddata64i32_t*);
 
-#ifndef __NO_INLINE__
 #include <string.h>
-__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst32i64(const char* _filename, struct _finddata32i64_t* _fdata) {
+__CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst32i64(const char* _filename, struct _finddata32i64_t* _fdata) {
     struct __finddata64_t fd;
     intptr_t ret = _findfirst64(_filename, &fd);
     if (ret == -1) {
@@ -250,7 +249,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst32i64(const char* _filen
     return ret;
 }
 
-__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst64i32(const char* _filename, struct _finddata64i32_t* _fdata) {
+__CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst64i32(const char* _filename, struct _finddata64i32_t* _fdata) {
     struct _finddata32_t fd;
     intptr_t ret = _findfirst32(_filename, &fd);
     if (ret == -1) {
@@ -266,7 +265,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findfirst64i32(const char* _filen
     return ret;
 }
 
-__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext32i64(intptr_t _fp, struct _finddata32i64_t* _fdata) {
+__CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext32i64(intptr_t _fp, struct _finddata32i64_t* _fdata) {
     struct __finddata64_t fd;
     int ret = _findnext64(_fp,&fd);
     if (ret == -1) {
@@ -282,7 +281,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext32i64(intptr_t _fp, struc
     return ret;
 }
 
-__CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext64i32(intptr_t _fp, struct _finddata64i32_t* _fdata) {
+__CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext64i32(intptr_t _fp, struct _finddata64i32_t* _fdata) {
     struct _finddata32_t fd;
     int ret = _findnext32(_fp, &fd);
     if (ret == -1) {
@@ -297,12 +296,6 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext64i32(intptr_t _fp, struc
     strncpy(_fdata->name, fd.name, FILENAME_MAX);
     return ret;
 }
-#else /* def __NO_INLINE__ */
-#define _findfirst64i32 _findfirst64
-#define _findfirst32i64 _findfirst32
-#define _findnext64i32 _findnext64
-#define _findnext32i64 _findnext32
-#endif /* ndef __NO_INLINE__ */
 
 #ifndef __NO_MINGW_LFS
 __CRT_INLINE off64_t lseek64 (int, off64_t, int);

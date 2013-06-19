@@ -35,6 +35,11 @@
 
 #ifndef RC_INVOKED
 
+/*
+ * A type for storing the current time and date. This is the number of
+ * seconds since midnight Jan 1, 1970.
+ * NOTE: This is also defined in time.h.
+ */
 #ifndef _TIME32_T_DEFINED
 typedef __int32 __time32_t;
 #define _TIME32_T_DEFINED

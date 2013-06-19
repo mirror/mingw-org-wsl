@@ -1,3 +1,11 @@
+2013-06-18  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/io.h (_findfirst*, _findnext*): Remove the __NO_INLINE__
+	filter and change the signature to __CRT_MAYBE_INLINE.
+	* include/wchar.h (time_t): Remove definition.
+	* include/sys/types.h: Add comment for time_t indicating other files
+	where time_t is defined.
+
 2013-06-17  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/_mingw.h (__CRT_MAYBE_INLINE): When __NO_INLINE__ defined we

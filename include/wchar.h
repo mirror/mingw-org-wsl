@@ -84,11 +84,6 @@ typedef struct _iobuf
 } FILE;
 #endif	/* Not _FILE_DEFINED */
 
-#ifndef _TIME_T_DEFINED  /* Also in time.h */
-typedef long time_t;
-#define _TIME_T_DEFINED
-#endif
-
 #ifndef _TM_DEFINED /* Also in time.h */
 struct tm {
         int tm_sec;     /* seconds after the minute - [0,59] */
