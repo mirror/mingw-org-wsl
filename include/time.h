@@ -157,7 +157,7 @@ _CRTIMP struct tm* __cdecl __MINGW_NOTHROW	_gmtime32   (const __time32_t*);
 _CRTIMP struct tm* __cdecl __MINGW_NOTHROW	_localtime32(const __time32_t*);
 #else /* MSVCRT_VERSION < 800 */
 _CRTALIAS __time32_t __cdecl __MINGW_NOTHROW _time32  (__time32_t *_v) {
-    return ((__time32_t)time((time_t)_v));
+    return ((__time32_t)time((time_t*)_v));
 }
 _CRTALIAS double __cdecl __MINGW_NOTHROW _difftime32 (__time32_t _v1, __time32_t _v2) {
     return (difftime((time_t)_v1, (time_t)_v2));
@@ -166,13 +166,13 @@ _CRTALIAS __time32_t __cdecl __MINGW_NOTHROW _mktime32(struct tm* _v1) {
     return ((__time32_t)mktime(_v1));
 }
 _CRTALIAS char* __cdecl __MINGW_NOTHROW _ctime32(const __time32_t* _v1) {
-    return (ctime((time_t)_v1));
+    return (ctime((time_t*)_v1));
 }
 _CRTALIAS struct tm* __cdecl __MINGW_NOTHROW _gmtime32(const __time32_t* _v1) {
-    return (gmtime((time_t)_v1));
+    return (gmtime((time_t*)_v1));
 }
 _CRTALIAS struct tm* __cdecl __MINGW_NOTHROW _localtime32(const __time32_t* _v1) {
-    return (localtime((time_t)_v1));
+    return (localtime((time_t*)_v1));
 }
 #endif /* MSVCRT_VERSION >= 800 */
 
@@ -253,7 +253,7 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime32(const __time32_t*);
 #else
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW    _wctime(const time_t*);
 _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW  _wctime32(const __time32_t* _v) {
-    return(_wctime((time_t)_v));
+    return(_wctime((time_t*)_v));
 }
 #endif /* MSVCRT_VERSION >= 800 */
 

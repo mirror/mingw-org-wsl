@@ -1,3 +1,7 @@
+2013-06-21  Mark Brand  <mabrand@mabrand.nl>
+
+	* include/time.h: Correct typecasts throughout.
+
 2013-06-18  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/io.h (_findfirst*, _findnext*): Remove the __NO_INLINE__
