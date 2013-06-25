@@ -1,3 +1,10 @@
+2013-06-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct ill advised use of non-standard shell syntax.
+
+	* Makefile.in (lib%.a): Remove bash/ksh/csh style logic construct;
+	replace it using standard Bourne shell "test" command syntax.
+
 2013-06-21  Mark Brand  <mabrand@mabrand.nl>
 
 	* include/time.h: Correct typecasts throughout.
