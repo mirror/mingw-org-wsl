@@ -724,12 +724,12 @@ lib%.a: %.def
 	V=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\2|'`; \
 	DLLNAME="$${N}$${V}.dll"; \
 	$(DLLTOOL) $(DLLTOOL_FLAGS) $${DLLNAME} --def $< --output-lib $@ ; \
-	if [[ $${DLLNAME} = msvcrt.dll || \
-	      $${DLLNAME} = msvcrtd.dll || \
-	      $${DLLNAME} = msvcr70.dll || \
-	      $${DLLNAME} = msvcr70d.dll || \
-	      $${DLLNAME} = msvcr71.dll || \
-	      $${DLLNAME} = msvcr71d.dll ]]; then \
+	if test $${DLLNAME} = msvcrt.dll  \
+	    -o  $${DLLNAME} = msvcrtd.dll  \
+	    -o  $${DLLNAME} = msvcr70.dll  \
+	    -o  $${DLLNAME} = msvcr70d.dll  \
+	    -o  $${DLLNAME} = msvcr71.dll  \
+	    -o  $${DLLNAME} = msvcr71d.dll; then \
 	  $(AR) rc $@ src/libcrt/crt/ofmt_stub.o; \
 	fi
 	$(RANLIB) $@

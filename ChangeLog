@@ -1,7 +1,14 @@
 2013-06-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/wchar.h: Resolve issue to define all components of
-	_STAT_DEFINED.
+	_STAT_DEFINED
+
+2013-06-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct ill advised use of non-standard shell syntax.
+
+	* Makefile.in (lib%.a): Remove bash/ksh/csh style logic construct;
+	replace it using standard Bourne shell "test" command syntax.
 
 2013-06-21  Mark Brand  <mabrand@mabrand.nl>
 
