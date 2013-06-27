@@ -21,7 +21,7 @@
 ; FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 ; DEALINGS IN THE SOFTWARE.
 ;;
-mingw.org-wsl (Windows System Libraries):
+mingw-org-wsl (Windows System Libraries):
 =====
 This package contains both the C Runtime (libcrt) and the Windows API (winapi)
 definitions as provided by the MinGW.org team.  These libraries can be used

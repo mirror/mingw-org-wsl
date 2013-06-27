@@ -2,6 +2,9 @@
 
 	* include/wchar.h: Resolve issue to define all components of
 	_STAT_DEFINED
+	* Makefile.in (mingw.org-wsl): Change string to mingw_org_wsl for
+	package name consistency and to be repository name nescient.
+	* README (mingw.org-wsl): Ditto
 
 2013-06-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
