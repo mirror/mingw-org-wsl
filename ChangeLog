@@ -1,3 +1,8 @@
+2013-06-27  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/wchar.h: Resolve issue to define all components of
+	_STAT_DEFINED.
+
 2013-06-21  Mark Brand  <mabrand@mabrand.nl>
 
 	* include/time.h: Correct typecasts throughout.
