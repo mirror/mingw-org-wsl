@@ -1,3 +1,7 @@
+2013-06-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/tchar.h (_tcsclen): Add missing define.
+
 2013-06-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/wchar.h: Resolve issue to define all components of
