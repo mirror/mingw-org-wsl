@@ -1,3 +1,13 @@
+2013-07-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correction for issue #2007.
+
+	* Makefile.in: Corrected for missing libgmon.a objects and headers.
+	* misc/gpl/profile/profil.h: Move to ...
+	* misc/gpl/include/profil.h: Here.
+	* misc/src/libcrt/profile/gmon.h: Move to ...
+	* misc/src/include/gmon.h: Here.
+
 2013-06-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/tchar.h (_tcsclen): Add missing define.

@@ -58,6 +58,7 @@ MKDIR_P = @MKDIR_P@
 
 INCLUDES=-I$(top_srcdir)/include -I$(srcdir)/include \
   -I$(top_srcdir)/src/libcrt/include -I$(top_srcdir)/misc/src/include \
+  -I$(top_srcdir)/misc/include -I$(top_srcdir)/misc/gpl/include \
   -nostdinc -iwithprefixbefore include
 ALL_CFLAGS=$(CFLAGS) $(INCLUDES) -DNTDDI_VERSION=0x04000000
 
@@ -527,7 +528,7 @@ SRCDIR := misc/src/libcrt/profile
 profile_SOURCES := \
   $(SRCDIR)/gmon.c \
   $(SRCDIR)/mcount.c \
-  misc/gpl/profile/profil.c \
+  misc/gpl/profile/profil.c 
 libgmon_a_SOURCES := $(profile_SOURCES)
 libgmon_a_OBJECTS := $(libgmon_a_SOURCES:.c=.o)
 
@@ -948,7 +949,19 @@ install-includes:
 	for INC in $(top_srcdir)/include/*.h; do \
 	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
 	done
+	for INC in $(top_srcdir)/misc/include/*.h; do \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
+	done
+	for INC in $(top_srcdir)/misc/gpl/include/*.h; do \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
+	done
 	for I in `find $(top_srcdir)/include/* -type d`; do \
+	  J=`basename $$I`; \
+	  for INC in $$I/*.h; do \
+	    $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/$$J ; \
+	  done \
+	done
+	for I in `find $(top_srcdir)/misc/include/* -type d`; do \
 	  J=`basename $$I`; \
 	  for INC in $$I/*.h; do \
 	    $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/$$J ; \
@@ -991,6 +1004,9 @@ mingwrt_lib_SYS_INCLUDES := \
   fcntl.h  locking.h  stat.h  timeb.h  unistd.h \
   file.h   param.h    time.h  types.h  utime.h
 
+mingwrt_lib_MISC_INCLUDES := \
+  misc/include/profile.h \
+  misc/gpl/include/profil.h
 
 install-mingwrt: install-mingwrt-dirs
 	for BIN in $(mingwrt_bin_LIBRARIES); do \
@@ -1001,6 +1017,9 @@ install-mingwrt: install-mingwrt-dirs
 	done
 	for INC in $(addprefix $(top_srcdir)/include/sys/,$(mingwrt_lib_SYS_INCLUDES)); do \
 	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/sys/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/,$(mingwrt_lib_MISC_INCLUDES)); do \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for LIB in $(mingwrt_lib_LIBRARIES); do \
 	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/ ; \
