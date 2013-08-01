@@ -1,3 +1,9 @@
+2013-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct typo causing errors under some conditions.
+
+	* include/sdkddkver.h: Change OSDIR to OSVER.
+
 2013-07-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Correction for issue #2007.
