@@ -49,6 +49,15 @@ during the link step or during runtime.  However, this also removes the
 inconsistency between a Microsoft build and the MinGW build in that you do not
 need to define __MSVCRT_VERSION__ correctly.
 
+We now have a MSVCRT_VERSION which is aimed to contain a value which represents
+the version of the MSVCRT.DLL on a Windows OS.  For instance XP has a version
+of 710, Vista has a value of 800 and Win7 has a value of 910.  These values are
+based on the (MajorLinkerVersion * 100) + MinorLinkerVersion as returned from
+objdump -x MSVCRT.DLL.  The default value will be determined by the value of
+_WIN32_WINNT within the _mingw.h file unless the user has defined it already.
+This allows the code builder to not need to worry with the value of
+MSVCRT_VERSION since it should have the correct value for the targeted OS.
+
 We now assume that GCC is the only compiler used with the MinGW.org WSL
 (Windows System Libraries) and that the minimum supported version of GCC is
 3.5.4.  This allowed for futher code refactoring reducing the number of lines
@@ -69,7 +78,12 @@ use 32bit time_t with msvcrt.dll but it would be slightly slower.  Note, I
 have discovered that the SysWOW64/msvcrt.dll contains the 32bit time_t functions
 but we do not deliver libmsvcrt.a with these imports as this is not available on
 all systems.  However, you could possibly (needs testing) use the msvcrt.dll
-directly to link against and define _HAVE_32BIT_TIME_T during the compile. 
+directly to link against and define _HAVE_32BIT_TIME_T during the compile.  In
+many cases we create a _CRTALIAS for the functions in the header files.  This
+allows an application to use 32bit time_t structures and 32bit time functions
+regardless of the MSVCRT.DLL on the system.  If the MSVCRT.DLL contains the
+function for the targeted MSVCRT_VERSION value then the function is imported
+instead of an alias being defined.
 
 We have an ABI incompatibility due to a reworking of the dirent.c which provides
 opendir() and friends.  You will need to rebuild all libraries to that use
@@ -171,3 +185,5 @@ Provide implementations for IID_IGlobalInterface, FMTID_DocSummaryInformation,
   CLSID_StdGlobalInterfaceTable.
 Added declaration and import of RegisterTypeLibForUser and
   UnRegisterTypeLibForUser.
+Resolve the shell globbing issue as describe in thread
+  http://thread.gmane.org/gmane.comp.gnu.mingw.user/38302

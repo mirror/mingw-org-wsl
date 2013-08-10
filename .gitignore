@@ -10,3 +10,4 @@ config.status
 obscure/*
 junk/*
 temp/*
+nbproject

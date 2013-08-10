@@ -1,3 +1,6 @@
+* Create a warning macro for MSVCRT_VERSION and the use of a declared function
+  when the function does not exist in the MSVCRT_VERSION value.
+
 * Review the following headers:
 ** io.h
 ** limits.h

@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -1141,7 +1141,7 @@ typedef __AW(BROWSEINFO) BROWSEINFO,*PBROWSEINFO,*LPBROWSEINFO;
 #define SHBrowseForFolder __AW(SHBrowseForFolder)
 #define SHGetDataFromIDList __AW(SHGetDataFromIDList)
 #define SHGetPathFromIDList __AW(SHGetPathFromIDList)
-#define SHGetFolderPath __AW(SHGetFolderPathW)
+#define SHGetFolderPath __AW(SHGetFolderPath)
 #define FILEDESCRIPTOR __AW(FILEDESCRIPTOR)
 #define LPFILEDESCRIPTOR __AW(LPFILEDESCRIPTOR)
 #define FILEGROUPDESCRIPTOR __AW(FILEGROUPDESCRIPTOR)
@@ -1204,7 +1204,7 @@ typedef struct
 typedef const SHCOLUMNID *LPCSHCOLUMNID;
 typedef struct _SHELLDETAILS
 {
-	int fmt; 
+	int fmt;
 	int cxChar;
 	STRRET str;
 } SHELLDETAILS, *LPSHELLDETAILS;

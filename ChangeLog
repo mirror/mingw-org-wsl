@@ -209,6 +209,242 @@ RELEASE 4.1:
 
 RELEASE 4.0:
 
+2013-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct typo causing errors under some conditions.
+
+	* include/sdkddkver.h: Change OSDIR to OSVER.
+
+2013-07-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correction for issue #2007.
+
+	* Makefile.in: Corrected for missing libgmon.a objects and headers.
+	* misc/gpl/profile/profil.h: Move to ...
+	* misc/gpl/include/profil.h: Here.
+	* misc/src/libcrt/profile/gmon.h: Move to ...
+	* misc/src/include/gmon.h: Here.
+
+2013-06-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/tchar.h (_tcsclen): Add missing define.
+
+2013-06-27  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/wchar.h: Resolve issue to define all components of
+	_STAT_DEFINED
+	* Makefile.in (mingw.org-wsl): Change string to mingw_org_wsl for
+	package name consistency and to be repository name nescient.
+	* README (mingw.org-wsl): Ditto
+
+2013-06-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct ill advised use of non-standard shell syntax.
+
+	* Makefile.in (lib%.a): Remove bash/ksh/csh style logic construct;
+	replace it using standard Bourne shell "test" command syntax.
+
+2013-06-21  Mark Brand  <mabrand@mabrand.nl>
+
+	* include/time.h: Correct typecasts throughout.
+
+2013-06-18  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/io.h (_findfirst*, _findnext*): Remove the __NO_INLINE__
+	filter and change the signature to __CRT_MAYBE_INLINE.
+	* include/wchar.h (time_t): Remove definition.
+	* include/sys/types.h: Add comment for time_t indicating other files
+	where time_t is defined.
+
+2013-06-17  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/_mingw.h (__CRT_MAYBE_INLINE): When __NO_INLINE__ defined we
+	need to make it _CRTALIAS to avoid auto export issues.
+	* include/io.h (_wfindfirst*, _wfindnext*): Remove the __NO_INLINE__
+	filter and use __CRT_MAYBE_INLINE definitions.
+	* include/wchar.h (_wfindfirst*, _wfindnext*): Correct the declarations.
+	(_wfindfirst32i64, _wfindfirst64i32, _wfindnext32i64, _wfindnext64i32):
+	Define as __CRT_MAYBE_INLINE.
+
+2013-06-16  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* NEWS: Add text for MSVCRT_VERSION and for the _CRTALIAS 32bit time_t
+	definitions.
+	* include/_mingw.h (GCC system_header): Add a __CRT_TESTING__ filter.
+	* include/string.h (GCC system_header): Ditto.
+	* include/sys/stat.h (GCC system_header): Ditto.
+	(string.h): Move the include toward the top of the file.
+	(extern "C" {): Move above the filters so that it is not incorrectly
+	conditional.
+	Correct some comments and move the opening brace to the function
+	definition line throughout.
+	* include/sys/utime.h (utime): Move declaration to after the declaration
+	of _utime64().  Create a _CRTALIAS when _USE_32BIT_TIME_T is undefined.
+	Add datatype specifiers within the _CRTALIAS definitions throughout.
+	* include/wchar.h (GCC system_header): Add a __CRT_TESTING__ filter.
+	(FILENAME_MAX): Define macro if not already defined.
+	Correct comments throughout.
+	Correct #if...#endif misaligned pair.
+	(wcsicmp): Use _CRTALIAS instead of __CRT_INLINE since it is a one line
+	function definition.
+	(*wfinddata*): Use FILENAME_MAX throughout.
+	(_wstat32): Make a _CRTALIAS rather than a _CRTIMP.
+	(_wstat64i32): Use __CRT_MAYBE_INLINE instead of __CRT_INLINE.
+	(_wstat32i64): Define.
+	(_wstat, _wstati64): Remove the MSVCRT_VERSION >= 800 filter.
+
+2013-06-07  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/_mingw.h (_CRTALIAS): Add comments explaining its purpose.
+	(__CRT_MAYBE_INLINE): New macro that may be defined as __CRT_INLINE or
+	empty depending on __NO_INLINE__.
+	* include/stat.h (_fstat64i32(), _fstat32i64(), _stat64i32(),
+	_stat32i64(), _wstat64i32(), _wstat32i64()): Use __CRT_MAYBE_INLINE
+	instead of guarding with __NO_INLINE__ since the functions need to be
+	always created.
+	* include/wchar.h (_utimbuf, _utimbuf32, _utimbuf64, _wutime(),
+	_wutime32(), _wutime64()): MSDN declares these can be declared/defined
+	by including wchar.h.
+	* include/utime.h: Care for _USE_32BIT_TIME_T in same fashion as time.h.
+
+
+2013-06-07  Jan Nijtmans <nijtmans@users.sourceforge.net>
+
+	* include/time.h: Correct typos. Add MSVCRT_VERSION >= 800 guard for
+	_CRTALIAS of _wctime.
+
+2013-06-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Provide more robust inverse hyperbolic sine functions.
+
+	* src/libcrt/math/asinh.c: Rewritten; it now provides a generic
+	implementation for asinh(), asinhf(), and asinhl() functions; thus...
+	* src/libcrt/math/asinhf.c src/libcrt/math/asinhl.c: ...are obsolete;
+	delete them.
+
+	* Makefile.in (math_SOURCES): Remove references for asinh[fl].c
+	(libmingwex_a_OBJECTS): Add explicit references to create associated
+	object files, from the common generic source, together with build
+	rules to compile them.
+
+2013-06-05  Mark  <mabrand@users.sourceforge.net>
+
+	* include/shlobj.h (SHGetFolderPath): Correct typo for UNICODE define.
+
+2013-06-05  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in (libshell32.a): We needed to add src/libshell32/shell32.o
+	object to the library.
+	(lib/libshell32/shell32.o): Added a target to create this file.
+
+2013-06-04  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/_mingw.h (MSVCRT_VERSION): Determine a value based on the
+	_WIN32_WINNT value. Add a TODO for check to see if the older
+	__MSVCRT_VERSION__ macro is defined and use it as the value for
+	MSVCRT_VERSION.  Give an error if both MSVCRT_VERSION and
+	__MSVCRT_VERSION__ are defined and the values do not match.
+	Remove warnings for value when _USE_32BIT_TIME_T is defined.
+	* include/io.h (_wfindfirst32, _wfindfirst64): Correct declaration of
+	parameter data type. Create _CRTALIAS rather than declaring _CRTIMP.
+	(_findfirst32(), _findnext32()): Create _CRTALIAS rather than declaring
+	a _CRTIMP.
+	(_findfirst64i32, _findfirst32i64, _findnext64i32, _findnext32i64):
+	Remove the _CRTIMP from the declaration, these become inline functions.
+	Also guard for __NO_INLINE__ and make appropriate defined alternatives.
+	(_wfindfirst64i32, _wfindfirst32i64, _wfindnext64i32, _wfindnext32i64):
+	Ditto.
+	* include/sdkddkver.h (_WIN32_WINNT_WIN8): Add definition.
+	* include/sys/stat.h (_stat32, _fstat32, _wstat32): Define as a
+	_CRTALIAS.
+	(_fstat32i64, _stat32i64, _wstat32i64): Add as __CRT_INLINE functions
+	and make appropriate alternative macros for __NO_INLINE__ use.
+	* include/sys/timeb.h (_time32): Create _CRTALIAS when MSVCRT_VERSION
+	< 800.
+	* include/sys/types.h (MSVCRT_VERSION): Remove guard for >= 800 with
+	_USE_32BIT_TIME_T.
+	* include/time.h (_time32, _difftime32, _mktime32, _ctime32, _gmtime32,
+	_localtime32, _wctime32): Create _CRTALIAS when MSVCRT_VERSION < 800.
+	(_difftime64, _mkgtime64): Guard declaration for MSVCRT_VERSION > 800.
+	These functions do not exist in MSVCRT.DLL before Vista.
+	* include/wchar.h (_wctime32): Create _CRTALIAS when MSVCRT_VERSION
+	< 800.
+	(_wfindfirst32, _wfindnext32): Create _CRTALIAS.
+	* include/objdump.h: Move include of rpc.h and rpcndr.h due to
+	dependencies.
+	* include/rpc.h: Move include of windows.h due to dependencies.
+
+2013-05-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/time.h: Correct use of MSVCRT_VERSION.
+	Correct mistyped __MINGW_NOTHROW macro.
+
+2013-05-27  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/sys/types.h (_USE_32BIT_TIME_T): Rework the definitions
+	controlled by _USE_32BIT_TIME_T in light of MSVCRT_VERSION being
+	different with differing OS versions.
+	* include/time.h (_USE_32BIT_TIME_T): Ditto.
+	* include/sys/stat.h (_USE_32BIT_TIME_T): Ditto.
+	* include/wchar.h (_USE_32BIT_TIME_T): Ditto.
+	* include/_mingw.h (_USE_32BIT_TIME_T): Issue a warning when
+	_USE_32BIT_TIME_T is enabled and MSVCRT_VERSION value does not
+	support it.
+	* lib/lib32/msvcrt.def.in: Always define all definitions in light of
+	MSVCRT.DLL
+	being different versions on differing OS.
+	* TODO: Add a note about needing a warning when a function is being
+	used but not defined within the MSVCRT_VERSION value.
+
+2013-05-21  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in (clean-dist, clean-dist-mingwrt, clean-dist-w32api,
+	clean-dist-wsl): New targets.
+
+2013-05-15  Niels Kristian Bech Jensen  <nkbj@users.sourceforge.net>
+
+	* include/control.h: Correct inclusion of _mingw.h.  Issue: #1956.
+	* include/sys/stat.h: Include string.h as appropriate for memset
+	declaration.  Issue: #1956.
+	* include/wchar.h: Ditto.
+
+2013-05-15  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* .gitignore: Add nbproject folder.
+	* NEWS: Add note about the globbing change.
+	* include/_mingw.h: Correct check for GCC version >= 3.4.5. Issue: #1958.
+
+2013-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid a potential SIGSEGV crash on CRT start-up.
+
+	* src/libcrt/misc/glob.c (glob_signed): Check only for pointer
+	aliasing, when validating a glob_t signature; checking signature
+	content via an uninitialised pointer may segfault.
+
+	* src/libcrt/crt/init.c (__mingw_setargv): Call __mingw_glob()
+	directly, then set GLOB_APPEND for later calls; do not delegate to...
+	(do_glob): ...this; it uselessly attempted to set GLOB_APPEND on the
+	basis of an uninitialised counter.  Function now unused; delete it.
+
+2013-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Install non-executable files with proper attributes.
+
+	* Makefile.in (INSTALL_DATA): New macro; define it per AC_SUBST;
+	substitute it at point of use, as appropriate, in place of...
+	(INSTALL): ...this.
+
+2013-05-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update build-aux submodule reference for SF host migration.
+
+	* .gitmodules (url): Relocate to git://git.code.sourceforge.net/p/
+
+2013-04-10  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* Makefile.in: Add installation and delivery of library object files.
+
 2013-04-09  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in: Adjust distributed package names when RELEASE_STATUS is
@@ -1849,7 +2085,7 @@ RELEASE 4.0:
 	* gpl/*: Move to misc/gpl/*.
 	* include/GL/*: Move to misc/include/GL/*.
 	* include/profile.h: Move to misc/include/profile.h.
-	* src/libcrt/math/cephes_mconf.h: Move to 
+	* src/libcrt/math/cephes_mconf.h: Move to
 	misc/src/include/cephes_mconf.h.
 	* src/libcrt/include/gdtoa.h: Move to misc/src/include/gdtoa.h.
 	* src/libcrt/gdtoa/*: Move to misc/src/libcrt/gdtoa/*.

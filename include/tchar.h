@@ -128,6 +128,7 @@ typedef wchar_t _TCHAR;
 #define _tcscpy		wcscpy
 #define _tcscspn	wcscspn
 #define	_tcslen		wcslen
+#define _tcsclen	wcslen
 #define	_tcsncat	wcsncat
 #define	_tcsncmp	wcsncmp
 #define	_tcsncpy	wcsncpy
@@ -342,6 +343,7 @@ typedef char	_TCHAR;
 #define _tcscpy		strcpy
 #define _tcscspn	strcspn
 #define	_tcslen		strlen
+#define _tcsclen	strlen
 #define	_tcsncat	strncat
 #define	_tcsncmp	strncmp
 #define	_tcsncpy	strncpy

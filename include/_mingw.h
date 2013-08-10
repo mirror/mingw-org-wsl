@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -29,7 +29,9 @@
  */
 #ifndef __MINGW_H
 #define __MINGW_H
+#ifndef __CRT_TESTING__
 #pragma GCC system_header
+#endif
 #include <sdkddkver.h>
 
 #define __MINGW_VERSION             4.0
@@ -49,7 +51,7 @@
 #error ERROR: You must use a GNU Compiler.
 #endif
 
-#if (__GNUC__ < 3 || !defined(__GNUC_MINOR__) || (__GNUC__ == 3 && __GNUC_MINOR__ < 4) || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4 && __GNUC_PATCHLEVEL__ < 5))
+#if (__GNUC__ < 3 || !defined(__GNUC_MINOR__) || (__GNUC__ == 3 && __GNUC_MINOR__ < 4) || (__GNUC__ == 3 && __GNUC_MINOR__ == 4 && __GNUC_PATCHLEVEL__ < 5))
 #error ERROR: You must use a GNU Compiler version >= 3.4.5.
 #endif
 
@@ -233,7 +235,21 @@
 # endif
 #endif
 
+/* _CRTALIAS will be used when we have a function whose purpose is to return
+ * the value of a similar function. This alias function will contain one line
+ * of code.
+ */
 #define _CRTALIAS __CRT_INLINE __attribute__ ((__always_inline__))
+
+/* __CRT_MAYBE_INLINE is to be used when we provide functions in the headers
+ * to provide compatibility between differing versions of MSVCRT.DLL for
+ * differing OS versions.  See stat.h for examples.
+ */
+#ifndef __NO_INLINE__
+#define __CRT_MAYBE_INLINE __CRT_INLINE
+#else /* def __NO_INLINE__ */
+#define __CRT_MAYBE_INLINE _CRTALIAS /* We need to inline to stop auto-export */
+#endif /* ndef __NO_INLINE__ */
 
 #ifdef __cplusplus
 # define   BEGIN_C_DECLS	extern "C" {
@@ -282,6 +298,50 @@
 #  define __USE_MINGW_ANSI_STDIO    (__MINGW_FEATURES__ & __MINGW_ANSI_STDIO__)
 # endif
 #endif
+
+/* @TODO: Need to convert __MSVCRT_VERSION__ value to MSVCRT_VERSION value.
+ * HEX to DECIMAL will not work. */
+#if 0
+#ifdef __MSVCRT_VERSION__
+#ifdef MSVCRT_VERSION
+#if MSVCRT_VERSION != __MSVCRT_VERSION__
+#error You have specified __MSVCRT_VERSION__ and MSVCRT_VERSION and they are \
+not equal.
+#endif /* MSVCRT_VERSION != __MSVCRT_VERSION__ */
+#else /* ndef MSVCRT_VERSION */
+#define MSVCRT_VERSION __MSVCRT_VERSION__
+#endif /* MSVCRT_VERSION */
+#endif /* __MSVCRT_VERSION__ */
+#endif /* 0 */
+
+/*
+ * We need to set a default MSVCRT_VERSION which describes the MSVCRT.DLL on
+ * the users system.  We are defaulting to XP but we recommend the user define
+ * this in his config.h or Makefile file based on the minimum supported version
+ * of OS for his program.
+ * ME = 600
+ * XP = 710
+ * VISTA = 800
+ * WIN7 = 900
+ * WIN8 = 1010
+ */
+#ifndef MSVCRT_VERSION
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN8
+#define MSVCRT_VERSION 1010
+#elif _WIN32_WINNT >= _WIN32_WINNT_WIN7
+#define MSVCRT_VERSION 900
+#elif _WIN32_WINNT >= _WIN32_WINNT_VISTA
+#define MSVCRT_VERSION 800
+#elif _WIN32_WINNT >= _WIN32_WINNT_WINXP
+#define MSVCRT_VERSION 710
+#elif _WIN32_WINNT >= _WIN32_WINNT_WIN2K
+#define MSVCRT_VERSION 700
+#elif _WIN32_WINNT >= _WIN32_WINNT_WINME
+#define MSVCRT_VERSION 600
+#else
+#define MSVCRT_VERSION 700
+#endif /* _WIN32_WINNT >= _WIN32_WINNT_WINME */
+#endif /* ndef MSVCRT_VERSION */
 
 struct threadlocalinfostruct;
 struct threadmbinfostruct;

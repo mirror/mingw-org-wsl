@@ -8,11 +8,11 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice (including the next
  * paragraph) shall be included in all copies or substantial portions of the
  * Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,15 +21,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+/* Include here to prevent circular dependencies if windows.h not already
+ * included. ** DO NOT MOVE TO GUARD ** */
+#include <rpc.h>
+#include <rpcndr.h>
+
 #ifndef _OBJBASE_H
 #define _OBJBASE_H
 #pragma GCC system_header
 #include <_mingw.h>
-
-/* Include here to prevent circular dependencies if windows.h
-   not already included */
-#include <rpc.h>
-#include <rpcndr.h>
 
 #include <stdlib.h>
 #pragma pack(push,8)
@@ -74,9 +74,9 @@
 #define COM_RIGHTS_SAFE_FOR_SCRIPTING 2
 #define STGOPTIONS_VERSION 2
 typedef enum tagSTGFMT {
-	STGFMT_STORAGE = 0, 
-	STGFMT_FILE = 3, 
-	STGFMT_ANY = 4, 
+	STGFMT_STORAGE = 0,
+	STGFMT_FILE = 3,
+	STGFMT_ANY = 4,
 	STGFMT_DOCFILE = 5
 } STGFMT;
 typedef struct tagSTGOPTIONS {

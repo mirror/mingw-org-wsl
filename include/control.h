@@ -24,7 +24,7 @@
 #ifndef _CONTROL_H
 #define _CONTROL_H
 #pragma GCC system_header
-#include <mingw.h>
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C" {

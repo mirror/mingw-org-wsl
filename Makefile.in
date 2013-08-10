@@ -53,10 +53,12 @@ AS = @AS@
 DLLTOOL = @DLLTOOL@
 DLLTOOL_FLAGS = --as $(AS) -k --dllname
 INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
 MKDIR_P = @MKDIR_P@
 
 INCLUDES=-I$(top_srcdir)/include -I$(srcdir)/include \
   -I$(top_srcdir)/src/libcrt/include -I$(top_srcdir)/misc/src/include \
+  -I$(top_srcdir)/misc/include -I$(top_srcdir)/misc/gpl/include \
   -nostdinc -iwithprefixbefore include
 ALL_CFLAGS=$(CFLAGS) $(INCLUDES) -DNTDDI_VERSION=0x04000000
 
@@ -93,6 +95,22 @@ mingwrt_lib_LIBRARIES = \
   libm.a \
   libmingwex.a \
   libgmon.a
+
+OBJDIR := src/libcrt/crt
+mingwrt_lib_OBJECTS = \
+  $(OBJDIR)/CRT_fp10.o \
+  $(OBJDIR)/CRT_fp8.o \
+  $(OBJDIR)/CRT_noglob.o \
+  $(OBJDIR)/binmode.o \
+  $(OBJDIR)/crt2.o \
+  $(OBJDIR)/crtmt.o \
+  $(OBJDIR)/crtst.o \
+  $(OBJDIR)/dllcrt2.o \
+  $(OBJDIR)/txtmode.o
+
+OBJDIR2 := misc/gpl/profile
+mingwrt_lib_OBJECTS += \
+  $(OBJDIR2)/gcrt2.o 
 
 winapi_DEF := $(notdir $(wildcard ${top_srcdir}/lib/lib32/*.def))
 winapi_DDK_DEF := $(notdir $(wildcard $(top_srcdir)/lib/lib32/ddk/*.def))
@@ -149,7 +167,7 @@ mold_OBJECTS := $(mode_SOURCES:.c=.o)
 
 SRCDIR := misc/gpl/profile
 gcrt0_SOURCES := $(SRCDIR)/gcrt0.c
-gcrt0_OBJECTS := $(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o
+gcrt0_OBJECTS := $(SRCDIR)/gcrt2.o
 
 lib_OBJECTS := $(crt0_OBJECTS) $(gcrt0_OBJECTS)
 
@@ -167,6 +185,10 @@ scrnsave_o_CFLAGS := -UUNICODE
 libscrnsavw_a_SOURCES := src/libscrnsave/scrnsave.c
 libscrnsavw_a_OBJECTS := src/libscrnsave/scrnsavw.o
 scrnsavw_o_CFLAGS := -DUNICODE
+
+libshell32_a_SOURCES := src/libshell32/shell32.c
+libshell32_a_OBJECTS := src/libshell32/shell32.o
+shell32_o_CFLAGS := -DUNICODE
 
 liblargeint_a_SOURCES := src/liblargeint/largeint.c
 liblargeint_a_OBJECTS := $(liblargeint_a_SOURCES:.c=.o)
@@ -344,8 +366,6 @@ math_SOURCES := \
   $(SRCDIR)/acosl.c \
   $(SRCDIR)/asinf.c \
   $(SRCDIR)/asinh.c \
-  $(SRCDIR)/asinhf.c \
-  $(SRCDIR)/asinhl.c \
   $(SRCDIR)/asinl.c \
   $(SRCDIR)/atan2f.c \
   $(SRCDIR)/atan2l.c \
@@ -508,7 +528,7 @@ SRCDIR := misc/src/libcrt/profile
 profile_SOURCES := \
   $(SRCDIR)/gmon.c \
   $(SRCDIR)/mcount.c \
-  misc/gpl/profile/profil.c \
+  misc/gpl/profile/profil.c 
 libgmon_a_SOURCES := $(profile_SOURCES)
 libgmon_a_OBJECTS := $(libgmon_a_SOURCES:.c=.o)
 
@@ -602,6 +622,10 @@ libmingwex_a_SOURCES := \
   $(wctype_SOURCES)
 libmingwex_a_OBJECTS := $(libmingwex_a_SOURCES:.c=.o)
 libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS:.S=.o)
+
+SRCDIR := src/libcrt/math
+libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS) $(SRCDIR)/asinhl.o
+libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS) $(SRCDIR)/asinhf.o
 
 SRCDIR := misc/src/libdinput
 libdinput_a_SOURCES := \
@@ -701,12 +725,12 @@ lib%.a: %.def
 	V=`echo $@ | sed -e 's|lib\([a-z]*\)\([0-9]*\).*|\2|'`; \
 	DLLNAME="$${N}$${V}.dll"; \
 	$(DLLTOOL) $(DLLTOOL_FLAGS) $${DLLNAME} --def $< --output-lib $@ ; \
-	if [[ $${DLLNAME} = msvcrt.dll || \
-	      $${DLLNAME} = msvcrtd.dll || \
-	      $${DLLNAME} = msvcr70.dll || \
-	      $${DLLNAME} = msvcr70d.dll || \
-	      $${DLLNAME} = msvcr71.dll || \
-	      $${DLLNAME} = msvcr71d.dll ]]; then \
+	if test $${DLLNAME} = msvcrt.dll  \
+	    -o  $${DLLNAME} = msvcrtd.dll  \
+	    -o  $${DLLNAME} = msvcr70.dll  \
+	    -o  $${DLLNAME} = msvcr70d.dll  \
+	    -o  $${DLLNAME} = msvcr71.dll  \
+	    -o  $${DLLNAME} = msvcr71d.dll; then \
 	  $(AR) rc $@ src/libcrt/crt/ofmt_stub.o; \
 	fi
 	$(RANLIB) $@
@@ -724,13 +748,20 @@ lib%.a: src/lib%/%.o
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
+SRCDIR := src/libcrt/math
+$(SRCDIR)/%f.o: $(SRCDIR)/%.c
+	$(MKDIR_P) $(@D)
+	$(CC) -c -D FUNCTION=$(@F:.o=) $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+$(SRCDIR)/%l.o: $(SRCDIR)/%.c
+	$(MKDIR_P) $(@D)
+	$(CC) -c -D FUNCTION=$(@F:.o=) $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
 SRCDIR := src/libcrt/crt
 $(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o:
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
-$(SRCDIR)/crt1.o: $(SRCDIR)/crt1.c
-$(SRCDIR)/dllcrt1.o: $(SRCDIR)/dllcrt1.c
 $(SRCDIR)/crt2.o: $(SRCDIR)/crt1.c
 $(SRCDIR)/dllcrt2.o: $(SRCDIR)/dllcrt1.c
 
@@ -743,12 +774,17 @@ $(libscrnsavw_a_OBJECTS): $(libscrnsavw_a_SOURCES)
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(scrnsavw_o_CFLAGS) -o $@ $<
 
+SRCDIR := src/libshell32
+$(libshell32_a_OBJECTS): $(libshell32_a_SOURCES)
+	$(MKDIR_P) $(@D)
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) $(shell32_o_CFLAGS) -o $@ $<
+
 SRCDIR := misc/gpl/profile
 $(SRCDIR)/gcrt2.o:
 	mkdir -p $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
-$(SRCDIR)/gcrt1.o $(SRCDIR)/gcrt2.o: $(SRCDIR)/gcrt0.c
+$(SRCDIR)/gcrt2.o: $(SRCDIR)/gcrt0.c
 
 libmingw32.a: $(libmingw32_a_OBJECTS)
 	$(AR) rc $@ $(libmingw32_a_OBJECTS)
@@ -829,6 +865,14 @@ libws2_32.a: lib/lib32/ws2_32.def $(libws2_32_a_OBJECTS)
 	$(AR) rc $@ $(libws2_32_a_OBJECTS)
 	$(RANLIB) $@
 
+# Note this target will override the previous global rules and give a warning
+# from the make process. It is needed due to the extra shell32.o object file.
+libshell32.a: lib/lib32/shell32.def $(libshell32_a_OBJECTS)
+	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
+	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@
+	$(AR) rc $@ $(libshell32_a_OBJECTS)
+	$(RANLIB) $@
+
 _libm_dummy.c:
 	@echo "static int __mingw_libm_dummy;" > _libm_dummy.c
 
@@ -887,34 +931,46 @@ install-dirs: $(need-DESTDIR-compatibility)
 
 install-libs: all
 	for LIB in $(lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/$$LIB ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/$$LIB ; \
 	done
 
 install-objs: all
 	for OBJ in $(lib_OBJECTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir) ; \
+	  $(INSTALL_DATA) $$OBJ $(DESTDIR)$(libdir) ; \
 	done
 
 install-docs:
 	for DOC in $(doc_DOCUMENTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $(top_srcdir)/$$DOC $(DESTDIR)$(docdir)/$$DOC ; \
+	  $(INSTALL_DATA) $(top_srcdir)/$$DOC $(DESTDIR)$(docdir)/$$DOC ; \
 	done
 	cp -af $(top_srcdir)/doc/historical $(DESTDIR)$(docdir) ;
 
 install-includes:
 	for INC in $(top_srcdir)/include/*.h; do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
+	done
+	for INC in $(top_srcdir)/misc/include/*.h; do \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
+	done
+	for INC in $(top_srcdir)/misc/gpl/include/*.h; do \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
 	done
 	for I in `find $(top_srcdir)/include/* -type d`; do \
 	  J=`basename $$I`; \
 	  for INC in $$I/*.h; do \
-	    $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/$$J ; \
+	    $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/$$J ; \
+	  done \
+	done
+	for I in `find $(top_srcdir)/misc/include/* -type d`; do \
+	  J=`basename $$I`; \
+	  for INC in $$I/*.h; do \
+	    $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/$$J ; \
 	  done \
 	done
 
 install-bins: all
 	for BIN in $(bin_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/$$BIN ; \
+	  $(INSTALL_DATA) $$BIN $(DESTDIR)$(bindir)/$$BIN ; \
 	done
 
 install: all \
@@ -948,22 +1004,28 @@ mingwrt_lib_SYS_INCLUDES := \
   fcntl.h  locking.h  stat.h  timeb.h  unistd.h \
   file.h   param.h    time.h  types.h  utime.h
 
+mingwrt_lib_MISC_INCLUDES := \
+  misc/include/profile.h \
+  misc/gpl/include/profil.h
 
 install-mingwrt: install-mingwrt-dirs
 	for BIN in $(mingwrt_bin_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/ ; \
+	  $(INSTALL_DATA) $$BIN $(DESTDIR)$(bindir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/,$(mingwrt_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/sys/,$(mingwrt_lib_SYS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/sys/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/sys/ ; \
+	done
+	for INC in $(addprefix $(top_srcdir)/,$(mingwrt_lib_MISC_INCLUDES)); do \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for LIB in $(mingwrt_lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/ ; \
 	done
 	for OBJ in $(mingwrt_lib_OBJECTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$OBJ $(DESTDIR)$(libdir)/ ; \
 	done
 	cp -af $(top_srcdir)/doc/historical/mingw/* $(DESTDIR)$(mingwrtdocdir)/historical/ ;
 
@@ -1029,8 +1091,8 @@ endif
 
 dist-mingwrt-src:
 ifeq ($(RELEASE_STATUS),prod)
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
-	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw_org_wsl
+	cd $(DESTDIR)$(prefix)/mingw_org_wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
 	rm -f .gitignore core a.out Makefile ; \
@@ -1040,11 +1102,11 @@ ifeq ($(RELEASE_STATUS),prod)
 	find . -type f -name .\*.swp -delete ; \
 	cd .. ; \
 	rm -rf mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
-	mv mingw.org-wsl mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
+	mv mingw_org_wsl mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
 else
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
-	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw_org_wsl
+	cd $(DESTDIR)$(prefix)/mingw_org_wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
 	rm -f .gitignore core a.out Makefile ; \
@@ -1054,7 +1116,7 @@ else
 	find . -type f -name .\*.swp -delete ; \
 	cd .. ; \
 	rm -rf mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
-	mv mingw.org-wsl mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	mv mingw_org_wsl mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
 	tar acf ../packages/mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma mingwrt-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
 endif
 
@@ -1157,22 +1219,22 @@ w32api_lib_LIBRARIES := \
 
 install-w32api: install-w32api-dirs
 	for INC in $(addprefix $(top_srcdir)/include/,$(w32api_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/ddk/,$(w32api_lib_DDK_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/gdiplus/,$(w32api_lib_GDIPLUS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/misc/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/GL/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/GL/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/directx/,$(w32api_lib_DIRECTX_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
 	done
 	for LIB in $(w32api_lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/ ; \
 	done
 	cp -af $(top_srcdir)/doc/historical/w32api/* $(DESTDIR)$(w32apidocdir)/historical/ ;
 
@@ -1227,8 +1289,8 @@ endif
 
 dist-w32api-src:
 ifeq ($(RELEASE_STATUS),prod)
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
-	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw_org_wsl
+	cd $(DESTDIR)$(prefix)/mingw_org_wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
 	rm -f .gitignore core a.out Makefile ; \
@@ -1238,11 +1300,11 @@ ifeq ($(RELEASE_STATUS),prod)
 	find . -type f -name .\*.swp -delete ; \
 	cd .. ; \
 	rm -rf w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
-	mv mingw.org-wsl w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
+	mv mingw_org_wsl w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
 else
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
-	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw_org_wsl
+	cd $(DESTDIR)$(prefix)/mingw_org_wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
 	rm -f .gitignore core a.out Makefile ; \
@@ -1252,7 +1314,7 @@ else
 	find . -type f -name .\*.swp -delete ; \
 	cd .. ; \
 	rm -rf w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
-	mv mingw.org-wsl w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	mv mingw_org_wsl w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
 	tar acf ../packages/w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma w32api-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
 endif
 
@@ -1269,34 +1331,34 @@ install-wsl-dirs: $(need-DESTDIR-compatibility)
 
 install-wsl: install-wsl-dirs
 	for BIN in $(mingwrt_bin_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$BIN $(DESTDIR)$(bindir)/ ; \
+	  $(INSTALL_DATA) $$BIN $(DESTDIR)$(bindir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/,$(mingwrt_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/sys/,$(mingwrt_lib_SYS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/sys/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/sys/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/,$(w32api_lib_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/ddk/,$(w32api_lib_DDK_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/ddk/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/gdiplus/,$(w32api_lib_GDIPLUS_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/gdiplus/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/misc/include/GL/,$(w32api_lib_GL_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir)/GL/ ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir)/GL/ ; \
 	done
 	for INC in $(addprefix $(top_srcdir)/include/directx/,$(w32api_lib_DIRECTX_INCLUDES)); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$INC $(DESTDIR)$(includedir) ; \
+	  $(INSTALL_DATA) $$INC $(DESTDIR)$(includedir) ; \
 	done
 	for LIB in $(mingwrt_lib_LIBRARIES) $(w32api_lib_LIBRARIES); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$LIB $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$LIB $(DESTDIR)$(libdir)/ ; \
 	done
 	for OBJ in $(mingwrt_lib_OBJECTS); do \
-	  $(INSTALL) $(INSTALL_FLAGS) $$OBJ $(DESTDIR)$(libdir)/ ; \
+	  $(INSTALL_DATA) $$OBJ $(DESTDIR)$(libdir)/ ; \
 	done
 	cp -af $(top_srcdir)/LICENSE $(DESTDIR)$(docdir)
 	cp -af $(top_srcdir)/README $(DESTDIR)$(docdir)
@@ -1316,43 +1378,43 @@ dist-wsl-install: all dist-wsl-mkdir
 dist-wsl-dll: dist-wsl-install
 ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dll.tar.lzma bin/*.dll ;
+	tar acf ../packages/mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dll.tar.lzma bin/*.dll ;
 else
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/$(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dll.tar.lzma bin/*.dll ;
+	tar acf ../packages/$(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dll.tar.lzma bin/*.dll ;
 endif
 
 dist-wsl-dev: dist-wsl-install
 ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/$(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dev.tar.lzma include/ lib/
+	tar acf ../packages/$(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-dev.tar.lzma include/ lib/
 else
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/$(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dev.tar.lzma include/ lib/
+	tar acf ../packages/$(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-dev.tar.lzma include/ lib/
 endif
 
 dist-wsl-lic: dist-wsl-install
 ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-lic.tar.lzma share/doc/mingw.org-wsl/LICENSE
+	tar acf ../packages/mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-lic.tar.lzma share/doc/mingw_org_wsl/LICENSE
 else
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/$(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-lic.tar.lzma share/doc/mingw.org-wsl/LICENSE
+	tar acf ../packages/$(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-lic.tar.lzma share/doc/mingw_org_wsl/LICENSE
 endif
 
 dist-wsl-doc: dist-wsl-install
 ifeq ($(RELEASE_STATUS),prod)
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/mingw.org-wsl/README
+	tar acf ../packages/mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-doc.tar.lzma share/doc/mingw_org_wsl/README
 else
 	cd ./dist/wsl/installed ; \
-	tar acf ../packages/$(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-doc.tar.lzma share/doc/mingw.org-wsl/README
+	tar acf ../packages/$(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-doc.tar.lzma share/doc/mingw_org_wsl/README
 endif
 
 dist-wsl-src: dist-wsl-install
 ifeq ($(RELEASE_STATUS),prod)
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
-	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw_org_wsl
+	cd $(DESTDIR)$(prefix)/mingw_org_wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
 	rm -f .gitignore core a.out Makefile ; \
@@ -1361,12 +1423,12 @@ ifeq ($(RELEASE_STATUS),prod)
 	find . -type f -name \*.bak -delete ; \
 	find . -type f -name .\*.swp -delete ; \
 	cd .. ; \
-	rm -rf mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
-	mv mingw.org-wsl mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
-	tar acf ../packages/mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
+	rm -rf mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
+	mv mingw_org_wsl mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src ; \
+	tar acf ../packages/mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src.tar.lzma mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-src
 else
-	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw.org-wsl
-	cd $(DESTDIR)$(prefix)/mingw.org-wsl ; \
+	cp -af $(top_srcdir) $(DESTDIR)$(prefix)/mingw_org_wsl
+	cd $(DESTDIR)$(prefix)/mingw_org_wsl ; \
 	rm -rf .git autom4te.cache ; \
 	rm -f config.log config.status config.cache config.h ; \
 	rm -f .gitignore core a.out Makefile ; \
@@ -1375,7 +1437,19 @@ else
 	find . -type f -name \*.bak -delete ; \
 	find . -type f -name .\*.swp -delete ; \
 	cd .. ; \
-	rm -rf $(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
-	mv mingw.org-wsl $(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
-	tar acf ../packages/$(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma $(RELEASE_STATUS)_mingw.org-wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
+	rm -rf $(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	mv mingw_org_wsl $(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src ; \
+	tar acf ../packages/$(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src.tar.lzma $(RELEASE_STATUS)_mingw_org_wsl-$(PACKAGE_VERSION)-$(PACKAGE_RELEASE)-mingw32-$(RELEASE_STATUS)-$(RELEASE_REFERENCE)-src
 endif
+
+clean-dist: clean-dist-mingwrt clean-dist-w32api clean-dist-wsl
+	rm -rf dist/
+
+clean-dist-mingwrt:
+	rm -rf dist/mingwrt/
+
+clean-dist-w32api:
+	rm -rf dist/w32api/
+
+clean-dist-wsl:
+	rm -rf dist/wsl/
