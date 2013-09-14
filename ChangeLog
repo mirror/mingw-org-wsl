@@ -1,3 +1,10 @@
+2013-09-14  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	The winspool DLL name is actually winspool.drv.
+
+	* Makefile.in: Conditionalize the DLL name specification for
+	libwinspool.a.
+
 2013-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Correct typo causing errors under some conditions.
