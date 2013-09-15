@@ -1,3 +1,15 @@
+2013-09-15  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Ticket [#2045] for wtsapi32.h errors, thanks to 
+	Janne Rönkkö <jroo@iki.fi>.
+
+	* include/wtsapi32.h: Remove use of __in and __out throughout.
+	(WTS_SESSION_INFOA, WTS_SESSION_INFOW): Move to the _WIN32_WINNT_WINXP
+	filter after the WTS_CONNECTSTATE_CLASS structure.
+	(WTSQuerySessionInformation[AW]): Move to the _WIN32_WINNT_WINXP filter.
+	(WTSEnumerateSessions[AW]): Ditto.
+	(WTS_VIRTUAL_CLASS): Add enumeration to _WIN32_WINNT_WINXP filter.
+
 2013-09-14  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	The winspool DLL name is actually winspool.drv.
