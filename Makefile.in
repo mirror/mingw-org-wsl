@@ -686,7 +686,11 @@ $(moldname_DEF): lib/lib32/moldname.def.in
 SRCDIR := lib/lib32
 $(notdir $(winapi_lib_LIBRARIES)): $(addprefix lib/lib32/,$(winapi_DEF))
 	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
-	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@
+	if test $@ = libwinspool.a; then \
+	  $(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.drv)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@ ; \
+	else \
+	  $(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@ ; \
+	fi
 	$(RANLIB) $@
 
 $(notdir $(winapi_mri_LIBRARIES)): $(addprefix lib/lib32/,$(winapi_MRI))
