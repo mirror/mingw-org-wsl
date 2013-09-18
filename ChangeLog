@@ -1,3 +1,10 @@
+2013-09-18  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Ticket [#2050] Missing definition of FILE_FLAG_FIRST_PIPE_INSTANCE.
+
+	* include/winbase.h: Correct type in filter from NTDDK_VERSION to
+	NTDDI_VERSION.
+
 2013-09-15  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Ticket [#2045] for wtsapi32.h errors, thanks to 
