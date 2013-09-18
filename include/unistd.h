@@ -60,6 +60,7 @@ extern "C" {
 int __cdecl __MINGW_NOTHROW usleep(useconds_t useconds);
 #endif  /* Not __NO_ISOCEXT */
 
+#ifndef __STRICT_ANSI__
 /* This is defined as a real library function to allow autoconf
    to verify its existence. */
 int ftruncate(int, off_t);
@@ -69,6 +70,7 @@ __CRT_INLINE int ftruncate(int __fd, off_t __length)
   return _chsize (__fd, __length);
 }
 #endif
+#endif /* ndef __STRICT_ANSI__ */
 
 #ifdef __cplusplus
 }

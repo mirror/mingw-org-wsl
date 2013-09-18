@@ -1,5 +1,12 @@
 RELEASE 4.1:
 
+2013-09-18  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/unistd.h (ftruncate()): Guard with no __STRICT_ANSI__ [#2046].
+	* include/winldap.h (ldap_start_tls_s[AW]()): Incorrect signature
+	[#2027].
+	(ldap_stop_tls_s()): Use PLDAP instead of LDAP * per MSDN documentation.
+
 2013-04-10  Earnie Boyd  <earnie@users.sourceforge.net>
 	* include/windows.h (NOWH): Correct typo in macro name.
 	* include/excpt.h (_EXCEPTION_DISPOSITION): Adjust indentation.
