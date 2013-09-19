@@ -298,8 +298,8 @@ __CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _findnext64i32(intptr_t _fp,
 }
 
 #ifndef __NO_MINGW_LFS
-__CRT_INLINE off64_t lseek64 (int, off64_t, int);
-__CRT_INLINE off64_t lseek64 (int fd, off64_t offset, int whence) {
+__CRT_INLINE _off64_t lseek64 (int, _off64_t, int);
+__CRT_INLINE _off64_t lseek64 (int fd, _off64_t offset, int whence) {
   return _lseeki64(fd, (__int64) offset, whence);
 }
 #endif

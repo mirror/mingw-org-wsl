@@ -6,6 +6,8 @@ RELEASE 4.1:
 	* include/winldap.h (ldap_start_tls_s[AW]()): Incorrect signature
 	[#2027].
 	(ldap_stop_tls_s()): Use PLDAP instead of LDAP * per MSDN documentation.
+	* include/io.h (lseek64): Use _off64_t instead of off64_t due to
+	__STRICT_ANSI__ [#2024].
 
 2013-04-10  Earnie Boyd  <earnie@users.sourceforge.net>
 	* include/windows.h (NOWH): Correct typo in macro name.
