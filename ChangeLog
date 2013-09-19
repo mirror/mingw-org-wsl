@@ -1,5 +1,20 @@
 RELEASE 4.1:
 
+2013-09-19  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/stdio.h (_fseeki64): Remove import and create alias [#2021].
+	(_ftelli64): Ditto.
+	(_fseeki64_nolock): Ditto.
+	(_ftelli64_nolock): Ditto.
+	(_fseek_nolock): Ditto.
+	(_ftell_nolock): Ditto.
+	* include/unistd.h: Guard entire file not just the functions w.r.t.
+	__STRICT_ANSI__ [#2046].
+	* include/_mingw.h (__MINGW_MSVCR_PREREQ()): New macro to determine
+	if we are using a versioned MSVCR## library.
+	* include/stdlib.h (_set_invalid_parameter_handler): Guard for MSVCR80
+	or greater [#2020].
+
 2013-09-18  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/unistd.h (ftruncate()): Guard with no __STRICT_ANSI__ [#2046].

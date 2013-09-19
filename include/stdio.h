@@ -410,13 +410,30 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	fseek (FILE*, long, int);
 _CRTIMP long __cdecl __MINGW_NOTHROW	ftell (FILE*);
 _CRTIMP void __cdecl __MINGW_NOTHROW	rewind (FILE*);
 
-_CRTIMP int __cdecl __MINGW_NOTHROW	_fseek_nolock (FILE*, long, int);
-_CRTIMP long __cdecl __MINGW_NOTHROW	_ftell_nolock (FILE*);
+/* The _nolock is supposed to be nonlocking thread versions, they do not exist
+ * in msvcrt.dll. */
+int __cdecl __MINGW_NOTHROW	_fseek_nolock (FILE*, long, int);
+_CRTALIAS int __cdecl __MINGW_NOTHROW _fseek_nolock(FILE *stream, long offset, int whence)
+{ return fseek(stream, offset, whence); }
+long __cdecl __MINGW_NOTHROW	_ftell_nolock (FILE*);
+_CRTALIAS long __cdecl __MINGW_NOTHROW _ftell_nolock(FILE *stream)
+{ return ftell(stream); }
 
-_CRTIMP int __cdecl __MINGW_NOTHROW	_fseeki64 (FILE*, __int64, int);
-_CRTIMP __int64 __cdecl __MINGW_NOTHROW	_ftelli64 (FILE*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_fseeki64_nolock (FILE*, __int64, int);
-_CRTIMP __int64 __cdecl __MINGW_NOTHROW	_ftelli64_nolock (FILE*);
+int __cdecl __MINGW_NOTHROW	_fseeki64 (FILE*, __int64, int);
+_CRTALIAS int __cdecl __MINGW_NOTHROW _fseeki64( FILE *stream, __int64 offset, int whence)
+{ return _lseeki64(_fileno(stream), offset, whence);}
+__int64 __cdecl __MINGW_NOTHROW	_ftelli64 (FILE*);
+_CRTALIAS __int64 __cdecl __MINGW_NOTHROW _ftelli64(FILE *stream)
+{ return _telli64(_fileno(stream)); }
+
+/* The _nolock is supposed to be nonlocking thread versions, they do not exist
+ * in msvcrt.dll. */
+int __cdecl __MINGW_NOTHROW	_fseeki64_nolock (FILE*, __int64, int);
+_CRTALIAS int _fseeki64_nolock (FILE *stream, __int64 offset, int whence)
+{ return _fseeki64(stream, offset, whence); }
+__int64 __cdecl __MINGW_NOTHROW	_ftelli64_nolock (FILE*);
+_CRTALIAS __int64 __cdecl __MINGW_NOTHROW _ftelli64_nolock (FILE *stream)
+{ return _ftelli64(stream); }
 
 #ifdef __USE_MINGW_FSEEK  /* These are in libmingwex.a */
 /*

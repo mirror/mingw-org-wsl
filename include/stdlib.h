@@ -338,6 +338,7 @@ _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _set_abort_behavior (unsigned int, 
 #  define _WRITE_ABORT_MSG 1
 #  define _CALL_REPORTFAULT 2
 
+#if __MINGW_MSVCR_PREREQ(80)
 typedef void
 (* _invalid_parameter_handler) (
     const wchar_t *,
@@ -346,6 +347,7 @@ typedef void
     unsigned int,
     uintptr_t);
 _invalid_parameter_handler _set_invalid_parameter_handler (_invalid_parameter_handler);
+#endif
 
 #ifndef _NO_OLDNAMES
 

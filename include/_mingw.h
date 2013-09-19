@@ -225,6 +225,12 @@
 #define __MINGW_GNUC_PREREQ(major, minor) \
  (__GNUC__ > (major) || (__GNUC__ == (major) && __GNUC_MINOR__ >= (minor)))
 
+/* This will be used to determine if we are using a MSVC versioned library
+ * that provides the symbols being declared.  This could potentially be set
+ * by GCC eventually based on use switch of -msvc=xx or something similar. */ 
+#define __MINGW_MSVCR_PREREQ(runtime) \
+  (defined(__MSVC_RUNTIME__) && (__MSVC_RUNTIME__ >= (runtime)))
+
 #ifdef __cplusplus
 # define __CRT_INLINE inline
 #else
