@@ -1,3 +1,22 @@
+mingwrt-4.1
+w32api-4.1
+-----
+Introduction of _NO_MINGWEX_ macro filter which will be defined by the end user
+to use the imported MSVCRT.DLL version instead of the extended version provided
+by the mingwex library.  Using _NO_MINGWEX_ with __STRICT_ANSI__ is highly
+discouraged and your configure scripts should test for this scenario and decide
+to abort.
+
+[#2018] Add an ANSI corrected version of swprintf() and vswprintf() to mingwex.
+[#2020] _set_invalid_parameter_handler is not defined in MSVCRT.DLL.
+[#2021] _fseeki64, _ftelli64, _fseeki64_nolock, _ftelli64_nolock, _fseek_nolock
+  and _ftell_nolock were changed from an import to a _CRTALIAS.
+[#2024] lseek64 declaration changed to use _off64_t instead of off64_t for use
+with __STRICT_ANSI__.
+[#2027] ldap_start_tls_s[AW] Corrected declared signature.
+[#2046] Guard the inclusion of unistd.h with #ifndef __STRICT_ANSI__.
+
+
 mingwrt-4.0
 w32api-4.0
 -----

@@ -1,5 +1,22 @@
 RELEASE 4.1:
 
+2013-09-27  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Manage issue [#2018] and miscellaneous changes.
+
+	* include/stdio.h: Need to include io.h for _lseeki64().
+	(__SWPRINTF_DEFINED): New controlling macro for declarations.
+	(_NO_MINGWEX_): Ditto.
+	(swprintf, vswprintf): Declarations in ANSI format unless _NO_MINGWEX_
+	defined.
+	* include/wchar.h (__SWPRINTF_DEFINED, _NO_MINGWEX_, swprintf,
+	vswprintf): Ditto.
+	* src/libcrt/wchar/swprintf.c: New file.
+	* src/libcrt/wchar/vswprintf.c: Ditto.
+	* Makefile.in: Add swprintf.c and vswprintf.c compilation.
+	(libmingwex.a): Add swprintf and vswprintf objects.
+	* NEWS: Begin describing the changes for 4.1.
+
 2013-09-19  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/stdio.h (_fseeki64): Remove import and create alias [#2021].
@@ -40,7 +57,7 @@ RELEASE 4.1:
 	(GetExceptionInformation): Ditto.
 	(exception_info): Ditto.
 	(AbnormalTermination): Ditto.
-	(abnormal_Termination): Ditto.
+	(abnormal_termination): Ditto.
 	(FIXME): Add FIXME notes in various places.
 
 2012-10-15  Earnie Boyd  <earnie@users.sourceforge.net>
@@ -51,7 +68,7 @@ RELEASE 4.1:
 	(NOATOM, NOCOMM, NOCRYPT, NOGDI, NOGDICAPMASKS, NOKANJI, NOMCX,
 	NOMETAFILE, NOMINMAX, NOMSG, NOOPENFILE, NOWN, NORASTEROPS, NOSCROLL,
 	NOSOUND, NOSYSMETRICS, NOTEXTMETRIC): Define if RC_INVOKED and
-	NOWINRES is defined.
+	NOWINDRES is defined.
 	(excpt.h, stdarg.h): Include if not RC_INVOKED.
 	(wincon.h, winnetwk.h): Move location of inclusion.
 	(wingdi.h): Include regardless of NOGDI.

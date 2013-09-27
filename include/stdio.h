@@ -36,12 +36,13 @@
 #include <stdarg.h>
 #endif	/* Not RC_INVOKED */
 
+/* Need _lseeki64() for the _fseeki64() alias.*/
+#include <io.h>
 
 /* Flags for the iobuf structure  */
 #define	_IOREAD	1 /* currently reading */
 #define	_IOWRT	2 /* currently writing */
 #define	_IORW	0x0080 /* opened as "r+w" */
-
 
 /*
  * The three standard file pointers provided by the run time library.
@@ -579,10 +580,24 @@ _CRTIMP wint_t __cdecl __MINGW_NOTHROW	fgetwc (FILE*);
 _CRTIMP wint_t __cdecl __MINGW_NOTHROW	fputwc (wchar_t, FILE*);
 _CRTIMP wint_t __cdecl __MINGW_NOTHROW	ungetwc (wchar_t, FILE*);
 
-/* These differ from the ISO C prototypes, which have a maxlen parameter (like snprintf).  */
+/* The end user will define _NO_MINGWEX_ to receive the version imported from
+ * MSVCRT.DLL.  Note regardless of what MSDN states, it is show by testing that
+ * the versions of this function from MSVCRT.DLL or MSVCR##.DLL is not compliant
+ * with regard to the 2nd parameter being a size_t count parameter.  Using
+ * __STRICT_ANSI__ with _NO_MINGWEX_ is highly discouraged and your configure
+ * scripts should test for it.
+ */
+#ifndef __SWPRINTF_DEFINED
+#ifdef _NO_MINGWEX_
 #ifndef __STRICT_ANSI__
-_CRTIMP int __cdecl __MINGW_NOTHROW	swprintf (wchar_t*, const wchar_t*, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	vswprintf (wchar_t*, const wchar_t*, __VALIST);
+_CRTIMP __cdecl __MINGW_NOTHROW swprintf(wchar_t*, const wchar_t*, ...);
+_CRTIMP __cdecl __MINGW_NOTHROW vswprintf(wchar_t*, const wchar_t*, __VALIST);
+#endif
+#else
+int __cdecl __MINGW_NOTHROW	swprintf (wchar_t*, size_t, const wchar_t*, ...);
+int __cdecl __MINGW_NOTHROW	vswprintf (wchar_t*, size_t, const wchar_t*, __VALIST);
+#endif
+#define __SWPRINTF_DEFINED
 #endif
 
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW fgetws (wchar_t*, int, FILE*);
