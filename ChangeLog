@@ -19,6 +19,11 @@ RELEASE 4.1:
 	* include/winsock.h: Ditto.
 	* include/winsock2.h: Ditto.
 
+	MOD_NOREPEAT missing [#2017]
+
+	* include/winuser.h: Add MOD_NOREPEAT define for Windows 7.
+	Adjust some whitespace and add a few comments.
+
 2013-09-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Manage issue [#2018] and miscellaneous changes.

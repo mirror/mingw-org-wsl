@@ -3724,6 +3724,7 @@ typedef __AW(NONCLIENTMETRICS) NONCLIENTMETRICS,*LPNONCLIENTMETRICS;
 
 #endif /* RC_INVOKED */
 
+/* WIN98 */
 #if (_WIN32_WINNT >= 0x0410)
 #define DC_GRADIENT	0x00000020
 #define TPM_RECURSE 1
@@ -3771,6 +3772,7 @@ WINUSERAPI BOOL WINAPI EnumDisplaySettingsExW(LPCWSTR,DWORD,LPDEVMODEW,DWORD);
 
 #endif /* (_WIN32_WINNT >= 0x0410) */
 
+/* WINME */
 #if (_WIN32_WINNT >= 0x0490)
 #define ASFW_ANY ((DWORD)-1)
 #define LSFW_LOCK 1
@@ -3792,6 +3794,7 @@ WINUSERAPI BOOL WINAPI LockSetForegroundWindow(UINT);
 
 #endif /* (_WIN32_WINNT >= 0x0490) */
 
+/* WIN2K */
 #if (_WIN32_WINNT >= 0x0500)
 #define CF_DIBV5 17
 #undef CF_MAX
@@ -4007,6 +4010,7 @@ WINUSERAPI BOOL WINAPI UpdateLayeredWindow(HWND,HDC,POINT*,SIZE*,HDC,POINT*,COLO
 
 #endif /* (_WIN32_WINNT >= 0x0500) */
 
+/* XP */
 #if (_WIN32_WINNT >= 0x0501)
 #define BSF_LUID 0x00000400
 #define BSF_RETURNHDESK 0x00000200
@@ -4227,6 +4231,7 @@ WINUSERAPI BOOL WINAPI GetLayeredWindowAttributes(HWND,COLORREF*,BYTE*,DWORD*);
 #define QS_INPUT 7
 #endif /* (_WIN32_WINNT >= 0x0501) */
 
+/* VISTA */
 #if (_WIN32_WINNT >= 0x0600)
 #define PBT_POWERSETTINGCHANGE	32787
 
@@ -4254,20 +4259,22 @@ WINUSERAPI BOOL WINAPI UnregisterPowerSettingNotification(HPOWERNOTIFY);
 	
 #endif /* (_WIN32_WINNT >= 0x0600) */
 
+/* WIN7 */
 #if (_WIN32_WINNT >= 0x0601)
-#define WM_TOUCHMOVE 576
-#define WM_TOUCHDOWN 577
-#define WM_TOUCHUP 578
-#define TOUCHEVENTF_DOWN	    0x0001
-#define TOUCHEVENTF_INRANGE	    0x0008
-#define TOUCHEVENTF_MOVE	    0x0002
-#define TOUCHEVENTF_NOCOALESCE	0x0020
-#define TOUCHEVENTF_PALM	    0x0080
-#define TOUCHEVENTF_PEN	        0x0040
-#define TOUCHEVENTF_PRIMARY	    0x0010
-#define TOUCHEVENTF_UP	        0x0004
+#define MOD_NOREPEAT                    0x4000
+#define WM_TOUCHMOVE                    0x0240
+#define WM_TOUCHDOWN                    0x0241
+#define WM_TOUCHUP                      0x0242
+#define TOUCHEVENTF_DOWN                0x0001
+#define TOUCHEVENTF_INRANGE             0x0008
+#define TOUCHEVENTF_MOVE                0x0002
+#define TOUCHEVENTF_NOCOALESCE          0x0020
+#define TOUCHEVENTF_PALM                0x0080
+#define TOUCHEVENTF_PEN                 0x0040
+#define TOUCHEVENTF_PRIMARY             0x0010
+#define TOUCHEVENTF_UP                  0x0004
 #define TOUCHEVENTMASKF_CONTACTAREA	    0x0004
-#define TOUCHEVENTMASKF_EXTRAINFO	    0x0002
+#define TOUCHEVENTMASKF_EXTRAINFO	      0x0002
 #define TOUCHEVENTMASKF_TIMEFROMSYSTEM	0x0001
 
 #ifndef RC_INVOKED
