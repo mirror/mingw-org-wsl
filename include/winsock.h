@@ -122,7 +122,7 @@ for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++) {\
 #ifndef _TIMEVAL_DEFINED /* also in sys/time.h */
 #define _TIMEVAL_DEFINED
 struct timeval {
-	long    tv_sec;
+	time_t  tv_sec;
 	long    tv_usec;
 };
 #define timerisset(tvp)	 ((tvp)->tv_sec || (tvp)->tv_usec)

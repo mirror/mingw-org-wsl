@@ -13,6 +13,12 @@ RELEASE 4.1:
 	* src/libcrt/wchar/swprintf.c: Remove code making swprintf non-ansi.
 	* src/libcrt/wchar/vswprintf.c: Ditto.
 
+	Timeval struct bitness issue [#2059]
+
+	* include/sys/time.h: Use time_t instead of long for timeval.tv_sec.
+	* include/winsock.h: Ditto.
+	* include/winsock2.h: Ditto.
+
 2013-09-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Manage issue [#2018] and miscellaneous changes.

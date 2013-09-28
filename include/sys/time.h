@@ -35,7 +35,7 @@ extern "C" {
 #ifndef _TIMEVAL_DEFINED /* also in winsock[2].h */
 #define _TIMEVAL_DEFINED
 struct timeval {
-  long tv_sec;
+  time_t tv_sec;
   long tv_usec;
 };
 #define timerisset(tvp)	 ((tvp)->tv_sec || (tvp)->tv_usec)
