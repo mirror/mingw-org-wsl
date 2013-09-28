@@ -32,10 +32,5 @@ int __cdecl __MINGW_NOTHROW swprintf(wchar_t *strm, size_t cnt, const wchar_t *f
   __builtin_va_list lcl_argv;
   __builtin_va_start(lcl_argv, fmt);
   retval = _vsnwprintf(strm, cnt, fmt, lcl_argv);
-  if (cnt > 0 && retval == cnt)
-  {
-    strm[cnt - 1] = L"\0";
-    return -1;
-  }
   return retval;
 }

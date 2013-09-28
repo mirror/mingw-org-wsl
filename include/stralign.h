@@ -58,7 +58,7 @@ extern "C" {
 #endif
 
 #ifndef __NO_INLINE__
-#define ___API_STATIC__ static __CRT_INLINE__
+#define ___API_STATIC__ __CRT_STATIC_INLINE
 #else
 #define ___API_STATIC__ static
 #endif
@@ -77,6 +77,7 @@ extern "C" {
 #define ua_cscpy_s wcscpy_s
 #endif /* _STRALIGN_USE_SECURE_CRT */
 
+___API_STATIC__ PUWSTR _WINDOWS_INSECURE_DEPRECATE ua_wcscpy(PUWSTR, PCUWSTR);
 ___API_STATIC__ PUWSTR _WINDOWS_INSECURE_DEPRECATE ua_wcscpy(PUWSTR dest, PCUWSTR src) { return wcscpy(dest, src); }
 #else /* ndef _X86_ */
 

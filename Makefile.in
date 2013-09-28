@@ -590,7 +590,7 @@ wchar_SOURCES := \
   $(SRCDIR)/mbrtowc.c \
   $(SRCDIR)/mbsinit.c \
   $(SRCDIR)/swprintf.c \
-  $(srcdir)/vswprintf.c \
+  $(SRCDIR)/vswprintf.c \
   $(SRCDIR)/wcrtomb.c \
   $(SRCDIR)/wcstof.c \
   $(SRCDIR)/wcstold.c \

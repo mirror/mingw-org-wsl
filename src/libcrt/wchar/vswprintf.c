@@ -30,10 +30,5 @@ int __cdecl __MINGW_NOTHROW vswprintf(wchar_t *strm, size_t cnt, const wchar_t *
 {
   register int retval;
   retval = _vsnwprintf(strm, cnt, fmt, lcl_argv);
-  if (cnt > 0 && retval == cnt)
-  {
-    strm[cnt - 1] = L"\0";
-    return -1;
-  }
   return retval;
 }

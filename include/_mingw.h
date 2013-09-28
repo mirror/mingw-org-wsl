@@ -233,11 +233,14 @@
 
 #ifdef __cplusplus
 # define __CRT_INLINE inline
+# define __CRT_STATIC_INLINE static inline
 #else
 # if __GNUC_STDC_INLINE__
 #  define __CRT_INLINE extern inline __attribute__((__gnu_inline__))
+#  define __CRT_STATIC_INLINE static inline __attribute__((__gnu_inline__))
 # else
 #  define __CRT_INLINE extern __inline__
+#  define __CRT_STATIC_INLINE static __inline__
 # endif
 #endif
 

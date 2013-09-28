@@ -1,5 +1,18 @@
 RELEASE 4.1:
 
+2013-09-28  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Miscellaneous cleanup for compile errors.
+
+	* Makefile.in: Correct capitalization of $(srcdir) to $(SRCDIR).
+	* config.h.in: Autoheader added a generated from comment.
+	* include/_mingw.h (__CRT_STATIC_INLINE): New macro.
+	* include/stralign.h: Use __CRT_STATIC_INLINE in define for
+	___API_STATIC__.
+	(ua_wcscpy()): Add declaration.
+	* src/libcrt/wchar/swprintf.c: Remove code making swprintf non-ansi.
+	* src/libcrt/wchar/vswprintf.c: Ditto.
+
 2013-09-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Manage issue [#2018] and miscellaneous changes.
