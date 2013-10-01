@@ -1,5 +1,11 @@
 RELEASE 4.1:
 
+2013-10-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	[#2077] mce.h is missing.
+
+	* ddk/mce.h: New file.
+
 2013-09-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Miscellaneous cleanup for compile errors.
