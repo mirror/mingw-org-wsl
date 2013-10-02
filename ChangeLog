@@ -8,8 +8,17 @@ RELEASE 4.1:
 
 	[#2080] Restructure the GCC to MS architecture defines.
 
-	* include_mingw.h: Implement GCC to MS architecture mapping based on
+	* include/_mingw.h: Implement GCC to MS architecture mapping based on
 	documentation listed in the [#2080] ticket.
+
+	[#2078] shlobj.h is missing defines.
+
+	* include/shlobj.h: Refactor existing defines to move to the proper
+	OS version filter before defining.
+	(BIF_UAHINT): New definition.
+	(BIF_NONEWFOLDERBUTTON): Ditto.
+	(BIF_NOTRANSLATETARGETS): Ditto.
+	(BIF_BROWSEFILEJUNCTIONS): Ditto.
 
 2013-10-01  Earnie Boyd  <earnie@users.sourceforge.net>
 
