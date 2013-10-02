@@ -20,6 +20,12 @@ RELEASE 4.1:
 	(BIF_NOTRANSLATETARGETS): Ditto.
 	(BIF_BROWSEFILEJUNCTIONS): Ditto.
 
+	[#2079] The kspin_lock_queue_number structure changed for _AMD64_.
+
+	* include/ddk/winddk.h (NTOSAPI): Refactor to use __MINGW_EXPORT and
+	__MINGW_IMPORT instead of DECL_EXPORT and DECL_IMPORT.
+	(KSPIN_LOCK_QUEUE_NUMBER): Add differences for _AMD64_ architecture.
+
 2013-10-01  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	[#2077] mce.h is missing.

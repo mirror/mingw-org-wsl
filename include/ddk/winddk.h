@@ -44,7 +44,7 @@ extern "C" {
 
 #if defined(_NTOSKRNL_)
 #ifndef NTOSAPI
-#define NTOSAPI DECL_EXPORT
+#define NTOSAPI __MINGW_EXPORT
 #endif
 
 #define DECLARE_INTERNAL_OBJECT(x) typedef struct _##x; typedef struct _##x *P##x;
@@ -52,7 +52,7 @@ extern "C" {
 #else
 
 #ifndef NTOSAPI
-#define NTOSAPI DECL_IMPORT
+#define NTOSAPI __MINGW_IMPORT
 #endif
 
 #define DECLARE_INTERNAL_OBJECT(x) struct _##x; typedef struct _##x *P##x;
@@ -841,6 +841,27 @@ typedef struct _KDEVICE_QUEUE_ENTRY {
 #define LOCK_QUEUE_WAIT                   1
 #define LOCK_QUEUE_OWNER                  2
 
+#if defined(_AMD64_)
+typedef ULONG64 KSPIN_LOCK_QUEUE_NUMBER;
+#define LockQueueUnusedSpare0 0
+#define LockQueueExpansionLock 1
+#define LockQueueUnusedSpare2 2
+#define LockQueueSystemSpaceLock 3
+#define LockQueueVacbLock 4
+#define LockQueueMasterLock 5
+#define LockQueueNonPagedPoolLock 6
+#define LockQueueIoCancelLock 7
+#define LockQueueWorkQueueLock 8
+#define LockQueueIoVpbLock 9
+#define LockQueueIoDatabaseLock 10
+#define LockQueueIoCompletionLock 11
+#define LockQueueNtfsStructLock 12
+#define LockQueueAfdWorkQueueLock 13
+#define LockQueueBcbLock 14
+#define LockQueueMmNonPagedPoolLock 15
+#define LockQueueUnusedSpare16 16
+#define LockQueueMaximumLock (LockQueueUnusedSpare16 + 1)
+#else /* !defined(_AMD64_) */
 typedef enum _KSPIN_LOCK_QUEUE_NUMBER {
   LockQueueDispatcherLock,
   LockQueueContextSwapLock,
@@ -859,15 +880,16 @@ typedef enum _KSPIN_LOCK_QUEUE_NUMBER {
   LockQueueBcbLock,
   LockQueueMaximumLock
 } KSPIN_LOCK_QUEUE_NUMBER, *PKSPIN_LOCK_QUEUE_NUMBER;
+#endif
 
 typedef struct _KSPIN_LOCK_QUEUE {
   struct _KSPIN_LOCK_QUEUE  *VOLATILE Next;
-  PKSPIN_LOCK VOLATILE  Lock;
+  PKSPIN_LOCK VOLATILE Lock;
 } KSPIN_LOCK_QUEUE, *PKSPIN_LOCK_QUEUE;
 
 typedef struct _KLOCK_QUEUE_HANDLE {
-  KSPIN_LOCK_QUEUE  LockQueue;
-  KIRQL  OldIrql;
+  KSPIN_LOCK_QUEUE LockQueue;
+  KIRQL OldIrql;
 } KLOCK_QUEUE_HANDLE, *PKLOCK_QUEUE_HANDLE;
 
 typedef struct _KDPC {
