@@ -1,5 +1,16 @@
 RELEASE 4.1:
 
+2013-10-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	[#2081] Neeed a __FORCEINLINE macro for better definition.
+
+	* include/_mingw.h (__FORCEINLINE): New macro.
+
+	[#2080] Restructure the GCC to MS architecture defines.
+
+	* include_mingw.h: Implement GCC to MS architecture mapping based on
+	documentation listed in the [#2080] ticket.
+
 2013-10-01  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	[#2077] mce.h is missing.

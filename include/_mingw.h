@@ -56,7 +56,43 @@
 #endif
 
 /* translate GCC target defines to MS equivalents. */
-#if defined(__i686__) && !defined(_M_IX86)
+/* http://sourceforge.net/p/predef/wiki/Architectures/ */ 
+#if defined(__alpha__) && !defined(_M_ALPHA)
+# define _M_ALPHA __alpha__
+#elif defined(__amd64__) || defined(__x86_64__)
+# if defined(__amd64__) && !defined(_M_AMD64)
+#  define _M_AMD64 __amd64__
+# endif
+# if defined(__x86_64__) && !defined(_M_X64)
+#  define _M_X64 __x86_64__
+# endif
+#elif defined(__arm__) || defined(__thumb__)
+# if defined(__arm__) && !defined(_M_ARM)
+#  if defined(__ARM_ARCH_5__) || defined(__ARM_ARCH_5E__)
+#   define _M_ARM 5
+#  endif
+#  if defined(__ARM_ARCH_6__) || defined(__ARM_ARCH_6J__) || \
+      defined(__ARM_ARCH_6K__) || defined(__ARM_ARCH_6Z__) || \
+      defined(__ARM_ARCH_6ZK__)
+#   define _M_ARM 6
+#  endif
+#  if defined(__ARM_ARCH_7__) || defined(__ARM_ARCH_7A__) || \
+      defined(__ARM_ARCH_7R__) || defined(__ARM_ARCH_7M__) || \
+      defined(__ARM_ARCH_7S__)
+#   define _M_ARM 7
+#  endif
+# endif
+# if defined(__thumb__)
+#  if defined(__ARM_ARCH_5T__) || defined(__ARM_ARCH_5TE) || defined(__ARM_ARCH_5TEJ__)
+#   define _M_ARMT 5
+#  endif
+#  if defined(__ARM_ARCH_6T2__)
+#   define _M_ARMT 6
+#  endif
+# endif
+#elif defined(__aarch64__) && !defined(_M_ARM64)
+# define _M_ARM64 __aarch64__
+#elif defined(__i686__) && !defined(_M_IX86)
 #define _M_IX86 600
 #elif defined(__i586__) && !defined(_M_IX86)
 #define _M_IX86 500
@@ -64,14 +100,9 @@
 #define _M_IX86 400
 #elif defined(__i386__) && !defined(_M_IX86)
 #define _M_IX86 300
-#elif defined(__amd64__)
-# if !defined(_M_X64)
-#  define _M_X64
-# endif
-# if !defined(_M_AMD64)
-#  define _M_AMD64
-# endif
 #endif
+
+/* @TODO: We need to validate the below assignments */
 
 #if defined(__SSE2_MATH__) && !defined(_M_IX86_FP)
 #define _M_IX86_FP 2
@@ -249,6 +280,7 @@
  * of code.
  */
 #define _CRTALIAS __CRT_INLINE __attribute__ ((__always_inline__))
+#define __FORCEINLINE __CRT_INLINE __attribute((__always_inline__))
 
 /* __CRT_MAYBE_INLINE is to be used when we provide functions in the headers
  * to provide compatibility between differing versions of MSVCRT.DLL for
