@@ -49,18 +49,19 @@ typedef enum _RPC_NOTIFICATION_TYPES {
   RpcNotificationTypeCallback
 } RPC_NOTIFICATION_TYPES;
 
-#if !(_WIN32_WINNT >= _WIN32_WINNT_VISTA)
 typedef enum _RPC_ASYNC_EVENT {
-  RpcCallComplete,
-  RpcSendComplete,
-  RpcReceiveComplete,
-  RpcClientDisconnect
+   RpcCallComplete
+  ,RpcSendComplete
+  ,RpcReceiveComplete
+  ,RpcClientDisconnect
+#if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
+  ,RpcClientCancel
+#endif
 } RPC_ASYNC_EVENT;
 
 #define RPC_CALL_ATTRIBUTES_VERSION 1
 #define RPC_QUERY_SERVER_PRINCIPAL_NAME 2
 #define RPC_QUERY_CLIENT_PRINCIPAL_NAME 4
-#endif
 
 struct _RPC_ASYNC_STATE;
 
@@ -156,7 +157,7 @@ typedef struct tagRPC_EE_INFO_PARAM {
 #define EEInfoUseFileTime             4
 #define EEInfoGCCOM                  11
 
-typedef struct tagRPC_EXTENDED_ERROR_INFO
+typedef struct tagRPC_EXTENDED_ERROR_INFO {
   ULONG Version;
   LPWSTR ComputerName;
   ULONG ProcessID;
@@ -232,13 +233,6 @@ typedef RPC_CALL_ATTRIBUTES_V1 RPC_CALL_ATTRIBUTES;
 #endif /* (_WIN32_WINNT >= _WIN32_WINNT_WINXP) */
 
 #if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
-typedef enum _RPC_ASYNC_EVENT {
-  RpcCallComplete,
-  RpcSendComplete,
-  RpcReceiveComplete,
-  RpcClientDisconnect,
-  RpcClientCancel
-} RPC_ASYNC_EVENT;
 
 #define RPC_CALL_STATUS_CANCELLED    0x01
 #define RPC_CALL_STATUS_DISCONNECTED 0x02
@@ -256,6 +250,19 @@ typedef enum tagRpcCallClientLocality {
   rcclRemote,
   rcclClientUnknownLocality
 } RpcCallClientLocality;
+
+typedef enum tagRpcLocalAddressFormat {
+  rlafInvalid = 0,
+  rlafIPv4,
+  rlafIPv6
+} RpcLocalAddressFormat;
+
+typedef struct _RPC_CALL_LOCAL_ADDRESS_V1 {
+  unsigned int Version;
+  void *Buffer;
+  unsigned long BufferSize;
+  RpcLocalAddressFormat AddressFormat;
+} RPC_CALL_LOCAL_ADDRESS_V1, *PRPC_CALL_LOCAL_ADDRESS_V1;
 
 typedef struct tagRPC_CALL_ATTRIBUTES_V2_W {
   unsigned int Version;
@@ -299,18 +306,7 @@ typedef struct tagRPC_CALL_ATTRIBUTES_V2_A {
   UUID InterfaceUuid;    
 } RPC_CALL_ATTRIBUTES_V2_A;
 
-typedef enum tagRpcLocalAddressFormat {
-  rlafInvalid = 0,
-  rlafIPv4,
-  rlafIPv6
-} RpcLocalAddressFormat;
-
-typedef struct _RPC_CALL_LOCAL_ADDRESS_V1 {
-  unsigned int Version;
-  void *Buffer;
-  unsigned long BufferSize;
-  RpcLocalAddressFormat AddressFormat;
-} RPC_CALL_LOCAL_ADDRESS_V1, *PRPC_CALL_LOCAL_ADDRESS_V1;
+#define RPC_CALL_ATTRIBUTES_V2 __AW(RPC_CALL_ATTRIBUTES_V2_)
 
 #define RPC_CALL_ATTRIBUTES_VERSION 2
 #define RPC_QUERY_SERVER_PRINCIPAL_NAME 0x02

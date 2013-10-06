@@ -76,6 +76,7 @@
 #include <mmsystem.h>
 #include <nb30.h>
 #include <rpc.h>
+#include <basetyps.h>
 #include <shellapi.h>
 #include <winperf.h>
 #include <winsock.h>

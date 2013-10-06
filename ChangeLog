@@ -12,6 +12,26 @@ RELEASE 4.1:
 	* include/unknwn.h: Move the RPC headers before the file protection.
 	[#2087] unknwn.h needs to include RPC headers before file filter.
 
+	* include/rpcasync.h: Restructure for proper use.
+	[#2072] rpcasync.h structures need filtered based on OS version.
+
+	* include/rpcdce.h: This file contained a mess.
+	[#2088] rpcdce.h has typos and syntax errors throughout.
+	[#2089] rpcdce.h is missing RPC_BINDING_HANDLE_OPTIONS_V1 structure.
+
+	* include/windows.h: Include basetyps.h for REFIID definition.
+	[#2090] Need basetyps.h in windows.h for shellapi.h use of REFIID.
+
+	* include/winefs.h: Fix a badly formed define.  Fix typo in use of
+	__API_VOID_DEPRECATED__.
+	[#2091] winefs.h has __API_DWORD_DEPRECATED__ incorrectly defined.
+
+	* include/winscard.h: SCARD_AIRMASK should be SCARD_ATRMASK.
+	[#2092] SCARD_AIRMASK should be SCARD_ATRMASK in winscard.h.
+
+	* include/winsock.h include/winsock2.h: Need timeval structure.
+	[#2093] Winsock.h and winsock2.h missing timeval structure.
+
 2013-10-02  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	[#2081] Neeed a __FORCEINLINE macro for better definition.

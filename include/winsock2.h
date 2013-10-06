@@ -38,6 +38,7 @@
 #define _GNU_H_WINDOWS32_SOCKETS
 
 #include <windows.h>
+#include <sys/time.h>
 
 #ifndef WINSOCK_API_LINKAGE
 #ifdef __W32API_USE_DLLIMPORT__

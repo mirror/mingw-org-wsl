@@ -352,7 +352,7 @@ typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_A {
   unsigned long NumberOfAuthnSchemes;
   unsigned long *AuthnSchemes;
   RPC_CSTR ServerCertificateSubject;
-} RPC_HTTP_TRANSPORT_CREDENTIALS_A, *PRPC_HTTP_TRANSPORT_CREDENTIALS_A
+} RPC_HTTP_TRANSPORT_CREDENTIALS_A, *PRPC_HTTP_TRANSPORT_CREDENTIALS_A;
 
 typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_W {
   SEC_WINNT_AUTH_IDENTITY_W *TrasportCredentials;
@@ -361,7 +361,7 @@ typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_W {
   unsigned long NumberOfAuthnSchemes;
   unsigned long *AuthnSchemes;
   RPC_WSTR ServerCertificateSubject;
-} RPC_HTTP_TRANSPORT_CREDENTIALS_W, *PRPC_HTTP_TRANSPORT_CREDENTIALS_W
+} RPC_HTTP_TRANSPORT_CREDENTIALS_W, *PRPC_HTTP_TRANSPORT_CREDENTIALS_W;
 
 #define RPC_HTTP_TRANSPORT_CREDENTIALS __AW(RPC_HTTP_TRANSPORT_CREDENTIALS_)
 #define PRPC_HTTP_TRANSPORT_CREDENTIALS __AW(PRPC_HTTP_TRANSPORT_CREDENTIALS_)
@@ -374,9 +374,9 @@ typedef struct _RPC_SECURITY_QOS_V2_A {
   unsigned long ImpersonationType;
   unsigned long AdditionalSecurityInfoType;
   union {
-    RPC_HTTP_TRANSPORT_CREDENITIALS_A *HttpCredentials;
-  } u
-} RPC_SECURITY_QOS_V2_A *PRPC_SECURITY_QOS_V2_A;
+    RPC_HTTP_TRANSPORT_CREDENTIALS_A *HttpCredentials;
+  } u;
+} RPC_SECURITY_QOS_V2_A, *PRPC_SECURITY_QOS_V2_A;
 
 typedef struct _RPC_SECURITY_QOS_V2_W {
   unsigned long Version;
@@ -385,9 +385,9 @@ typedef struct _RPC_SECURITY_QOS_V2_W {
   unsigned long ImpersonationType;
   unsigned long AdditionalSecurityInfoType;
   union {
-    RPC_HTTP_TRANSPORT_CREDENITIALS_W *HttpCredentials;
-  } u
-} RPC_SECURITY_QOS_V2_W *PRPC_SECURITY_QOS_V2_W;
+    RPC_HTTP_TRANSPORT_CREDENTIALS_W *HttpCredentials;
+  } u;
+} RPC_SECURITY_QOS_V2_W, *PRPC_SECURITY_QOS_V2_W;
 
 #define RPC_SECURITY_QOS_V2 __AW(RPC_SECURITY_QOS_V2_)
 #define PRPC_SECURITY_QOS_V2 __AW(PRPC_SECURITY_QOS_V2_)
@@ -409,10 +409,10 @@ typedef struct _RPC_SECURITY_QOS_V3_A {
   unsigned long ImpersonationType;
   unsigned long AdditionalSecurityInfoType;
   union {
-    RPC_HTTP_TRANSPORT_CREDENITIALS_A *HttpCredentials;
-  } u
+    RPC_HTTP_TRANSPORT_CREDENTIALS_A *HttpCredentials;
+  } u;
   void *Sid;
-} RPC_SECURITY_QOS_V3_A *PRPC_SECURITY_QOS_V3_A;
+} RPC_SECURITY_QOS_V3_A, *PRPC_SECURITY_QOS_V3_A;
 
 typedef struct _RPC_SECURITY_QOS_V3_W {
   unsigned long Version;
@@ -421,10 +421,10 @@ typedef struct _RPC_SECURITY_QOS_V3_W {
   unsigned long ImpersonationType;
   unsigned long AdditionalSecurityInfoType;
   union {
-    RPC_HTTP_TRANSPORT_CREDENITIALS_W *HttpCredentials;
-  } u
+    RPC_HTTP_TRANSPORT_CREDENTIALS_W *HttpCredentials;
+  } u;
   void *Sid;
-} RPC_SECURITY_QOS_V3_W *PRPC_SECURITY_QOS_V3_W;
+} RPC_SECURITY_QOS_V3_W, *PRPC_SECURITY_QOS_V3_W;
 
 #define RPC_SECURITY_QOS_V3 __AW(RPC_SECURITY_QOS_V3_)
 #define PRPC_SECURITY_QOS_V3 __AW(PRPC_SECURITY_QOS_V3_)
@@ -436,7 +436,7 @@ typedef enum _RPC_HTTP_REDIRECTOR_STAGE {
   RPCHTTP_RS_SESSION,
   RPCHTTP_RS_ACCESS_2,
   RPCHTTP_RS_INTERFACE
-} RPC_HTTP_REDIRECTORY_STAGE;
+} RPC_HTTP_REDIRECTOR_STAGE;
 
 typedef RPC_STATUS (__RPC_USER * RPC_NEW_HTTP_PROXY_CHANNEL) (
   RPC_HTTP_REDIRECTOR_STAGE RedirectorStage,
@@ -478,7 +478,7 @@ typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_V2_A {
   SEC_WINNT_AUTH_IDENTITY_A *ProxyCredentials;
   unsigned long NumberOfProxyAuthnSchemes;
   unsigned long *ProxyAuthnSchemes;
-} RPC_HTTP_TRANSPORT_CREDENTIALS_V2_A, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V2_A
+} RPC_HTTP_TRANSPORT_CREDENTIALS_V2_A, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V2_A;
 
 typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_V2_W {
   SEC_WINNT_AUTH_IDENTITY_W *TrasportCredentials;
@@ -490,7 +490,7 @@ typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_V2_W {
   SEC_WINNT_AUTH_IDENTITY_W *ProxyCredentials;
   unsigned long NumberOfProxyAuthnSchemes;
   unsigned long *ProxyAuthnSchemes;
-} RPC_HTTP_TRANSPORT_CREDENTIALS_V2_W, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V2_W
+} RPC_HTTP_TRANSPORT_CREDENTIALS_V2_W, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V2_W;
 
 #define RPC_HTTP_TRANSPORT_CREDENTIALS_V2 __AW(RPC_HTTP_TRANSPORT_CREDENTIALS_V2_)
 #define PRPC_HTTP_TRANSPORT_CREDENTIALS_V2 __AW(PRPC_HTTP_TRANSPORT_CREDENTIALS_V2_)
@@ -503,11 +503,11 @@ typedef struct _RPC_SECURITY_QOS_V4_A {
   unsigned long ImpersonationType;
   unsigned long AdditionalSecurityInfoType;
   union {
-    RPC_HTTP_TRANSPORT_CREDENITIALS_A *HttpCredentials;
-  } u
+    RPC_HTTP_TRANSPORT_CREDENTIALS_A *HttpCredentials;
+  } u;
   void *Sid;
   unsigned int EffectiveOnly;
-} RPC_SECURITY_QOS_V4_A *PRPC_SECURITY_QOS_V4_A;
+} RPC_SECURITY_QOS_V4_A, *PRPC_SECURITY_QOS_V4_A;
 
 typedef struct _RPC_SECURITY_QOS_V4_W {
   unsigned long Version;
@@ -516,11 +516,11 @@ typedef struct _RPC_SECURITY_QOS_V4_W {
   unsigned long ImpersonationType;
   unsigned long AdditionalSecurityInfoType;
   union {
-    RPC_HTTP_TRANSPORT_CREDENITIALS_W *HttpCredentials;
-  } u
+    RPC_HTTP_TRANSPORT_CREDENTIALS_W *HttpCredentials;
+  } u;
   void *Sid;
   unsigned int EffectiveOnly;
-} RPC_SECURITY_QOS_V4_W *PRPC_SECURITY_QOS_V4_W;
+} RPC_SECURITY_QOS_V4_W, *PRPC_SECURITY_QOS_V4_W;
 
 #define RPC_SECURITY_QOS_V4 __AW(RPC_SECURITY_QOS_V4_)
 #define PRPC_SECURITY_QOS_V4 __AW(PRPC_SECURITY_QOS_V4_)
@@ -538,7 +538,7 @@ typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_V3_A {
   RPC_AUTH_IDENTITY_HANDLE ProxyCredentials;
   unsigned long NumberOfProxyAuthnSchemes;
   unsigned long *ProxyAuthnSchemes;
-} RPC_HTTP_TRANSPORT_CREDENTIALS_V3_A, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V3_A
+} RPC_HTTP_TRANSPORT_CREDENTIALS_V3_A, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V3_A;
 
 typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_V3_W {
   SEC_WINNT_AUTH_IDENTITY_W *TrasportCredentials;
@@ -550,7 +550,7 @@ typedef struct _RPC_HTTP_TRANSPORT_CREDENTIALS_V3_W {
   RPC_AUTH_IDENTITY_HANDLE ProxyCredentials;
   unsigned long NumberOfProxyAuthnSchemes;
   unsigned long *ProxyAuthnSchemes;
-} RPC_HTTP_TRANSPORT_CREDENTIALS_V3_W, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V3_W
+} RPC_HTTP_TRANSPORT_CREDENTIALS_V3_W, *PRPC_HTTP_TRANSPORT_CREDENTIALS_V3_W;
 
 #define RPC_HTTP_TRANSPORT_CREDENTIALS_V3 __AW(RPC_HTTP_TRANSPORT_CREDENTIALS_V3_)
 #define PRPC_HTTP_TRANSPORT_CREDENTIALS_V3 __AW(PRPC_HTTP_TRANSPORT_CREDENTIALS_V3_)
@@ -834,7 +834,7 @@ typedef struct _RPC_BINDING_HANDLE_TEMPLATE_V1_A {
   union {
     unsigned short *Reserved;
   } u1;
-  UUID Object Uuid;
+  UUID ObjectUuid;
 } RPC_BINDING_HANDLE_TEMPLATE_V1_A, *PRPC_BINDING_HANDLE_TEMPLATE_V1_A;
 
 typedef struct _RPC_BINDING_HANDLE_TEMPLATE_V1_W {
@@ -846,7 +846,7 @@ typedef struct _RPC_BINDING_HANDLE_TEMPLATE_V1_W {
   union {
     unsigned short *Reserved;
   } u1;
-  UUID Object Uuid;
+  UUID ObjectUuid;
 } RPC_BINDING_HANDLE_TEMPLATE_V1_W, *PRPC_BINDING_HANDLE_TEMPLATE_V1_W;
 
 #define RPC_BINDING_HANDLE_TEMPLATE_V1 __AW(RPC_BINDING_HANDLE_TEMPLATE_V1_)
@@ -876,6 +876,13 @@ typedef struct _RPC_BINDING_HANDLE_SECURITY_V1_W {
 #define RPC_BINDING_HANDLE_SECURITY_V1 __AW(RPC_BINDING_HANDLE_SECURITY_V1_)
 #define PRPC_BINDING_HANDLE_SECURITY_V1 __AW(PRPC_BINDING_HANDLE_SECURITY_V1_)
 #define _RPC_BINDING_HANDLE_SECURITY_V1 __AW(_RPC_BINDING_HANDLE_SECURITY_V1_)
+
+typedef struct _RPC_BINDING_HANDLE_OPTIONS_V1 {
+  unsigned long Version;
+  unsigned long Flags;
+  unsigned long ComTimeout;
+  unsigned long CallTimeout;
+} RPC_BINDING_HANDLE_OPTIONS_V1, RPC_BINDING_HANDLE_OPTIONS;
 
 #ifdef _AUTH_IDENTITY_A_DEFINED
 ___RPC_ENTRY__ RpcBindingCreateA(RPC_BINDING_HANDLE_TEMPLATE_V1_A *, RPC_BINDING_HANDLE_SECURITY_V1_A *, RPC_BINDING_HANDLE_OPTIONS_V1 *, RPC_BINDING_HANDLE *);

@@ -42,6 +42,7 @@
 #define _GNU_H_WINDOWS32_SOCKETS
 
 #include <windows.h>
+#include <sys/time.h>
 
 #ifdef __cplusplus
 extern "C" {
