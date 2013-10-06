@@ -21,11 +21,6 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#ifndef _UNKNWN_H
-#define _UNKNWN_H
-#pragma GCC system_header
-#include <_mingw.h>
-
 #include <rpc.h>
 #include <rpcndr.h>
 
@@ -33,6 +28,11 @@
 #include <windows.h>
 #include <ole2.h>
 #endif
+
+#ifndef _UNKNWN_H
+#define _UNKNWN_H
+#pragma GCC system_header
+#include <_mingw.h>
 
 #ifdef __cplusplus
 extern "C"{

@@ -27,6 +27,7 @@
 #include <_mingw.h>
 
 #include <objfwd.h>
+#include <unknwn.h>
 
 #define PIDSI_TITLE		0x00000002
 #define PIDSI_SUBJECT		0x00000003

@@ -1,5 +1,17 @@
 RELEASE 4.1:
 
+2013-10-06  Earnie Boyd  <earnie@users.sourceforge.net>
+	
+	* include/oaidl.h: Include objidl.h.
+	Move the RPC headers before the file protection.
+	[#2085] oaidl.h needs objidl.h for IUknown structure.
+
+	* include/objidl.h: Include unknwn.h.
+	[#2086] objidl.h should include unknwn.h.
+
+	* include/unknwn.h: Move the RPC headers before the file protection.
+	[#2087] unknwn.h needs to include RPC headers before file filter.
+
 2013-10-02  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	[#2081] Neeed a __FORCEINLINE macro for better definition.

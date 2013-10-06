@@ -21,15 +21,20 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-#ifndef _OAIDL_H
-#define _OAIDL_H
-#pragma GCC system_header
-#include <_mingw.h>
+#include <rpc.h>
+#include <rpcndr.h>
 
 #ifndef COM_NO_WINDOWS_H
 #include <windows.h>
 #include <ole2.h>
 #endif
+
+#ifndef _OAIDL_H
+#define _OAIDL_H
+#pragma GCC system_header
+#include <_mingw.h>
+
+#include <objidl.h>
 
 #ifdef __cplusplus
 extern "C" {
