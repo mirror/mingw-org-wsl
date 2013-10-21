@@ -717,6 +717,17 @@ glob_store_collated_entries( struct glob_collator *collator, glob_t *gl_buf )
   free( collator );
 }
 
+GLOB_INLINE int
+accept_glob_nocheck_match( const char *pattern, int flags )
+{
+  /* Helper to check whether a pattern may be stored into gl_pathv as is,
+   * without attempting to find any file system match; (this is permitted
+   * only when the caller has set the GLOB_NOCHECK flag, and the pattern
+   * is devoid of any globbing token).
+   */
+  return (flags & GLOB_NOCHECK) && (is_glob_pattern( pattern, flags ) == 0);
+}
+
 static int
 glob_match( const char *pattern, int flags, int (*errfn)(), glob_t *gl_buf )
 {
@@ -799,7 +810,25 @@ glob_match( const char *pattern, int flags, int (*errfn)(), glob_t *gl_buf )
    * at the outset, we have yet to match this pattern to anything.
    */
   status = GLOB_NOMATCH;
-  for( dirp = local_gl_buf.gl_pathv; *dirp != NULL; free( *dirp++ ) )
+
+  /* When the caller has enabled the GLOB_NOCHECK option, then in the
+   * case of any pattern with no prefix, and which contains no explicit
+   * globbing token...
+   */
+  if( (dir == NULL) && accept_glob_nocheck_match( pattern, flags ) )
+  {
+    /* ...we prefer to store it as is, without any attempt to find
+     * a glob match, (which could also induce a case transliteration
+     * on a case-insensitive file system)...
+     */
+    glob_store_entry( glob_strdup( pattern ), gl_buf );
+    status = GLOB_SUCCESS;
+  }
+  /* ...otherwise we initiate glob matching, to find all possible
+   * file system matches for the designated pattern, within each of
+   * the identified prefix directory paths.
+   */
+  else for( dirp = local_gl_buf.gl_pathv; *dirp != NULL; free( *dirp++ ) )
   {
     /* Provided an earlier cycle hasn't scheduled an abort...
      */
@@ -1040,3 +1069,5 @@ __mingw_globfree( glob_t *gl_data )
    */
   glob_registry( GLOB_FREE, gl_data );
 }
+
+/* $RCSfile: glob.c,v $: end of file */

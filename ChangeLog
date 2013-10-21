@@ -1,5 +1,13 @@
 RELEASE 4.1:
 
+2013-10-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix bug [#2062]: preserve case in patterns without glob tokens.
+
+	* src/libcrt/misc/glob.c (accept_glob_nocheck_match): New static
+	inline function; it identifies the situation for case preservation.
+	(glob_match): Use it.
+
 2013-10-06  Earnie Boyd  <earnie@users.sourceforge.net>
 	
 	* include/oaidl.h: Include objidl.h.
