@@ -1,3 +1,10 @@
+2013-12-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct invalid makefile shell command syntax.
+
+	* Makefile.in (msvcrt_DEF, moldname_DEF): '==' is not a valid operator
+	in 'test' command -- should be '='; fix it.
+
 2013-09-18  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	Ticket [#2050] Missing definition of FILE_FLAG_FIRST_PIPE_INSTANCE.
