@@ -1,3 +1,13 @@
+2013-12-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid gratuitously overriding makefile build rules.
+
+	* Makefile.in (DRV_TARGETS, DRV_OR_DLL): New macros; define them.
+	(winapi_lib_LIBRARIES): Use them; adapt generic command set to handle
+	cases where supplementary objects must be added to .def file payload.
+	(libws2_32.a, libshell32.a): Now built by this generic rule; delete
+	redundant explicit build rules.
+
 2013-12-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct invalid makefile shell command syntax.

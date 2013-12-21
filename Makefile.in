@@ -684,14 +684,18 @@ $(moldname_DEF): lib/lib32/moldname.def.in
 		$? > $@
 
 SRCDIR := lib/lib32
-$(notdir $(winapi_lib_LIBRARIES)): $(addprefix lib/lib32/,$(winapi_DEF))
-	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
-	if test $@ = libwinspool.a; then \
-	  $(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.drv)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@ ; \
-	else \
-	  $(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@ ; \
-	fi
+DRV_TARGETS = winspool
+DRV_OR_DLL = `case $* in $(DRV_TARGETS)) echo drv ;; *) echo dll ;; esac`
+vpath %.def ${top_srcdir}/lib/lib32
+
+$(winapi_lib_LIBRARIES): lib%.a: %.def
+	@echo Making library $@ from $<
+	$(DLLTOOL) $(DLLTOOL_FLAGS) $*.$(DRV_OR_DLL) --def $< --output-lib $@
+	test -z "$(lib$*_a_OBJECTS)" || $(AR) rc $@ $(lib$*_a_OBJECTS)
 	$(RANLIB) $@
+
+libshell32.a: shell32.def $(libshell32_a_OBJECTS)
+libws2_32.a: ws2_32.def $(libws2_32_a_OBJECTS)
 
 $(notdir $(winapi_mri_LIBRARIES)): $(addprefix lib/lib32/,$(winapi_MRI))
 	@echo Making library $@ from $<.
@@ -859,22 +863,6 @@ libdxguid.a: $(libdxguid_a_OBJECTS)
 
 libstrmiids.a: $(libstrmiids_a_OBJECTS)
 	$(AR) rc $@ $(libstrmiids_a_OBJECTS)
-	$(RANLIB) $@
-
-# Note this target will override the previous global rules and give a warning
-# from the make process. It is needed due to the extra ws2_32.o object file.
-libws2_32.a: lib/lib32/ws2_32.def $(libws2_32_a_OBJECTS)
-	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
-	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@
-	$(AR) rc $@ $(libws2_32_a_OBJECTS)
-	$(RANLIB) $@
-
-# Note this target will override the previous global rules and give a warning
-# from the make process. It is needed due to the extra shell32.o object file.
-libshell32.a: lib/lib32/shell32.def $(libshell32_a_OBJECTS)
-	@echo Making library $@ from $(subst lib,,$(@:.a=.def)).
-	$(DLLTOOL) $(DLLTOOL_FLAGS) $(subst lib,,$(@:.a=.dll)) --def $(addprefix $(top_srcdir)/lib/lib32/,$(subst lib,,$(@:.a=.def))) --output-lib $@
-	$(AR) rc $@ $(libshell32_a_OBJECTS)
 	$(RANLIB) $@
 
 _libm_dummy.c:
