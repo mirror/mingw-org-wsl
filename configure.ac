@@ -1,6 +1,6 @@
 ##
 # @file configure.ac
-# Copyright 2012, 2013 MinGW.org project
+# Copyright 2012-2014 MinGW.org project
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
 # copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,6 @@ AC_INIT([MinGW.org WSL], [4.0], [http://www.mingw.org/report_bugs], [mingw-org-w
 AC_CONFIG_AUX_DIR([build-aux])
 AC_PREFIX_DEFAULT([/mingw])
 AC_CONFIG_SRCDIR([include/_mingw.h])
-AC_CONFIG_HEADERS([config.h])
 AC_CANONICAL_SYSTEM
 
 # Checks for programs.
@@ -50,39 +49,6 @@ AC_ARG_VAR([RELEASE_STATUS], [Release package status, prod, rc, alpha, etc])
 AC_SUBST([RELEASE_STATUS], [${RELEASE_STATUS-"prod"}])
 AC_ARG_VAR([RELEASE_REFERENCE], [Reference serial number for the release status])
 AC_SUBST([RELEASE_REFERENCE], [${RELEASE_REFERENCE-"1"}])
-
-# Checks for libraries.
-
-# Checks for header files.
-AC_CHECK_HEADERS([fcntl.h fenv.h float.h inttypes.h limits.h locale.h malloc.h memory.h stddef.h stdint.h stdlib.h string.h strings.h sys/file.h sys/param.h sys/time.h sys/timeb.h unistd.h values.h wchar.h wctype.h])
-
-# Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_INLINE
-AC_TYPE_INT16_T
-AC_TYPE_INT32_T
-AC_TYPE_INT64_T
-AC_TYPE_INT8_T
-AC_TYPE_MODE_T
-AC_TYPE_OFF_T
-AC_TYPE_PID_T
-AC_TYPE_SIZE_T
-AC_TYPE_SSIZE_T
-AC_CHECK_MEMBERS([struct stat.st_rdev])
-AC_TYPE_UINT16_T
-AC_TYPE_UINT32_T
-AC_TYPE_UINT64_T
-AC_TYPE_UINT8_T
-AC_CHECK_TYPES([ptrdiff_t])
-
-# Checks for library functions.
-AC_FUNC_MALLOC
-AC_FUNC_MBRTOWC
-AC_FUNC_MKTIME
-AC_FUNC_REALLOC
-AC_FUNC_STRCOLL
-AC_FUNC_STRTOD
-AC_CHECK_FUNCS([atexit btowc bzero dup2 fesetround floor ftime ftruncate getcwd gethostbyaddr gethostbyname gethostname gettimeofday inet_ntoa isascii iswprint localeconv mblen mbrlen memchr memmove memset mkdir modf pow putenv rint rmdir select setlocale socket sqrt strcasecmp strchr strcspn strdup strerror strncasecmp strpbrk strrchr strspn strstr strtol strtoul strtoull strtoumax tzset utime])
 
 AC_CONFIG_FILES([Makefile tests/Makefile])
 AC_OUTPUT
