@@ -1,3 +1,11 @@
+2014-01-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct position of Emacs mode specification lines.
+
+	* configure.ac: Emacs mode specification should appear on first
+	non-blank line in file; relocate it accordingly.  Also add explicit
+	filetype mode specification for Vim.
+
 2014-01-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Do not require pre-existence of features we are implementing.

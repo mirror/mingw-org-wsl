@@ -1,3 +1,6 @@
+# -*- Autoconf -*- vim: filetype=config
+# Process this file with autoconf to produce a configure script.
+
 ##
 # @file configure.ac
 # Copyright 2012-2014 MinGW.org project
@@ -21,9 +24,6 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 ##
-
-#                                               -*- Autoconf -*-
-# Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
 AC_INIT([MinGW.org WSL], [4.0], [http://www.mingw.org/report_bugs], [mingw-org-wsl], [http://www.mingw.org])
