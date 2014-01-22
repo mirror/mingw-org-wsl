@@ -304,7 +304,6 @@ complex_SOURCES := \
   $(SRCDIR)/cprojl.c \
   $(SRCDIR)/csinl.c \
   $(SRCDIR)/ctanl.c
-complex_SOURCES := $(wildcard src/libcrt/complex/*.c)
 
 SRCDIR := src/libcrt/ctype
 ctype_SOURCES := $(SRCDIR)/isblank.c $(SRCDIR)/iswblank.c
