@@ -326,14 +326,12 @@ SRCDIR := misc/src/libcrt/gdtoa
 gdtoa_SOURCES := \
   $(SRCDIR)/g__fmt.c \
   $(SRCDIR)/gethex.c \
-  $(SRCDIR)/qnan.c \
   $(SRCDIR)/strtopx.c \
   $(SRCDIR)/g_dfmt.c \
   $(SRCDIR)/gdtoa.c \
   $(SRCDIR)/gmisc.c \
   $(SRCDIR)/smisc.c \
   $(SRCDIR)/sum.c \
-  $(SRCDIR)/arithchk.c \
   $(SRCDIR)/g_ffmt.c \
   $(SRCDIR)/hd_init.c \
   $(SRCDIR)/strtodg.c \
@@ -649,7 +647,9 @@ ALL_SOURCES := \
   $(mingwm10_dll_SOURCES) \
   $(libdinput_a_SOURCES) \
   $(libdxerr8_a_SOURCES) \
-  $(libdxerr9_a_SOURCES)
+  $(libdxerr9_a_SOURCES) \
+  misc/src/libcrt/gdtoa/arithchk.c \
+  misc/src/libcrt/gdtoa/qnan.c
 
 all: $(extra_OBJECTS) $(msvcrt_DEF) $(moldname_DEF) $(lib_LIBRARIES) $(bin_LIBRARIES) $(lib_OBJECTS)
 

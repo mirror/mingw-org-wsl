@@ -1,3 +1,11 @@
+2014-01-27  Thorsten Otto  <thotto@users.sourceforge.net>
+
+	Remove superfluous objects from libmingwex.a; (cf. issue #2177)
+
+	* Makefile.in (gdtoa_SOURCES): Delete bogus entries for...
+	(arithchk.o, qnan.o): ...each of these; move their references to...
+	(ALL_SOURCES): ...this collection instead.
+
 2014-01-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Re-establish pattern rules for %_generic.c; (cf. issue #2175)
