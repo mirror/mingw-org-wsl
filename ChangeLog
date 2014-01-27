@@ -1,3 +1,26 @@
+2014-01-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Re-establish pattern rules for %_generic.c; (cf. issue #2175)
+
+	* src/libcrt/math/round.c: Delete it; this kludgey stub isn't needed.
+	* src/libcrt/math/roundf.c src/libcrt/math/roundl.c: Likewise.
+	* src/libcrt/math/lround.c src/libcrt/math/lroundf.c: Likewise.
+	* src/libcrt/math/lroundl.c: Likewise.
+
+	* src/libcrt/math/asinh.c: Rename to...
+	* src/libcrt/math/asinh_generic.c: ...this; compliance with the
+	math_generic.c naming convention is imperative.
+
+	* src/libcrt/math/round_generic.c: Reinstate author attribution.
+	* src/libcrt/math/lround_generic.c: Likewise.
+
+	* Makefile.in (math_SOURCES): Remove references to deleted files; add
+	references to corresponding %_generic.c sources, in their place.
+	(libmingwex_a_OBJECTS): Filter %_generic references, to generate the
+	corresponding %.o, %f.o, and %l.o references; append llround%.o set.
+	Adjust pattern rules to build each set of three; add a static pattern
+	rule, to accommodate special requirements of the llround% set.
+
 2014-01-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Reinstate complex math functions; (cf. issue #2174)

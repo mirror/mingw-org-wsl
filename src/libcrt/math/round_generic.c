@@ -1,6 +1,6 @@
 /**
  * @file round_generic.c
- * Copyright 2012, 2013 MinGW.org project
+ * Copyright 2008, 2012-2014 MinGW.org Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -21,12 +21,15 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-
 /*
+ * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ *
+ *
  * Provides a generic implementation for the `round()', `roundf()'
  * and `roundl()' functions; compile with `-D FUNCTION=name', with
  * `name' set to each of these three in turn, to create separate
  * object files for each of the three functions.
+ *
  */
 #ifndef FUNCTION
 /*

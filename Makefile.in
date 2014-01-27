@@ -364,7 +364,7 @@ math_SOURCES := \
   $(SRCDIR)/acoshl.c \
   $(SRCDIR)/acosl.c \
   $(SRCDIR)/asinf.c \
-  $(SRCDIR)/asinh.c \
+  $(SRCDIR)/asinh_generic.c \
   $(SRCDIR)/asinl.c \
   $(SRCDIR)/atan2f.c \
   $(SRCDIR)/atan2l.c \
@@ -454,9 +454,7 @@ math_SOURCES := \
   $(SRCDIR)/lrint.c \
   $(SRCDIR)/lrintf.c \
   $(SRCDIR)/lrintl.c \
-  $(SRCDIR)/lround.c \
-  $(SRCDIR)/lroundl.c \
-  $(SRCDIR)/lroundf.c \
+  $(SRCDIR)/lround_generic.c \
   $(SRCDIR)/modff.c \
   $(SRCDIR)/modfl.c \
   $(SRCDIR)/nearbyint.S \
@@ -481,9 +479,7 @@ math_SOURCES := \
   $(SRCDIR)/rint.c \
   $(SRCDIR)/rintf.c \
   $(SRCDIR)/rintl.c \
-  $(SRCDIR)/round.c \
-  $(SRCDIR)/roundf.c \
-  $(SRCDIR)/roundl.c \
+  $(SRCDIR)/round_generic.c \
   $(MSRCDIR)/s_erf.c \
   $(SRCDIR)/scalbn.S \
   $(SRCDIR)/scalbnf.S \
@@ -620,11 +616,13 @@ libmingwex_a_SOURCES := \
   $(wchar_SOURCES) \
   $(wctype_SOURCES)
 libmingwex_a_OBJECTS := $(libmingwex_a_SOURCES:.c=.o)
-libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS:.S=.o)
-
-SRCDIR := src/libcrt/math
-libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS) $(SRCDIR)/asinhl.o
-libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS) $(SRCDIR)/asinhf.o
+libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS:.S=.o) \
+  src/libcrt/math/llround_generic.o
+libmingwex_a_generic_objects := $(filter %_generic.o,$(libmingwex_a_OBJECTS))
+libmingwex_a_OBJECTS := $(libmingwex_a_OBJECTS:%_generic.o=%.o) \
+  $(libmingwex_a_generic_objects:%_generic.o=%f.o) \
+  $(libmingwex_a_generic_objects:%_generic.o=%l.o)
+libmingwex_a_OBJECTS := $(sort $(libmingwex_a_OBJECTS))
 
 SRCDIR := misc/src/libdinput
 libdinput_a_SOURCES := \
@@ -755,14 +753,30 @@ lib%.a: src/lib%/%.o
 	$(MKDIR_P) $(@D)
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
+# For the math sources, we support the convention that a single
+# quux_generic.c source file will produce three objects: quux.o,
+# quuxf.o, and quuxl.o; since a change in the common source file
+# will require all three objects to be recompiled, we may handle
+# this with a single, multiple target, pattern rule.
+#
 SRCDIR := src/libcrt/math
-$(SRCDIR)/%f.o: $(SRCDIR)/%.c
+$(SRCDIR)/%.o $(SRCDIR)/%f.o $(SRCDIR)/%l.o: $(SRCDIR)/%_generic.c
 	$(MKDIR_P) $(@D)
-	$(CC) -c -D FUNCTION=$(@F:.o=) $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $(@D)/$*.o $<
+	$(CC) -c -D FUNCTION=$*f $(CPPFLAGS) $(ALL_CFLAGS) -o $(@D)/$*f.o $<
+	$(CC) -c -D FUNCTION=$*l $(CPPFLAGS) $(ALL_CFLAGS) -o $(@D)/$*l.o $<
 
-$(SRCDIR)/%l.o: $(SRCDIR)/%.c
+# The llround.o, llroundf.o, and llroundl.o variants are a special
+# case of the preceding rule; (the source is lround_generic.c rather
+# than llround_generic.c).  We can handle this using the following
+# static pattern rule, (again, compiling all three objects).
+#
+$(SRCDIR)/llroundf.o $(SRCDIR)/llroundl.o: $(SRCDIR)/llround.o
+$(SRCDIR)/llround.o: $(SRCDIR)/%.o: $(SRCDIR)/lround_generic.c
 	$(MKDIR_P) $(@D)
-	$(CC) -c -D FUNCTION=$(@F:.o=) $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+	$(CC) -c -D FUNCTION=$* $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+	$(CC) -c -D FUNCTION=$*f $(CPPFLAGS) $(ALL_CFLAGS) -o $(@D)/$*f.o $<
+	$(CC) -c -D FUNCTION=$*l $(CPPFLAGS) $(ALL_CFLAGS) -o $(@D)/$*l.o $<
 
 SRCDIR := src/libcrt/crt
 $(SRCDIR)/crt2.o $(SRCDIR)/dllcrt2.o:
