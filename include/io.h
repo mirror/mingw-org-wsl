@@ -1,6 +1,6 @@
 /**
  * @file io.h
- * Copyright 2012, 2013 MinGW.org project
+ * Copyright 2012-2014 MinGW.org Project
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -123,7 +123,16 @@ struct _wfinddata32_t {
 	wchar_t		name[FILENAME_MAX];
 };
 
-struct _wfinddata64_t {
+/* MSDN data type documentation refers to the 64-bit variant of the
+ * preceding structure as "__wfinddata64_t", but _wfindfirst64() and
+ * _wfindnext64() function prototypes then use "_wfinddata64_t" when
+ * declaring their arguments; assume that the former is correct for
+ * the structure declaration, but preserve an alias for the less
+ * trusted MSDN function prototype usage.
+ */
+#define _wfinddata64_t __wfinddata64_t
+
+struct __wfinddata64_t {
         unsigned    attrib;
         __time64_t  time_create;
         __time64_t  time_access;
@@ -173,7 +182,7 @@ intptr_t _findfirst64i32 (const char *filespec,struct _finddata64i32_t *fileinfo
 
 intptr_t _wfindfirst     (const wchar_t *filespec,struct _wfinddata_t *fileinfo);
 intptr_t _wfindfirst32   (const wchar_t *filespec,struct _wfinddata32_t *fileinfo);
-intptr_t _wfindfirst64   (const wchar_t *filespec, struct _wfinddata64_t   *fileinfo);
+intptr_t _wfindfirst64   (const wchar_t *filespec, struct __wfinddata64_t   *fileinfo);
 intptr_t _wfindfirsti64  (const wchar_t *filespec, struct _wfinddatai64_t   *fileinfo);
 intptr_t _wfindfirst32i64(const wchar_t *filespec, struct _wfinddata32i64_t *fileinfo);
 intptr_t _wfindfirst64i32(const wchar_t *filespec, struct _wfinddata64i32_t *fileinfo);
@@ -414,19 +423,19 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _wunlink(const wchar_t*);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wopen(const wchar_t*, int, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW _wsopen(const wchar_t*, int, int, ...);
 _CRTIMP wchar_t * __cdecl __MINGW_NOTHROW _wmktemp(wchar_t*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64(const wchar_t*, struct _wfinddata64_t*);
+_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64(const wchar_t*, struct __wfinddata64_t*);
 intptr_t __cdecl __MINGW_NOTHROW _wfindfirst32i64 (const wchar_t*, struct _wfinddata32i64_t*);
 intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64i32 (const wchar_t*, struct _wfinddata64i32_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW _wfindnext64(intptr_t, struct _wfinddata64_t*);
+_CRTIMP int __cdecl __MINGW_NOTHROW _wfindnext64(intptr_t, struct __wfinddata64_t*);
 int  __cdecl __MINGW_NOTHROW	_wfindnext32i64 (intptr_t, struct _wfinddata32i64_t*);
 int  __cdecl __MINGW_NOTHROW	_wfindnext64i32 (intptr_t, struct _wfinddata64i32_t*);
 
 #include <string.h>
 __CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _wfindfirst32i64(const wchar_t* _filename, struct _wfinddata32i64_t* _fdata) {
-    struct _wfinddata64_t fd;
+    struct __wfinddata64_t fd;
     intptr_t ret = _wfindfirst64(_filename, &fd);
     if (ret == -1) {
-        memset(_fdata, 0, sizeof(struct _wfinddata64_t));
+        memset(_fdata, 0, sizeof(struct __wfinddata64_t));
         return ret;
     }
     _fdata->attrib = fd.attrib;
@@ -455,7 +464,7 @@ __CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _wfindfirst64i32(const wchar
 }
 
 __CRT_MAYBE_INLINE __cdecl __MINGW_NOTHROW intptr_t _wfindnext32i64(intptr_t _fp, struct _wfinddata32i64_t* _fdata) {
-    struct _wfinddata64_t fd;
+    struct __wfinddata64_t fd;
     int ret = _wfindnext64(_fp,&fd);
     if (ret == -1) {
       memset(_fdata, 0, sizeof(struct _wfinddata32i64_t));
@@ -565,7 +574,7 @@ wchar_t * 	wmktemp(wchar_t *);
 #define _findfirsti64 _findfirst64
 #define _findnexti64 _findnext64
 #define _wfinddata_t _wfinddata64i32_t
-#define _wfinddatai64_t _wfinddata64_t
+#define _wfinddatai64_t __wfinddata64_t
 #define _wfindfirst _wfindfirst64i32
 #define _wfindnext _wfindnext64i32
 #define _wfindfirsti64 _wfindfirst64

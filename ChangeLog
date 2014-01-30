@@ -1,3 +1,18 @@
+2014-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct _wfinddata64_t vs. __wfinddata64_t typo.
+
+	* include/io.h include/wchar.h (_wfinddata64_t): All MSDN data type
+	documentation denies the existence of this structure type, yet their
+	prototypes for the _wfindfirst64() and _wfindnext64() functions refer
+	to in in their argument lists; redefine it as an alias for...
+	(__wfinddata64_t): ...this formally documented structure type; update
+	all former references to use it.
+
+	* include/tchar.h (_tfinddata64_t): Map it to...
+	(__wfinddata64_t): ...this, in place of former mapping to...
+	(_wfinddata64_t): ...this.
+
 2014-01-27  Thorsten Otto  <thotto@users.sourceforge.net>
 
 	Remove superfluous objects from libmingwex.a; (cf. issue #2177)

@@ -228,7 +228,7 @@ typedef wchar_t _TCHAR;
 #define _tfindfirsti64  _wfindfirsti64
 #define _tfindnexti64   _wfindnexti64
 #define _tfinddatai64_t _wfinddatai64_t
-#define _tfinddata64_t    _wfinddata64_t
+#define _tfinddata64_t    __wfinddata64_t
 #define _tfinddata32_t    _wfinddata32_t
 #define _tfinddata32i64_t _wfinddata32i64_t
 #define _tfinddata64i32_t _wfinddata64i32_t
