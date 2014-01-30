@@ -21,10 +21,10 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+#include <io.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include <io.h>
 #include <dirent.h>
 
 #define WIN32_LEAN_AND_MEAN
@@ -34,6 +34,19 @@
 #define DIRENT_RETURN_NOTHING
 #define DIRENT_REJECT( chk, err, rtn )	\
   do { if( chk ){ errno = (err); return rtn; }} while(0)
+
+/* MSDN says that _finddata_t is a macro, aliased to either _finddata64i32_t,
+ * or to _finddata32_t when _USE_32_BIT_TIME_T is defined; (MinGW also adopts
+ * this convention).  We prefer to avoid this _USE_32_BIT_TIME_T insanity; we
+ * would like our local notion of _finddata_t to represent __finddata64_t.
+ */
+#undef  _finddata_t
+#define _finddata_t  __finddata64_t
+
+/* Similarly for _wfinddata_t; we want it to represent __wfinddata64_t.
+ */
+#undef  _wfinddata_t
+#define _wfinddata_t __wfinddata64_t
 
 union __dirstream_t
 {
@@ -130,10 +143,10 @@ union __wdirstream_t
 #define DT_IGNORED	(_A_RDONLY | _A_HIDDEN | _A_SYSTEM | _A_ARCH)
 
 #define DIRENT_OPEN(D)	\
-    ((D).dd_handle = _tfindfirst((D).dd_name, &((D).dd_dta)))
+    ((D).dd_handle = _tfindfirst64((D).dd_name, &((D).dd_dta)))
 
 #define DIRENT_UPDATE(D)  \
-    _tfindnext( (D).dd_handle, &(D).dd_dta )
+    _tfindnext64( (D).dd_handle, &(D).dd_dta )
 
 
 /*****

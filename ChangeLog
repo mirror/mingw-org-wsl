@@ -1,5 +1,19 @@
 2014-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Make dirent structure 64-bit deterministic; (cf. issue #2106)
+
+	* include/dirent.h (struct dirent, struct _wdirent):
+	<d_time_create, d_time_access, d_time_write>: Declare as __time64_t.
+	<d_size>: Declare as uint64_t; include stdint.h to define it.
+
+	* src/libcrt/tchar/dirent.c (_finddata_t, _wfinddata_t): Define them
+	explicitly, making them respectively 64-bit clean local aliases for...
+	(__finddata64_t, __wfinddata64_t): ...these explicit structure types.
+	(DIRENT_OPEN, DIRENT_UPDATE) <dd_handle>: Always assign it, using...
+	(_tfindfirst64, _tfindnext64): ...these 64-bit clean functions.
+
+2014-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Correct _wfinddata64_t vs. __wfinddata64_t typo.
 
 	* include/io.h include/wchar.h (_wfinddata64_t): All MSDN data type

@@ -27,12 +27,11 @@
 #include <_mingw.h>
 
 #include <io.h>
+#include <stdint.h>
 
 #ifndef RC_INVOKED
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+BEGIN_C_DECLS
 
 struct dirent
 {
@@ -40,16 +39,16 @@ struct dirent
 	unsigned short	d_reclen;	/* Always zero. */
 	unsigned short	d_namlen;	/* Length of name in d_name. */
 
-	/* The following exactly mimic the layout of _finddata_t ...
+	/* The following exactly mimic the layout of __finddata64_t ...
 	 */
 	unsigned	d_type;		/* File attributes */
-	time_t		d_time_create;
-	time_t		d_time_access;	/* always midnight local time */
-	time_t		d_time_write;
-	_fsize_t	d_size;
+	__time64_t	d_time_create;
+	__time64_t	d_time_access;	/* always midnight local time */
+	__time64_t	d_time_write;
+	uint64_t	d_size;
 	/*
-	 * ...so that we may map a union of _finddata_t at the
-	 * location of d_type (corresponding to _finddata_t.attrib),
+	 * ...so that we may map a union of __finddata64_t at the
+	 * location of d_type (corresponding to __finddata64_t.attrib),
 	 * and thus map this directly to the _findfirst/_findnext
 	 * returned field.
 	 */
@@ -78,16 +77,16 @@ struct _wdirent
 	unsigned short	d_reclen;	/* Always zero. */
 	unsigned short	d_namlen;	/* Length of name in d_name. */
 
-	/* The following exactly mimic the layout of _wfinddata_t ...
+	/* The following exactly mimic the layout of __wfinddata64_t ...
 	 */
 	unsigned	d_type;		/* File attributes */
-    	time_t		d_time_create;	/* -1 for FAT file systems */
-    	time_t		d_time_access;	/* -1 for FAT file systems */
-    	time_t		d_time_write;
-    	_fsize_t	d_size;
+    	__time64_t	d_time_create;	/* -1 for FAT file systems */
+    	__time64_t	d_time_access;	/* -1 for FAT file systems */
+    	__time64_t	d_time_write;
+    	uint64_t	d_size;
 	/*
-	 * ...so that we may map a union of _wfinddata_t at the
-	 * location of d_type (corresponding to _wfinddata_t.attrib),
+	 * ...so that we may map a union of __wfinddata64_t at the
+	 * location of d_type (corresponding to __wfinddata64_t.attrib),
 	 * and thus map this directly to the _wfindfirst/_wfindnext
 	 * returned field.
 	 */
@@ -107,10 +106,7 @@ void __cdecl __MINGW_NOTHROW _wrewinddir (_WDIR*);
 long __cdecl __MINGW_NOTHROW _wtelldir (_WDIR*);
 void __cdecl __MINGW_NOTHROW _wseekdir (_WDIR*, long);
 
-
-#ifdef	__cplusplus
-}
-#endif
+END_C_DECLS
 
 #if defined(_BSD_SOURCE) || defined(_WIN32)
 /*
