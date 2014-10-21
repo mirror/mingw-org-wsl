@@ -1,5 +1,12 @@
 2014-10-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Import w32api-3.17 source code on "legacy" branch.
+
+	* w32api: New directory; use w32api-3.17-2 release as baseline for
+	import; once again, original CVS history is NOT preserved.
+
+2014-10-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Create "legacy" branch; import mingwrt-3.20 source code.
 
 	* mingwrt: New directory; use mingwrt-3.20-2 release as baseline
