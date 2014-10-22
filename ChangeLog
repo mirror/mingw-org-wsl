@@ -1,3 +1,9 @@
+2014-10-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge .hgignore from "master" branch to "legacy".
+
+	* .hgignore: New file.
+
 2014-10-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Import w32api-3.17 source code on "legacy" branch.
