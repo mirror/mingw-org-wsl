@@ -1,3 +1,25 @@
+2014-10-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Streamline the build system infrastructure.
+
+	* configure.ac: New file; it replaces...
+	* configure.in: ...this; (name is obsolete); delete it.
+
+	* aclocal.m4 Makefile.in: Substantially rewritten; avoid recursive
+	make invocations, when processing subdirectories, and add automatic
+	dependency tracking for all generated files.
+
+	* configure: Delete it; as a generated file, it doesn't belong in SCM.
+
+	* mingwex/Makefile.in: No longer required; delete it.
+	* profile/Makefile.in: Likewise.
+
+	* mkinstalldirs: Not required; delete it; (make should use `mkdir -p',
+	or fall back on `install-sh -d', per AC_PROG_MKDIR_P).
+
+	* jamfile: Delete it; it hasn't been updated in ages, is likely no
+	longer relevant, and I have no desire to maintain it.
+
 2011-08-23 Chris Sutcliffe <ir0nh34d@users.sourceforge.net>
 
 	* include/_mingw.h: Increment version to 3.20.
