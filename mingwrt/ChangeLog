@@ -1,3 +1,15 @@
+2014-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct improper naming of assembly language source files.
+
+	* mingwex/math/*.S: Rename all files with this extension...
+	* mingwex/math/*.s: ...to this; (all are simple assembly language, and
+	not extended `assembler-with-cpp' as implied by the former extension);
+	adjust all internal `.file <name>' references accordingly.
+
+	* Makefile.in (vpath %.S): Adjust reference to locate files....
+	(vpath %.s): ...now renamed thus.
+
 2014-10-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Streamline the build system infrastructure.

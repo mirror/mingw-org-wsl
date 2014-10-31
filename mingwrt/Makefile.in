@@ -400,7 +400,7 @@ libmingwex.a: $(addsuffix .$(OBJEXT), \
 # again, perhaps libm.a would be a better fit)
 #
 vpath %.c ${mingwrt_srcdir}/mingwex/math
-vpath %.S ${mingwrt_srcdir}/mingwex/math
+vpath %.s ${mingwrt_srcdir}/mingwex/math
 libmingwex.a: $(addsuffix .$(OBJEXT), cosf cosl acosf acosl sinf sinl asinf \
   asinl tanf tanl atanf atanl atan2f atan2l coshf coshl acosh acoshf acoshl \
   sinhf sinhl asinh asinhf asinhl tanhf tanhl atanh atanhf atanhl cbrt cbrtf \
