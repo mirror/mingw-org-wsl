@@ -188,20 +188,47 @@
 #endif
 
 #ifdef __cplusplus
-# define __CRT_INLINE inline
+# define _EXTERN_C       extern "C"
+# define _BEGIN_C_DECLS  extern "C" {
+# define _END_C_DECLS    }
+
+# define __CRT_INLINE    inline
+
 #else
+# define _EXTERN_C       extern
+# define _BEGIN_C_DECLS
+# define _END_C_DECLS
+
 # if __GNUC_STDC_INLINE__
-#  define __CRT_INLINE extern inline __attribute__((__gnu_inline__))
+#  define __CRT_INLINE   extern inline __attribute__((__gnu_inline__))
 # else
-#  define __CRT_INLINE extern __inline__
+#  define __CRT_INLINE   extern __inline__
 # endif
 #endif
 
 # ifdef __GNUC__
-#  define _CRTALIAS __CRT_INLINE __attribute__ ((__always_inline__))
+  /* A special form of __CRT_INLINE, to ALWAYS request inlining when
+   * possible is provided; originally specified as _CRTALIAS, this is
+   * now deprecated in favour of __CRT_ALIAS, for syntactic consistency
+   * with __CRT_INLINE itself.
+   */
+#  define  _CRTALIAS   __CRT_INLINE __attribute__((__always_inline__))
+#  define __CRT_ALIAS  __CRT_INLINE __attribute__((__always_inline__))
 # else
-#  define _CRTALIAS __CRT_INLINE
+#  define  _CRTALIAS   __CRT_INLINE	/* deprecated form */
+#  define __CRT_ALIAS  __CRT_INLINE	/* preferred form */
 # endif
+/*
+ * Each function which is implemented as a __CRT_ALIAS should also be
+ * accompanied by an externally visible interface.  The following pair
+ * of macros provide a mechanism for implementing this, either as a stub
+ * redirecting to an alternative external function, or by compilation of
+ * the normally inlined code into free standing object code; each macro
+ * provides a way for us to offer arbitrary hints for use by the build
+ * system, while remaining transparent to the compiler.
+ */
+#define __JMPSTUB__(__BUILD_HINT__)
+#define __LIBIMPL__(__BUILD_HINT__)
 
 #ifdef __cplusplus
 # define __UNUSED_PARAM(x)
@@ -281,6 +308,31 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
     */
 #  define __USE_MINGW_ANSI_STDIO    (__MINGW_FEATURES__ & __MINGW_ANSI_STDIO__)
 # endif
+#endif
+
+/* Only Microsoft could attempt to justify this insanity: when building
+ * a UTF-16LE application -- apparently their understanding of Unicode is
+ * limited to this -- the C/C++ runtime requires that the user must define
+ * the _UNICODE macro, while to use the Windows API's UTF-16LE capabilities,
+ * it is the UNICODE macro, (without the leading underscore), which must be
+ * defined.  The (bogus) explanation appears to be that it is the C standard
+ * which dictates the requirement for the leading underscore, to avoid any
+ * possible conflict with a user defined symbol; (bogus because the macro
+ * must be user defined anyway -- it is not a private symbol -- and in
+ * any case, the Windows API already reserves the UNICODE symbol as
+ * a user defined macro, with equivalent intent.
+ *
+ * The real explanation, of course, is that this is just another example
+ * of Microsoft irrationality; in any event, there seems to be no sane
+ * scenario in which defining one without the other would be required,
+ * or indeed would not raise potential for internal inconsistency, so we
+ * ensure that either both are, or neither is defined.
+ */
+#if defined UNICODE && ! defined _UNICODE
+# define _UNICODE  UNICODE
+#endif
+#if defined _UNICODE && ! defined UNICODE
+# define UNICODE  _UNICODE
 #endif
 
 #endif /* __MINGW_H */

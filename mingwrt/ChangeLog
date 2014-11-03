@@ -1,3 +1,42 @@
+2014-11-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make dirent implementation namespace and time_t clean.
+
+	* include/_mingw.h (_EXTERN_C, _BEGIN_C_DECLS, _END_C_DECLS): New
+	macros; define them.  They facilitate identification of symbols which
+	must be compiled with `extern "C"' binding, when compiling C++ code.
+	(__CRT_ALIAS): New macro; define it.  It is intended to replace...
+	(_CRTALIAS): ...this, which is to be considered as deprecated.
+	(__JMPSTUB__, __LIBIMPL__): New macros; define them.  They provide
+	__CRT_ALIAS build hints, while remaining transparent to GCC.
+	(UNICODE, _UNICODE) [user defined]: Define consistently.
+
+	* mingwex/dirent.c: Reimplement; (this is a back-port from the
+	4.0-dev branch, with additional ABI changes to improve stability).
+	(opendir, readdir, telldir, seekdir, rewinddir, closedir)
+	(_wopendir, _wreaddir, _wtelldir, _wseekdir, _wrewinddir, _wclosedir):
+	Add `__mingw_' prefix to all publicly exposed symbol names.
+	(dirent_findfirst, dirent_findnext, dirent_findclose): New locally
+	implemented functions; they replace Microsoft's ambiguously defined
+	_findfirst, _findnext, and _findclose, so avoiding ABI instability
+	resulting from the ambiguous size of Microsoft's time_t.
+
+	* include/dirent.h (struct dirent, struct _wdirent): Redefine them,
+	removing unnecessary time_t and file size fields; (our replacements
+	for _findfirst, and _findnext do not require them to be present).
+	(DIR, _WDIR): Adjust typedefs; they are now opaque structs.
+	(opendir, readdir, telldir, seekdir, rewinddir, closedir)
+	(_wopendir, _wreaddir, _wtelldir, _wseekdir, _wrewinddir, _wclosedir):
+	Adjust prototypes, making them inline aliases for public symbols which
+	are now qualified by the `__mingw_' prefix; add build hints to support
+	compilation of addressable stubs, with the original symbol names.
+	(DT_REG, DT_DIR, DT_UNKNOWN): New manifest constants; define them.
+	(DT_BLK, DT_CHR, DT_FIFO, DT_LNK, DT_SOCK): Likewise; (these are for
+	BSD compatibility, but are fundamentally unsupported on MS-Windows).
+	(_DIRENT_HAVE_D_TYPE, _DIRENT_HAVE_D_RECLEN, _DIRENT_HAVE_D_NAMLEN):
+	New macros; define them.  (These show availability of optional fields
+	within the dirent struct, which client code may wish to access).
+
 2014-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct improper naming of assembly language source files.
