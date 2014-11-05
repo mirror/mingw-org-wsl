@@ -135,4 +135,31 @@ AC_DEFUN_ONCE([MINGW_AC_MAKE_COMMAND_GOALS],
  AC_SUBST([DEFAULT_MAKECMDGOALS])
 ])
 
+# MINGW_AC_PROG_COMPILE_SX
+# ------------------------
+# Determine how to invoke GCC to compile *.sx asssembly language
+# files, and provide a suitable derivative of GNU make's COMPILE.S
+# rule in AC_SUBST variable 'COMPILE_SX'.  Note that GCC itself has
+# supported direct compilation of such files from version 4.3 onward,
+# (earlier versions require the '-x assembler-with-cpp' hint), but
+# GNU make does not provide a complementary built-in rule.
+#
+AC_DEFUN([MINGW_AC_PROG_COMPILE_SX],
+[AC_REQUIRE([AC_PROG_CC])dnl
+ AC_MSG_CHECKING([for $CC option to compile .sx files])
+ rm -f conftest.sx conftest.$OBJEXT; : > conftest.sx
+ ac_compile_sx='$CC -c $ASFLAGS $CPPFLAGS $ac_val conftest.sx >&5'
+ for ac_val in "" "-x assembler-with-cpp"; do
+   (eval $ac_compile_sx) 2>&5 && test -f conftest.$OBJEXT && break
+ done
+ AC_SUBST([COMPILE_SX],[`echo '$(COMPILE.S)' $ac_val`])
+ test "x$ac_val" = x && ac_val="none needed"
+ test -f conftest.$OBJEXT || ac_val="not supported"
+ AC_MSG_RESULT([$ac_val])
+ rm -f conftest.sx conftest.$OBJEXT
+ test "x$ac_val" = "xnot supported" && {
+  AC_MSG_FAILURE([$CC cannot compile .sx files])
+  }dnl
+])
+
 # $RCSfile$: end of file

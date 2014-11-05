@@ -57,6 +57,7 @@ ARFLAGS = @ARFLAGS@
 RANLIB = @RANLIB@
 
 AS = @AS@
+COMPILE.sx = @COMPILE_SX@
 DLLTOOL = @DLLTOOL@
 STRIP = @STRIP@
 NM = @NM@
@@ -112,6 +113,7 @@ vpath Makefile.in ${top_srcdir}
 requires_existing = $(if $(wildcard $1),$1,$1.missing)
 Makefile: Makefile.in configure $(call requires_existing,config.status)
 	$(SHELL) config.status
+	$(RM) Makefile.stub
 
 .PHONY: config.status.missing
 # ... but, in the event that this may be missing, (e.g. because it
@@ -153,6 +155,16 @@ ALL_CFLAGS = $(CFLAGS) $(DEPFLAGS) $(INCLUDES) $(NTDDI_VERSION_SPEC)
 #
 w%.$(OBJEXT): %.c
 	$(CC) -c -D UNICODE $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+# Compiling object files from *.sx sources: since GCC-4.3, these
+# have been supported as a case agnostic alternative to *.S sources,
+# for assembly language sources requiring initial interpretation by
+# the C preprocessor; owing to the case-insensitive nature of file
+# naming on MS-Windows, we should prefer these, but we must tell
+# make how to compile them.
+#
+%.$(OBJEXT): %.sx
+	$(COMPILE.sx) $($*_cflags) -o $@ $<
 
 # Several components of the distributable object code base are to
 # be provided as free-standing object modules, (rather than being
@@ -478,6 +490,36 @@ $(addsuffix .$(OBJEXT), % %f %l): %_generic.c
 $(addsuffix .$(OBJEXT), llround llroundf llroundl): %.$(OBJEXT): lround_generic.c
 	$(CC) -c -D FUNCTION=$* $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
+# The mingwrt headers define a number of functions which are normally
+# expected to be compiled as inline code.  Each such function must also
+# be provided with an externally visible entry point; we provide such
+# entry points as stubs in libmingwex.a, via the following rules:
+#
+sinclude Makefile.stub
+jmpstub_refs = grep -lr '__JMPSTUB.*FUNCTION'
+jmpstub_prerequisites := $(shell $(jmpstub_refs) ${mingwrt_srcdir}/include)
+Makefile.stub: Makefile $(jmpstub_prerequisites)
+	echo "# $@: automatically generated file -- do not edit!" > $@
+	$(jmpstub_awk_script) $(jmpstub_prerequisites) >> $@
+	echo "# $@: end of file" >> $@
+
+vpath jmpstub.sx ${mingwrt_srcdir}/mingwex
+jmpstub_awk_script = test "$^" = Makefile || awk '\
+  BEGIN { \
+    symbol = "([A-Z_a-z][A-Z_a-z0-9]*)"; \
+    fmt = "\nlib%s.a: %s\n%s: jmpstub.sx\n\t$$(COMPILE.sx) %s -o $$@ $$^\n"; \
+  } \
+  /__JMPSTUB(__)? *[(].*FUNCTION/ { \
+    LIB = "mingwex"; \
+    FUNCTION = gensub( ".*[ ,(:]FUNCTION *= *"symbol".*", "\\1", 1 ); \
+    OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".stub.$$(OBJEXT)"; \
+    OBJNAME_CFLAGS = "-D FUNCTION="FUNCTION; \
+    printf fmt, LIB, OBJNAME, OBJNAME, OBJNAME_CFLAGS; \
+  } \
+  END { \
+    printf "\n"; \
+  }'
+
 all-mingwrt-libs install-mingwrt-libs: libm.a
 # Historically, MinGW.org's libm.a has been a dummy, delivering
 # nothing of value; FIXME: IMO, this sucks; it should deliver the
@@ -722,7 +764,7 @@ clean-local: mostlyclean-local
 	$(RM) msvcr*.def moldname*.def mingw*.def lib*.a *.dll
 
 mostlyclean-local:
-	$(RM) *.d *.$(OBJEXT)
+	$(RM) *.d *.$(OBJEXT) Makefile.stub
 
 distclean-local: clean-local
 	$(RM) config.log config.status libm_dummy.c

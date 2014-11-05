@@ -1,3 +1,26 @@
+2014-11-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement conventionally named dirent function trampolines.
+
+	* mingwex/jmpstub.sx: New file; it implements a generic trampoline,
+	which redirects a conventionally named function call to its __mingw_
+	pseudo-namespace implementation.
+
+	* aclocal.m4 (MINGW_AC_PROG_COMPILE_SX): New macro; define it.
+	* configure.ac (MINGW_AC_PROG_COMPILE_SX): Use it; it identifies the
+	appropriate protocol for compiling *.sx files, (supported natively by
+	GCC >= v4.3, but older versions require `-x assembler-with-cpp').
+
+	* Makefile.in (COMPILE.sx): New implicit rule; GNU make does not
+	yet provide it, so we define it ourselves; deploy it for *.sx files.
+	(Makefile.stub): New sinclude file; create it dynamically, using...
+	(jmpstub_awk_script): ...this new inline script, which is based on...
+	(jmpstub_refs, jmpstub_prerequisites): ...these new macros, and...
+	(mingwex/jmpstub.sx): ...this new file; add vpath reference.
+	(mostlyclean-local): Remove Makefile.stub; do likewise...
+	(Makefile): ...when remaking this, to ensure that both will be
+	remade together.
+
 2014-11-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make dirent implementation namespace and time_t clean.

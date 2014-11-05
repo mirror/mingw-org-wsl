@@ -35,6 +35,7 @@
   AC_CONFIG_SRCDIR([include/_mingw.h])
   MINGW_AC_CONFIG_EXTRA_SRCDIR([w32api],[include/w32api.h])
   MINGW_AC_PROG_CC_COMPILE_ONLY
+  MINGW_AC_PROG_COMPILE_SX
 
   AC_CHECK_TOOL([AS],[as],[as])
   AC_CHECK_TOOL([WINDRES],[windres],[windres])
