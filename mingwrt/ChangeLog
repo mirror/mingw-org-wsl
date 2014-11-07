@@ -1,3 +1,21 @@
+2014-11-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Backport glob implementation from master to legacy.
+
+	* include/glob.h: New file; copy it from master branch.
+	(__mingw_glob, __mingw_globfree): Add __JMPSTUB__ aliases for...
+	(glob, globfree): ...each of these, respectively.
+
+	* mingwex/glob.c: New file; copy it from master:src/libcrt/misc.
+	(CRT_GLOB_HARD_ESCAPE) [ifndef __CRT_GLOB_ESCAPE_CHAR__]: Provide a
+	fallback definition; default value is ASCII DEL, a.k.a. RUBOUT, code.
+	(accept_glob_nocheck_match): New static function; it adds support for
+	avoidance of globbing on patterns with no globbing token, so avoiding
+	the case transliteration effect reported as MinGW-Bug #2106.
+	(glob_match): Use it.
+
+	* Makefile.in: Build glob.$OBJEXT; add it to libmingwex.a
+
 2014-11-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement conventionally named dirent function trampolines.
