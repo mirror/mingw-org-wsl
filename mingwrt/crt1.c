@@ -10,7 +10,8 @@
  */
 
 /* Hide the declaration of _fmode with dllimport attribute in stdlib.h to
-   avoid problems with older GCC. */
+ * avoid problems with older GCC.
+ */
 #define __IN_MINGW_RUNTIME
 #include <stdlib.h>
 #include <stdio.h>
@@ -21,36 +22,115 @@
 #include <windows.h>
 #include <signal.h>
 
-/* NOTE: The code for initializing the _argv, _argc, and environ variables
- *       has been moved to a separate .c file which is included in both
- *       crt1.c and dllcrt1.c. This means changes in the code don't have to
- *       be manually synchronized, but it does lead to this not-generally-
- *       a-good-idea use of include. */
-#include "init.c"
 #include "cpu_features.h"
 
 extern void __main ();
 extern void _pei386_runtime_relocator (void);
 
+/* Main program entry point, and argument initialization hook.
+ */
 extern int main (int, char **, char **);
 
-/* TLS initialization hook.  */
-extern const PIMAGE_TLS_CALLBACK __dyn_tls_init_callback;
+int    _argc = 0;
+char **_argv = NULL;
 
-/*
- * Must have the correct app type for MSVCRT.
+/* NOTE: Thanks to Pedro A. Aranda Gutiirrez <paag@tid.es> for pointing
+ * this out: the GetMainArgs() function, (provided by CRTDLL.DDL, as an
+ * argument initialization hook), takes a fourth argument (an int), which
+ * controls the globbing of the command line; if it is non-zero the command
+ * line will be globbed (e.g. *.* will be expanded to a list, separated by
+ * spaces, of all files in the startup directory).
+ *
+ * We determine how globbing should be performed, by inspection of the two
+ * least significant bits of the global int variable _CRT_glob, (defined in
+ * the mingw32 library, with a default value of 2).  If this pair of bits
+ * represent a value of 2 or more, the new MinGW globbing algorithm, (as
+ * implemented by function _setargv() in setargv.c), will be applied; for
+ * values of one or zero, _setargv() will delegate the globbing function to
+ * the _mingw32_init_mainargs() callback function implemented below, and so
+ * invoking the Microsoft GetMainArgs() algorithm, with its fourth argument
+ * set to one or zero, to match the least significant bit of _CRT_glob.
+ *
+ * The mingw32 library default value of 2 for _CRT_glob enables command line
+ * globbing using the MinGW algorithm.  If you prefer to adopt the Microsoft
+ * algorithm, you should define _CRT_glob as a global variable, by including
+ * a line in one of your own source code files, like this:
+ *
+ *    int _CRT_glob = 1;
+ *
+ * Alternatively, if you prefer to disable globbing, and do all command line
+ * processing yourself, (and so evade possible bogons in the Microsoft or in
+ * the MinGW globbing code), include a similar line in one of your own source
+ * code files, defining _CRT_glob with a value of zero, like this:
+ *
+ *    int _CRT_glob = 0;
  */
+extern int _CRT_glob;
 
 #ifdef __MSVCRT__
-#define __UNKNOWN_APP    0
-#define __CONSOLE_APP    1
-#define __GUI_APP        2
+/* In MSVCRT.DLL, Microsoft's initialization hook is called __getmainargs(),
+ * and it expects a further structure argument, (which we don't use, but pass
+ * it as a dummy, with a declared size of zero in its first and only field).
+ */
+typedef struct { int newmode; } _startupinfo;
+extern void __getmainargs( int *, char ***, char ***, int, _startupinfo * );
+
+#else
+/* In CRTDLL.DLL, the initialization hook is called __GetMainArgs().
+ */
+extern void __GetMainArgs( int *, char ***, char ***, int );
+#endif
+
+void _mingw32_init_mainargs()
+{
+  /* This is the old start-up mechanism, in which we use a start-up
+   * hook provided by Microsoft's runtime library to initialize the
+   * argument and environment vectors.
+   *
+   * Note that the preferred method for accessing the environment
+   * vector is via a direct pointer retrieved from the runtime DLL,
+   * using a system call declared in stdlib.h; thus, we don't need
+   * to preserve the pointer returned by the start-up hook, so we
+   * may simply capture it locally, and subsequently discard it.
+   */
+  char **dummy_envp;
+
+# define _CRT_GLOB_OPT  _CRT_glob & __CRT_GLOB_USE_MSVCRT__
+# ifdef __MSVCRT__
+    /* The MSVCRT.DLL start-up hook requires this invocation
+     * protocol...
+     */
+    _startupinfo start_info = { 0 };
+    __getmainargs( &_argc, &_argv, &dummy_envp, _CRT_GLOB_OPT, &start_info );
+
+# else
+    /* ...while a somewhat simpler protocol is applicable, in
+     * the case of the CRTDLL.DLL version.
+     */
+    __GetMainArgs( &_argc, &_argv, &dummy_envp, _CRT_GLOB_OPT );
+# endif
+}
+
+/* TLS initialization hook.
+ */
+extern const PIMAGE_TLS_CALLBACK __dyn_tls_init_callback;
+
+/* Must have the correct app type for MSVCRT.
+ */
+#ifdef __MSVCRT__
+# define __UNKNOWN_APP    0
+# define __CONSOLE_APP    1
+# define __GUI_APP        2
+
 __MINGW_IMPORT void __set_app_type(int);
+
 #endif /* __MSVCRT__ */
 
-/*  Global _fmode for this .exe, not the one in msvcrt.dll,
-    The default is set in txtmode.o in libmingw32.a */
-/* Override the dllimport'd declarations in stdlib.h */
+/* Global _fmode for this .exe, (not the one in msvcrt.dll).
+ *
+ * The default is set in txtmode.o in libmingw32.a
+ * Override the dllimport'd declarations in stdlib.h
+ */
 #undef _fmode
 extern int _fmode;
 #ifdef __MSVCRT__
@@ -66,42 +146,35 @@ extern int _CRT_fmode;
 static void
 _mingw32_init_fmode (void)
 {
-  /* Don't set the std file mode if the user hasn't set any value for it. */
+  /* Don't set the std file mode if the user hasn't set any value for it.
+   */
   if (_CRT_fmode)
-    {
-      _fmode = _CRT_fmode;
+  {
+    _fmode = _CRT_fmode;
 
-      /*
-       * This overrides the default file mode settings for stdin,
-       * stdout and stderr. At first I thought you would have to
-       * test with isatty, but it seems that the DOS console at
-       * least is smart enough to handle _O_BINARY stdout and
-       * still display correctly.
-       */
-      if (stdin)
-	{
-	  _setmode (_fileno (stdin), _CRT_fmode);
-	}
-      if (stdout)
-	{
-	  _setmode (_fileno (stdout), _CRT_fmode);
-	}
-      if (stderr)
-	{
-	  _setmode (_fileno (stderr), _CRT_fmode);
-	}
-    }
+    /* This overrides the default file mode settings for stdin,
+     * stdout and stderr. At first I thought you would have to
+     * test with isatty, but it seems that the DOS console at
+     * least is smart enough to handle _O_BINARY stdout and
+     * still display correctly.
+     */
+    if (stdin) _setmode (_fileno (stdin), _CRT_fmode);
+    if (stdout) _setmode (_fileno (stdout), _CRT_fmode);
+    if (stderr) _setmode (_fileno (stderr), _CRT_fmode);
+  }
 
-    /*  Now sync  the dll _fmode to the  one for this .exe.  */
-#ifdef __MSVCRT__
+  /* Now sync the dll _fmode to the one for this .exe.
+   */
+# ifdef __MSVCRT__
     *__p__fmode() = _fmode;
-#else
+# else
     *_imp___fmode_dll = _fmode;
-#endif
+# endif
 }
 
-/* This function will be called when a trap occurs. Thanks to Jacob
-   Navia for his contribution. */
+/* This function will be called when a trap occurs.  Thanks to
+ * Jacob Navia for this contribution.
+ */
 static CALLBACK long
 _gnu_exception_handler (EXCEPTION_POINTERS * exception_data)
 {
@@ -181,50 +254,48 @@ _gnu_exception_handler (EXCEPTION_POINTERS * exception_data)
   return action;
 }
 
-/*
- * The function mainCRTStartup is the entry point for all console programs.
+/* The function mainCRTStartup is the entry point for all console programs.
  */
 static void  __MINGW_ATTRIB_NORETURN
 __mingw_CRTStartup (void)
 {
   int nRet;
 
-  /* Initialize TLS callback.  */
+  /* Initialize TLS callback.
+   */
   if (__dyn_tls_init_callback != NULL)
     __dyn_tls_init_callback (NULL, DLL_THREAD_ATTACH, NULL);
 
-  /*
-   * Set up the top-level exception handler so that signal handling
+  /* Set up the top-level exception handler so that signal handling
    * works as expected. The mapping between ANSI/POSIX signals and
-   * Win32 SE is not 1-to-1, so caveat emptore.
+   * Win32 SE is not 1-to-1, so caveat emptor.
    *
    */
   SetUnhandledExceptionFilter (_gnu_exception_handler);
 
-  /*
-   * Initialize floating point unit.
+  /* Initialize floating point unit.
    */
   __cpu_features_init ();	/* Do we have SSE, etc.*/
   _fpreset ();			/* Supplied by the runtime library. */
 
-  /*
-   * Set up __argc, __argv and _environ.
+  /* Set up __argc, __argv and _environ.
    */
-  _mingw32_init_mainargs ();
+  _setargv ();
 
-  /*
-   * Sets the default file mode.
+  /* Sets the default file mode.
    * If _CRT_fmode is set, also set mode for stdin, stdout
    * and stderr, as well
    * NOTE: DLLs don't do this because that would be rude!
    */
   _mingw32_init_fmode ();
 
-   /* Adust references to dllimported data that have non-zero offsets.  */
+  /* Adust references to dllimported data that have non-zero offsets.
+   */
   _pei386_runtime_relocator ();
 
   /* Align the stack to 16 bytes for the sake of SSE ops in main
-     or in functions inlined into main.  */
+   * or in functions inlined into main.
+   */
   asm  __volatile__  ("andl $-16, %%esp" : : : "%esp");
 
    /* From libgcc.a, __main calls global class constructors via
@@ -235,16 +306,14 @@ __mingw_CRTStartup (void)
       which has its own __do_global_ctors.  */
     __main ();
 
-  /*
-   * Call the main function. If the user does not supply one
+  /* Call the main function. If the user does not supply one
    * the one in the 'libmingw32.a' library will be linked in, and
    * that one calls WinMain. See main.c in the 'lib' dir
    * for more details.
    */
   nRet = main (_argc, _argv, environ);
 
-  /*
-   * Perform exit processing for the C library. This means
+  /* Perform exit processing for the C library. This means
    * flushing output and calling 'atexit' registered functions.
    */
   _cexit ();

@@ -363,9 +363,9 @@ $(addsuffix .def,$(all_moldname)): %.def: ${mingwrt_srcdir}/moldname.def.in
 	$(CC) -C -E -P -D__FILENAME__=$@ -xc-header $< > $@
 
 all-mingwrt-libs install-mingwrt-libs: libmingw32.a libmingwex.a
-libmingw32.a: $(addsuffix .$(OBJEXT), CRTinit CRTfmode CRTglob \
-  cpu_features CRT_fp10 txtmode main dllmain gccmain crtst tlsmcrt \
-  tlsmthread tlssup tlsthrd pseudo-reloc pseudo-reloc-list)
+libmingw32.a: $(addsuffix .$(OBJEXT), CRTinit CRTglob setargv \
+  CRTfmode cpu_features CRT_fp10 txtmode main dllmain gccmain crtst \
+  tlsmcrt tlsmthread tlssup tlsthrd pseudo-reloc pseudo-reloc-list)
 
 libmingw32.a libmingwex.a libm.a libmingwthrd.a libgmon.a:
 	$(AR) $(ARFLAGS) $@ $?

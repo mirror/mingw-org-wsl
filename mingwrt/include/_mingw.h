@@ -33,34 +33,90 @@
 #endif
 #endif
 
-/* These are defined by the user (or the compiler)
-   to specify how identifiers are imported from a DLL.
+/* The following are defined by the user (or by the compiler), to specify how
+ * identifiers are imported from a DLL.  All headers should include this first,
+ * and then use __DECLSPEC_SUPPORTED to choose between the old ``__imp__name''
+ * style or the __MINGW_IMPORT style for declarations.
+ *
+ * __DECLSPEC_SUPPORTED            Defined if dllimport attribute is supported.
+ * __MINGW_IMPORT                  The attribute definition to specify imported
+ *                                 variables/functions.
+ * _CRTIMP                         As above.  For MS compatibility.
+ * __MINGW32_VERSION               Runtime version.
+ * __MINGW32_MAJOR_VERSION         Runtime major version.
+ * __MINGW32_MINOR_VERSION         Runtime minor version.
+ * __MINGW32_BUILD_DATE            Runtime build date.
+ *
+ * Macros to enable MinGW features which deviate from standard MSVC
+ * compatible behaviour; these may be specified directly in user code,
+ * activated implicitly, (e.g. by specifying _POSIX_C_SOURCE or such),
+ * or by inclusion in __MINGW_FEATURES__:
+ *
+ * __USE_MINGW_ANSI_STDIO          Select a more ANSI C99 compatible
+ *                                 implementation of printf() and friends.
+ *
+ * Other macros:
+ *
+ * __int64                         define to be long long.  Using a typedef
+ *                                 doesn't work for "unsigned __int64"
+ *
+ *
+ * Manifest definitions for flags to control globbing of the command line
+ * during application start up, (before main() is called).  The first pair,
+ * when assigned as bit flags within _CRT_glob, select the globbing algorithm
+ * to be used; (the MINGW algorithm overrides MSCVRT, if both are specified).
+ * Prior to mingwrt-3.21, only the MSVCRT option was supported; this choice
+ * may produce different results, depending on which particular version of
+ * MSVCRT.DLL is in use; (in recent versions, it seems to have become
+ * definitively broken, when globbing within double quotes).
+ */
+#define __CRT_GLOB_USE_MSVCRT__  	0x0001
 
-   __DECLSPEC_SUPPORTED            Defined if dllimport attribute is supported.
-   __MINGW_IMPORT                  The attribute definition to specify imported
-                                   variables/functions.
-   _CRTIMP                         As above.  For MS compatibility.
-   __MINGW32_VERSION               Runtime version.
-   __MINGW32_MAJOR_VERSION         Runtime major version.
-   __MINGW32_MINOR_VERSION         Runtime minor version.
-   __MINGW32_BUILD_DATE            Runtime build date.
+/* From mingwrt-3.21 onward, this should be the preferred choice; it will
+ * produce consistent results, regardless of the MSVCRT.DLL version in use.
+ */
+#define __CRT_GLOB_USE_MINGW__   	0x0002
 
-   Macros to enable MinGW features which deviate from standard MSVC
-   compatible behaviour; these may be specified directly in user code,
-   activated implicitly, (e.g. by specifying _POSIX_C_SOURCE or such),
-   or by inclusion in __MINGW_FEATURES__:
+/* When the __CRT_GLOB_USE_MINGW__ flag is set, within _CRT_glob, the
+ * following additional options are also available; they are not enabled
+ * by default, but the user may elect to enable any combination of them,
+ * by setting _CRT_glob to the boolean sum (i.e. logical OR combination)
+ * of __CRT_GLOB_USE_MINGW__ and the desired options.
+ *
+ *    __CRT_GLOB_USE_SINGLE_QUOTE__	allows use of single (apostrophe)
+ *    					quoting characters, analogously to
+ *    					POSIX usage, as an alternative to
+ *    					double quotes, for collection of
+ *    					arguments separated by white space
+ *    					into a single logical argument.
+ *
+ *    __CRT_GLOB_BRACKET_GROUPS__	enable interpretation of bracketed
+ *    					character groups as POSIX compatible
+ *    					globbing patterns, matching any one
+ *    					character which is either included
+ *    					in, or excluded from the group.
+ *
+ *    __CRT_GLOB_CASE_SENSITIVE__	enable case sensitive matching for
+ *    					globbing patterns; this is default
+ *    					behaviour for POSIX, but because of
+ *    					the case insensitive nature of the
+ *    					MS-Windows file system, it is more
+ *    					appropriate to use case insensitive
+ *    					globbing as the MinGW default.
+ *
+ */
+#define __CRT_GLOB_USE_SINGLE_QUOTE__	0x0010
+#define __CRT_GLOB_BRACKET_GROUPS__	0x0020
+#define __CRT_GLOB_CASE_SENSITIVE__	0x0040
 
-   __USE_MINGW_ANSI_STDIO          Select a more ANSI C99 compatible
-                                   implementation of printf() and friends.
-
-   Other macros:
-
-   __int64                         define to be long long.  Using a typedef
-                                   doesn't work for "unsigned __int64"
-
-   All headers should include this first, and then use __DECLSPEC_SUPPORTED
-   to choose between the old ``__imp__name'' style or __MINGW_IMPORT
-   style declarations.  */
+/* The MinGW globbing algorithm uses the ASCII DEL control code as a marker
+ * for globbing characters which were embedded within quoted arguments; (the
+ * quotes are stripped away BEFORE the argument is globbed; the globbing code
+ * treats the marked character as immutable, and strips out the DEL markers,
+ * before storing the resultant argument).  The DEL code is mapped to this
+ * function here; DO NOT change it, without rebuilding the runtime.
+ */
+#define __CRT_GLOB_ESCAPE_CHAR__	(char)(127)
 
 
 /* Manifest definitions identifying the flag bits, controlling activation

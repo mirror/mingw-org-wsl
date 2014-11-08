@@ -1,3 +1,36 @@
+2014-11-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement new command line argument globbing strategy.
+
+	* include/_mingw.h: Backport feature defines from master...
+	(__CRT_GLOB_USE_MINGW__, __CRT_GLOB_USE_MSVCRT__): New manifest
+	constants; define them.  They select the preferred globbing algorithm.
+	[_CRT_glob & __CRT_GLOB_USE_MINGW__] (__CRT_GLOB_USE_SINGLE_QUOTE__)
+	(__CRT_GLOB_BRACKET_GROUPS__, __CRT_GLOB_CASE_SENSITIVE__): New option
+	bit-map constants; define them.  When added to __CRT_GLOB_USE_MINGW__,
+	they enable optional additional features supported by this algorithm.
+	(__CRT_GLOB_ESCAPE_CHAR__): New manifest constant; define it.
+
+	* CRTglob.c (_CRT_glob): Change default to __CRT_GLOB_USE_MINGW__.
+
+	* Makefile.in (libmingw32.a): Add setargv.$OBJEXT, furnished by...
+	* setargv.c: ...new file; it implements the initialization mechanism
+	for the __CRT_GLOB_USE_MINGW__ globbing algorithm, when invoked by...
+	(_setargv) [_CRT_glob & __CRT_GLOB_USE_MINGW__]: ...this new function;
+	it invokes the algorithm via an API similar to that described by MSDN,
+	while continuing to support our original _CRT_glob interpretation.
+	(_setargv) [! _CRT_glob & __CRT_GLOB_USE_MINGW__]: Invoke Microsoft
+	algorithm, via the MSDN-alike API, by calling back to...
+
+	* crt1.c (_mingw32_init_mainargs): ...this original function, now
+	relocated to here, as a publicly addressable function; formerly...
+	(__mingw_CRTStartup): ...called directly from here, we now redirect
+	the call through _setargv(), whence it may be called indirectly.
+
+	* init.c: Redundant file; delete it.  It originally provided...
+	(_mingw32_init_mainargs): ...this, now relocated as noted above, with
+	original static attribute removed, to allow global addressing.
+
 2014-11-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Backport glob implementation from master to legacy.
