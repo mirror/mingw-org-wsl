@@ -1,5 +1,20 @@
 2014-11-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Move libgen functions to __mingw_ pseudo-namespace.
+
+	* mingwex/dirname.c (dirname): Rename function, as implemented...
+	(__mingwex_dirname): ...to this.
+
+	* mingwex/basename.c (basename): Rename function, as implemented...
+	(__mingwex_basename): ...to this.
+
+	* include/libgen.h (__mingw_dirname, __mingw_basename): Declare
+	prototypes, matching and augmenting original declarations for...
+	(dirname, basename): ...these; reimplement as inline aliases, with
+	__JMPSTUB__ references to the renamed implementation entry points.
+
+2014-11-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Implement new command line argument globbing strategy.
 
 	* include/_mingw.h: Backport feature defines from master...

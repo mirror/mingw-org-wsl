@@ -1,24 +1,35 @@
 /* dirname.c
  *
- * $Id$
- *
  * Provides an implementation of the "dirname" function, conforming
  * to SUSv3, with extensions to accommodate Win32 drive designators,
  * and suitable for use on native Microsoft(R) Win32 platforms.
  *
+ * $Id$
+ *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2006, 2007, 2014, MinGW.org Project
  *
- * This is free software.  You may redistribute and/or modify it as you
- * see fit, without restriction of copyright.
  *
- * This software is provided "as is", in the hope that it may be useful,
- * but WITHOUT WARRANTY OF ANY KIND, not even any implied warranty of
- * MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.  At no
- * time will the author accept any form of liability for any damages,
- * however caused, resulting from the use of this software.
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +40,7 @@
 #define __cdecl  /* this may not be defined.                   */
 #endif
 
-__cdecl char *dirname( char *path )
+__cdecl char *__mingw_dirname( char *path )
 {
   size_t len;
   static char *retfail = NULL;
