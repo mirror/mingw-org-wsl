@@ -464,7 +464,7 @@ libmingwex.a: $(addsuffix .$(OBJEXT), _Exit atoll lltoa lltow \
   ulltoa ulltow wtoll)
 
 libmingwex.a: gettimeofday.$(OBJEXT)
-libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent)
+libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), fwide mbrtowc mbsinit wcrtomb wcstof \
   wcstold wctob wmemchr wmemcmp wmemcpy wmemmove wmemset)
@@ -490,21 +490,37 @@ $(addsuffix .$(OBJEXT), % %f %l): %_generic.c
 $(addsuffix .$(OBJEXT), llround llroundf llroundl): %.$(OBJEXT): lround_generic.c
 	$(CC) -c -D FUNCTION=$* $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
+# Historically, MinGW.org's libm.a has been a dummy, delivering
+# nothing of value; FIXME: IMO, this sucks; it should deliver the
+# non-MSVCRT.DLL math functions, as noted above.
+#
+all-mingwrt-libs install-mingwrt-libs: libm.a
+libm.a: libm_dummy.$(OBJEXT)
+libm_dummy.c: Makefile
+	echo "static int __mingw_libm_dummy;" > $@
+
 # The mingwrt headers define a number of functions which are normally
 # expected to be compiled as inline code.  Each such function must also
 # be provided with an externally visible entry point; we provide such
 # entry points as stubs in libmingwex.a, via the following rules:
 #
 sinclude Makefile.stub
-jmpstub_refs = grep -lr '__JMPSTUB.*FUNCTION'
-jmpstub_prerequisites := $(shell $(jmpstub_refs) ${mingwrt_srcdir}/include)
-Makefile.stub: Makefile $(jmpstub_prerequisites)
+vpath jmpstub.sx ${mingwrt_srcdir}/mingwex
+libstub_refnames = grep -lr '__$1.*FUNCTION *=' ${mingwrt_srcdir}
+jmpstub_prerequisites := $(shell $(call libstub_refnames,JMPSTUB)/include)
+libimpl_prerequisites := $(shell $(call libstub_refnames,LIBIMPL)/include)
+Makefile.stub: Makefile $(jmpstub_prerequisites) $(libimpl_prerequisites)
 	echo "# $@: automatically generated file -- do not edit!" > $@
-	$(jmpstub_awk_script) $(jmpstub_prerequisites) >> $@
+	$(call jmpstub_awk_script,$(jmpstub_prerequisites)) >> $@
+	$(call libimpl_awk_script,$(libimpl_prerequisites)) >> $@
 	echo "# $@: end of file" >> $@
 
-vpath jmpstub.sx ${mingwrt_srcdir}/mingwex
-jmpstub_awk_script = test "$^" = Makefile || awk '\
+# Stubs are categorized into either of JMPSTUB or LIBIMPL classes;
+# the rules for building the JMPSTUP inplementations are written to
+# Makefile.stub, by processing each of their defining header files
+# through the following awk script...
+#
+jmpstub_awk_script = test -z "$1" || awk '\
   BEGIN { \
     symbol = "([A-Z_a-z][A-Z_a-z0-9]*)"; \
     fmt = "\nlib%s.a: %s\n%s: jmpstub.sx\n\t$$(COMPILE.sx) %s -o $$@ $$^\n"; \
@@ -512,22 +528,60 @@ jmpstub_awk_script = test "$^" = Makefile || awk '\
   /__JMPSTUB(__)? *[(].*FUNCTION/ { \
     LIB = "mingwex"; \
     FUNCTION = gensub( ".*[ ,(:]FUNCTION *= *"symbol".*", "\\1", 1 ); \
-    OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".stub.$$(OBJEXT)"; \
+    OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".jmpstub.$$(OBJEXT)"; \
     OBJNAME_CFLAGS = "-D FUNCTION="FUNCTION; \
     printf fmt, LIB, OBJNAME, OBJNAME, OBJNAME_CFLAGS; \
   } \
   END { \
     printf "\n"; \
-  }'
+  }' $1
 
-all-mingwrt-libs install-mingwrt-libs: libm.a
-# Historically, MinGW.org's libm.a has been a dummy, delivering
-# nothing of value; FIXME: IMO, this sucks; it should deliver the
-# non-MSVCRT.DLL math functions, as noted above.
+# ...while this establishes the dependencies which apply for each
+# of those in the LIBIMPL class.
 #
-libm.a: libm_dummy.$(OBJEXT)
-libm_dummy.c: Makefile
-	echo "static int __mingw_libm_dummy;" > $@
+libimpl_awk_script = test -z "$1" || awk '\
+  BEGIN { \
+    symbol = "([A-Z_a-z][A-Z_a-z0-9]*)"; \
+    fmt = "\nlib%s.a: %s\n%s.libimpl: %s\n"; \
+  } \
+  /__LIBIMPL(__)? *[(].*FUNCTION/ { \
+    LIB = "mingwex"; \
+    FUNCTION = gensub( ".*[ ,(:]FUNCTION *= *"symbol".*", "\\1", 1 ); \
+    OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".libimpl.$$(OBJEXT)"; \
+    printf fmt, LIB, OBJNAME, FUNCTION, FILENAME; \
+  } \
+  END { \
+    printf "\n"; \
+  }' $1
+
+# In contrast to JMPSTUB implementations, which are best handled
+# by individual compilation rules in Makefile.stub, generic rules
+# are sufficient for all LIBIMPL implementations; in each case, we
+# filter the static attribute from each defined implementation, in
+# its defining header file, to create an intermediate C source for
+# each individual function; (note that we also remove any pragma
+# which identifies the originating file as a system header).
+#
+libimpl_sed_script = sed \
+  -e '/__CRT_ALIAS  *__LIBIMPL.*FUNCTION *= *$1[ ,)].*)/d' \
+  -e '/pragma .* system_header/d'
+
+LIBIMPL_CFLAGS = $(CFLAGS) $(INCLUDES) -fno-align-functions
+
+# LIBIMPL dependencies are tracked using zero sized name.libimpl
+# files; the intermediate C files are generated as a side effect
+# of resolving these dependencies...
+#
+%.libimpl:
+	$(call libimpl_sed_script,$*) $< > $@.c
+	> $@
+
+# ...and ultimately discarded, after the requisite object file
+# has been compiled.
+#
+%.libimpl.$(OBJEXT): %.libimpl
+	$(CC) -c $(CPPFLAGS) $(LIBIMPL_CFLAGS) -o $@ $<.c
+	$(RM) $<.c
 
 # Thread support libraries.
 #

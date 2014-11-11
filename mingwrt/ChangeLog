@@ -1,3 +1,25 @@
+2014-11-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement wrappers for emulation of POSIX dlfcn API.
+
+	* include/dlfcn.h: New file; it declares the API.
+	* mingwex/dlfcn.c: New file; implement it, with access via...
+	(__mingw_dlfcn): ...this publicly addressable vector table.
+
+	* Makefile.in (dlfcn.$OBJEXT): Add build requisite.
+	(dlopen, dlsym, dlclose, dlerror): Build call stubs, using...
+	(__LIBIMPL__): ...this automatic interface generator; implement it.
+	(libstub_refnames): New macro; it is adapted from and replaces...
+	(jmpstub_refs): ...this; when it is then invoked twice to build...
+	(Makefile.stub): ...this, it handles both JMPSTUB and LIBIMPL.
+	(jmpstub_awk_script): Adapt it to work with 'libstub_refnames'.
+	(libimpl_awk_script): New inline script; it handles automated builds
+	of LIBIMPL interfaces, as 'jmpstub_awk_script' does for JMPSTUB.
+	(libimpl_sed_script): New inline script; it prepares intermediate C
+	source code for LIBIMPL interfaces, as required to satisfy these...
+	(%.libimpl, %.libimpl.$OBJEXT): ...new implicit build objectives.
+	(LIBIMPL_CFLAGS): New macro; define it.
+
 2014-11-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Move libgen functions to __mingw_ pseudo-namespace.
