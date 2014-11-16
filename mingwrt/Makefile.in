@@ -818,7 +818,7 @@ clean-local: mostlyclean-local
 	$(RM) msvcr*.def moldname*.def mingw*.def lib*.a *.dll
 
 mostlyclean-local:
-	$(RM) *.d *.$(OBJEXT) Makefile.stub
+	$(RM) *.d *.$(OBJEXT) Makefile.stub *.libimpl
 
 distclean-local: clean-local
 	$(RM) config.log config.status libm_dummy.c

@@ -1,3 +1,10 @@
+2014-11-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Do some more essential build tree clean up.
+
+	* Makefile.in (mostly-clean-local): Add *.libimpl; matching files get
+	in the way of a successful rebuild from clean.
+
 2014-11-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement wrappers for emulation of POSIX dlfcn API.
