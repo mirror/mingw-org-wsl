@@ -1,3 +1,50 @@
+2014-11-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement more robust _get_output_format fallback handling.
+
+	* mingwex/ofmt.c: New file; it implements...
+	(__mingw_output_format_flag): ...backing store, used by...
+	(__mingw_get_output_format, __mingw_set_output_format): ...these
+	MSVCRT.DLL version agnostic wrappers/emulators for each of these...
+	(_get_output_format, _set_output_format): ...MSVCR80.DLL and later
+	version specific Microsoft APIs, which are also supported by some
+	later versions of MSVCRT.DLL, (excluding WinXP and earlier).
+	(__mingw_get_output_format_fallback): Implement; it is aliased to...
+	(__mingw_set_output_format_fallback): ...this; together they provide
+	the emulation support for the preceding pair of functions, when they
+	are not available within the run-time platform MSVCRT.DLL
+	(__mingw_get_printf_count_output, __mingw_set_printf_count_output):
+	Implement them; they wrap, and if necessary emulate...
+	(_get_printf_count_output, _set_printf_count_output): ...these.
+	(__mingw_get_printf_count_output_fallback): Implement; aliased to...
+	(__mingw_set_printf_count_output_fallback): ...this; together they are
+	required to support emulation of the preceding pair of functions, when
+	they are not available within the run-time platform MSVCRT.DLL
+
+	* include/stdio.h (_TWO_DIGIT_EXPONENT): Define it unconditionally.
+	(_THREE_DIGIT_EXPONENT): New manifest constant; define it orthogonally.
+	(__mingw_get_output_format, __mingw_set_output_format)
+	(__mingw_get_printf_count_output, __mingw_set_printf_count_output):
+	Unconditionally declare their prototypes, for subsequent inline use.
+	[_MSVCRT_VERSION__ < 0x800] (_get_output_format): Emulate it inline.
+	[_MSVCRT_VERSION__ < 0x800] (_set_output_format): Likewise.
+	[_MSVCRT_VERSION__ < 0x800] (_get_printf_count_output): Likewise.
+	[_MSVCRT_VERSION__ < 0x800] (_set_printf_count_output): Likewise.
+	(__USE_MINGW_PRINTF): New manifest constant; define it. It is a
+	counterpart to __USE_MINGW_ANSI_STDIO, which is guaranteed to always
+	represent a compilable token.
+
+	* mingwex/stdio/pformat.c (__pformat_exponent_digits): Do not require
+	_get_output_format; consult __mingw_output_format_flag directly.
+
+	* ofmt_stub.s: No longer required; delete it.
+
+	* Makefile.in (ofmt_stub.$OBJEXT): Delete reference.
+	(PFORMAT_CFLAGS) [__MSVCRT_VERSION__ = 0x800]: Remove requirement.
+	(varofmt.$OBJEXT, crtofmt.$OBJEXT, getofmt.$OBJEXT, setofmt.$OBJEXT)
+	(crtnfmt.$OBJEXT, getnfmt.$OBJEXT, setnfmt.$OBJEXT): Add build rule;
+	all are compiled from ofmt.c
+
 2014-11-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Do some more essential build tree clean up.

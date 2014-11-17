@@ -258,19 +258,6 @@ all-libmsvcrt install-mingwrt-libs: $(foreach name,$(all_msvcrt),lib$(name).a)
 all-libcrtdll install-deprecated-mingwrt-libs: libcrtdll.a libcoldname.a
 all-deprecated-mingwrt all-deprecated-libmsvcrt: all-libcrtdll
 
-# FIXME: We should aim to remove this interim work-around...
-#
-# MSVCRT.DLL, MSVCR70.DLL, and MSVCR71.DLL, (both regular and debug
-# variants), lack the _get_output_format() function, which is required
-# by the printf() module in libmingwex.a; add our own implementation.
-# (Note that we also apply this for CRTDLL.DLL, via libcrtdll.a)
-#
-vpath ofmt_stub.s ${mingwrt_srcdir}
-$(foreach ver,t 70 71,libmsvcr$(ver).a) libcrtdll.a \
-$(foreach ver,t 70 71,libmsvcr$(ver)d.a): ofmt_stub.$(OBJEXT)
-#
-# End of work-around
-
 # For each import library to be built, we derive a tailored exports
 # definition file, from a common source.
 #
@@ -437,20 +424,20 @@ libmingwex.a: $(addsuffix .$(OBJEXT), btowc fopen64 fprintf fseeko64 ftello64 \
   lseek64 pformat printf snprintf snwprintf sprintf vfprintf vfscanf vfwscanf \
   vprintf vscanf vsnprintf vsnwprintf vsprintf vsscanf vswscanf vwscanf)
 
-# FIXME: We should adopt a semantic implementation similar to the
-# dlsym( RTLD_DEFAULT, "_get_output_format" ) call in POSIX, to let
-# us handle the following fall-back more effectively.
+# pformat.$(OBJEXT) needs an explicit build rule, since we need to
+# specify an additional header file path.
 #
-# pformat.$(OBJEXT) needs an explicit build rule; we always build it
-# assuming that __MSVCRT_VERSION__ >= 0x0800, (and thus assuming that
-# the Microsoft runtime provides the _get_output_format() function);
-# we then rely on ofmt_stub.s, (in the top mingwrt source directory),
-# to provide a fall-back implementation, so maintaining forward
-# compatibility for earlier versions of MSVCRT.DLL
-#
-PFORMAT_CFLAGS = -I ${mingwrt_srcdir}/mingwex/gdtoa -D__MSVCRT_VERSION__=0x0800
+PFORMAT_CFLAGS = -I ${mingwrt_srcdir}/mingwex/gdtoa
 pformat.$(OBJEXT): %.$(OBJEXT): %.c
 	$(CC) -c $(ALL_CFLAGS) $(PFORMAT_CFLAGS) $< -o $@
+
+# To support Microsoft's DLL version specific exponent digits control,
+# and "%n" format availability control APIs, in a DLL version agnostic
+# manner, we also provide the following set of wrapper functions:
+#
+libmingwex.a: $(addsuffix fmt.$(OBJEXT),varo crto geto seto crtn getn setn)
+$(addsuffix fmt.$(OBJEXT),varo crto geto seto crtn getn setn): %.$(OBJEXT): ofmt.c
+	$(CC) -c $(ALL_CFLAGS) -D__$*__ -fno-align-functions -o $@ $<
 
 # Some additional miscellaneous functions, in libmingwex.a
 #

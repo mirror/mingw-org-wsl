@@ -508,14 +508,80 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_getmaxstdio (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW	_setmaxstdio (int);
 #endif
 
+/* Microsoft introduced a capability in MSVCR80.DLL and later, to
+ * set the minimum number of digits to be displayed in a printf()
+ * floating point exponent; they retro-fitted this in MSVCRT.DLL,
+ * from Windows-Vista onwards, but we provide our own wrappers in
+ * libmingwex.a, which make it possible for us to emulate the API
+ * for any version of MSVCRT.DLL (including WinXP and earlier).
+ */
+#define _TWO_DIGIT_EXPONENT    1
+
+/* While Microsoft define the preceding manifest constant, they
+ * appear to neglect to define its complement, (for restoration
+ * of their default exponent display format); for orthogonality,
+ * we will provide this regardless of Microsoft's negligence.
+ */
+#define _THREE_DIGIT_EXPONENT  0
+
+unsigned int __cdecl __mingw_get_output_format (void);
+unsigned int __cdecl __mingw_set_output_format (unsigned int);
+
+/* Also appearing for the first time in MSVCR80.DLL, and then also
+ * retro-fitted to MSVCRT.DLL from Windows-Vista onwards, was this
+ * pair of functions to control availability of "%n" formatting in
+ * the MSVCRT.DLL printf() family of functions, for which we also
+ * provide our own DLL version agnostic wrappers:
+ */
+int __cdecl __mingw_get_printf_count_output (void);
+int __cdecl __mingw_set_printf_count_output (int);
+
 #if __MSVCRT_VERSION__ >= 0x800
+/*
+ * When the user declares that MSVCR80.DLL features are supported,
+ * we simply expose the corresponding APIs...
+ */
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _get_output_format (void);
 _CRTIMP unsigned int __cdecl __MINGW_NOTHROW _set_output_format (unsigned int);
 
-#define _TWO_DIGIT_EXPONENT  1
-
 _CRTIMP int __cdecl __MINGW_NOTHROW _get_printf_count_output (void);
 _CRTIMP int __cdecl __MINGW_NOTHROW _set_printf_count_output (int);
+
+#else
+/* ...otherwise, we emulate the APIs, in a DLL version agnostic
+ * manner, using our own implementation wrappers.
+ */
+__CRT_ALIAS unsigned int __cdecl _get_output_format (void)
+{ return __mingw_get_output_format (); }
+
+__CRT_ALIAS unsigned int __cdecl _set_output_format (unsigned int __style)
+{ return __mingw_set_output_format (__style); }
+
+/* When using our own printf() implementation, "%n" format is ALWAYS
+ * supported, so we make this API a no-op, reporting it to be so; for
+ * the alternative case, when using MSVCRT.DLL's printf(), we delegate
+ * to our wrapper API implementation, which will invoke the API function
+ * calls within the DLL, if they are available, or persistently report
+ * the state of "%n" formatting as DISABLED if they are not.
+ */
+#if __USE_MINGW_ANSI_STDIO
+/*
+ * Note that __USE_MINGW_ANSI_STDIO is not guaranteed to resolve to any
+ * symbol which will represent a compilable logic state; map it to this
+ * alternative which will, for the true state...
+ */
+# define __USE_MINGW_PRINTF  1
+#else
+/* ...and for the false.
+ */
+# define __USE_MINGW_PRINTF  0
+#endif
+
+__CRT_ALIAS int __cdecl _get_printf_count_output (void)
+{ return __USE_MINGW_PRINTF ? 1 : __mingw_get_printf_count_output (); }
+
+__CRT_ALIAS int __cdecl _set_printf_count_output (int __mode)
+{ return __USE_MINGW_PRINTF ? 1 : __mingw_set_printf_count_output (__mode); }
 #endif
 
 #ifndef _NO_OLDNAMES

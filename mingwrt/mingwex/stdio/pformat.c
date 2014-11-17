@@ -149,38 +149,32 @@
  * The following macro allows us to replicate this behaviour.
  */
 # define PFORMAT_MINEXP    __pformat_exponent_digits()
- /*
-  * However, this feature is unsupported for versions of the
-  * MSVC runtime library prior to msvcr80.dll, and by default,
-  * MinGW uses an earlier version, (equivalent to msvcr60.dll),
-  * for which `_TWO_DIGIT_EXPONENT' will be undefined.
-  */
-# ifndef _TWO_DIGIT_EXPONENT
- /*
-  * This hack works around the lack of the `_set_output_format()'
-  * feature, when supporting versions of the MSVC runtime library
-  * prior to msvcr80.dll; it simply enforces Microsoft's original
-  * convention, for all cases where the feature is unsupported.
-  */
-#  define _get_output_format()  0
-#  define _TWO_DIGIT_EXPONENT   1
-# endif
 /*
- * Irrespective of the MSVCRT version supported, *we* will add
- * an additional capability, through the following inline function,
- * which will allow the user to choose his own preferred default
- * for `PRINTF_EXPONENT_DIGITS', through the simple expedient
- * of defining it as an environment variable.
+ * We note that Microsoft did not implement the _set_output_format()
+ * API capability until the release of MSVCR80.DLL, although they did
+ * subsequently retro-fit it to MSVCRT.DLL from Windows-Vista onward.
+ * To circumvent this API availability limitation, *we* offer two
+ * alternative options for controlling the facility:
+ *
+ * 1) We support the explicit assignment of the user's preference
+ *    for `PRINTF_EXPONENT_DIGITS', through the simple expedient of
+ *    defining it as an environment variable; this mechanism will
+ *    take precedence over...
+ *
+ * 2) Emulation of _set_output_format(), through the use of inline
+ *    functions defined in stdio.h, and supported regardless of the
+ *    availability of the API within MSVCRT.DLL; this emulated API
+ *    maintains state in the global `__mingw_output_format_flag'
+ *    variable, (which users should consider to be private).
  */
+extern unsigned int __mingw_output_format_flag;
 static __inline__ __attribute__((__always_inline__))
 int __pformat_exponent_digits( void )
 {
   char *exponent_digits = getenv( "PRINTF_EXPONENT_DIGITS" );
   return ((exponent_digits != NULL) && ((unsigned)(*exponent_digits - '0') < 3))
-    || (_get_output_format() & _TWO_DIGIT_EXPONENT)
-    ? 2
-    : 3
-    ;
+    || (__mingw_output_format_flag & _TWO_DIGIT_EXPONENT)
+    ? 2 : 3 ;
 }
 #else
 /*
