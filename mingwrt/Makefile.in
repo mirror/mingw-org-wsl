@@ -564,9 +564,15 @@ LIBIMPL_CFLAGS = $(CFLAGS) $(INCLUDES) -fno-align-functions
 	> $@
 
 # ...and ultimately discarded, after the requisite object file
-# has been compiled.
+# has been compiled; (note that this creates a vulnerability due
+# to possible loss of the object file, while the tracking file is
+# still in place; to circumvent this, we must be able to force a
+# remake of the tracking file, so also regenerating the .c file,
+# before it is compiled).
 #
+libimpl_remake = { $(RM) $1; $(MAKE) --no-print-directory $1; }
 %.libimpl.$(OBJEXT): %.libimpl
+	test -f $<.c || $(call libimpl_remake,$<)
 	$(CC) -c $(CPPFLAGS) $(LIBIMPL_CFLAGS) -o $@ $<.c
 	$(RM) $<.c
 

@@ -1,3 +1,10 @@
+2014-11-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Enable remake of lost LIBIMPL object files.
+
+	* Makefile.in (libimpl_remake): New macro; define it, and...
+	(%.libimpl.$OBJEXT) [%.libimpl exists]: ...use it in build rule.
+
 2014-11-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement more robust _get_output_format fallback handling.
