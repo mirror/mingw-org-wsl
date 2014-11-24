@@ -1,3 +1,11 @@
+2014-11-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Back-port improved asinh() implementation from 4.0-dev branch.
+
+	* mingwex/math/asinh_generic.c: New file; it replaces...
+	* mingwex/math/asinh.c mingwex/math/asinhf.c mingwex/math/asinhl.c:
+	...all of these; delete them.
+
 2014-11-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Enable remake of lost LIBIMPL object files.
