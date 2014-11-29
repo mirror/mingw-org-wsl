@@ -364,12 +364,12 @@ libmingw32.a libmingwex.a libm.a libmingwthrd.a libgmon.a:
 #
 vpath %.c ${mingwrt_srcdir}/mingwex
 vpath %.c ${mingwrt_srcdir}/mingwex/complex
-libmingwex.a: $(addsuffix .$(OBJEXT), cabs carg catan ccoshf clog creal csqrt \
-  cabsf cargf catanf ccoshl clogf crealf csqrtf cabsl cargl catanh ccosl clogl \
-  creall csqrtl cacos casin catanhf cexp cpow csin ctan cacosf casinf catanhl \
-  cexpf cpowf csinf ctanf cacosh casinh catanl cexpl cpowl csinh ctanh cacoshf \
-  casinhf ccos cimag cproj csinhf ctanhf cacoshl casinhl ccosf cimagf cprojf \
-  csinhl ctanhl cacosl casinl ccosh cimagl cprojl csinl ctanl)
+libmingwex.a: $(addsuffix .$(OBJEXT), cabs cabsf cabsl cacos cacosf \
+  cacosh cacoshf cacoshl cacosl casin casinf casinh casinhf casinhl casinl \
+  catan catanf catanh catanhf catanhl catanl ccos ccosf ccosh ccoshf ccoshl \
+  ccosl cexp cexpf cexpl clog clogf clogl cpow cpowf cpowl cproj cprojf \
+  cprojl csin csinf csinh csinhf csinhl csinl csqrt csqrtf csqrtl \
+  ctan ctanf ctanh ctanhf ctanhl ctanl)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), isblank iswblank)
 
@@ -551,6 +551,7 @@ libimpl_awk_script = test -z "$1" || awk '\
 #
 libimpl_sed_script = sed \
   -e '/__CRT_ALIAS  *__LIBIMPL.*FUNCTION *= *$1[ ,)].*)/d' \
+  -e '/__CRT_INLINE  *__LIBIMPL.*FUNCTION *= *$1[ ,)].*)/d' \
   -e '/pragma .* system_header/d'
 
 LIBIMPL_CFLAGS = $(CFLAGS) $(INCLUDES) -fno-align-functions

@@ -37,9 +37,7 @@
 
 #define I _Complex_I
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 #ifndef RC_INVOKED
 
@@ -115,22 +113,26 @@ long double _Complex __MINGW_ATTRIB_CONST cprojl (long double _Complex);
 #ifdef __GNUC__
 
 /* double */
-__CRT_INLINE double __MINGW_ATTRIB_CONST creal (double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = creal ))
+double __MINGW_ATTRIB_CONST creal (double _Complex _Z)
 {
   return __real__ _Z;
 }
 
-__CRT_INLINE double __MINGW_ATTRIB_CONST cimag (double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = cimag ))
+double __MINGW_ATTRIB_CONST cimag (double _Complex _Z)
 {
   return __imag__ _Z;
 }
 
-__CRT_INLINE double _Complex __MINGW_ATTRIB_CONST conj (double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = conj ))
+double _Complex __MINGW_ATTRIB_CONST conj (double _Complex _Z)
 {
   return __extension__ ~_Z;
 }
 
-__CRT_INLINE  double __MINGW_ATTRIB_CONST carg (double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = carg ))
+double __MINGW_ATTRIB_CONST carg (double _Complex _Z)
 {
   double res;
   __asm__  ("fpatan;"
@@ -140,22 +142,26 @@ __CRT_INLINE  double __MINGW_ATTRIB_CONST carg (double _Complex _Z)
 
 
 /* float */
-__CRT_INLINE float __MINGW_ATTRIB_CONST crealf (float _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = crealf ))
+float __MINGW_ATTRIB_CONST crealf (float _Complex _Z)
 {
   return __real__ _Z;
 }
 
-__CRT_INLINE float __MINGW_ATTRIB_CONST cimagf (float _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = cimagf ))
+float __MINGW_ATTRIB_CONST cimagf (float _Complex _Z)
 {
   return __imag__ _Z;
 }
 
-__CRT_INLINE float _Complex __MINGW_ATTRIB_CONST conjf (float _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = conjf ))
+float _Complex __MINGW_ATTRIB_CONST conjf (float _Complex _Z)
 {
   return __extension__ ~_Z;
 }
 
-__CRT_INLINE  float __MINGW_ATTRIB_CONST cargf (float _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = cargf ))
+float __MINGW_ATTRIB_CONST cargf (float _Complex _Z)
 {
   float res;
   __asm__  ("fpatan;"
@@ -164,22 +170,26 @@ __CRT_INLINE  float __MINGW_ATTRIB_CONST cargf (float _Complex _Z)
 }
 
 /* long double */
-__CRT_INLINE long double __MINGW_ATTRIB_CONST creall (long double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = creall ))
+long double __MINGW_ATTRIB_CONST creall (long double _Complex _Z)
 {
   return __real__ _Z;
 }
 
-__CRT_INLINE long double __MINGW_ATTRIB_CONST cimagl (long double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = cimagl ))
+long double __MINGW_ATTRIB_CONST cimagl (long double _Complex _Z)
 {
   return __imag__ _Z;
 }
 
-__CRT_INLINE long double _Complex __MINGW_ATTRIB_CONST conjl (long double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = conjl ))
+long double _Complex __MINGW_ATTRIB_CONST conjl (long double _Complex _Z)
 {
   return __extension__ ~_Z;
 }
 
-__CRT_INLINE  long double __MINGW_ATTRIB_CONST cargl (long double _Complex _Z)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = cargl ))
+long double __MINGW_ATTRIB_CONST cargl (long double _Complex _Z)
 {
   long double res;
   __asm__  ("fpatan;"
@@ -188,13 +198,8 @@ __CRT_INLINE  long double __MINGW_ATTRIB_CONST cargl (long double _Complex _Z)
 }
 
 #endif /* __GNUC__ */
-
-
 #endif /* RC_INVOKED */
 
-#ifdef __cplusplus
-}
-#endif
-
+_END_C_DECLS
 
 #endif /* _COMPLEX_H */

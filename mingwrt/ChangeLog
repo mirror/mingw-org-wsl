@@ -1,3 +1,26 @@
+2014-11-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct omission of complex conjugate functions from libmingwex.a
+
+	* include/complex.h (conj, conjf, conjl): Add LIBIMPL declarations.
+	(creal, crealf, creall): Likewise, for consistency of implementation.
+	(cimag, cimagf, cimagl, carg, cargf, cargl): Likewise.
+
+	* Makefile.in (libimpl_sed_script): Add processing for __CRT_INLINE
+	declarations; they should be interpreted analogously to __CRT_ALIAS.
+	(libmingwex.a): Remove object file references for functions which are
+	now declared as LIBIMPL, and sort the remainder in ASCII collating
+	order; deleted function references comprise the set consisting of...
+	(carg.$OBJEXT, cargf.$OBJEXT, cargl.$OBJEXT): ...these...
+	(creal.$OBJEXT, crealf.$OBJEXT, creall.$OBJEXT): ...these, and...
+	(cimag.$OBJEXT, cimagf.$OBJEXT, cimagl.$OBJEXT): ...these.
+
+	* mingwex/complex/carg.c: Replaced by LIBIMPL; delete it.
+	* mingwex/complex/cargf.c mingwex/complex/cargl.c: Likewise.
+	* mingwex/complex/creal.c mingwex/complex/cimag.c: Likewise.
+	* mingwex/complex/crealf.c mingwex/complex/cimagf.c: Likewise.
+	* mingwex/complex/creall.c mingwex/complex/cimagl.c: Likewise.
+
 2014-11-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Back-port improved asinh() implementation from 4.0-dev branch.
