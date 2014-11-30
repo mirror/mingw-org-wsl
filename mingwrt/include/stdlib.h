@@ -17,6 +17,7 @@
 #define __need_size_t
 #define __need_wchar_t
 #define __need_NULL
+
 #ifndef RC_INVOKED
 #include <stddef.h>
 #endif /* RC_INVOKED */
@@ -56,9 +57,7 @@
 
 #ifndef RC_INVOKED
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 #if !defined (__STRICT_ANSI__)
 
@@ -496,8 +495,8 @@ _CRTIMP char* __cdecl __MINGW_NOTHROW	gcvt (double, int, char*);
 /* C99 name for _exit */
 void __cdecl __MINGW_NOTHROW _Exit(int) __MINGW_ATTRIB_NORETURN;
 #if !defined __NO_INLINE__ && !defined __STRICT_ANSI__
-__CRT_INLINE void __cdecl __MINGW_NOTHROW _Exit(int __status)
-	{  _exit (__status); }
+__CRT_INLINE __JMPSTUB__(( FUNCTION = _Exit, REMAPPED = _exit ))
+void __cdecl __MINGW_NOTHROW _Exit( int __status ){ _exit (__status); }
 #endif
 
 typedef struct { long long quot, rem; } lldiv_t;
@@ -506,8 +505,12 @@ lldiv_t	__cdecl __MINGW_NOTHROW lldiv (long long, long long) __MINGW_ATTRIB_CONS
 
 long long __cdecl __MINGW_NOTHROW llabs(long long);
 #ifndef __NO_INLINE__
-__CRT_INLINE long long __cdecl __MINGW_NOTHROW llabs(long long _j)
-  {return (_j >= 0 ? _j : -_j);}
+__CRT_INLINE
+/* No JMPSTUB or LIBIMPL reference here -- we provide a free-standing
+ * implementation, along with imaxabs(), in mingwex/imaxabs.c
+ */
+long long __cdecl __MINGW_NOTHROW llabs( long long __j )
+{ return __j >= 0 ? __j : -__j; }
 #endif
 
 long long  __cdecl __MINGW_NOTHROW strtoll (const char* __restrict__, char** __restrict, int);
@@ -523,33 +526,40 @@ char* __cdecl __MINGW_NOTHROW ulltoa (unsigned long long , char *, int);
 wchar_t* __cdecl __MINGW_NOTHROW lltow (long long, wchar_t *, int);
 wchar_t* __cdecl __MINGW_NOTHROW ulltow (unsigned long long, wchar_t *, int);
 
-  /* inline using non-ansi functions */
-#ifndef __NO_INLINE__
-__CRT_INLINE long long  __cdecl __MINGW_NOTHROW atoll (const char * _c)
-	{ return _atoi64 (_c); }
-__CRT_INLINE char*  __cdecl __MINGW_NOTHROW lltoa (long long _n, char * _c, int _i)
-	{ return _i64toa (_n, _c, _i); }
-__CRT_INLINE char*  __cdecl __MINGW_NOTHROW ulltoa (unsigned long long _n, char * _c, int _i)
-	{ return _ui64toa (_n, _c, _i); }
-__CRT_INLINE long long  __cdecl __MINGW_NOTHROW wtoll (const wchar_t * _w)
- 	{ return _wtoi64 (_w); }
-__CRT_INLINE wchar_t*  __cdecl __MINGW_NOTHROW lltow (long long _n, wchar_t * _w, int _i)
-	{ return _i64tow (_n, _w, _i); }
-__CRT_INLINE wchar_t*  __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wchar_t * _w, int _i)
-	{ return _ui64tow (_n, _w, _i); }
+#ifndef __NO_INLINE__ /* inline support for non-ansi functions */
+
+__CRT_INLINE __JMPSTUB__(( FUNCTION = atoll, REMAPPED = _atoi64 ))
+long long __cdecl __MINGW_NOTHROW atoll (const char * _c){ return _atoi64 (_c); }
+
+__CRT_INLINE __JMPSTUB__(( FUNCTION = lltoa, REMAPPED = _i64toa ))
+char* __cdecl __MINGW_NOTHROW lltoa (long long _n, char * _c, int _i)
+{ return _i64toa (_n, _c, _i); }
+
+__CRT_INLINE __JMPSTUB__(( FUNCTION = ulltoa, REMAPPED = _ui64toa ))
+char* __cdecl __MINGW_NOTHROW ulltoa (unsigned long long _n, char * _c, int _i)
+{ return _ui64toa (_n, _c, _i); }
+
+__CRT_INLINE __JMPSTUB__(( FUNCTION = wtoll, REMAPPED = _wtoi64 ))
+long long __cdecl __MINGW_NOTHROW wtoll (const wchar_t * _w){ return _wtoi64 (_w); }
+
+__CRT_INLINE __JMPSTUB__(( FUNCTION = lltow, REMAPPED = _i64tow ))
+wchar_t* __cdecl __MINGW_NOTHROW lltow (long long _n, wchar_t * _w, int _i)
+{ return _i64tow (_n, _w, _i); }
+
+__CRT_INLINE __JMPSTUB__(( FUNCTION = ulltow, REMAPPED = _ui64tow ))
+wchar_t* __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wchar_t * _w, int _i)
+{ return _ui64tow (_n, _w, _i); }
+
 #endif /* (__NO_INLINE__) */
 #endif /* (__STRICT_ANSI__)  */
 
 #endif /* __MSVCRT__ */
-
 #endif /* !__NO_ISOCEXT */
 
 
-#ifdef __cplusplus
-}
 #endif
 
+_END_C_DECLS
+
 #endif	/* Not RC_INVOKED */
-
 #endif	/* Not _STDLIB_H_ */
-

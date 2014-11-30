@@ -1,3 +1,21 @@
+2014-11-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	More JMPSTUB rationalization of inline functions.
+
+	* include/stdlib.h (_Exit, atoll, lltoa, ulltoa, wtoll, lltow)
+	(ulltow): Add __JMPSTUB__ declarations; each is REMAPPED to its
+	appropriate MSVCRT.DLL equivalent entry point.
+
+	* mingwex/_Exit.c: File is now redundant; delete it.
+	* mingwex/atoll.c mingwex/lltoa.c mingwex/ulltoa: Likewise.
+	* mingwex/wtoll.c mingwex/lltow.c mingwex/ulltow: Likewise.
+
+	* Makefile.in (jmpstub_awk_script): Add support for...
+	[__JMPSTUB__((REMAPPED))]: ...this stub function attribute.
+	(libmingwex.a): Remove dependencies on deleted files, namely...
+	(_Exit.$OBJEXT, atoll.$OBJEXT, lltoa.$OBJEXT, ulltoa.$OBJEXT)
+	(wtoll.$OBJEXT, lltow.$OBJEXT, ulltow.$OBJEXT): ...these.
+
 2014-11-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct omission of complex conjugate functions from libmingwex.a

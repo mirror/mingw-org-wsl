@@ -447,9 +447,6 @@ libmingwex.a: $(addsuffix .$(OBJEXT), getopt basename dirname ftruncate usleep)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), tdelete tfind tsearch twalk)
 
-libmingwex.a: $(addsuffix .$(OBJEXT), _Exit atoll lltoa lltow \
-  ulltoa ulltow wtoll)
-
 libmingwex.a: gettimeofday.$(OBJEXT)
 libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn)
 
@@ -517,6 +514,8 @@ jmpstub_awk_script = test -z "$1" || awk '\
     FUNCTION = gensub( ".*[ ,(:]FUNCTION *= *"symbol".*", "\\1", 1 ); \
     OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".jmpstub.$$(OBJEXT)"; \
     OBJNAME_CFLAGS = "-D FUNCTION="FUNCTION; \
+    if( match( $$0, ".*[ ,(:]REMAPPED *= *"symbol, alias ) ) \
+      OBJNAME_CFLAGS = OBJNAME_CFLAGS" -D REMAPPED="alias[1]; \
     printf fmt, LIB, OBJNAME, OBJNAME, OBJNAME_CFLAGS; \
   } \
   END { \
