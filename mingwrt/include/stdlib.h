@@ -556,8 +556,50 @@ wchar_t* __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wchar_t * _w, in
 #endif /* __MSVCRT__ */
 #endif /* !__NO_ISOCEXT */
 
+#if !defined __STRICT_ANSI__
+/*
+ * POSIX/BSD extensions in libmingwex.a; maybe these should be exposed only on
+ * the basis of some POSIX or BSD specific feature tests, but for convenience,
+ * we require only !__STRICT_ANSI__
+ *
+ *
+ * mkstemp(3) function support; added per feature request #2003.
+ * POSIX wants _XOPEN_SOURCE >= 500, (implying _POSIX_C_SOURCE >= 200112L),
+ * but, as noted above, we will settle for !__STRICT_ANSI__.
+ */
+int __cdecl __MINGW_NOTHROW mkstemp( char * );
+int __cdecl __MINGW_NOTHROW __mingw_mkstemp( int, char * );
 
+/* The following macros are a MinGW specific extension, to facilite
+ * use of _O_TEMPORARY, (in addition to the POSIX required attributes),
+ * when creating the temporary file.  Note that they require fcntl.h,
+ * which stdlib.h should NOT automatically include; we leave the onus
+ * on the user to explicitly include it, if using MKSTEMP_SETMODE.
+ */
+#define _MKSTEMP_INVOKE       0
+#define _MKSTEMP_DEFAULT     _O_CREAT | _O_EXCL | _O_RDWR
+#define _MKSTEMP_SETMODE(M) __mingw_mkstemp( _MKSTEMP_DEFAULT | (M), NULL )
+
+#ifndef _NO_OLDNAMES
+#define MKSTEMP_SETMODE(M)  __mingw_mkstemp( _MKSTEMP_DEFAULT | (M), NULL )
 #endif
+
+__CRT_ALIAS __LIBIMPL__(( FUNCTION = mkstemp ))
+int __cdecl __MINGW_NOTHROW mkstemp( char *__filename_template )
+{ return __mingw_mkstemp( _MKSTEMP_INVOKE, __filename_template ); }
+
+/* mkdtemp(3) function support: added as adjunct to feature request #2003.
+ * POSIX wants _XOPEN_SOURCE >= 700, (implying _POSIX_C_SOURCE >= 200809L),
+ * but once again, we will settle for !__STRICT_ANSI__.
+ */
+char * __cdecl __MINGW_NOTHROW mkdtemp( char * );
+char * __cdecl __MINGW_NOTHROW __mingw_mkdtemp( char * );
+
+__CRT_ALIAS __JMPSTUB__(( FUNCTION = mkdtemp ))
+char * __cdecl __MINGW_NOTHROW mkdtemp( char *__dirname_template )
+{ return __mingw_mkdtemp( __dirname_template ); }
+
+#endif /* (!__STRICT_ANSI__) */
 
 _END_C_DECLS
 

@@ -1,3 +1,31 @@
+2014-12-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add implementation of mkstemp() and mkdtemp() functions.
+
+	* mingwex/cryptnam.c: New file; it implements...
+	(__mingw_crypto_tmpname): ...this helper function; it generates a
+	cryptographically secure sequence of characters, used as the random
+	component in temporary file and directory names.
+
+	* mingwex/mkstemp.c: New file; it implements...
+	(__mingw_mkstemp): ...this provider of mkstemp() functionality.
+
+	* mingwex/mkdtemp.c: New file; it implements...
+	(__mingw_mkdtemp): ...this provider of mkdtemp() functionality.
+
+	* include/stdlib.h (mkstemp): Declare protototye; provide an inline
+	function implementation, with LIBIMPL extern semantics, in terms of...
+	(__mingw_mkstemp): ...this; also declare prototype, and define...
+	(_MKSTEMP_INVOKE, _MKSTEMP_DEFAULT): ...these supporting constants.
+	(_MKSTEMP_SETMODE): New macro; define it, also providing...
+	(MKSTEMP_SETMODE) [!_NO_OLDNAMES]: ...this alias.
+	(mkdtemp): Declare prototype; provide inline implementation, with
+	JMPSTUB extern semantics, in terms of...
+	(__mingw_mkdtemp): ...this; declare prototype.
+
+	* Makefile.in (libmingwex.a): Add dependency rule, to include...
+	(mkstemp.$OBJEXT, mkdtemp.$OBJEXT, cryptname.$OBJEXT): ...these.
+
 2014-11-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	More JMPSTUB rationalization of inline functions.
