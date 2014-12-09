@@ -1,6 +1,14 @@
-/**
- * @file asinh_generic.c
- * Copyright 2012, 2013 MinGW.org project
+/*
+ * asinh_generic.c
+ *
+ * Compute inverse hyberbolic sine; this is a generic implementation for
+ * all of the asinh(), asinhl(), and asinhf() functions.
+ *
+ * $Id$
+ *
+ * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright 2013, 2014, MinGW.org Project
+ *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -22,15 +30,11 @@
  * DEALINGS IN THE SOFTWARE.
  *
  *
- * Implemented 2013 by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright assigned by the author to the MinGW.org project.
+ * This module should be compiled separately for each supported function:
  *
- * This is a generic implementation for all of the asinh(), asinhl(),
- * and asinhf() functions; each is to be compiled separately, i.e.
- *
- *   gcc -D FUNCTION=asinh  -o asinh.o  asinh.c
- *   gcc -D FUNCTION=asinhl -o asinhl.o asinh.c
- *   gcc -D FUNCTION=asinhf -o asinhf.o asinh.c
+ *   gcc -D FUNCTION=asinh  -o asinh.o  asinh_generic.c
+ *   gcc -D FUNCTION=asinhl -o asinhl.o asinh_generic.c
+ *   gcc -D FUNCTION=asinhf -o asinhf.o asinh_generic.c
  *
  */
 #include <math.h>
@@ -144,3 +148,5 @@ ARGTYPE(FUNCTION) FUNCTION( ARGTYPE(FUNCTION) x )
    */
   return x;
 }
+
+/* $RCSfile$: end of file */
