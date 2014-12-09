@@ -99,7 +99,7 @@ __CRT_ALIAS __JMPSTUB__(( FUNCTION = _wclosedir ))
 int __cdecl __MINGW_NOTHROW _wclosedir (_WDIR *__dir)
 { return __mingw__wclosedir (__dir); }
 
-__CRT_ALIAS __JMPSTUB__(( FUNCTION = _wrewinddir))
+__CRT_ALIAS __JMPSTUB__(( FUNCTION = _wrewinddir ))
 void __cdecl __MINGW_NOTHROW _wrewinddir (_WDIR *__dir)
 { return __mingw__wrewinddir (__dir); }
 
