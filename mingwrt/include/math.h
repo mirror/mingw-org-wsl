@@ -48,10 +48,15 @@
 #endif	/* Not __STRICT_ANSI__ */
 
 
-/* Traditional/XOPEN math constants (double precison) */
-#ifndef __STRICT_ANSI__
+#if _POSIX_C_SOURCE || defined _USE_MATH_DEFINES
+/*
+ * Traditional/XOPEN math constants (double precison).  MSVC makes these
+ * available, only if _USE_MATH_DEFINES is specified; POSIX does so also,
+ * when _POSIX_C_SOURCE is defined and non-zero, (as will be the case by
+ * default in MinGW, unless __STRICT_ANSI__ checking is in effect).
+ */
 #define M_E		2.7182818284590452354
-#define M_LOG2E		1.4426950408889634074
+#define M_LOG2E 	1.4426950408889634074
 #define M_LOG10E	0.43429448190325182765
 #define M_LN2		0.69314718055994530942
 #define M_LN10		2.30258509299404568402
@@ -61,7 +66,7 @@
 #define M_1_PI		0.31830988618379067154
 #define M_2_PI		0.63661977236758134308
 #define M_2_SQRTPI	1.12837916709551257390
-#define M_SQRT2		1.41421356237309504880
+#define M_SQRT2 	1.41421356237309504880
 #define M_SQRT1_2	0.70710678118654752440
 #endif
 

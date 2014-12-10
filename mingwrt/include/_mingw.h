@@ -131,7 +131,57 @@
 #define __MINGW_LC_MESSAGES__		0x0000000000000010ULL
 #define __MINGW_LC_ENVVARS__		0x0000000000000040ULL
 
-/* Try to avoid problems with outdated checks for GCC __attribute__ support.  */
+
+#ifndef _POSIX_C_SOURCE
+ /*
+  * Users may define this, either directly or indirectly, to explicitly
+  * enable a particular level of visibility for the subset of those POSIX
+  * features which are supported by MinGW; (notice that this offers no
+  * guarantee that any particular POSIX feature will be supported).
+  */
+# if defined _XOPEN_SOURCE
+  /*
+   * Specifying this is the preferred method for setting _POSIX_C_SOURCE;
+   * (POSIX defines an explicit relationship to _XOPEN_SOURCE).  Note that
+   * any such explicit setting will augment the set of features which are
+   * available to any compilation unit, even if it seeks to be strictly
+   * ANSI-C compliant.
+   */
+#  if _XOPEN_SOURCE < 500
+#   define _POSIX_C_SOURCE  1L		/* POSIX.1-1990 / SUSv1 */
+
+#  elif _XOPEN_SOURCE < 600
+#   define _POSIX_C_SOURCE  199506L	/* POSIX.1-1996 / SUSv2 */
+
+#  elif _XOPEN_SOURCE < 700
+#   define _POSIX_C_SOURCE  200112L	/* POSIX.1-2001 / SUSv3 */
+
+#  else
+#   define _POSIX_C_SOURCE  200809L	/* POSIX.1-2008 / SUSv4 */
+#  endif
+
+# elif defined _GNU_SOURCE || defined _BSD_SOURCE || ! defined __STRICT_ANSI__
+  /*
+   * No explicit level of support has been specified; implicitly grant
+   * the most comprehensive level to any compilation unit which requests
+   * either GNU or BSD feature support, or does not seek to be strictly
+   * ANSI-C compliant.
+   */
+#  define _POSIX_C_SOURCE  200809L
+
+# elif defined _POSIX_SOURCE
+  /*
+   * Now formally deprecated by POSIX, some old code may specify this;
+   * it will enable a minimal level of POSIX support, in addition to the
+   * limited feature set enabled for strict ANSI-C conformity.
+   */
+#  define _POSIX_C_SOURCE  1L
+# endif
+#endif
+
+
+/* Try to avoid problems with outdated checks for GCC __attribute__ support.
+ */
 #undef __attribute__
 
 #if defined (__PCC__)

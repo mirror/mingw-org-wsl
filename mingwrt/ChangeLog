@@ -1,3 +1,17 @@
+2014-12-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Adjust header guards to resolve issue [#2244].
+
+	* include/_mingw.h (_POSIX_C_SOURCE): Define it implicitly...
+	[_GNU_SOURCE || _BSD_SOURCE || _POSIX_SOURCE || !__STRICT_ANSI__]:
+	...when any of these prevail, or as appropriate to correspond with...
+	[_XOPEN_SOURCE]: ...this; set conformance level accordingly.
+
+	* include/math.h [_POSIX_C_SOURCE || defined _USE_MATH_DEFINES]
+	(M_E, M_LOG2E, M_LOG10E, M_LN2, M_LN10, M_PI, M_PI_2, M_PI_4, M_1_PI)
+	(M_2_PI, M_2_SQRTPI, M_SQRT2, M_SQRT1_2): Define them, irrespective...
+	[__STRICT_ANSI__]: ...of this; replace guard accordingly.
+
 2014-12-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add implementation of mkstemp() and mkdtemp() functions.
