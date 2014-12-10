@@ -632,7 +632,7 @@ extern double __cdecl hypot (double, double); /* in libmoldname.a */
 extern float __cdecl hypotf (float, float);
 #ifndef __NO_INLINE__
 __CRT_INLINE float __cdecl hypotf (float x, float y)
-  { return (float) hypot (x, y);}
+{ return (float)(_hypot (x, y)); }
 #endif
 extern long double __cdecl hypotl (long double, long double);
 

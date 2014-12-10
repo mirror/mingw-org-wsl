@@ -1,5 +1,17 @@
 2014-12-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Correct complex square root computation per issue [#2246].
+
+	* include/math.h (hypotf): Redirect __CRT_INLINE call to...
+	(_hypot): ...this MSVCRT.DLL exported function, so avoiding...
+	(hypot): ...this libmoldname.a indirection.
+
+	* mingwex/complex/csqrt_generic.c: New file; it replaces...
+	* mingwex/complex/csqrt.c: ...this; it is now obsolete; delete it.
+	* mingwex/complex/csqrtf.c mingwex/complex/csqrtl: Likewise.
+
+2014-12-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Adjust header guards to resolve issue [#2244].
 
 	* include/_mingw.h (_POSIX_C_SOURCE): Define it implicitly...
