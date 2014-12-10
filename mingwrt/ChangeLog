@@ -1,5 +1,13 @@
 2014-12-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Correct complex arcsin computation per issue [#2245].
+
+	* mingwex/complex/casin_generic.c: New file; it replaces...
+	* mingwex/complex/casin.c: ...this; it is now obsolete; delete it.
+	* mingwex/complex/casinf.c mingwex/complex/casinl: Likewise.
+
+2014-12-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Correct complex square root computation per issue [#2246].
 
 	* include/math.h (hypotf): Redirect __CRT_INLINE call to...
