@@ -1,5 +1,19 @@
 2014-12-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Another CRT_INLINE function implementation rationalization.
+
+	* include/inttypes.h (imaxabs): Specify as __LIBIMPL__; declare...
+	(llabs): ...this, to be implemented as its __LIBIMPL__ alias.
+	[__cplusplus] (_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+
+	* Makefile.in (libimpl_sed_script): Handle ALIAS attribute.
+	(libmingwex.a): Delete obsolete dependency on...
+	(imaxabs.$OBJEXT): ...this.
+
+	* mingwex/imaxabs.c: File is now redundant; delete it.
+
+2014-12-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	More rationalization of CRT_INLINE function implementations.
 
 	* include/stdio.h (fopen64): Add __JMPSTUP__ specification.
@@ -9,7 +23,7 @@
 	* mingwex/stdio/fopen64.c: File is now redundant; delete it.
 	* mingwex/stdio/ftell064.c: Likewise.
 
-	* Makefile.in (libmingwex.a): Delete obsolete dependencies...
+	* Makefile.in (libmingwex.a): Delete obsolete dependencies on...
 	(fopen64.$OBJEXT, ftello64.$OBJEXT): ...these.
 
 2014-12-11  Keith Marshall  <keithmarshall@users.sourceforge.net>

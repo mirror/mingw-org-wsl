@@ -8,9 +8,7 @@
 #define __need_wchar_t
 #include <stddef.h>
 
-#ifdef	__cplusplus
-extern	"C"	{
-#endif
+_BEGIN_C_DECLS
 
 typedef struct {
 	intmax_t quot;
@@ -257,9 +255,19 @@ typedef struct {
 
 intmax_t __cdecl __MINGW_NOTHROW imaxabs (intmax_t j);
 #ifndef __NO_INLINE__
-__CRT_INLINE intmax_t __cdecl __MINGW_NOTHROW imaxabs (intmax_t j)
-	{return	(j >= 0 ? j : -j);}
+__CRT_INLINE __LIBIMPL__(( FUNCTION = imaxabs ))
+intmax_t __cdecl __MINGW_NOTHROW imaxabs (intmax_t __j)
+{ return __j >= 0 ? __j : -__j; }
+
+/* Since intmax_t is effectively analogous to long long, the preceding
+ * implementation will serve admirably as the external representation of
+ * both imaxabs() and llabs(); declare so here, by providing a prototype
+ * only, with the corresponding inline implementation in stdlib.h
+ */
+__CRT_INLINE __LIBIMPL__(( ALIAS = imaxabs ))
+long long llabs (long long);
 #endif
+
 imaxdiv_t __cdecl __MINGW_NOTHROW imaxdiv (intmax_t numer, intmax_t denom);
 
 /* 7.8.2 Conversion functions for greatest-width integer types */
@@ -274,8 +282,6 @@ intmax_t __cdecl __MINGW_NOTHROW wcstoimax (const wchar_t* __restrict__ nptr,
 uintmax_t __cdecl __MINGW_NOTHROW wcstoumax (const wchar_t* __restrict__ nptr,
 			     wchar_t** __restrict__ endptr, int base);
 
-#ifdef	__cplusplus
-}
-#endif
+_END_C_DECLS
 
 #endif /* ndef _INTTYPES_H */

@@ -392,7 +392,7 @@ libmingwex.a: $(addsuffix .$(OBJEXT), g__fmt gethex strtopx g_dfmt gdtoa \
 # "inttypes" conversion routines, provided in libmingwex.a
 #
 libmingwex.a: $(addsuffix .$(OBJEXT), \
-  imaxabs imaxdiv strtoimax strtoumax wcstoimax wcstoumax)
+  imaxdiv strtoimax strtoumax wcstoimax wcstoumax)
 
 # Additional math functions, augmenting Microsoft's paltry
 # selection, also delivered in libmingwex.a, (FIXME: and yet
@@ -550,9 +550,10 @@ libimpl_awk_script = test -z "$1" || awk '\
 # which identifies the originating file as a system header).
 #
 libimpl_sed_script = sed \
-  -e '/__CRT_ALIAS  *__LIBIMPL.*FUNCTION *= *$1[ ,)].*)/d' \
+  -e '/pragma .* system_header/d' \
   -e '/__CRT_INLINE  *__LIBIMPL.*FUNCTION *= *$1[ ,)].*)/d' \
-  -e '/pragma .* system_header/d'
+  -e 's/__LIBIMPL.*ALIAS *= *$1[ ,)].*)/__attribute__((__alias__("$1")))/' \
+  -e '/__CRT_ALIAS  *__LIBIMPL.*FUNCTION *= *$1[ ,)].*)/d'
 
 LIBIMPL_CFLAGS = $(CFLAGS) $(INCLUDES) -fno-align-functions
 
