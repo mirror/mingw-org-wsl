@@ -159,14 +159,12 @@ __MINGW_IMPORT FILE _iob[];	/* An array of FILE imported from DLL. */
 #define stdout	(&_iob[STDOUT_FILENO])
 #define stderr	(&_iob[STDERR_FILENO])
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 /*
  * File Operations
  */
-_CRTIMP FILE* __cdecl __MINGW_NOTHROW fopen (const char*, const char*);
+_CRTIMP FILE* __cdecl __MINGW_NOTHROW	fopen (const char*, const char*);
 _CRTIMP FILE* __cdecl __MINGW_NOTHROW	freopen (const char*, const char*, FILE*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	fflush (FILE*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	fclose (FILE*);
@@ -314,7 +312,7 @@ _CRTIMP int __mingw_stdio_redirect__(vsprintf)(char*, const char*, __VALIST);
 
 #undef  __mingw_stdio_redirect__
 
-/* The following pair ALWAYS refer to the MSVCRT implementations...
+/* The following three ALWAYS refer to the MSVCRT implementations...
  */
 _CRTIMP int __cdecl __MINGW_NOTHROW _snprintf (char*, size_t, const char*, ...);
 _CRTIMP int __cdecl __MINGW_NOTHROW _vsnprintf (char*, size_t, const char*, __VALIST);
@@ -598,10 +596,9 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	fileno (FILE*);
 
 #if defined (__MSVCRT__) && !defined (__NO_MINGW_LFS)
 #include <sys/types.h>
-__CRT_INLINE FILE* __cdecl __MINGW_NOTHROW fopen64 (const char* filename, const char* mode)
-{
-  return fopen (filename, mode);
-}
+__CRT_INLINE __JMPSTUB__(( FUNCTION = fopen64, REMAPPED = fopen ))
+FILE* __cdecl __MINGW_NOTHROW fopen64 (const char* filename, const char* mode)
+{ return fopen (filename, mode); }
 
 int __cdecl __MINGW_NOTHROW fseeko64 (FILE*, off64_t, int);
 
@@ -610,7 +607,8 @@ int __cdecl __MINGW_NOTHROW __mingw_fseeko64 (FILE *, off64_t, int);
 #define fseeko64(fp, offset, whence)  __mingw_fseeko64(fp, offset, whence)
 #endif
 
-__CRT_INLINE off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE * stream)
+__CRT_INLINE __LIBIMPL__(( FUNCTION = ftello64 ))
+off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE * stream)
 {
   fpos_t pos;
   if (fgetpos(stream, &pos))
@@ -709,10 +707,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	putw (int, FILE*);
 
 #endif /* __STRICT_ANSI */
 
-#ifdef __cplusplus
-}
-#endif
+_END_C_DECLS
 
 #endif	/* Not RC_INVOKED */
-
 #endif /* _STDIO_H_ */

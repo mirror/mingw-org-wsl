@@ -1,5 +1,19 @@
 2014-12-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	More rationalization of CRT_INLINE function implementations.
+
+	* include/stdio.h (fopen64): Add __JMPSTUP__ specification.
+	(ftello64): Add __LIBIMPL__ specification for extern implementation.
+	[__cplusplus] (_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+
+	* mingwex/stdio/fopen64.c: File is now redundant; delete it.
+	* mingwex/stdio/ftell064.c: Likewise.
+
+	* Makefile.in (libmingwex.a): Delete obsolete dependencies...
+	(fopen64.$OBJEXT, ftello64.$OBJEXT): ...these.
+
+2014-12-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Don't implicitly define _POSIX_C_SOURCE too early.
 
 	* include/_mingw.h (_POSIX_C_SOURCE): Delay implict definition.

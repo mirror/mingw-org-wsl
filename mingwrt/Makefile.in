@@ -420,9 +420,9 @@ libmingwex.a: $(addsuffix .$(OBJEXT), cosf cosl acosf acosl sinf sinl asinf \
 # compatibility than their Microsoft equivalents.
 #
 vpath %.c ${mingwrt_srcdir}/mingwex/stdio
-libmingwex.a: $(addsuffix .$(OBJEXT), btowc fopen64 fprintf fseeko64 ftello64 \
-  lseek64 pformat printf snprintf snwprintf sprintf vfprintf vfscanf vfwscanf \
-  vprintf vscanf vsnprintf vsnwprintf vsprintf vsscanf vswscanf vwscanf)
+libmingwex.a: $(addsuffix .$(OBJEXT), btowc fprintf fseeko64 lseek64 \
+  pformat printf snprintf snwprintf sprintf vfprintf vfscanf vfwscanf vprintf \
+  vscanf vsnprintf vsnwprintf vsprintf vsscanf vswscanf vwscanf)
 
 # pformat.$(OBJEXT) needs an explicit build rule, since we need to
 # specify an additional header file path.
