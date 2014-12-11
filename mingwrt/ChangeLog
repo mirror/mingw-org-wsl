@@ -1,3 +1,11 @@
+2014-12-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Don't implicitly define _POSIX_C_SOURCE too early.
+
+	* include/_mingw.h (_POSIX_C_SOURCE): Delay implict definition.
+	(__USE_MINGW_ANSI_STDIO): This must be initialized first, to ensure
+	that it is not accidentally activated by implied _POSIX_C_SOURCE.
+
 2014-12-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct complex arcsin computation per issue [#2245].
