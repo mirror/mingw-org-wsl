@@ -1,3 +1,12 @@
+2014-12-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Some POSIX feature test adjustments.
+
+	* include/stdlib.h (mkstemp): Available since SUSv3, so requires...
+	[_POSIX_C_SOURCE >= 200112L]: ...this minimum level of POSIX support.
+	(mkdtemp): This didn't become available until SUSv4, so requires...
+	[_POSIX_C_SOURCE >= 200809L]: ...this increased feature level.
+
 2014-12-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Another CRT_INLINE function implementation rationalization.

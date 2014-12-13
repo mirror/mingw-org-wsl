@@ -556,17 +556,14 @@ wchar_t* __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wchar_t * _w, in
 #endif /* __MSVCRT__ */
 #endif /* !__NO_ISOCEXT */
 
-#if !defined __STRICT_ANSI__
-/*
- * POSIX/BSD extensions in libmingwex.a; maybe these should be exposed only on
- * the basis of some POSIX or BSD specific feature tests, but for convenience,
- * we require only !__STRICT_ANSI__
- *
+/* POSIX/BSD extensions in libmingwex.a; these should be exposed only on
+ * the basis of appropriate POSIX or BSD specific feature tests...
  *
  * mkstemp(3) function support; added per feature request #2003.
- * POSIX wants _XOPEN_SOURCE >= 500, (implying _POSIX_C_SOURCE >= 200112L),
- * but, as noted above, we will settle for !__STRICT_ANSI__.
+ * POSIX wants _XOPEN_SOURCE >= 500, (implying _POSIX_C_SOURCE >= 200112L).
  */
+#if _POSIX_C_SOURCE >= 200112L
+
 int __cdecl __MINGW_NOTHROW mkstemp( char * );
 int __cdecl __MINGW_NOTHROW __mingw_mkstemp( int, char * );
 
@@ -588,10 +585,13 @@ __CRT_ALIAS __LIBIMPL__(( FUNCTION = mkstemp ))
 int __cdecl __MINGW_NOTHROW mkstemp( char *__filename_template )
 { return __mingw_mkstemp( _MKSTEMP_INVOKE, __filename_template ); }
 
+#endif /* _POSIX_C_SOURCE >= 200112L (for mkstemp()) */
+
 /* mkdtemp(3) function support: added as adjunct to feature request #2003.
- * POSIX wants _XOPEN_SOURCE >= 700, (implying _POSIX_C_SOURCE >= 200809L),
- * but once again, we will settle for !__STRICT_ANSI__.
+ * POSIX wants _XOPEN_SOURCE >= 700, (implying _POSIX_C_SOURCE >= 200809L).
  */
+#if _POSIX_C_SOURCE >= 200809L
+
 char * __cdecl __MINGW_NOTHROW mkdtemp( char * );
 char * __cdecl __MINGW_NOTHROW __mingw_mkdtemp( char * );
 
@@ -599,7 +599,7 @@ __CRT_ALIAS __JMPSTUB__(( FUNCTION = mkdtemp ))
 char * __cdecl __MINGW_NOTHROW mkdtemp( char *__dirname_template )
 { return __mingw_mkdtemp( __dirname_template ); }
 
-#endif /* (!__STRICT_ANSI__) */
+#endif /* _POSIX_C_SOURCE >= 200809L (for mkdtemp()) */
 
 _END_C_DECLS
 
