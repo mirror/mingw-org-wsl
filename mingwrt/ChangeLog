@@ -1,5 +1,12 @@
 2014-12-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Delete an unnecessary Unicode wrapper file.
+
+	* mingwex/wdirent.c: Delete it; Makefile.in knows how to compile the
+	UTF-16LE API from dirent.c, without any need for this wrapper.
+
+2014-12-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Some further inline function rationalization.
 
 	* include/io.h (_CRTALIAS): Replace all references...
