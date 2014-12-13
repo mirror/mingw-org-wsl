@@ -420,8 +420,8 @@ libmingwex.a: $(addsuffix .$(OBJEXT), cosf cosl acosf acosl sinf sinl asinf \
 # compatibility than their Microsoft equivalents.
 #
 vpath %.c ${mingwrt_srcdir}/mingwex/stdio
-libmingwex.a: $(addsuffix .$(OBJEXT), btowc fprintf fseeko64 lseek64 \
-  pformat printf snprintf snwprintf sprintf vfprintf vfscanf vfwscanf vprintf \
+libmingwex.a: $(addsuffix .$(OBJEXT), btowc fprintf fseeko64 pformat \
+  printf snprintf snwprintf sprintf vfprintf vfscanf vfwscanf vprintf \
   vscanf vsnprintf vsnwprintf vsprintf vsscanf vswscanf vwscanf)
 
 # pformat.$(OBJEXT) needs an explicit build rule, since we need to
@@ -442,8 +442,8 @@ $(addsuffix fmt.$(OBJEXT),varo crto geto seto crtn getn setn): %.$(OBJEXT): ofmt
 # Some additional miscellaneous functions, in libmingwex.a
 #
 #libmingwex.a: $(addsuffix .$(OBJEXT), glob membarrier)
-libmingwex.a: $(addsuffix .$(OBJEXT), mingw-aligned-malloc mingw-fseek glob)
-libmingwex.a: $(addsuffix .$(OBJEXT), getopt basename dirname ftruncate usleep)
+libmingwex.a: $(addsuffix .$(OBJEXT), mingw-aligned-malloc mingw-fseek)
+libmingwex.a: $(addsuffix .$(OBJEXT), glob getopt basename dirname usleep)
 libmingwex.a: $(addsuffix .$(OBJEXT), mkstemp mkdtemp cryptnam)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), tdelete tfind tsearch twalk)

@@ -185,9 +185,7 @@ struct _wfinddata64i32_t {
 #define _WFINDDATA_T_DEFINED
 #endif
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 /*
  * Functions for searching for files. _findfirst returns -1 if no match
@@ -273,20 +271,33 @@ _CRTIMP int __cdecl __MINGW_NOTHROW _findnext64(intptr_t, struct __finddata64_t*
 #endif /* __MSVCRT_VERSION__ >= 0x0601 */
 #if __MSVCRT_VERSION__ >= 0x0800
 #ifndef _USE_32BIT_TIME_T
-_CRTALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirst (const char* _v1, struct _finddata_t* _v2)	{ return(_findfirst64i32 (_v1,(struct _finddata64i32_t*)_v2)); }
-_CRTALIAS int __cdecl __MINGW_NOTHROW	_findnext (intptr_t _v1, struct _finddata_t* _v2)		{ return(_findnext64i32  (_v1,(struct _finddata64i32_t*)_v2)); }
-_CRTALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirsti64 (const char* _v1, struct _finddatai64_t* _v2)	{ return(_findfirst64 (_v1,(struct __finddata64_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_findnexti64 (intptr_t _v1, struct _finddatai64_t* _v2)		{ return(_findnext64  (_v1,(struct __finddata64_t*)_v2)); }
+/* No __JMPSTUB__ or __LIBIMPL__ here; all of these represent
+ * call redirections within the MSVC runtime library itself.
+ */
+__CRT_ALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirst (const char* _v1, struct _finddata_t* _v2)
+{ return(_findfirst64i32 (_v1,(struct _finddata64i32_t*)_v2)); }
+__CRT_ALIAS int __cdecl __MINGW_NOTHROW	_findnext (intptr_t _v1, struct _finddata_t* _v2)
+{ return(_findnext64i32 (_v1,(struct _finddata64i32_t*)_v2)); }
+__CRT_ALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirsti64 (const char* _v1, struct _finddatai64_t* _v2)
+{ return(_findfirst64 (_v1,(struct __finddata64_t*)_v2)); }
+__CRT_ALIAS int __cdecl __MINGW_NOTHROW	_findnexti64 (intptr_t _v1, struct _finddatai64_t* _v2)
+{ return(_findnext64 (_v1,(struct __finddata64_t*)_v2)); }
 #else
-_CRTALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirst (const char* _v1, struct _finddata_t* _v2)	{ return(_findfirst32 (_v1,(struct _finddata32_t*)_v2)); }
-_CRTALIAS int __cdecl __MINGW_NOTHROW	_findnext (intptr_t _v1, struct _finddata_t* _v2)		{ return(_findnext32  (_v1,(struct _finddata32_t*)_v2)); }
-_CRTALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirsti64 (const char* _v1, struct _finddatai64_t* _v2)	{ return(_findfirst32i64 (_v1,(struct _finddata32i64_t*)_v2)); }
-_CRTALIAS int __cdecl __MINGW_NOTHROW	_findnexti64 (intptr_t _v1, struct _finddatai64_t* _v2)		{ return(_findnext32i64  (_v1,(struct _finddata32i64_t*)_v2)); }
+__CRT_ALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirst (const char* _v1, struct _finddata_t* _v2)
+{ return(_findfirst32 (_v1,(struct _finddata32_t*)_v2)); }
+__CRT_ALIAS int __cdecl __MINGW_NOTHROW	_findnext (intptr_t _v1, struct _finddata_t* _v2)
+{ return(_findnext32 (_v1,(struct _finddata32_t*)_v2)); }
+__CRT_ALIAS intptr_t __cdecl __MINGW_NOTHROW _findfirsti64 (const char* _v1, struct _finddatai64_t* _v2)
+{ return(_findfirst32i64 (_v1,(struct _finddata32i64_t*)_v2)); }
+__CRT_ALIAS int __cdecl __MINGW_NOTHROW	_findnexti64 (intptr_t _v1, struct _finddatai64_t* _v2)
+{ return(_findnext32i64 (_v1,(struct _finddata32i64_t*)_v2)); }
 #endif /* !_USE_32BIT_TIME_T */
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
+
 #ifndef __NO_MINGW_LFS
 __CRT_INLINE off64_t lseek64 (int, off64_t, int);
-__CRT_INLINE off64_t lseek64 (int fd, off64_t offset, int whence)
+__CRT_INLINE __JMPSTUB__(( FUNCTION = lseek64, REMAPPED = _lseeki64 ))
+off64_t lseek64 (int fd, off64_t offset, int whence)
 {
   return _lseeki64(fd, (__int64) offset, whence);
 }
@@ -307,9 +318,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW chmod (const char*, int);
 
 #endif /* Not _NO_OLDNAMES */
 
-#ifdef	__cplusplus
-}
-#endif
+_END_C_DECLS
 
 #endif	/* Not RC_INVOKED */
 
@@ -328,9 +337,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW chmod (const char*, int);
 
 #ifndef RC_INVOKED
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 _CRTIMP int __cdecl __MINGW_NOTHROW _access (const char*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW _chsize (int, long);
@@ -416,15 +423,26 @@ _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindnext64(intptr_t, struct __wfindda
 #endif
 #if __MSVCRT_VERSION__ >= 0x0800
 #ifndef _USE_32BIT_TIME_T
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)	 { return(_wfindfirst64i32 (_v1,(struct _wfinddata64i32_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext (long _v1, struct _wfinddata_t* _v2)			 { return(_wfindnext64i32  (_v1,(struct _wfinddata64i32_t*)_v2)); }
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2) { return(_wfindfirst64 (_v1,(struct __wfinddata64_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)		 { return(_wfindnext64  (_v1,(struct __wfinddata64_t*)_v2)); }
+/* No __JMPSTUB__ or __LIBIMPL__ here; all of these represent
+ * call redirections within the MSVC runtime library itself.
+ */
+__CRT_ALIAS long __cdecl __MINGW_NOTHROW _wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)
+{ return(_wfindfirst64i32 (_v1,(struct _wfinddata64i32_t*)_v2)); }
+__CRT_ALIAS int  __cdecl __MINGW_NOTHROW _wfindnext (long _v1, struct _wfinddata_t* _v2)
+{ return(_wfindnext64i32  (_v1,(struct _wfinddata64i32_t*)_v2)); }
+__CRT_ALIAS long __cdecl __MINGW_NOTHROW _wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2)
+{ return(_wfindfirst64 (_v1,(struct __wfinddata64_t*)_v2)); }
+__CRT_ALIAS int  __cdecl __MINGW_NOTHROW _wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)
+{ return(_wfindnext64 (_v1,(struct __wfinddata64_t*)_v2)); }
 #else
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)	 { return(_wfindfirst32 (_v1,(struct __wfinddata32_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext (long _v1, struct _wfinddata_t* _v2)			 { return(_wfindnext32  (_v1,(struct __wfinddata32_t*)_v2)); }
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2) { return(_wfindfirst32i64 (_v1,(struct _wfinddata32i64_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)		 { return(_wfindnext32i64  (_v1,(struct _wfinddata32i64_t*)_v2)); }
+__CRT_ALIAS long __cdecl __MINGW_NOTHROW _wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)
+{ return(_wfindfirst32 (_v1,(struct __wfinddata32_t*)_v2)); }
+__CRT_ALIAS int  __cdecl __MINGW_NOTHROW _wfindnext (long _v1, struct _wfinddata_t* _v2)
+{ return(_wfindnext32 (_v1,(struct __wfinddata32_t*)_v2)); }
+__CRT_ALIAS long __cdecl __MINGW_NOTHROW _wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2)
+{ return(_wfindfirst32i64 (_v1,(struct _wfinddata32i64_t*)_v2)); }
+__CRT_ALIAS int  __cdecl __MINGW_NOTHROW _wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)
+{ return(_wfindnext32i64 (_v1,(struct _wfinddata32i64_t*)_v2)); }
 #endif /* !_USE_32BIT_TIME_T */
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
 #endif /* defined (__MSVCRT__) */
@@ -484,9 +502,7 @@ wchar_t * 	wmktemp(wchar_t *);
 
 #endif	/* Not _NO_OLDNAMES */
 
-#ifdef	__cplusplus
-}
-#endif
+_END_C_DECLS
 
 #endif	/* Not RC_INVOKED */
 

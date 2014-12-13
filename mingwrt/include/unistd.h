@@ -26,9 +26,7 @@
 #define SEEK_END 2
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 #if !defined __NO_ISOCEXT
 #include <sys/types.h> /* For useconds_t. */
@@ -36,19 +34,17 @@ extern "C" {
 int __cdecl __MINGW_NOTHROW usleep(useconds_t useconds);
 #endif  /* Not __NO_ISOCEXT */
 
-/* This is defined as a real library function to allow autoconf
-   to verify its existence. */
+/* This is defined both as a real library function, to allow autoconf
+ * to verify its existence, and as a potentially inline implementation.
+ */
 int ftruncate(int, off_t);
 #ifndef __NO_INLINE__
-__CRT_INLINE int ftruncate(int __fd, off_t __length)
-{
-  return _chsize (__fd, __length);
-}
+__CRT_INLINE __JMPSTUB__(( FUNCTION = ftruncate, REMAPPED = _chsize ))
+int ftruncate(int __fd, off_t __length)
+{ return _chsize (__fd, __length); }
 #endif
 
-#ifdef __cplusplus
-}
-#endif
+_END_C_DECLS
 
 #undef __UNISTD_H_SOURCED__
 #endif /* _UNISTD_H */

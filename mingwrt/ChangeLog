@@ -1,5 +1,23 @@
 2014-12-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Some further inline function rationalization.
+
+	* include/io.h (_CRTALIAS): Replace all references...
+	(__CRT_ALIAS): ...using this syntactically preferred form.
+	(lseek64): Specify __JMPSTUB__ semantics for extern implementation.
+	[__cplusplus] (_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+
+	* include/unistd.h (ftruncate): Specify __JMPSTUB__ semantics.
+	[__cplusplus] (_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+
+	* mingwex/stdio/lseek64.c: File is now redundant; delete it.
+	* mingwex/ftruncate.c: Likewise.
+
+	* Makefile.in (libmingwex.a): Delete obsolete dependencies on...
+	(lseek64.$OBJEXT, ftruncate.$OBJEXT): ...these.
+
+2014-12-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Some POSIX feature test adjustments.
 
 	* include/stdlib.h (mkstemp): Available since SUSv3, so requires...
