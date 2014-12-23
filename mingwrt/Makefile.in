@@ -443,7 +443,7 @@ $(addsuffix fmt.$(OBJEXT),varo crto geto seto crtn getn setn): %.$(OBJEXT): ofmt
 #
 #libmingwex.a: $(addsuffix .$(OBJEXT), glob membarrier)
 libmingwex.a: $(addsuffix .$(OBJEXT), mingw-aligned-malloc mingw-fseek)
-libmingwex.a: $(addsuffix .$(OBJEXT), glob getopt basename dirname usleep)
+libmingwex.a: $(addsuffix .$(OBJEXT), glob getopt basename dirname nsleep)
 libmingwex.a: $(addsuffix .$(OBJEXT), mkstemp mkdtemp cryptnam)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), tdelete tfind tsearch twalk)
@@ -673,13 +673,14 @@ install-mingwrt-license install-w32api-license: install-%: docdir %-files
 includedirs: mingwrt-includedirs
 install-headers install-mingwrt: install-mingwrt-headers
 
-${includedir}/sys: includedir
-mingwrt-includedirs: ${includedir}/sys
+${includedir}/sys ${includedir}/parts: includedir
+mingwrt-includedirs: ${includedir}/sys ${includedir}/parts
 	$(mkinstalldirs) $^
 
 install-mingwrt-headers: mingwrt-includedirs
 	$(INSTALL_DATA) ${mingwrt_srcdir}/include/*.h ${includedir}
 	$(INSTALL_DATA) ${mingwrt_srcdir}/include/sys/*.h ${includedir}/sys
+	$(INSTALL_DATA) ${mingwrt_srcdir}/include/parts/*.h ${includedir}/parts
 	$(INSTALL_DATA) ${mingwrt_srcdir}/profile/*.h ${includedir}
 
 # Install libraries, and supporting free standing object files.

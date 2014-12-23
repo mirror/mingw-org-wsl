@@ -1,3 +1,38 @@
+2014-12-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Provide more POSIX conforming sleep() functions.
+
+	* include/sys/types.h (useconds_t): Make it explicitly long; int may
+	be okay, but doesn't guarantee enough bits; mark as deprecated, since
+	POSIX has declared it "obsolete", and no longer specifies it.
+
+	* mingwex/usleep.c: Delete file; it provided an implementation of...
+	(usleep): ...this now obsolete function, claiming POSIX.1 issue 6, but
+	its error handling was hopelessly broken; replace it with...
+	* mingwex/nsleep.c: ...this new file; it implements...
+	(__mingw_sleep): ...this generic helper function; it supports sleep
+	capability with interval specification to nanosecond precision.
+
+	* include/unistd.h (__mingw_sleep): Declare prototype; use it as the
+	basis for providing __LIBIMPL__ __CRT_INLINE implementations of...
+	(sleep, nanosleep): ...these current POSIX functions, and also...
+	(usleep): ...this obsolete one; mark it as deprecated.
+
+	* include/parts: New directory; it is intended to host partial header
+	implementations, for content which must be shared among arbitrary sets
+	of multiple standard header files.
+
+	* include/parts/time.h: New file; nominally declaring time.h content.
+	(struct timespec): Declare it; it is currently used within unistd.h,
+	to facilitate the __CRT_INLINE implementation of nanosleep().
+
+	* Makefile.in (libmingwex.a): Remove reference to...
+	(usleep.$OBJEXT): ...this; replace it with a reference to...
+	(nsleep.$OBJEXT): ...this alternative.
+	(mingwrt-includedirs): Add prerequisite to create...
+	($includedir/parts): ...this new directory; it is populated by...
+	(install-mingwrt-headers): ...this rule; add requisite command.
+
 2014-12-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Delete an unnecessary Unicode wrapper file.

@@ -129,9 +129,9 @@ typedef long long fpos64_t;
 typedef long long off64_t;
 #endif
 
-#if !defined __NO_ISOCEXT
-typedef unsigned int useconds_t;
-#endif  /* Not __NO_ISOCEXT */
+#if _POSIX_C_SOURCE
+typedef unsigned long useconds_t __MINGW_ATTRIB_DEPRECATED;
+#endif
 
 #endif	/* Not RC_INVOKED */
 
