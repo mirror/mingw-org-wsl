@@ -1,5 +1,14 @@
 2014-12-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Eliminate some potential definition inconsistencies.
+
+	* include/stdio.h: Cosmetic formatting change, relating to...
+	* include/unistd.h (SEEK_SET, SEEK_CUR, SEEK_END): Define them
+	unconditionally; this allows the compiler to check for consistency
+	with their primary definitions in stdio.h
+
+2014-12-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Suppress expected warning diagnostics in LIBIMPL builds.
 
 	* Makefile.in (LIBIMPL_CFLAGS): Redefine it; it now incorporates...

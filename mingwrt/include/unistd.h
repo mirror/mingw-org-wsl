@@ -53,18 +53,13 @@
 #include <process.h>
 #include <getopt.h>
 
-/* These are also defined in stdio.h. */
-#ifndef	SEEK_SET
-#define SEEK_SET 0
-#endif
-
-#ifndef	SEEK_CUR
-#define SEEK_CUR 1
-#endif
-
-#ifndef SEEK_END
-#define SEEK_END 2
-#endif
+/* These are defined in stdio.h.  POSIX also requires that they
+ * are to be consistently defined here; don't guard against prior
+ * definitions, as this might conceal inconsistencies.
+ */
+#define SEEK_SET   0
+#define SEEK_CUR   1
+#define SEEK_END   2
 
 #if _POSIX_C_SOURCE
 /*
