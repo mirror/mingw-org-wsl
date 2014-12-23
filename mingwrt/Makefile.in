@@ -555,7 +555,8 @@ libimpl_sed_script = sed \
   -e 's/__LIBIMPL.*ALIAS *= *$1[ ,)].*)/__attribute__((__alias__("$1")))/' \
   -e '/__CRT_ALIAS  *__LIBIMPL.*FUNCTION *= *$1[ ,)].*)/d'
 
-LIBIMPL_CFLAGS = $(CFLAGS) $(INCLUDES) -fno-align-functions
+LIBIMPL_CFLAGS = $(CFLAGS) $(INCLUDES) $(LIBIMPL_EXTRA_CFLAGS)
+LIBIMPL_EXTRA_CFLAGS = -fno-align-functions -Wno-deprecated-declarations
 
 # LIBIMPL dependencies are tracked using zero sized name.libimpl
 # files; the intermediate C files are generated as a side effect

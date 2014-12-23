@@ -1,5 +1,13 @@
 2014-12-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Suppress expected warning diagnostics in LIBIMPL builds.
+
+	* Makefile.in (LIBIMPL_CFLAGS): Redefine it; it now incorporates...
+	(LIBIMPL_EXTRA_CFLAGS): ...this new macro; it includes the requisite
+	GCC flag to supress warnings relating to deprecated declarations.
+
+2014-12-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Provide more POSIX conforming sleep() functions.
 
 	* include/sys/types.h (useconds_t): Make it explicitly long; int may
