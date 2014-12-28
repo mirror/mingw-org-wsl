@@ -22,10 +22,19 @@
  */
 #define __MINGW_H
 
-#define __MINGW32_VERSION           3.20
-#define __MINGW32_MAJOR_VERSION     3
-#define __MINGW32_MINOR_VERSION     20
-#define __MINGW32_PATCHLEVEL        0
+/* In previous versions, __MINGW32_VERSION was expressed as a dotted
+ * numeric pair, representing major.minor; unfortunately, this doesn't
+ * adapt well to the inclusion of a patch-level component, since the
+ * major.minor.patch dotted triplet representation is not valid as a
+ * numeric entity.  Thus, for this version, we adopt a representation
+ * which encodes the version as a long integer value, expressing:
+ *
+ *   __MINGW32_VERSION = 1,000,000 * major + 1,000 * minor + patch
+ */
+#define __MINGW32_VERSION           3021000L
+#define __MINGW32_MAJOR_VERSION           3
+#define __MINGW32_MINOR_VERSION          21
+#define __MINGW32_PATCHLEVEL              0
 
 #if __GNUC__ >= 3
 #ifndef __PCC__
