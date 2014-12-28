@@ -79,7 +79,7 @@ int __mingw_mkstemp( int setmode, char *template )
      *   _MKSTEMP_SETMODE( _O_TEMPORARY );
      *   if( mkstemp( template ) >= 0 )
      *   {
-     *     . . . 
+     *     . . .
      *   }
      *
      * to achieve a similar effect to that of the above POSIX idiom.

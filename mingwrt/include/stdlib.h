@@ -567,11 +567,36 @@ wchar_t* __cdecl __MINGW_NOTHROW ulltow (unsigned long long _n, wchar_t * _w, in
 int __cdecl __MINGW_NOTHROW mkstemp( char * );
 int __cdecl __MINGW_NOTHROW __mingw_mkstemp( int, char * );
 
-/* The following macros are a MinGW specific extension, to facilite
+/* On POSIX platforms, programmers may adopt an idiom such as:
+ *
+ *   if( mkstemp( template ) >= 0 )
+ *   { unlink( template );
+ *     . . .
+ *   }
+ *
+ * to ensure that a temporary file does NOT persist after it is
+ * closed; MS-Windows does not allow such use of unlink(2), while
+ * the file remains open.  Thus, MS-Windows programmers must take
+ * extra care, to close and unlink temporary files AFTER use, if
+ * similar behaviour is desired.
+ *
+ * To mitigate this MS-Windows limitation, we provide support for
+ * an alternative, MinGW specific idiom:
+ *
+ *   #include <fcntl.h>
+ *
+ *   _MKSTEMP_SETMODE( _O_TEMPORARY );
+ *   if( mkstemp( template ) >= 0 )
+ *   {
+ *     . . .
+ *   }
+ *
+ * to achieve a similar effect to that of the above POSIX idiom; the
+ * following macros are a MinGW specific extension, to facilite such
  * use of _O_TEMPORARY, (in addition to the POSIX required attributes),
  * when creating the temporary file.  Note that they require fcntl.h,
  * which stdlib.h should NOT automatically include; we leave the onus
- * on the user to explicitly include it, if using MKSTEMP_SETMODE.
+ * on the user to explicitly include it, if using _MKSTEMP_SETMODE.
  */
 #define _MKSTEMP_INVOKE       0
 #define _MKSTEMP_DEFAULT     _O_CREAT | _O_EXCL | _O_RDWR

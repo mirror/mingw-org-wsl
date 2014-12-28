@@ -1,3 +1,11 @@
+2014-12-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Improve usage notes in stdlib.h, for mkstemp() function.
+
+	* include/stdlib.h (MKSTEMP_SETMODE): Explain usage; this is a copy of
+	an original comment, explaining the need to use  _O_TEMPORARY, from...
+	* mingwex/mkstemp.c: ...here; delete trailing white space.
+
 2014-12-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Eliminate some potential definition inconsistencies.
