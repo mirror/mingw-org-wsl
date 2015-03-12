@@ -1,3 +1,10 @@
+2015-03-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix GLOB_DOOFFS initialization bug.
+
+	* mingwex/glob.c (__mingw_glob) [!GLOB_DOOFFS]: Ensure...
+	(gl_data->gl_offs): ...this is properly initialized to zero.
+
 2014-12-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Tag all files for release of mingwrt-3.21.

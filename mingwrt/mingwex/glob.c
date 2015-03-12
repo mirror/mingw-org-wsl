@@ -1039,9 +1039,22 @@ __mingw_glob( const char *pattern, int flags, int (*errfn)(), glob_t *gl_data )
   /* Module entry point for the glob() function.
    */
   int status;
+
   /* First, consult the glob "registry", to ensure that the
    * glob data structure passed by the caller, has been properly
-   * initialised.
+   * initialised.  (Note that this implementation gratuitously uses
+   * gl_data->gl_offs, irrespective of specification of GLOB_DOOFFS
+   * in the flags; while the user must accept responsibility for the
+   * initialisation of gl_data->gl_offs when specifying GLOB_DOOFFS,
+   * this is not the case when GLOB_DOOFFS is not specified; in the
+   * latter case, WE must assume the responsibility, ensuring that
+   * the required zero value is assigned BEFORE registration).
+   */
+  if( (gl_data != NULL) && ((flags & GLOB_DOOFFS) == 0) )
+    gl_data->gl_offs = 0;
+
+  /* With this pre-registration requirement satisfied, we may now
+   * proceed to register the provided gl_data structure.
    */
   gl_data = glob_registry( GLOB_INIT, gl_data );
 
