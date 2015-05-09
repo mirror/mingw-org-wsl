@@ -1,3 +1,11 @@
+2015-05-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Remove obsolete varargs.h header file.
+
+	* include/varargs.h: Delete it; it was a mostly redundant wrapper for
+	a GCC header which is no longer supported, and was always intended for
+	ultimate removal; now is the long overdue time to do so.
+
 2015-05-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct improper unistd.h function attribute declarations.
