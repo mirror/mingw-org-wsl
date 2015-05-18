@@ -1,51 +1,53 @@
 /*
- * types.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
+ * sys/types.h
  *
- * The definition of constants, data types and global variables.
+ * Definitions of (primarily POSIX) system data types.
+ *
+ * $Id$
+ *
+ * Written by Rob Savoye <rob@cygnus.com>
+ * Copyright (C) 1997-1999, 2001, 2003, 2004, 2008, 2011, 2014-2015,
+ *   MinGW.org Project.
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  */
-
-#ifndef	_TYPES_H_
-#define	_TYPES_H_
+#ifndef _SYS_TYPES_H
+#define _SYS_TYPES_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
 
-#define __need_wchar_t
+#ifndef RC_INVOKED
+
 #define __need_size_t
 #define __need_ptrdiff_t
-#ifndef RC_INVOKED
+#define __need_wchar_t
 #include <stddef.h>
-#endif	/* Not RC_INVOKED */
 
-#ifndef RC_INVOKED
+#define __need_time_t
+#define _FAKE_TIME_H_SOURCED 1
+#include <parts/time.h>
 
-#ifndef _TIME32_T_DEFINED
-typedef __int32 __time32_t;
-#define _TIME32_T_DEFINED
-#endif
-
-#ifndef _TIME64_T_DEFINED
-typedef __int64 __time64_t;
-#define _TIME64_T_DEFINED
-#endif
-
-#ifndef _TIME_T_DEFINED
-/* FIXME __STRICT_ANSI__ ! */
-#if __MSVCRT_VERSION__ >= 0x0800
-#ifndef _USE_32BIT_TIME_T
-typedef	__time64_t time_t;
-#else
-typedef	__time32_t time_t;
-#endif /* !_USE_32BIT_TIME_T */
-#else
-typedef	__time32_t time_t;
-#endif /* __MSVCRT_VERSION__ >= 0x0800 */
-#define _TIME_T_DEFINED
-#endif
 
 #ifndef	_OFF_T_
 #define	_OFF_T_
@@ -130,9 +132,12 @@ typedef long long off64_t;
 #endif
 
 #if _POSIX_C_SOURCE
+/* useconds_t is an obsolete POSIX data type; we continue to define
+ * it here, for backward compatibility, but we flag it as deprecated,
+ * due to its obsolete status.
+ */
 typedef unsigned long useconds_t __MINGW_ATTRIB_DEPRECATED;
 #endif
 
-#endif	/* Not RC_INVOKED */
-
-#endif	/* Not _TYPES_H_ */
+#endif	/* ! RC_INVOKED */
+#endif	/* ! _SYS_TYPES_H: $RCSfile$: end of file */

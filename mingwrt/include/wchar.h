@@ -1,21 +1,59 @@
 /*
  * wchar.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
  *
- * Defines of all functions for supporting wide characters. Actually it
- * just includes all those headers, which is not a good thing to do from a
- * processing time point of view, but it does mean that everything will be
- * in sync.
+ * Declarations relating to support for wide characters; many are simply
+ * inherited by (sub-optimal) inclusion of other header files.
+ *
+ * $Id$
+ *
+ * Written by Rob Savoye <rob@cygnus.com>
+ * Copyright (C) 1997, 1999-2009, 2011, 2015, MinGW.org Project.
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  */
-
-#ifndef	_WCHAR_H_
-#define	_WCHAR_H_
+#ifndef _WCHAR_H
+#define _WCHAR_H
+#pragma GCC system_header
 
 /* All the headers include this file. */
 #include <_mingw.h>
+
+/* MSDN says that isw* char classifications are in wchar.h and wctype.h.
+ * Although the wctype names are ANSI, their exposure in this header is
+ * not; nevertheless, we replicate them here, for MSDN conformity.
+ */
+#include <wctype.h>
+
+#ifndef __STRICT_ANSI__
+/* This is also necessary, to support the non-ANSI wchar.h declarations
+ * which MSDN identifies as being provided here.
+ */
+# include <sys/types.h>
+#endif /* __STRICT_ANSI__ */
+
+#define WCHAR_MIN	0
+#define WCHAR_MAX	0xffff
+
+# define WEOF		(wchar_t)(0xffff)
 
 #ifndef RC_INVOKED
 
@@ -26,42 +64,16 @@
 #include <stddef.h>
 
 #ifndef __VALIST
-#if defined __GNUC__ && __GNUC__ >= 3
-#define __need___va_list
-#include <stdarg.h>
-#define __VALIST __builtin_va_list
-#else
-#define __VALIST char*
-#endif
-#endif
-
-#endif /* Not RC_INVOKED */
-
-/*
- * MSDN says that isw* char classifications are in wchar.h and wctype.h.
- * Although the wctype names are ANSI, their exposure in this header is
- * not.
- */
-#include <wctype.h>
-
-#ifndef	__STRICT_ANSI__
-/* This is necessary to support the the non-ANSI wchar declarations
-   here. */
-#include <sys/types.h>
-#endif /* __STRICT_ANSI__ */
-
-#define WCHAR_MIN	0
-#define WCHAR_MAX	0xffff
-
-#ifndef WEOF
-#define	WEOF	(wchar_t)(0xFFFF)
+# if defined __GNUC__ && __GNUC__ >= 3
+#  define __need___va_list
+#  include <stdarg.h>
+#  define __VALIST __builtin_va_list
+# else
+#  define __VALIST char*
+# endif
 #endif
 
-#ifndef RC_INVOKED
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 #ifndef _FILE_DEFINED  /* Also in stdio.h */
 #define	_FILE_DEFINED
@@ -78,10 +90,9 @@ typedef struct _iobuf
 } FILE;
 #endif	/* Not _FILE_DEFINED */
 
-#ifndef _TIME_T_DEFINED  /* Also in time.h */
-typedef long time_t;
-#define _TIME_T_DEFINED
-#endif
+#define __need_time_t
+#define _FAKE_TIME_H_SOURCED 1
+#include <parts/time.h>
 
 #ifndef _TM_DEFINED /* Also in time.h */
 struct tm {
@@ -635,13 +646,9 @@ _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnvpe	(int, const wchar_t*, const 
 
 #define _WPROCESS_DEFINED
 #endif
-#endif /* not __STRICT_ANSI__ */
+#endif /* ! __STRICT_ANSI__ */
 
-#ifdef __cplusplus
-}	/* end of extern "C" */
-#endif
+_END_C_DECLS
 
-#endif /* Not RC_INVOKED */
-
-#endif /* not _WCHAR_H_ */
-
+#endif /* ! RC_INVOKED */
+#endif /* ! _WCHAR_H */

@@ -1,76 +1,69 @@
 /*
  * time.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
  *
- * Date and time functions and types.
+ * Type definitions and function declarations relating to date and time.
+ *
+ * $Id$
+ *
+ * Written by Rob Savoye <rob@cygnus.com>
+ * Copyright (C) 1997-2007, 2011, 2015, MinGW.org Project.
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  */
-
-#ifndef	_TIME_H_
-#define	_TIME_H_
+#ifndef _TIME_H
+#define _TIME_H
 
 /* All the headers include this file. */
 #include <_mingw.h>
 
-#define __need_wchar_t
-#define __need_size_t
-#define __need_NULL
-#ifndef RC_INVOKED
-#include <stddef.h>
-#endif	/* Not RC_INVOKED */
-
-/*
- * Number of clock ticks per second. A clock tick is the unit by which
+/* Number of clock ticks per second. A clock tick is the unit by which
  * processor time is measured and is returned by 'clock'.
  */
-#define	CLOCKS_PER_SEC	((clock_t)1000)
-#define	CLK_TCK		CLOCKS_PER_SEC
-
+#define CLOCKS_PER_SEC	((clock_t)(1000))
+#define CLK_TCK 	CLOCKS_PER_SEC
 
 #ifndef RC_INVOKED
-
 /*
- * A type for storing the current time and date. This is the number of
- * seconds since midnight Jan 1, 1970.
- * NOTE: This is also defined in non-ISO sys/types.h.
+ * Some elements declared in time.h may also be required by other
+ * header files, without necessarily including time.h itself; such
+ * elements are declared in the local parts/time.h system header file.
+ * Declarations for such elements must be selected prior to inclusion:
  */
-#ifndef _TIME32_T_DEFINED
-typedef __int32 __time32_t;
-#define _TIME32_T_DEFINED
-#endif
+#define __need_time_t
+#define __need_struct_timespec
+#include <parts/time.h>
 
-#ifndef __STRICT_ANSI__
-/* A 64-bit time_t to get to Y3K */
-#ifndef _TIME64_T_DEFINED
-typedef __int64 __time64_t;
-#define _TIME64_T_DEFINED
-#endif
-#endif
-
-#ifndef _TIME_T_DEFINED
-/* FIXME __STRICT_ANSI__ ! */
-#if __MSVCRT_VERSION__ >= 0x0800
-#ifndef _USE_32BIT_TIME_T
-typedef	__time64_t time_t;
-#else
-typedef	__time32_t time_t;
-#endif /* !_USE_32BIT_TIME_T */
-#else
-typedef	__time32_t time_t;
-#endif /* __MSVCRT_VERSION__ >= 0x0800 */
-#define _TIME_T_DEFINED
-#endif
-
-
-/*
- * A type for measuring processor time (in clock ticks).
+/* time.h is also required to duplicate the following type definitions,
+ * which are nominally defined in stddef.h
  */
-#ifndef _CLOCK_T_DEFINED
-typedef	long	clock_t;
-#define _CLOCK_T_DEFINED
-#endif
+#define __need_NULL
+#define __need_wchar_t
+#define __need_size_t
+#include <stddef.h>
+
+/* A type for measuring processor time in clock ticks; (no need to
+ * guard this, since it isn't defined elsewhere).
+ */
+typedef long clock_t;
 
 #ifndef _TM_DEFINED
 /*
@@ -93,9 +86,7 @@ struct tm
 #define _TM_DEFINED
 #endif
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
 _CRTIMP clock_t __cdecl __MINGW_NOTHROW	clock (void);
 #if __MSVCRT_VERSION__ < 0x0800
@@ -173,9 +164,7 @@ _CRTALIAS struct tm*	   __cdecl __MINGW_NOTHROW	localtime (const time_t* _v)	  {
 #endif /* !_USE_32BIT_TIME_T */
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
 
-
-/*
- * _daylight: non zero if daylight savings time is used.
+/* _daylight: non zero if daylight savings time is used.
  * _timezone: difference in seconds between GMT and local time.
  * _tzname: standard/daylight savings time zone names (an array with two
  *          elements).
@@ -213,35 +202,34 @@ __MINGW_IMPORT char*	_tzname[2];
 #define _timezone	_timezone_dll
 
 #endif /* __DECLSPEC_SUPPORTED */
-
-#endif /* not __MSVCRT__ */
-
-#endif	/* Not __STRICT_ANSI__ */
+#endif /* ! __MSVCRT__ */
+#endif /* ! __STRICT_ANSI__ */
 
 #ifndef _NO_OLDNAMES
-
 #ifdef __MSVCRT__
 
-/* These go in the oldnames import library for MSVCRT. */
+/* These go in the oldnames import library for MSVCRT.
+ */
 __MINGW_IMPORT int	daylight;
 __MINGW_IMPORT long	timezone;
 __MINGW_IMPORT char 	*tzname[2];
 
-#else /* not __MSVCRT__ */
-
-/* CRTDLL is royally messed up when it comes to these macros.
-   TODO: import and alias these via oldnames import library instead
-   of macros.  */
-
+#else /* ! __MSVCRT__ */
+/*
+ * CRTDLL is royally messed up when it comes to these macros.
+ * TODO: import and alias these via oldnames import library instead
+ * of macros.
+ */
 #define daylight        _daylight
-/* NOTE: timezone not defined as macro because it would conflict with
-   struct timezone in sys/time.h.
-   Also, tzname used to a be macro, but now it's in moldname. */
+/*
+ * NOTE: timezone not defined as a macro because it would conflict with
+ * struct timezone in sys/time.h.  Also, tzname used to a be macro, but
+ * now it's in moldname.
+ */
 __MINGW_IMPORT char 	*tzname[2];
 
-#endif /* not __MSVCRT__ */
-
-#endif	/* Not _NO_OLDNAMES */
+#endif /* ! __MSVCRT__ */
+#endif /* ! _NO_OLDNAMES */
 
 #ifndef _WTIME_DEFINED
 /* wide function prototypes, also declared in wchar.h */
@@ -270,11 +258,7 @@ _CRTIMP size_t __cdecl __MINGW_NOTHROW		wcsftime (wchar_t*, size_t, const wchar_
 #define _WTIME_DEFINED
 #endif /* _WTIME_DEFINED */
 
-#ifdef	__cplusplus
-}
-#endif
+_END_C_DECLS
 
-#endif	/* Not RC_INVOKED */
-
-#endif	/* Not _TIME_H_ */
-
+#endif /* ! RC_INVOKED */
+#endif /* ! _TIME_H: $RCSfile$: end of file */

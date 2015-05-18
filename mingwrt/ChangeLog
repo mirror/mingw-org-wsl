@@ -1,3 +1,34 @@
+2015-05-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor to avoid possible time_t conflicts across headers.
+
+	* include/parts/time.h (struct timespec): Make it more descriptive of,
+	and better able to accommodate, potential ambiguity relating to...
+	(time_t, __time32_t, __time64_t): ...these typedefs; define them here,
+	whence they may be identically imported into each of...
+	* include/sys/types.h include/time.h include/wchar.h: these; delete
+	duplicate typedefs, and import accordingly.
+
+	* include/sys/types.h: Add licence; general comment additions.
+	(_TYPES_H_): Rename multiple inclusion guard macro...
+	(_SYS_TYPES_H): ...to this.
+
+	* include/time.h: Add licence; general comment/layout adjustments.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use to wrap extern "C" declarations.
+	(_TIME_T_DEFINED, _TIME32_T_DEFINED, _TIME64_T_DEFINED)
+	(_CLOCK_T_DEFINED): Superfluous guard macros; delete them.
+	(_TIME_H_): Rename multiple inclusion guard macro...
+	(_TIME_H): ...to this.
+
+	* include/unistd.h (nanosleep): Adjust to accommodate redefinition...
+	(struct timespec): ...of this.
+
+	* include/wchar.h: Add licence; general comment/layout adjustments.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use to wrap extern "C" declarations.
+	[GCC] (system_header): Add pragma, identifying header as such.
+	(_WCHAR_H_): Rename multiple inclusion guard macro...
+	(_WCHAR_H): ...to this.
+
 2015-05-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Remove obsolete varargs.h header file.

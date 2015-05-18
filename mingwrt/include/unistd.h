@@ -12,7 +12,8 @@
  *   Ramiro Polla <ramiro@lisha.ufsc.br>
  *   Gregory McGarry  <gregorymcgarry@users.sourceforge.net>
  *   Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Copyright (C) 1997, 1999, 2002-2004, 2007-2009, 2014, MinGW.org Project.
+ * Copyright (C) 1997, 1999, 2002-2004, 2007-2009, 2014-2015,
+ *   MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -90,8 +91,8 @@ int __mingw_sleep( unsigned long, unsigned long );
  * with period values normally distributed around means of ~27.5 ms
  * and ~7.5 ms, for the two system types respectively.
  */
-#define _FAKE_TIME_H_SOURCED	1
-#define __need_struct_timespec	1
+#define _FAKE_TIME_H_SOURCED 1
+#define __need_struct_timespec
 #include <parts/time.h>
 
 _BEGIN_C_DECLS
@@ -109,8 +110,8 @@ __CRT_INLINE __LIBIMPL__(( FUNCTION = nanosleep ))
 int nanosleep( const struct timespec *period, struct timespec *residual )
 {
   if( residual != (void *)(0) )
-    residual->tv_sec = (long long)(residual->tv_nsec = 0);
-  return __mingw_sleep((unsigned)(period->tv_sec), (period->tv_sec < 0LL)
+    residual->__tv64_sec = (__time64_t)(residual->tv_nsec = 0);
+  return __mingw_sleep((unsigned)(period->__tv64_sec), (period->__tv64_sec < 0LL)
     ? (unsigned)(-1) : (unsigned)(period->tv_nsec));
 }
 #endif
