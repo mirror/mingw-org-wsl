@@ -31,10 +31,10 @@
  *
  *   __MINGW32_VERSION = 1,000,000 * major + 1,000 * minor + patch
  */
-#define __MINGW32_VERSION           3021000L
+#define __MINGW32_VERSION           3021001L
 #define __MINGW32_MAJOR_VERSION           3
 #define __MINGW32_MINOR_VERSION          21
-#define __MINGW32_PATCHLEVEL              0
+#define __MINGW32_PATCHLEVEL              1
 
 #if __GNUC__ >= 3
 #ifndef __PCC__

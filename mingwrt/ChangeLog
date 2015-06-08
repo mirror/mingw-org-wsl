@@ -1,3 +1,11 @@
+2015-06-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag all files for release of mingwrt-3.21.1.
+
+	* configure.ac (AC_INIT): Adjust package version argument.
+	* include/_mingw.h (__MINGW32_PATCHLEVEL): Increment to 1, and...
+	(__MINGW32_VERSION): ...increment this to match.
+
 2015-05-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor to avoid possible time_t conflicts across headers.

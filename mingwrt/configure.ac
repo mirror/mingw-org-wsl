@@ -6,7 +6,7 @@
 # $Id$
 #
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2014, MinGW.org Project
+# Copyright (C) 2014, 2015, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -29,7 +29,7 @@
 # DEALINGS IN THE SOFTWARE.
 #
   AC_PREREQ([2.64])
-  AC_INIT([MinGW Runtime],[3.21],[http://mingw.org/Reporting_Bugs],[mingwrt])
+  AC_INIT([MinGW Runtime],[3.21.1],[http://mingw.org/Reporting_Bugs],[mingwrt])
 
   AC_PREFIX_DEFAULT([/mingw])
   AC_CONFIG_SRCDIR([include/_mingw.h])
