@@ -1,20 +1,38 @@
 /*
  * math.h
- * This file has no copyright assigned and is placed in the Public Domain.
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
  *
- * Mathematical functions.
+ * ANSI/POSIX + Microsoft compatible mathematical function prototypes,
+ * associated macros, and manifest constant definitions.
+ *
+ * $Id$
+ *
+ * Written by Rob Savoye <rob@cygnus.com>
+ * Copyright (C) 1997-2009, 2014, 2015, MinGW.org Project.
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  */
-
-
-#ifndef _MATH_H_
-#define _MATH_H_
-
-#if __GNUC__ >= 3
+#ifndef _MATH_H
+#define _MATH_H
 #pragma GCC system_header
-#endif
 
 /* All the headers include this file. */
 #include <_mingw.h>
@@ -22,7 +40,6 @@
 /*
  * Types for the _exception structure.
  */
-
 #define	_DOMAIN		1	/* domain error in argument */
 #define	_SING		2	/* singularity */
 #define	_OVERFLOW	3	/* range overflow */
@@ -33,7 +50,6 @@
 /*
  * Exception types with non-ANSI names for compatibility.
  */
-
 #ifndef	__STRICT_ANSI__
 #ifndef	_NO_OLDNAMES
 
@@ -44,8 +60,8 @@
 #define	TLOSS		_TLOSS
 #define	PLOSS		_PLOSS
 
-#endif	/* Not _NO_OLDNAMES */
-#endif	/* Not __STRICT_ANSI__ */
+#endif	/* ! _NO_OLDNAMES */
+#endif	/* ! __STRICT_ANSI__ */
 
 
 #if _POSIX_C_SOURCE || defined _USE_MATH_DEFINES
@@ -70,8 +86,12 @@
 #define M_SQRT1_2	0.70710678118654752440
 #endif
 
-/* These are also defined in Mingw float.h; needed here as well to work
-   around GCC build issues.  */
+/* These are also defined in MinGW float.h; needed here as well,
+ * to work around GCC build issues.
+ *
+ * FIXME: Since they're needed both in MinGW float.h and here,
+ * they should be moved to a common "parts" header.
+ */
 #ifndef	__STRICT_ANSI__
 #ifndef __MINGW_FPCLASS_DEFINED
 #define __MINGW_FPCLASS_DEFINED 1
@@ -87,16 +107,13 @@
 #define	_FPCLASS_PN	0x0100	/* Positive Normal */
 #define	_FPCLASS_PINF	0x0200	/* Positive Infinity */
 #endif /* __MINGW_FPCLASS_DEFINED */
-#endif	/* Not __STRICT_ANSI__ */
+#endif	/* ! __STRICT_ANSI__ */
 
 #ifndef RC_INVOKED
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+_BEGIN_C_DECLS
 
-/*
- * HUGE_VAL is returned by strtod when the value would overflow the
+/* HUGE_VAL is returned by strtod when the value would overflow the
  * representation of 'double'. There are other uses as well.
  *
  * __imp__HUGE is a pointer to the actual variable _HUGE in
@@ -105,7 +122,6 @@ extern "C" {
  *
  * NOTE: The CRTDLL version uses _HUGE_dll instead.
  */
-
 #if __MINGW_GNUC_PREREQ(3, 3)
 #define	HUGE_VAL __builtin_huge_val()
 #else
@@ -286,7 +302,7 @@ _CRTIMP int __cdecl fpclass (double);
 #define FP_NNORM   _FPCLASS_NN
 #define FP_PNORM   _FPCLASS_PN
 
-#endif /* Not _NO_OLDNAMES */
+#endif /* ! _NO_OLDNAMES */
 
 /* This require msvcr70.dll or higher. */
 #if __MSVCRT_VERSION__ >= 0x0700
@@ -630,10 +646,6 @@ extern long double __cdecl fabsl (long double x);
 /* 7.12.7.3  */
 extern double __cdecl hypot (double, double); /* in libmoldname.a */
 extern float __cdecl hypotf (float, float);
-#ifndef __NO_INLINE__
-__CRT_INLINE float __cdecl hypotf (float x, float y)
-{ return (float)(_hypot (x, y)); }
-#endif
 extern long double __cdecl hypotl (long double, long double);
 
 /* 7.12.7.4 The pow functions. Double in C89 */
@@ -817,9 +829,9 @@ extern float __cdecl nanf(const char *tagp);
 extern long double __cdecl nanl(const char *tagp);
 
 #ifndef __STRICT_ANSI__
-#define _nan() nan("")
-#define _nanf() nanf("")
-#define _nanl() nanl("")
+#define _nan()   nan("")
+#define _nanf()  nanf("")
+#define _nanl()  nanl("")
 #endif
 
 /* 7.12.11.3 */
@@ -860,15 +872,14 @@ extern float __cdecl fmaf (float, float, float);
 extern long double __cdecl fmal (long double, long double, long double);
 
 
-/* 7.12.14 */
-/*
- *  With these functions, comparisons involving quiet NaNs set the FP
- *  condition code to "unordered".  The IEEE floating-point spec
- *  dictates that the result of floating-point comparisons should be
- *  false whenever a NaN is involved, with the exception of the != op,
- *  which always returns true: yes, (NaN != NaN) is true).
+/* 7.12.14
+ *
+ * With these functions, comparisons involving quiet NaNs set the FP
+ * condition code to "unordered".  The IEEE floating-point spec
+ * dictates that the result of floating-point comparisons should be
+ * false whenever a NaN is involved, with the exception of the != op,
+ * which always returns true: yes, (NaN != NaN) is true).
  */
-
 #if __GNUC__ >= 3
 
 #define isgreater(x, y) __builtin_isgreater(x, y)
@@ -878,7 +889,7 @@ extern long double __cdecl fmal (long double, long double, long double);
 #define islessgreater(x, y) __builtin_islessgreater(x, y)
 #define isunordered(x, y) __builtin_isunordered(x, y)
 
-#else
+#else /* __GNUC__ < 3 */
 /*  helper  */
 extern int  __cdecl __fp_unordered_compare (long double, long double);
 #ifndef __NO_INLINE__
@@ -889,32 +900,20 @@ __fp_unordered_compare (long double x, long double y){
 	   "fnstsw;": "=a" (retval) : "t" (x), "u" (y));
   return retval;
 }
-#endif
+#endif /* ! __NO_INLINE__ */
 
-#define isgreater(x, y) ((__fp_unordered_compare(x, y) \
-			   & 0x4500) == 0)
-#define isless(x, y) ((__fp_unordered_compare (y, x) \
-                       & 0x4500) == 0)
-#define isgreaterequal(x, y) ((__fp_unordered_compare (x, y) \
-                               & FP_INFINITE) == 0)
-#define islessequal(x, y) ((__fp_unordered_compare(y, x) \
-			    & FP_INFINITE) == 0)
-#define islessgreater(x, y) ((__fp_unordered_compare(x, y) \
-			      & FP_SUBNORMAL) == 0)
-#define isunordered(x, y) ((__fp_unordered_compare(x, y) \
-			    & 0x4500) == 0x4500)
+#define isgreater(x, y)       ((__fp_unordered_compare(x, y) & 0x4500) == 0)
+#define isless(x, y)          ((__fp_unordered_compare(y, x) & 0x4500) == 0)
+#define isgreaterequal(x, y)  ((__fp_unordered_compare(x, y) & FP_INFINITE) == 0)
+#define islessequal(x, y)     ((__fp_unordered_compare(y, x) & FP_INFINITE) == 0)
+#define islessgreater(x, y)   ((__fp_unordered_compare(x, y) & FP_SUBNORMAL) == 0)
+#define isunordered(x, y)     ((__fp_unordered_compare(x, y) & 0x4500) == 0x4500)
 
-#endif
-
-
+#endif /* __GNUC__ < 3 */
 #endif /* __STDC_VERSION__ >= 199901L */
 #endif /* __NO_ISOCEXT */
 
+_END_C_DECLS
 
-#ifdef __cplusplus
-}
-#endif
-#endif	/* Not RC_INVOKED */
-
-
-#endif	/* Not _MATH_H_ */
+#endif /* ! RC_INVOKED */
+#endif /* ! _MATH_H: $RCSfile$: end of file */

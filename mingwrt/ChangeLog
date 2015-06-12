@@ -1,3 +1,19 @@
+2015-06-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct C++ compilation anomaly with hypotf() in cmath header.
+
+	* include/math.h: Add copyright notice; generally tidy layout.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use to wrap extern "C" declarations.
+	(hypotf): Delete inline implementation; it did not properly handle
+	range errors, and was uncompilable with optimization when any g++
+	option implying __STRICT_ANSI__ conformity was specified.
+	(_MATH_H_): Rename this multiple inclusion guard...
+	(_MATH_H): ...to this.
+
+	* mingwex/math/hypot_generic.c: New file; it implements...
+	(hypot, hypotf, hypotl): ...these; use the latter pair in place of...
+	* mingwex/math/hypotf.c mingwex/math/hypotl.c: ...these; delete them.
+
 2015-06-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag all files for release of mingwrt-3.21.1.
@@ -2306,7 +2322,7 @@
 
 2005-02-11  Gregory W. Chicares  <chicares@cox.net>
 
-	* include/math.h (expm1, expm1f, expmll): Add prototypes.
+	* include/math.h (expm1, expm1f, expm1l): Add prototypes.
 	* mingwex/Makefile.in (MATH_DISTFILES): Add expm1.c,
 	expm1f.c, expm1l.c.
 	(MATH_OBJS): Add expm1.o, expm1f.o, expm1l.o.
@@ -3842,7 +3858,7 @@
 	mingwex/math.
 	Adjust MATH_OBJS.
 	Add MATH_DISTFILES and use it to build source distro.
-	* include/ math.h: Add protypes for new functions and
+	* include/math.h: Add protypes for new functions and
 	reorganise to reflect ANSI,C99 status.
 
 2002-06-19  Danny Smith  <dannysmith@users.sourceforge.net>
