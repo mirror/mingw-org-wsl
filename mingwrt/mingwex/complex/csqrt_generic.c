@@ -3,12 +3,12 @@
  *
  * $Id$
  *
- * Compute the complex arcsin corresponding to a complex sine value;
- * a generic implementation for casin(), casinf(), and casinl().
+ * Compute the principal square root of a complex number; this provides
+ * a generic implementation for csqrt(), csqrtf(), and csqrtl().
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * This is an adaptation of an original contribution by Danny Smith
- * Copyright (C) 2003, 2014, MinGW.org Project
+ * Copyright (C) 2003, 2014, 2015, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -76,14 +76,6 @@
 #define log    __fast_log
 #define log1p  __fast_log1p
 #define sqrt   __fast_sqrt
-
-/* To compute the modulus of complex numbers, we use the hypot()
- * function, representing it generically by reference to MSVCRT.DLL's
- * double _hypot(); for the float and long double variants, we use
- * our own implementations, which have no leading underscore.
- */
-#define _hypotf  hypotf
-#define _hypotl  hypotl
 
 /* Define the generic function implementation.
  */
@@ -203,11 +195,11 @@ ARGTYPE(FUNCTION) complex FUNCTION( ARGTYPE(FUNCTION) complex Z )
   }
   else
   { /* Finally, this represents the general complex number case; we
-     * may apply (12) and (13) directly, (noting that _hypot(x, y) is
-     * functionally equivalent to sqrt(y^2 + x^2), with the advantage
-     * that it protects against overflow when x or y is large).
+     * may apply (12) and (13) directly, (noting that hypot(x, y) is
+     * functionally equivalent to sqrt(y^2 + x^2), with the benefit
+     * of protection against overflow when x or y is large).
      */
-    __real__ Z = x = mapfunc(sqrt)(ARGCAST(0.5) * (mapfunc(_hypot)(x, y) + x));
+    __real__ Z = x = mapfunc(sqrt)(ARGCAST(0.5) * (mapfunc(hypot)(x, y) + x));
     __imag__ Z = ARGCAST(0.5) * y / x;
   }
   return Z;
