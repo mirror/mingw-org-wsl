@@ -1,3 +1,10 @@
+2015-06-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Remove generated configure script from revision control.
+
+	* configure: Delete from SCM; maintainer must regenerate it, when
+	required, as SCM will now ignore it.
+
 2011-03-25  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	* Makefile.in: Increment CYGRELEASE to 2.
@@ -13,10 +20,10 @@
 
 2011-03-07  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
-	* include/winbase.h (PSAPI_WORKING_SET_BLOCK,
-	PSAPI_WORKING_SET_INFORMATION): Move from here...
-	* include/psapi.h (PSAPI_WORKING_SET_BLOCK,
-	PSAPI_WORKING_SET_INFORMATION): ... to here.
+	* include/winbase.h (PSAPI_WORKING_SET_BLOCK)
+	(PSAPI_WORKING_SET_INFORMATION): Move from here...
+	* include/psapi.h (PSAPI_WORKING_SET_BLOCK)
+	(PSAPI_WORKING_SET_INFORMATION): ...to here.
 
 2011-03-05  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
