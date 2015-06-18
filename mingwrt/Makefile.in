@@ -135,10 +135,12 @@ configure: configure.ac aclocal.m4
 
 # Capture dependencies conveyed within source files, ensuring that
 # header files are taken from our working source tree, and not from
-# the build-time compiler's installation path.
+# the build-time compiler's installation path.  (Note: we use -MD,
+# and not -MMD in DEPFLAGS; since this package furnishes system
+# headers, we need changes therein to trigger a rebuild).
 #
 sinclude *.d
-DEPFLAGS = -MMD -MP
+DEPFLAGS = -MD -MP
 INCLUDES = -nostdinc -I . -I ${top_srcdir}/include -I ${w32api_srcdir}/include \
   -I ${top_srcdir} -I ${top_srcdir}/profile -iwithprefixbefore include
 

@@ -1,5 +1,11 @@
 2015-06-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Track dependencies on modified system header files.
+
+	* Makefile.in (DEPFLAGS): Use -MD, rather than -MMD.
+
+2015-06-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Correct an anomaly in stage 1 only build procedure.
 
 	* Makefile.in (all-gcc): New goal; it is an alias for...
