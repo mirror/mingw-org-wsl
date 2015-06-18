@@ -1,3 +1,15 @@
+2015-06-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct an anomaly in stage 1 only build procedure.
+
+	* Makefile.in (all-gcc): New goal; it is an alias for...
+	(all-mingwrt-stage-1): ...this, renamed to match configure, as...
+	(all-mingwrt-stage-1-only): ...this; upate all references.
+	(active-goals): Adjusted accordingly; it now reguires...
+	(all-deprecated-mingwrt-stage-1-only): ...this new goal.
+	(install): Adjusted, as directed by...
+	(DEFAULT_MAKECMDGOALS): ...this.
+
 2015-06-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prefer our hypot() implementation in complex maths operations.

@@ -63,14 +63,15 @@ STRIP = @STRIP@
 NM = @NM@
 
 all: @DEFAULT_MAKECMDGOALS@
-all-mingwrt-stage-1: all-mingwrt-objects all-mingwrt-libs
-all-mingwrt-stage-1-and-2: all-mingwrt-stage-1 all-mingwrt-dll
+all-mingwrt-stage-1-only: all-mingwrt-objects all-mingwrt-libs
+all-mingwrt-stage-1-and-2: all-mingwrt-stage-1-only all-mingwrt-dll
 all-mingwrt: all-mingwrt-stage-1-and-2
+all-gcc: all-mingwrt-stage-1-only
 
-include_deprecated = @include_deprecated@
-active_goals = $1-$2 $(if $(include_deprecated),$1-deprecated-$2)
+active_goals = $1-$2 $(if @include_deprecated@,$1-deprecated-$2)
+all-deprecated-mingwrt-stage-1-only: all-deprecated-mingwrt
 
-all-stage-1: $(call active_goals,all,mingwrt-stage-1)
+all-stage-1-only: $(call active_goals,all,mingwrt-stage-1-only)
 all-stage-1-and-2: $(call active_goals,all,mingwrt)
 
 # Installation paths and macros.
@@ -645,7 +646,7 @@ MSG_DESTDIR_TRANSFORM = ${DESTDIR}$(shell echo $1 | sed 's/^.://')
 
 # Install everything.
 #
-install: install-mingwrt
+install: inst@DEFAULT_MAKECMDGOALS@
 install-stage-1-only: install-headers install-libdir-objects install-libs
 install-stage-1-and-2: install-stage-1-only install-bin
 install-gcc: install-stage-1-only
