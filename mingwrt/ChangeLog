@@ -1,3 +1,17 @@
+2015-06-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Define symbolic names for alternative Microsoft runtime DLLs.
+
+	* include/msvcrtver.h: New file; it assigns a value for...
+	(__MSVCRT_VERSION__): ...this, making its default equivalent to...
+	(__MSVCR60_DLL): ...this new manifest constant, with each of...
+	(__MSVCR61_DLL, __MSVCR70_DLL, __MSVCR71_DLL, __MSVCR80_DLL)
+	(__MSVCR90_DLL, __MSVCR100_DLL, __MSVCR110_DLL, __MSVCR120_DLL):
+	...these also defined, as user assignable alternatives.
+
+	* include/_mingw.h (__MSVCRT_VERSION__): Use include/msvcrtver.h
+	to establish its default value.
+
 2015-06-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Track dependencies on modified system header files.

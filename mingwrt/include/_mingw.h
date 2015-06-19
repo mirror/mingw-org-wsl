@@ -40,6 +40,16 @@
 #ifndef __PCC__
 #pragma GCC system_header
 #endif
+
+#ifndef _MSVCRTVER_H
+/* Legacy versions of mingwrt use the macro __MSVCRT_VERSION__ to
+ * enable evolving features of different MSVCRT.DLL versions.  This
+ * usage is no longer recommended, but the __MSVCRT_VERSION__ macro
+ * remains useful when a non-freely distributable MSVCRxx.DLL is to
+ * be substituted for MSVCRT.DLL; for such usage, the substitute
+ * MSVCRxx.DLL may be identified as specified in...
+ */
+# include <msvcrtver.h>
 #endif
 
 /* The following are defined by the user (or by the compiler), to specify how
@@ -274,8 +284,8 @@
 #endif
 
 # ifdef __GNUC__
-  /* A special form of __CRT_INLINE, to ALWAYS request inlining when
-   * possible is provided; originally specified as _CRTALIAS, this is
+  /* A special form of __CRT_INLINE is provided; it will ALWAYS request
+   * inlining when possible.  Originally specified as _CRTALIAS, this is
    * now deprecated in favour of __CRT_ALIAS, for syntactic consistency
    * with __CRT_INLINE itself.
    */
@@ -347,11 +357,6 @@
 
 /* TODO: Mark (almost) all CRT functions as __MINGW_NOTHROW.  This will
 allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
-
-#ifndef __MSVCRT_VERSION__
-/*  High byte is the major version, low byte is the minor. */
-# define __MSVCRT_VERSION__ 0x0600
-#endif
 
 /* Activation of MinGW specific extended features:
  */
