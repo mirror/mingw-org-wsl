@@ -1,5 +1,11 @@
 2015-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Remove unused aclocal.m4 configuration file.
+
+	* aclocal.m4: Delete it; it provides no content used by this package.
+
+2015-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Adapt platform feature checks to NTDDI_VERSION conventions.
 
 	* include/sdkddkver.h: New file; merge from 4.0-dev branch.
