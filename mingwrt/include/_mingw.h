@@ -2,22 +2,33 @@
 /*
  * _mingw.h
  *
- * Mingw specific macros included by ALL include files.
+ * MinGW specific macros included by ALL mingwrt include files; (this file
+ * is part of the MinGW32 runtime library package).
  *
- * This file is part of the Mingw32 package.
+ * $Id$
  *
- * Contributors:
- *  Created by Mumit Khan  <khan@xraylith.wisc.edu>
+ * Written by Mumit Khan  <khan@xraylith.wisc.edu>
+ * Copyright (C) 1999, 2001-2011, 2014, 2015, MinGW.org Project
  *
- *  THIS SOFTWARE IS NOT COPYRIGHTED
  *
- *  This source code is offered for use in the public domain. You may
- *  use, modify or distribute it freely.
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
- *  This code is distributed in the hope that it will be useful but
- *  WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- *  DISCLAIMED. This includes but is not limited to warranties of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  */
 #define __MINGW_H
@@ -51,6 +62,12 @@
 # include <msvcrtver.h>
 #endif
 
+/* A better inference than __MSVCRT_VERSION__, of the capabilities
+ * supported by the operating system default MSVCRT.DLL, is provided
+ * by the Windows API version identification macros.
+ */
+#include <w32api.h>
+
 /* The following are defined by the user (or by the compiler), to specify how
  * identifiers are imported from a DLL.  All headers should include this first,
  * and then use __DECLSPEC_SUPPORTED to choose between the old ``__imp__name''
@@ -60,10 +77,6 @@
  * __MINGW_IMPORT                  The attribute definition to specify imported
  *                                 variables/functions.
  * _CRTIMP                         As above.  For MS compatibility.
- * __MINGW32_VERSION               Runtime version.
- * __MINGW32_MAJOR_VERSION         Runtime major version.
- * __MINGW32_MINOR_VERSION         Runtime minor version.
- * __MINGW32_BUILD_DATE            Runtime build date.
  *
  * Macros to enable MinGW features which deviate from standard MSVC
  * compatible behaviour; these may be specified directly in user code,
@@ -264,17 +277,8 @@
 #endif
 
 #ifdef __cplusplus
-# define _EXTERN_C       extern "C"
-# define _BEGIN_C_DECLS  extern "C" {
-# define _END_C_DECLS    }
-
 # define __CRT_INLINE    inline
-
 #else
-# define _EXTERN_C       extern
-# define _BEGIN_C_DECLS
-# define _END_C_DECLS
-
 # if __GNUC_STDC_INLINE__
 #  define __CRT_INLINE   extern inline __attribute__((__gnu_inline__))
 # else
@@ -429,30 +433,4 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 # endif
 #endif
 
-
-/* Only Microsoft could attempt to justify this insanity: when building
- * a UTF-16LE application -- apparently their understanding of Unicode is
- * limited to this -- the C/C++ runtime requires that the user must define
- * the _UNICODE macro, while to use the Windows API's UTF-16LE capabilities,
- * it is the UNICODE macro, (without the leading underscore), which must be
- * defined.  The (bogus) explanation appears to be that it is the C standard
- * which dictates the requirement for the leading underscore, to avoid any
- * possible conflict with a user defined symbol; (bogus because the macro
- * must be user defined anyway -- it is not a private symbol -- and in
- * any case, the Windows API already reserves the UNICODE symbol as
- * a user defined macro, with equivalent intent.
- *
- * The real explanation, of course, is that this is just another example
- * of Microsoft irrationality; in any event, there seems to be no sane
- * scenario in which defining one without the other would be required,
- * or indeed would not raise potential for internal inconsistency, so we
- * ensure that either both are, or neither is defined.
- */
-#if defined UNICODE && ! defined _UNICODE
-# define _UNICODE  UNICODE
-#endif
-#if defined _UNICODE && ! defined UNICODE
-# define UNICODE  _UNICODE
-#endif
-
-#endif /* __MINGW_H */
+#endif /* __MINGW_H: $RCSfile$: end of file */

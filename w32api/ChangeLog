@@ -1,3 +1,31 @@
+2015-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Adapt platform feature checks to NTDDI_VERSION conventions.
+
+	* include/sdkddkver.h: New file; merge from 4.0-dev branch.
+	(_WIN32_WINNT_WINBLUE): New manifest constant for Windows-8.1.
+	(WINNTVER): Prefer bitwise shift to division; adjust accordingly.
+	[_WIN32_WINNT != OSVER(NTDDI_VERSION)]: Bad comparison; correct to...
+	[_WIN32_WINNT != WINNTVER(NTDDI_VERSION)]: ...this.
+
+	* include/w32api.h: Assert copyright; include sdkddkver.h.
+	(__W32API_VERSION): Increment to 3.18; adopt new encoding format.
+	(__W32API_MAJOR_VERSION, __W32API_MINOR_VERSION): Adjust consistently.
+	(__W32API_PATCH_LEVEL): New macro; define with initial value of zero.
+	(__W32API_DEPRECATED_ALIAS): New macro; define it; use to redefine...
+	(Windows95, Windows98, WindowsME, WindowsNT4, Windows2000, WindowsXP)
+	(Windows2003, WindowsVista, IE3, IE301, IE302, IE4, IE401, IE5, IE5a)
+	(IE5b, IE501, IE55, IE56, IE6, IE601, IE602, IE7): ...these; replace
+	macro definitions by long integer constants, and mark as deprecated.
+	(UNICODE, _UNICODE): Keep these consistent; use logic factored out of
+	mingwrt/include/_mingw.h, whence we similarly relocate...
+	(_EXTERN_C, _BEGIN_C_DECLS, _END_C_DECLS): ...these.
+
+	* include/windef.h: Assert copyright; include w32api.h, whence we
+	infer default assignments, per included sdkddkver.h, for each of...
+	(WINVER, _WIN32_WINNT): ...these; delete local defines.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them.
+
 2015-06-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Remove generated configure script from revision control.

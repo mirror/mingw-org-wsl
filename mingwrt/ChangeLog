@@ -1,5 +1,14 @@
 2015-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Adapt platform feature checks to NTDDI_VERSION conventions.
+
+	* include/_mingw.h: Assert copyright; include w32api.h
+	(UNICODE, _UNICODE): Factor out consistency checks; relocate them
+	to w32api/include/w32api.h, whence they remain in effect.
+	(_EXTERN_C, _BEGIN_C_DECLS, _END_C_DECLS): Likewise.
+
+2015-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Correct mismatched #if/#endif from preceding commit.
 
 	* include/_mingw.h (#pragma GCC system_header)
