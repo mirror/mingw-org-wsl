@@ -36,8 +36,7 @@
 #define __MINGW32_MINOR_VERSION          21
 #define __MINGW32_PATCHLEVEL              1
 
-#if __GNUC__ >= 3
-#ifndef __PCC__
+#if __GNUC__ >= 3 && ! defined __PCC__
 #pragma GCC system_header
 #endif
 
