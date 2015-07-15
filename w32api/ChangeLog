@@ -1,3 +1,16 @@
+2015-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Overhaul and streamline build system configuration.
+
+	* configure.in: Delete obsolete file; replace with...
+	* configure.ac: New file; rewritten per current autoconf conventions.
+
+	* Makefile.in: Rewritten; adapted from current mingwrt configuration,
+	it now processes the entire build without using separate sub-makes.
+
+	* lib/Makefile.in: Sub-make configuration not required now; delete it.
+	* lib/ddk/Makefile.in lib/directx/Makefile.in: Likewise; delete them.
+
 2015-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Remove unused aclocal.m4 configuration file.

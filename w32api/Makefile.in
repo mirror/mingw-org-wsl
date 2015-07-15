@@ -1,0 +1,347 @@
+# @configure_input@
+# $Id$
+#
+# Makefile template for MinGW.org MS-Windows API Package
+
+PACKAGE_TARNAME := @PACKAGE_TARNAME@
+PACKAGE_VERSION := @PACKAGE_VERSION@
+
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2014, 2015, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+
+# The default target is "all"; declare it early, to avoid any possible
+# inadvertent override from any included file.
+#
+all:
+PACKAGE_RELEASE :=
+PACKAGE_RELEASE_TAG := $(PACKAGE_VERSION)$(PACKAGE_RELEASE:%=-%)-mingw32
+
+# Establish the minimum version of Windows which this build is required
+# to support; note that we fix the default as WinNT4, but we define it in
+# a manner which will allow a command line override, and may be adapted,
+# ultimately, to support a configure time assignment.
+#
+NTDDI_VERSION := NTDDI_WINNT4
+NTDDI_VERSION_SPEC := $(NTDDI_VERSION:%=-D NTDDI_VERSION=%)
+
+# Build paths and macros.
+#
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+mingwrt_srcdir = @mingwrt_srcdir@
+w32api_srcdir = @srcdir@
+abs_builddir = @abs_builddir@
+
+CC = @CC@
+CFLAGS = @CFLAGS@
+CPPFLAGS = @CPPFLAGS@
+AS = @AS@
+
+OBJEXT = @OBJEXT@
+
+AR = @AR@
+ARFLAGS = @ARFLAGS@
+RANLIB = @RANLIB@
+
+DLLTOOL = @DLLTOOL@
+STRIP = @STRIP@
+
+# Installation paths and macros.
+#
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+includedir = ${DESTDIR}@includedir@
+libdir = ${DESTDIR}@libdir@
+
+mkinstalldirs = @MKDIR_P@ $(addprefix $1,$2)
+
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@ $1 $2
+
+# Keep the configuration in a consistent state.  Note that we assume
+# that configure has been run initially, (otherwise we wouldn't have
+# a Makefile to begin with); since this also creates config.status,
+# we may normally assume that it is already available ...
+#
+vpath configure ${top_srcdir}
+config.status: configure
+	$(SHELL) config.status --recheck
+
+# ... in which case, updating Makefile should be a simple matter of
+# running config.status ...
+#
+vpath Makefile.in ${top_srcdir}
+requires_existing = $(if $(wildcard $1),$1,$1.missing)
+Makefile: Makefile.in configure $(call requires_existing,config.status)
+	$(SHELL) config.status
+
+.PHONY: config.status.missing
+# ... but, in the event that this may be missing, (e.g. because it
+# has been manually removed, or removed by "make distclean"), suggest
+# running configure, and bail out.
+#
+config.status.missing:
+	$(warning *** cannot execute config.status)
+	$(error please run ${top_srcdir}/configure to regenerate it.)
+
+# If configure itself needs to be updated, we must run autoconf in the
+# top level source directory.
+#
+vpath %.m4 ${top_srcdir}
+vpath configure.ac ${top_srcdir}
+configure: configure.ac aclocal.m4
+	cd ${top_srcdir}; autoconf
+
+# Capture dependencies conveyed within source files, ensuring that
+# header files are taken from our working source tree, and not from
+# the build-time compiler's installation path.  (Note: we use -MD,
+# and not -MMD in DEPFLAGS; since this package furnishes system
+# headers, we need changes therein to trigger a rebuild).
+#
+sinclude *.d
+DEPFLAGS = -MD -MP
+INCLUDES = -nostdinc -I . -I ${top_srcdir}/include -I ${mingwrt_srcdir}/include \
+  -I ${top_srcdir} -I ${top_srcdir}/profile -iwithprefixbefore include
+
+ALL_CFLAGS = $(CFLAGS) $(DEPFLAGS) $(INCLUDES) $(NTDDI_VERSION_SPEC)
+
+# The general case, for compiling object files from C source,
+# requires a small adjustment to the default implicit rule.
+#
+%.$(OBJEXT): %.c
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+deffiles = $(eval vpath %.def $1)$(notdir $(wildcard $1/*.def))
+implibfiles = $(addprefix lib,$(subst .def,.a,$(call deffiles,$1)))
+
+all: all-w32api-libs
+all-w32api-libs install-w32api-libs: $(call implibfiles,${srcdir}/lib)
+all-w32api-libs install-w32api-libs: $(call implibfiles,${srcdir}/lib/directx)
+all-w32api-libs install-w32api-libs: $(call implibfiles,${srcdir}/lib/ddk)
+all-w32api-libs install-w32api-libs: liblargeint.a libstrmiids.a libuuid.a
+all-w32api-libs install-w32api-libs: libdxerr8.a libdxerr9.a libdxguid.a
+all-w32api-libs install-w32api-libs: libscrnsave.a libscrnsavw.a
+all-w32api-libs install-w32api-libs: libdmoguids.a libvfw32.a
+
+lib%.a: %.def
+	$(DLLTOOL) --as=$(AS) -k --output-lib $@ --def $<
+	$(if $(filter-out $<,$^),$(AR) $(ARFLAGS) $@ $(filter-out $<,$^))
+
+vpath %.c ${srcdir}/lib
+libuuid.a: ativscp-uuid.$(OBJEXT) cguid-uuid.$(OBJEXT)
+libuuid.a: comcat-uuid.$(OBJEXT) devguid.$(OBJEXT) docobj-uuid.$(OBJEXT)
+libuuid.a: exdisp-uuid.$(OBJEXT) extras-uuid.$(OBJEXT) hlguids-uuid.$(OBJEXT)
+libuuid.a: hlink-uuid.$(OBJEXT) mlang-uuid.$(OBJEXT) mshtml-uuid.$(OBJEXT)
+libuuid.a: msxml-uuid.$(OBJEXT) oaidl-uuid.$(OBJEXT) objidl-uuid.$(OBJEXT)
+libuuid.a: objsafe-uuid.$(OBJEXT) ocidl-uuid.$(OBJEXT) oleacc-uuid.$(OBJEXT)
+libuuid.a: olectlid-uuid.$(OBJEXT) oleidl-uuid.$(OBJEXT) power-uuid.$(OBJEXT)
+libuuid.a: servprov-uuid.$(OBJEXT) unknwn-uuid.$(OBJEXT) urlmon-uuid.$(OBJEXT)
+
+scrnsavw.$(OBJEXT): scrnsave.c
+	$(CC) -c -D UNICODE $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) $(INCLUDES) -o $@ $^
+
+libshell32.a: shell32.$(OBJEXT)
+libgdiplus.a: gdiplus.$(OBJEXT)
+libws2_32.a: ws2_32.$(OBJEXT)
+
+libdmoguids.a libdxguid.a \
+liblargeint.a libscrnsave.a libscrnsavw.a libstrmiids.a: lib%.a: %.$(OBJEXT)
+	$(AR) $(ARFLAGS) $@ $<
+
+libuuid.a libdxerr8.a libdxerr9.a:
+	$(AR) $(ARFLAGS) $@ $^
+
+vpath %.mri ${srcdir}/lib
+libvfw32.a: lib%.a: %.mri libmsvfw32.a libavifil32.a libavicap32.a
+	rm -f $@ && $(AR) -M < $< && $(RANLIB) $@
+
+vpath %.c ${srcdir}/lib/directx
+libdinput.a libdinput8.a: dinput_joy.$(OBJEXT) dinput_joy2.$(OBJEXT) \
+  dinput_kbd.$(OBJEXT) dinput_mouse.$(OBJEXT) dinput_mouse2.$(OBJEXT)
+
+libdxerr8.a: dxerr8.$(OBJEXT) dxerr8w.$(OBJEXT)
+libdxerr9.a: dxerr9.$(OBJEXT) dxerr9w.$(OBJEXT)
+
+# Installation Rules
+# ------------------
+#
+# Users may expect to be able to specify DESTDIR, to stage the
+# following stock installation directories outside of the regular
+# "as configured" installation tree; unfortunately, this expectation
+# MUST fail, when the stock path is in MS-Windows absolute format, so
+# we provide an exception mechanism to forbid such usage, and we
+# proceed to create the directories only when the exception is
+# NOT triggered.
+#
+.PHONY: DESTDIR-UNSUPPORTED
+bindir docdir includedir libdir mandir htmldir pdfdir:
+	@test -z "$(strip ${DESTDIR})" || case $($@) in ${DESTDIR}?:*) \
+	  $(MAKE) --no-print-directory reject=$@ DESTDIR-UNSUPPORTED;; \
+	  esac
+	$(call mkinstalldirs,,$($@))
+
+# Note: we MUST use a recursive make invocation here, as the
+# "error" function within the accompanying diagnostics would be
+# triggered, irrespective of its placement in an unexecuted
+# branch of the above exception trapping shell code.
+#
+DESTDIR-UNSUPPORTED:
+	$(call MSG_DESTDIR_FORBIDDEN,$(reject),$($(reject):${DESTDIR}%=%))
+
+# The following macros, which rely heavily on GNU make's "call"
+# function, define the diagnostics to be emitted, when the DESTDIR
+# exception is triggered.
+#
+QUOTE = `$1'#'`
+MSG_DESTDIR_FORBIDDEN = \
+  $(warning *** $(call MSG_DESTDIR_PATH_CONFLICT,$1,Win32,$2);) \
+  $(error try $(call QUOTE,$(call MSG_DESTDIR_ALTERNATIVE,$1,$2)) instead)
+MSG_DESTDIR_BAD_PATH = DESTDIR is not supported when $1 contains $2 path $3
+MSG_DESTDIR_PATH_CONFLICT = $(call MSG_DESTDIR_BAD_PATH,$1,$2,$(call QUOTE,$3))
+MSG_DESTDIR_ALTERNATIVE = make install $1="$(call MSG_DESTDIR_TRANSFORM,$2)"
+MSG_DESTDIR_TRANSFORM = ${DESTDIR}$(shell echo $1 | sed 's/^.://')
+
+install: install-w32api
+install-strip: install-strip-w32api
+
+installdirs: w32api-include-dirs w32api-lib-dirs
+install-strip-w32api: install-w32api-headers install-strip-w32api-libs
+install-w32api: install-w32api-headers install-w32api-libs
+
+w32api_extra_include_dirs = directx
+w32api_include_subdirs = GL ddk gdiplus
+
+w32api-include-dirs: includedir
+	$(call mkinstalldirs,${includedir}/,$(w32api_include_subdirs))
+
+w32api-lib-dirs: libdir
+
+install-w32api-headers: w32api-include-dirs
+	$(call INSTALL_DATA,${srcdir}/include/*.h,${includedir})
+	for dir in $(w32api_extra_include_dirs); do \
+	  $(call INSTALL_DATA,${srcdir}/include/$$dir/*.h,${includedir}); \
+	  done
+	for dir in $(w32api_include_subdirs); do \
+	  $(call INSTALL_DATA,${srcdir}/include/$$dir/*.h,${includedir}/$$dir); \
+	  done
+
+w32api-lib-reqs: all-w32api-libs w32api-lib-dirs
+
+install-w32api-libs: w32api-lib-reqs
+	$(call INSTALL_DATA,$(filter-out w32api-lib-reqs,$^),${libdir})
+	$(if $(STRIP_LIBS),$(call STRIP_LIBS,$(filter-out w32api-lib-reqs,$^)))
+
+install-strip-w32api-libs:
+	$(MAKE) --no-print-directory $(MAKEFLAGS) \
+	  STRIP_LIBS='cd ${libdir}; $(STRIP) --strip-unneeded $$1' \
+	  install-w32api-libs
+
+uninstall: uninstall-w32api-headers uninstall-w32api-libs
+
+uninstall-w32api-headers:
+	cd ${includedir} && rm -f $(notdir $(wildcard ${srcdir}/include/*.h))
+	for dir in $(w32api_extra_include_dirs); do \
+	  files=`cd ${srcdir}/include/$$dir && echo *.h`; \
+	  (cd ${includedir} && rm -f $$files); \
+	  done
+	for dir in $(w32api_include_subdirs); do \
+	  files=`cd ${srcdir}/include/$$dir && echo *.h`; \
+	  (cd ${includedir}/$$dir && rm -f $$files); \
+	  done
+
+uninstall-w32api-libs: un%:
+	$(MAKE) --no-print-directory $(MAKEFLAGS) mkinstalldirs= \
+	  INSTALL_DATA='cd $$2 && rm -f $$1' $*
+
+# Distribution
+# ------------
+#
+.PHONY: dist
+dist: bindist devdist dlldist licdist mandist srcdist
+	$(RM) -r dist/mingwrt dist/w32api
+
+.PHONY: bindist devdist dlldist licdist mandist srcdist
+bindist devdist dlldist licdist mandist srcdist: %dist: w32api-%dist
+
+.PHONY: $(foreach tag,bin dev dll lic man src,mingwrt-$(tag)dist)
+$(foreach tag,bin dev dll lic man src,mingwrt-$(tag)dist):
+
+.PHONY: $(foreach tag,bin dev dll lic man src,w32api-$(tag)dist)
+$(foreach tag,bin dev dll lic man src,w32api-$(tag)dist):
+
+staged_prefix = $(addsuffix =`pwd`/dist/$1,prefix exec_prefix)
+staged_install = $(call staged_prefix,$1) install-strip-$1
+
+mingwrt-dist-staged w32api-dist-staged: %-dist-staged:
+	$(RM) -r dist/$*
+	$(MAKE) --no-print-directory $(call staged_install,$*)
+
+mingwrt-srcdist w32api-srcdist: %-srcdist: %-srcdist-dir %-srcdist-files
+	cd dist && tar chf - $*-$(PACKAGE_VERSION) | \
+	  xz -c > $*-$(PACKAGE_RELEASE_TAG)-src.tar.xz
+	$(RM) -r dist/$*-$(PACKAGE_VERSION)
+
+mingwrt-srcdist-dir w32api-srcdist-dir: %-srcdist-dir:
+	$(RM) -r dist/$*-$(PACKAGE_VERSION)
+	$(call mkinstalldirs,,dist/$*-$(PACKAGE_VERSION))
+
+mingwrt-srcdist-files w32api-srcdist-files: %-srcdist-files:
+	(cd ${$*_srcdir} && tar chf - --hard-dereference $(notdir $^)) | \
+	  (cd dist/$*-$(PACKAGE_VERSION) && tar xf -)
+
+mingwrt-devdist w32api-devdist: %-devdist: %-dist-staged
+	cd dist/$* && tar chf - --hard-dereference include lib | \
+	  xz -c > ../$*-$(PACKAGE_RELEASE_TAG)-dev.tar.xz
+
+SRCDIST_ADD = $1-srcdist-files: $(addprefix ${$1_srcdir}/,$2)
+
+$(call SRCDIST_ADD,w32api,ChangeLog CONTRIBUTIONS README.w32api TODO)
+$(call SRCDIST_ADD,w32api,configure configure.ac aclocal.m4 Makefile.in)
+$(call SRCDIST_ADD,w32api,config.guess config.sub install-sh)
+$(call SRCDIST_ADD,w32api,include lib)
+
+
+# Clean-up Rules
+# --------------
+#
+clean-local: mostlyclean-local
+	$(RM) lib*.a
+
+mostlyclean-local:
+	$(RM) *.d *.$(OBJEXT)
+
+distclean-local: clean-local
+	$(RM) config.log config.status
+
+maintainer-clean-warning:
+	$(warning $(MAKE) $(@:%-warning=%))
+	$(warning This command should be used by package maintainers only;)
+	$(warning it deletes files which may require special tools to rebuild.)
+
+maintainer-clean-local: maintainer-clean-warning distclean-local
+	$(RM) -r ${srcdir}/configure ${srcdir}/autom4te.cache
+
+clean mostlyclean distclean maintainer-clean: %clean: %clean-local
+
+# $RCSfile$: end of file
