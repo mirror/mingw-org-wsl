@@ -470,7 +470,7 @@
 	add gdiplus.c to SOURCES.
 	* lib/test.c: Include gdiplus.h.
 
-2010-06-28 Rick Rankin <rrankin1424-mingw@yahoo.com>
+2010-06-28  Rick Rankin  <rrankin1424-mingw@yahoo.com>
 
 	* include/psapi.h (PROCESS_MEMORY_COUNTERS_EX, PERFORMANCE_INFORMATION,
 	GetPerformanceInfo): Define.
@@ -734,7 +734,7 @@
 	* include/w32api.h: Increment version to 3.13.
 	* Makefile.in: Ditto.
 
-2008-12-05  Chris Sutcliffe <ir0nh34d@users.sf.net>
+2008-12-05  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	* lib/glut.def: remove.
 	* lib/glut32.def: ditto.
@@ -825,7 +825,7 @@
 	* Makefile.in: Adjust to new naming standard for MinGW while maintaining old
 	naming standard for Cygwin.
 
-2008-08-30 Bo Yang <techrazy@users.sourceforge.net>
+2008-08-30  Bo Yang  <techrazy@users.sourceforge.net>
 
 	* include/sspi.h: Fix PSecurityFunctionTableW structure.
 
@@ -881,7 +881,7 @@
 
 	Thanks to Tim Kosse <botg at users dot sf dot net>.
 
-2008-08-22 Bo Yang <techrazy@users.sourceforge.net>
+2008-08-22  Bo Yang  <techrazy@users.sourceforge.net>
 
 	* include/winnt.h (OWNER_SECURITY_INFORMATION, GROUP_SECURITY_INFORMATION,
 	DACL_SECURITY_INFORMATION, SACL_SECURITY_INFORMATION): Correct.
@@ -896,11 +896,11 @@
 	* include/wtsapi32.h (_WTS_INFO_CLASS, _WTS_CONNECTSTATE_CLASS,
 	WTSQuerySessionInformation, WTSFreeMemory): Define.
 
-2008-07-25 Bo Yang <techrazy@users.sourceforge.net>
+2008-07-25  Bo Yang  <techrazy@users.sourceforge.net>
 
 	* lib/gdi32.def (SetLayout): Export.
 
-2008-07-25 Bo Yang <techrazy@users.sourceforge.net>
+2008-07-25  Bo Yang  <techrazy@users.sourceforge.net>
 
 	* include/wincrypt.h (struct _CRYPT_KEY_PROV_PARAM,
 	struct _CRYPT_KEY_PROV_INFO, CertGetCertificateContextProperty,
@@ -1270,7 +1270,7 @@
 	PCERT_POLICY_MAPPING, CryptDecodeObjectEx, CryptEncodeObject,
 	CryptEncodeObjectEx): define.
 
-2007-11-21  Brian Dessent <dessent@users.sourceforge.net>
+2007-11-21  Brian Dessent  <dessent@users.sourceforge.net>
 
 	* include/winbase.h (CheckTokenMembership): define.
 
@@ -1417,7 +1417,7 @@
 
 	* include/psapi.h (GetMappedFileName): Rename from GetMappedFilenameEx.
 
-2007-03-06  Brandon Sneed <brandon@oqo.com>
+2007-03-06  Brandon Sneed  <brandon@oqo.com>
 
 	* include/setupapi.h: Added SetupConfigureWmiFromInfSectionA
 	Added SetupConfigureWmiFromInfSectionW
@@ -2380,7 +2380,7 @@
 	(SUBLANG_ARABIC_SAUDI_ARABIA): Removed by error.
 	(SUBLANG_MARATHI_INDIA): Defined twice by error.
 
-2006-05-05  Chris Sutcliffe <ir0nh34d@users.sf.net>
+2006-05-05  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	* lib/directx/Makefile.in: Remove reference to libquartz.a since
 	it was moved.
@@ -2743,11 +2743,11 @@
 	* winuser.h  [_WIN32_WCE] (DialogBoxParam{A|W}): Conditionally
 	declare as extern function without dllimport attribute on PocketPC.
 
-2006-04-18  Thorsten Dahlheimer <dahlheim@users.sf.net>
+2006-04-18  Thorsten Dahlheimer  <dahlheim@users.sf.net>
 
 	* lib/test.c: Include icm.h.
 
-2006-04-18  Thorsten Dahlheimer <dahlheim@users.sf.net>
+2006-04-18  Thorsten Dahlheimer  <dahlheim@users.sf.net>
 
 	* include/wingdi.h (ColorCorrectPalette): Add declaration.
 	(CreateColorSpace): Add UNICODE mappings.
@@ -2756,7 +2756,7 @@
 	* lib/mscms.def: New file.
 	* lib/icmui.def: New file.
 
-2006-04-18  Thorsten Dahlheimer <dahlheim@users.sf.net>
+2006-04-18  Thorsten Dahlheimer  <dahlheim@users.sf.net>
 
 	* include/winnt.h (IMAGE_FILE_MACHINE_IA64): New define.
 	(IMAGE_FILE_MACHINE_AMD64): New define.
@@ -3038,7 +3038,7 @@
 
 	* include/mlang.h: New file.
 
-2006-03-26  Chris Sutcliffe <ir0nh34d@users.sourceforge.net>
+2006-03-26  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 
 	* include/winbase.h (SetProcessWorkingSetSize): Corrected define.
 
@@ -3059,11 +3059,11 @@
 	(IMLangFontLink2): Likewise.
 	(IMultiLanguage): Likewise.
 
-2006-03-18  Julien Lecomte <julienlecomte@users.sourceforge.net>
+2006-03-18  Julien Lecomte  <julienlecomte@users.sourceforge.net>
 
 	* include/wincon.h  (ENABLE_*): Add more defines.
 
-2006-03-18  Jan Nijtmans <nijtmans@users.sourceforge.net>
+2006-03-18  Jan Nijtmans  <nijtmans@users.sourceforge.net>
 
 	* include/winnt.h (INHERITED_ACE): Define.
 	(VALID_INHERIT_FLAGS): Correct definition.
@@ -3284,7 +3284,7 @@
 
 	* lib/kernel32.def (CreateFiberEx): Correct suffix.
 
-2005-12-09  Huw Davies <hdavies@users.sourceforge.net>
+2005-12-09  Huw Davies  <hdavies@users.sourceforge.net>
 	    Danny Smith <dannysmith@users.sourceforge.net>
 
 	* lib/msxml-uuid.c: New file to generate UUIDs for
@@ -3399,13 +3399,13 @@
 	CLSID_MyComputer,CLSID_Internet, CLSID_NetworkPlaces,
 	CLSID_MyDocuments, CLSID_FolderShortcut): Add GUIDs.
 
-005-08-17  Martin Fuchs <martin-fuchs@gmx.net>
+2005-08-17  Martin Fuchs  <martin-fuchs@gmx.net>
 
 	* include/shlobj.h (IContextMenu3): Define.
 	* include/shlguid.h (IID_IContextMenu3): Declare.
 	* lib/shell32.c (IID_IContextMenu3): Define.
 
-2005-08-17  Martin Fuchs <martin-fuchs@gmx.net>
+2005-08-17  Martin Fuchs  <martin-fuchs@gmx.net>
 
 	* include/shlobj.h (SHFormatDrive): Declaration of function
 	and associated constants.
@@ -3433,7 +3433,7 @@
 	Correct their values.
 	Thanks to: Daniel K. O. <danielosmari at users dont sf dot net>
 
-2005-07-25  Chris Sutcliffe <ir0nh34d@users.sourceforge.net>
+2005-07-25  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 
 	* include/winuser.h (HSHELL_RUDEAPPACTIVATED): Define.
 
@@ -3639,7 +3639,7 @@
 	Correct typo.
 	Thanks to: Aidan France  <aidan1@users.sourceforge.net>
 
-2004-12-29 Chris Sutcliffe <ir0nh34d@users.sourceforge.net>
+2004-12-29  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 
 	*include/winuser.h (MNS_*, WM_MENUCOMMAND,
 	WM_MENUGETOBJECT, WM_MENUDRAG, WM_NCMOUSEHOVER,
@@ -3650,7 +3650,7 @@
 	*include/shlobj.h (SLGP_RAWPATH,
 	SLGP_UNCPRIORITY): Added definition.
 
-2004-12-28 Chris Sutcliffe <ir0nh34d@users.sourceforge.net>
+2004-12-28  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 
 	*include/winuser.h (HSHELL_FLASH): Added definition.
 
@@ -4038,7 +4038,7 @@
 	(IMAGE_IMAGE_TLS_DIRECTORY)  Map to ...
 	(IMAGE_IMAGE_TLS_DIRECTORY{32,64}: New structures.
 
-2004-06-16  Bang Jun-Young <junyoung@NetBSD.org>
+2004-06-16  Bang Jun-Young  <junyoung@NetBSD.org>
 
 	* w32api/include/winnt.h (WAITORTIMERCALLBACKFUNC): Protect with
 	_WIN32_WINNT >= 0x0500.
@@ -4688,11 +4688,11 @@
 	(IID_IQueryInfo): Likweise.
 	(IID_IShellIconOverlayIdentifier): Likwise.
 
-2003-12-08  Roald Ribe <rrib@users.sourceforge.net>
+2003-12-08  Roald Ribe  <rrib@users.sourceforge.net>
 
 	* include/winuser.h (RT_MANIFEST): Add define.
 
-2003-12-08  Pascal Buhler <pbuhler@users.sourceforge.net>
+2003-12-08  Pascal Buhler  <pbuhler@users.sourceforge.net>
 
 	* include/oleidl.h (IViewObject2): Inherit from IViewObject.
 
@@ -4741,7 +4741,7 @@
 	* include/commctrl.h (ListView_FindItem): Add type cast to avoid
 	compiler warnings.
 
-2003-11-13  Hans Leidekker <hans@it.vu.nl>
+2003-11-13  Hans Leidekker  <hans@it.vu.nl>
 
 	* include/winbase.h (WIN32_STREAM_ID): Correct typedef.
 
@@ -5501,7 +5501,7 @@
 	* include/w32api.h: Increment version to 2.5.
 	* Makefile.in: Ditto.
 
-2003-09-08  Justin Forest <vhex@users.sourceforge.net>
+2003-09-08  Justin Forest  <vhex@users.sourceforge.net>
 
 	* include/winuser.h (PM_QS_INPUT, PM_QS_POSTMESSAGE,
 	PM_QS_PAINT, PM_QS_SENDMESSAGE): Add defines.
@@ -5535,7 +5535,7 @@
 	MS_DEF_DSS_PROV[AW], MS_DEF_DSS_DH_PROV[AW], MS_ENH_DSS_DH_PROV[AW],
 	MS_DEF_DH_SCHANNEL_PROV[AW], MS_SCARD_PROV[AW]): Add definitions.
 
-2003-08-26  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-26  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* lib/test.c: Add vfw.h to includes.
 	* include/mmsystem.h: Add #ifndef guard to definition of
@@ -5552,7 +5552,7 @@
 	(IoSetCompletionRoutine): Cast _CompletionRoutine arg to
 	PIO_COMPLETION_ROUTINE.
 
-2003-08-26  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-26  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* lib/test.c: Add snmp.h, winsnmp.h amd mgmtapi.h to
 	includes.
@@ -5641,14 +5641,14 @@
 	(HIMAGELIST): Correct typedef.
 	(HTREEITEM): Ditto.
 
-2003-08-25   Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-25   Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* commctrl.h (TC_HITTESTINFO): Remove. Add defines for
 	TCHITTESTINFO for backward compatibility.
 	(TC_ITEM[AW]): Rename to TCITEM[AW]. Add defines for backward
 	compatibility.
 
-2003-08-24   Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-24   Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/objidl.h (COBJMACROS): Define macros only
 	if using C interace.
@@ -5671,17 +5671,17 @@
 	GetMultipleTrustee[AW]): Add prototypes.
 	GetMultipleTrusteeOperation[AW]): Add prototypes.
 
-2003-08-22   Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-22   Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winnt.h (IMAGE_SUBSYSTEM_XBOX): Add define.
 
-2003-08-22  Mihai Preda <mihai_preda@users.sourceforge.net>
+2003-08-22  Mihai Preda  <mihai_preda@users.sourceforge.net>
 
 	* include/shlobj.h (IPersistFolder::GetClassID):
 	Correct declaration.
 	(CMF_*) Add missing defines.
 
-2003-08-22   Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-22   Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winuser.h (DC_BUTTONS): Add define.
 
@@ -5694,7 +5694,7 @@
 	* include/commctrl.h (BTNS_*): Define BTNS_* as successors to the
 	older TBSTYLE_* constants.
 
-2003-08-18  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-18  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/commctrl.h (TB_*) Group defines together.
 
@@ -5730,13 +5730,13 @@
 	* include/ddk/ntapi.h (LPC_TYPE): Add LPC_CONNECTION_REFUSED.
 	* include/ddk/winddk.h (IRP_*): Add constants as anonymous enum.
 
-2003-08-10  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-10  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* lib/uuid.c (CGID_Explorer, CGID_ShellDocView,
 	CGID_ShellServiceObject): Remove definitions.
 	* lib/shell32.c (CGID_ShellServiceObject): Add definition.
 
-2003-08-10  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-10  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/shlobj.h (SHELLSTATE): Add structure.
 	(SHGetSetSettings): Add prototype.
@@ -5757,7 +5757,7 @@
 	* include/commctrl.h (TVM_GETSCROLLTIME,
 	TVM_SETSCROLLTIME): Add defines.
 
-2003-08-01  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-01  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/shlobj.h (SHELLFLAGSTATE): Add structure.
 	(SHGetInstanceExplorer): Correct return type.
@@ -5765,7 +5765,7 @@
 	Thanks to Magnus Olsen  <greatlord@sourceforge.users.net>
 	for report.
 
-2003-08-01  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-01  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* lib/test.c: Include winldap.h, ntldap.h, winber.h.
 
@@ -5776,7 +5776,7 @@
 	* include/winber.h: New file.
 	* lib/winldap32.def: New file.
 
-2003-08-01  Danny Smith <dannysmith@users.sourceforge.net>
+2003-08-01  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/ddk/atm.h: Remove stray '.';
 
@@ -5791,12 +5791,12 @@
 	(SFGAOF, SHGDNF): Add typedef's.
 	(SHCONTF): Extend enum.
 
-2003-07-31  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-31  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/shellapi.h: Include all structs within pshpack2.h/
 	poppack.h block.
 
-2003-07-26  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-26  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winuser.h (ASFW_ANY, LSFW_LOCK, LSFW_UNLOCK,
 	LWA_COLORKEY, LWA_ALPHA): Guard with _WIN32_WINNT,
@@ -5811,23 +5811,23 @@
 
 	* include/objidl.h (IMalloc): Fix typo.
 
-2003-07-24  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-24  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/dkk/ntifs.h: Fix typo in guard for
 	#pragma GCC system_header.
 
-2003-07-22  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-22  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/objidl.h (PropVariant): Add CHAR cVal field
 	to union.
 	(FMTID_SummaryInformation, FMTID_DocSummaryInformation,
 	FMTID_UserDefinedProperties): Declare.
 
-2003-07-22  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-22  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winbase.h (GetModuleHandleEx[AW]): Add prototypes.
 
-2003-07-22  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-22  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winbase.h (DUPLICATE_CLOSE_SOURCE,
 	DUPLICATE_SAME_ACCESS): Remove defines.
@@ -5848,7 +5848,7 @@
 	* include/ddk/winddk.h: Add comments noting definitions in
 	winnt.h.
 
-2003-07-18  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-18  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winnt.h (FILE_*): Sync with ddk/winddk.h.
 	* include/winioctl.h (FILE_*): Sync with ddk/winddk.h.
@@ -5857,7 +5857,7 @@
 
 	* include/mmsystem.h (TIME_KILL_SYNCHRONOUS): Add define.
 
-2003-07-17  Danny Smith <dannysmith@users.sourceforge.net>
+2003-07-17  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	Clean up warnings in ddk.
 
@@ -6062,7 +6062,7 @@
 	* include/winnt.h (SINGLE_LIST_ENTRY, SLIST_ENTRY,
 	SLIST_HEADER): Add.
 
-2003-05-27  Andrew C. Stadt <acstadt@sympatico.ca>
+2003-05-27  Andrew C. Stadt  <acstadt@sympatico.ca>
 
 	* include/winuser.h (LWA_COLORKEY, LWA_ALPHA): Add defines.
 
@@ -6075,7 +6075,7 @@
 	* include/winuser.h (EnumDisplayDevices[AW]): Add prototypes.
 	* include/wingdi.h (DISPLAY_DEVICE): UNICODE it.
 
-2003-05-23  Andrew Dunbar <hippietrail@users.sourceforge.net>
+2003-05-23  Andrew Dunbar  <hippietrail@users.sourceforge.net>
 
 	* include/wingdi.h (GCP_RESULTS[AW]) Correct type of
 	lpGlyphs field to LPWSTR.
@@ -6092,7 +6092,7 @@
 
 	* include/commctrl.h (TVSORTCB): Rename old TV_SORTCB structure.
 
-2003-05-18  Bang Jun-Young <junyoung@netbsd.org>
+2003-05-18  Bang Jun-Young  <junyoung@netbsd.org>
 
 	* include/winbase.h (CREATE_DEFAULT_ERROR_MODE,
 	DEBUG_PROCESS, DEBUG_ONLY_THIS_PROCESS, CREATE_SUSPENDED,
@@ -6264,7 +6264,7 @@
 	* include/rpcdce.h (UuidCreateSequential): Properly guard with
 	appropriate _WIN32_WINNT values.
 
-2003-04-15  Chris January <chris@atomice.net>
+2003-04-15  Chris January  <chris@atomice.net>
 
 	* include/rpcdce.h: Add declaration for UuidCreateSequential.
 	* lib/rpcrt4.def: Add entry for UuidCreateSequential.
@@ -6289,7 +6289,7 @@
 
 	* include/sspi.h: Add comment for FreeCredentialsHandle.
 
-2003-04-07  Marcel Telka <telka@users.sourceforge.net>
+2003-04-07  Marcel Telka  <telka@users.sourceforge.net>
 
 	* include/ddk/winddk.h (KIRQL): Typedef as UCHAR, not ULONG.
 
@@ -6529,7 +6529,7 @@
 	(GlobalMemoryStatusEx): Add prototype.
 	* lib/kernel32.def (GlobalMemoryStatusEx): Add stub.
 
-2003-02-17 Vaclav Haisman <V.Haisman@sh.cvut.cz>
+2003-02-17  Vaclav Haisman  <V.Haisman@sh.cvut.cz>
 
 	* include/winioctl.h (FSCTL_SET_SPARSE): Define.
 
@@ -6816,7 +6816,7 @@
 	* include/winspool.h (PRINTER_INFO_6): Add.
 	Reported by: Mat Nieuwenhoven  <matnieuw@users.sourceforge.net>
 
-2002-12-30  Hartmut Honisch <hhonisch@users.sourceforge.net>
+2002-12-30  Hartmut Honisch  <hhonisch@users.sourceforge.net>
 
 	* include/winbase.h (NMPWAIT_WAIT_FOREVER): Cast to DWORD.
 
@@ -7062,7 +7062,7 @@
 
 	* include/exdisp.h: Include oaidl.h as system header.
 
-2002-11-12  Earnie Boyd <earnie@users.sf.net>
+2002-11-12  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/w32api.h (__W32API_VERSION): Fix.
 
@@ -7268,7 +7268,7 @@
 
 	* include/wincon.h (GetConsoleWindow): Add _WIN32_WINNT >= 0x0500 guard.
 
-2002-08-30  Christopher January <ccj00@doc.ic.ac.uk>
+2002-08-30  Christopher January  <ccj00@doc.ic.ac.uk>
 
 	* include/wincon.h: Define GetConsoleWindow(void).
 
@@ -7699,11 +7699,11 @@
 
 	* lib/test.c: #include comcat.h.
 
-2002-06-13  John K. Hohm <jhohm@acm.org>
+2002-06-13  John K. Hohm  <jhohm@acm.org>
 
 	* include/comcat.h: New file.
 
-2002-06-09  Gunnar Degnbol <gdegnbol@users.sourceforge.net>
+2002-06-09  Gunnar Degnbol  <gdegnbol@users.sourceforge.net>
 
 	* include/richedit.h (EM_*, TM_*, GT_*): Add new defines.
 	(GETTEXTEX): Add structure definition.
@@ -7713,7 +7713,7 @@
 	* include/windows.h (ole2.h): #include if !__OBJC__ and
 	__GNUC__ >=3 and !WIN32_LEAN_AND_MEAN.
 
-2002-06-07  Gunnar Degnbol <gdegnbol@users.sourceforge.net>
+2002-06-07  Gunnar Degnbol  <gdegnbol@users.sourceforge.net>
 
 	* include/mapi.h: Change LPTSTR to LPSTR throughout.
 
@@ -7863,7 +7863,7 @@
 	* include/richedit.h (EM_GETSCROLLPOS, EM_SETSCROLLPSPOS):
 	Add defines.
 
-2002-03-14  Gunnar Degnbol <gdegnbol@users.sourceforge.net>
+2002-03-14  Gunnar Degnbol  <gdegnbol@users.sourceforge.net>
 
 	* include/richedit.h (RICHEDIT_CLASS): UNICODE it.
 	* include/shlobj.h (IContextMenu2): Put methods in right order.
@@ -8280,7 +8280,7 @@
 	Add prototype.
 	(SetCriticalSectionSpinCount): Likewise.
 
-2001-12-30  Guido Serassio <serassio@libero.it>
+2001-12-30  Guido Serassio  <serassio@libero.it>
 
 	* include/winsvc.h: Add EnumServiceStatusEx(),
 	QueryServiceStatusEx()
@@ -8295,7 +8295,7 @@
 	* lib/Makefile.in: Revert inst_installdir definitions to working
 	versions.
 
-2001-12-17  Guido Serassio <serassio@libero.it>
+2001-12-17  Guido Serassio  <serassio@libero.it>
 
 	* include/winsvc.h: Add ChangeServiceConfig2() &
 	QueryServiceConfig2() definition
@@ -8638,7 +8638,7 @@
 	* lib/Makefile.in: Move the setting of variable libdir to after the
 	setting of exec_prefix since the value of libdir is dependant on it.
 
-Tue Sep  4 14:15:59 2001  Christopher Faylor <cgf@cygnus.com>
+2001-09-04  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winbase.h: Add missing closing parentheses to
 	InterlockedExchangePointer declaration.
@@ -8649,18 +8649,18 @@ Tue Sep  4 14:15:59 2001  Christopher Faylor <cgf@cygnus.com>
 	Thanks to: "Ron" <ron@debian.org> .
 	Unicode them.
 
-Sat Sep  1 10:40:37 2001  Christopher Faylor <cgf@cygnus.com>
+2001-09-01  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winnt.h: Use defined(_ANONYMOUS_STRUCT) to determine if
 	anonymous structs are available rather than just testing preprocessor
 	variable directly.
 
-Fri Aug 31 21:46:00 2001  Corinna Vinschen <corinna@vinschen.de>
+2001-08-31  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winnt.h: Change definition of `SYSTEM_LUID' to comply
 	with new `LARGE_INTEGER' definition.
 
-Thu Aug 30 09:35:51 2001  Christopher Faylor <cgf@cygnus.com>
+2001-08-30  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winsock2.h: Remove "extra token" after #endif.
 
@@ -8860,12 +8860,12 @@ Thu Aug 30 09:35:51 2001  Christopher Faylor <cgf@cygnus.com>
 	* lib/kernel32.def: Add LanguageGroup and UILanguage symbols.
 	Thanks to Kevin Chase <kevincha99@hotmail.com>.
 
-2001.06.11  TAMURA Kent  <tkent@users.sourceforge.net>
+2001-06-11  TAMURA Kent  <tkent@users.sourceforge.net>
 
 	* objidl.h (IMalloc::ReAlloc()): Correct declaration.
 	(IMalloc::Free()): Ditto.
 
-2001-06-11  Danny Smith <dannysmith@users.sourceforge.net>
+2001-06-11  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/shlobj.h (REGSTR_PATH_EXPLORER): Unicode it.
 	(REGSTR_PATH_SPECIAL_FOLDERS): Ditto.
@@ -8877,17 +8877,17 @@ Thu Aug 30 09:35:51 2001  Christopher Faylor <cgf@cygnus.com>
 	(SHBrowseForFolder): Ditto.
 	(SHGetPathFromIDList): Ditto.
 
-2001.06.11  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-06-11  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/basetsd.h: RC_INVOKED protection and realignment.
 	Thanks to: Colin Peters <colinpeters@users.sourceforge.net>
 
-2001.06.06  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-06-06  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in (bindist): Reassign value of exec_prefix on make command
 	line.
 
-Tue May 22 18:58:27 2001  Christopher Faylor <cgf@cygnus.com>
+2001-05-22  Christopher Faylor  <cgf@cygnus.com>
 
 	* lib/mapi32.def: Add MAPISendMail.
 
@@ -8896,40 +8896,40 @@ Tue May 22 18:58:27 2001  Christopher Faylor <cgf@cygnus.com>
 	* include/w32api.h: Update version.
 	* Makefile.in: Ditto.
 
-Thu May 17 23:12:00 2001  Corinna Vinschen <corinna@vinschen.de>
+2001-05-17  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winnt.h: Define SE_GROUP_LOGON_ID as unsigned to avoid
 	compiler warnings.
 
-Thu May 17 17:12:00 2001  Corinna Vinschen <corinna@vinschen.de>
+2001-05-17  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ntdef.h: Protect definition of OBJECT_ATTRIBUTES against
 	previous definition in include/ntsecapi.h.
 	* include/ntsecapi.h: Vice versa.
 
-Wed May 16 17:59:00 2001  Corinna Vinschen <corinna@vinschen.de>
+2001-05-16  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winnt.h: Add defines for group attributes.
 	Add define for SYSTEM_LUID.
 	Add missing types `PTOKEN_DEFAULT_DACL', `PTOKEN_OWNER' and
 	`PTOKEN_PRIMARY_GROUP'.
 
-Tue Apr 24 23:51:07 2001  Christopher Faylor <cgf@cygnus.com>
+2001-04-24  Christopher Faylor  <cgf@cygnus.com>
 
 	* lib/Makefile.in: Install libraries in /usr/lib/w32api when building
 	for cygwin.
 
-Tue Apr 24 16:18:42 2001  Christopher Faylor <cgf@cygnus.com>
+2001-04-24  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winsock2.h: Protect one *more* newlib defines when compiling
 	cygwin.
 
-Mon Apr 23 23:41:36 2001  Christopher Faylor <cgf@cygnus.com>
+2001-04-23  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winsock2.h: Protect some more newlib defines when compiling
 	cygwin.
 
-Mon Apr 23 13:17:32 2001  Christopher Faylor <cgf@cygnus.com>
+2001-04-23  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winsock.h: Protect some more newlib defines when compiling
 	cygwin.
@@ -8964,7 +8964,7 @@ Mon Apr 23 13:17:32 2001  Christopher Faylor <cgf@cygnus.com>
 	* include/windef.h (*PBOOL): Unprotect from XFree86Server.
 	(*LPBOOL): Ditto.
 
-Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
+2001-04-08  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winnt.h (GetCurrentFiber): Make "external __inline" or asm
 	code will be included in every module which includes this header.
@@ -8990,11 +8990,11 @@ Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
 	DirectX 8 from complaining.
 	Thanks to: Sigbjørn Lund Olsen  <mosikos@online.no>
 
-2001-04-08  Michael Soderstrom <ichaelsoderstro@hotmail.com>
+2001-04-08  Michael Soderstrom  <ichaelsoderstro@hotmail.com>
 
 	* include/commctrl.h Updated TreeView and ListView defines and macros.
 
-2001-04-08  Danny Smith <dannysmith@users.sourceforge.net>
+2001-04-08  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winuser.h (MB_SERVICE_NOTIFICATION): Correct value for NT4
 	and above.
@@ -9014,7 +9014,7 @@ Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
 	* include/winbase.h (FreeResource): Ditto.
 	Thanks to: "Harold Hunt" <huntharo@msu.edu>
 
-2001-03-20  Danny Smith <dannysmith@users.sourceforge.net>
+2001-03-20  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winsock.h (_SYS_TYPES_H macro guard for int types): Remove;
 	use only _BSDTYPES_DEFINED macro now defined in newlib sys/types.h.
@@ -9049,14 +9049,14 @@ Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
 	(__W32API_MAJOR_VERSION): Ditto.
 	(__W32API_MINOR_VERSION): Ditto.
 
-2001-02-21  Danny Smith <dannysmith@users.sourceforge.net>
+2001-02-21  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/wingdi.h (struct _DOCINFO[AW]): UNICODE it.
 	(StartDoc[AW]): Use UNICODE'd LPDOCINFO[AW]
 	* include/winuser.h (struct tagMOUSEKEYS): Define new structure.
 	* include/winerror.h (NTE_*): Add CryptoAPI error codes.
 
-2001-02-21  Danny Smith <dannysmith@users.sourceforge.net>
+2001-02-21  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/mswsock.h: New file.
 	* include/ws2tcpip.h: New file.
@@ -9098,7 +9098,7 @@ Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
 	(struct ip_option_information): Likewise.
 	(struct icmp_echo_reply): Likewise.
 
-2001-02-21  Danny Smith <dannysmith@users.sourceforge.net>
+2001-02-21  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/commctrl.h: Revert TEXT change.
 	* include/lmalert.h: Ditto.
@@ -9128,7 +9128,7 @@ Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
 	* include/wininet.h: Ditto.
 	* include/w32api.h: New File.
 
-Tue Feb 13 22:38:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2001-02-13  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/shlobj.h: Add missing SLR_* flags.
 
@@ -9145,7 +9145,7 @@ Tue Feb 13 22:38:00 2000  Corinna Vinschen <corinna@vinschen.de>
 	* Makefile.in: (host_alias): Add variable.
 	(build_alias): Ditto.
 
-Fri Feb  2 13:08:09  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-02-02  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/winnt.h: (__TEXT): Add private macro.
 	(_TEXT): Modify definition to use __TEXT.
@@ -9154,14 +9154,14 @@ Fri Feb  2 13:08:09  2001  Earnie Boyd  <earnie@users.sourceforge.net>
 	MACRO resolved first.
 	Thanks to: Eric PAIRE <eric.paire@ri.silicomp.com>
 
-Wed Jan 31 17:35:59  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-31  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Makefile.in: Increment VERSION to 0.5
 	* include/winnt.h: Change TEXT to _TEXT throughout.
 	(SID_RELEASE): Define.
 	Thanks to: Eric PAIRE <eric.paire@ri.silicomp.com>
 
-Tue Jan 30 10:42:28  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Apply Phil Krylov patches.
 	2001-01-19  Phil Krylov  <phil@mail.ru>
@@ -9181,35 +9181,35 @@ Tue Jan 30 10:42:28  2001  Earnie Boyd  <earnie@users.sourceforge.net>
 	2001-01-23  Phil Krylov  <phil@mail.ru>
 	* include/richedit.h: Many Richedit 2.0 definitions.
 
-Tue Jan 30 09:56:50  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/winuser.h: (IDC_HAND)  New resource identifier.
 	Thanks to: Mark Jordon <mark_jordan@ieee.org>
 
-Tue Jan 30 09:35:30  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/iptypes.h: Include <sys/types.h> for time_t declaration.
 	Fix typo's.
 
-Tue Jan 30 08:30:33  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/objidl.h: (GetClassID): Argument needs to be a pointer.
 	(GetUnmarshalClass): CLSID argument needs to be a pointer.
 	Thanks To: <bge@users.sourceforge.net>
 
-Tue Jan 30 07:52:54  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-30  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Apply Danny Smith patch 102386
 	2000-11-15  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
 	* lib/rasapi32.def: add symbols available in NT4 and W2k
 
-Sun Jan 28 12:47:31  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Apply Danny Smith patch 102382
 	2000-11-15  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
 	* lib/mswsock.def: remove leading underscores from symbol names
 
-Sun Jan 28 11:16:39  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-28  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* Apply Danny Smith patch 102446
 	2000-11-20  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
@@ -10479,7 +10479,7 @@ Sun Jan 28 11:16:39  2001  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* lib/odbc32.def : regenerate.
 
-Fri Jan 26 15:59:31  2001  Earnie Boyd  <earnie@users.sourceforge.net
+2001-01-26  Earnie Boyd  <earnie@users.sourceforge.net
 
 	* Apply Danny Smith patch 102275
 	2000-11-05  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
@@ -10511,43 +10511,43 @@ Fri Jan 26 15:59:31  2001  Earnie Boyd  <earnie@users.sourceforge.net
 	* include/winbase.h: (FreeLibraryAndExitThread): add DECLSPEC_NORETURN
 	attribute.
 
-Fri Jan 26 13:34:55  2001  Earnie Boyde  <earnie@users.sourceforge.net>
+2001-01-26  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* lib/msvcp60.def: Apply Danny Smith patch 103321.
 	2001-01-17  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>.
 	New file.
 
-Fri Jan 26 11:34:04 2001  Christopher Faylor <cgf@cygnus.com>
+2001-01-26  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winnt.h: Add PTOKEN_USER.
 
-Tue Jan 16 13:53:30  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-16  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/sqlucode.h: Apply Danny Smith patch 102443
 	2000-11-20  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
 	New file.
 
-Tue Jan 16 13:36:45  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-16  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* lib/odbccp32.def: Apply Danny Smith patch 102442
 	2000-11-20  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
 	New file.
 
-Tue Jan 16 12:45:20  2001  Earnie Boyd  <earnie@users.sourceforge.net>
+2001-01-16  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* include/odbcinst.h: Apply Danny Smith patch 102441
 	2000-11-20  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
 	New file.
 
-Mon Dec 25 12:22:19 2000  Christopher Faylor <cgf@cygnus.com>
+2000-12-25  Christopher Faylor  <cgf@cygnus.com>
 
 	* lib/Makefile.in: Don't make "links" to include/w32api directory.
 
-Wed Dec 20 13:34:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-12-20  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winbase.h: Add prototype for SetSecurityDescriptorControl.
 
-Mon Dec 11 13:11:36 2000  Christopher Faylor <cgf@cygnus.com>
+2000-12-11  Christopher Faylor  <cgf@cygnus.com>
 
 	* lib/Makefile.in: Install headers and libraries in tooldir.
 
@@ -10580,12 +10580,12 @@ Mon Dec 11 13:11:36 2000  Christopher Faylor <cgf@cygnus.com>
 	LPCURRENCYFMT[AW]: add structure pointer typedef
 	LPNUMBERFMT[AW]: ditto
 
-Sun Dec 02 14:21:02 2000  Matt Hargett <matt@use.net>
+2000-12-02  Matt Hargett  <matt@use.net>
 
 	* include/winbase.h: Added a define for INVALID_SET_FILE_POINTER, a
 	possible return code for the SetFilePointer() win32 API call.
 
-Mon Oct  9 11:49:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-11-09  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winnt.h: Add missing FILE_NAMED_STREAMS define.
 
@@ -10602,7 +10602,7 @@ Mon Oct  9 11:49:00 2000  Corinna Vinschen <corinna@vinschen.de>
 	(xuninstall:) Ditto.
 	TODO: Add a task to redo the clean targets of Makefile.in
 
-Fri Nov  3 21:50:47 2000  Christopher Faylor <cgf@cygnus.com>
+2000-11-03  Christopher Faylor  <cgf@cygnus.com>
 
 	* lib/Makefile.in: Install header files in w32api subdirectory.
 
@@ -10643,7 +10643,7 @@ Fri Nov  3 21:50:47 2000  Christopher Faylor <cgf@cygnus.com>
 	contribution as it is more complete.
 	* include/rpcndr.h: add default definition for __RPCNDR_H_VERSION__
 
-Mon Oct 19 13:55:00 2000  Earnie Boyd <earnie_boyd@yahoo.com>
+2000-10-19  Earnie Boyd  <earnie_boyd@yahoo.com>
 
 	* Makefile.in: increment VERSION.  Change tar file name for dist and
 	bindist targets to be more standard.
@@ -10659,7 +10659,7 @@ Mon Oct 19 13:55:00 2000  Earnie Boyd <earnie_boyd@yahoo.com>
 	exec-prefix specified installation.  Ditto for the uninstall targets of
 	the same name.
 
-Mon Oct  9 11:49:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-09  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/iprtrmib.h: Further layout changes according to standard.
 	* include/iptypes.h: Ditto.
@@ -10667,11 +10667,11 @@ Mon Oct  9 11:49:00 2000  Corinna Vinschen <corinna@vinschen.de>
 	* include/ntsecapi.h: Ditto.
 	* include/subauth.h: Ditto.
 
-Mon Oct  9 11:32:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-09  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ntsecapi.h: Fix PLSA_UNICODE_STRING define.
 
-Sun Oct  8 18:26:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-08  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ntsecapi.h: New file.
 	* include/subauth.h: Ditto.
@@ -10685,35 +10685,35 @@ Sun Oct  8 18:26:00 2000  Corinna Vinschen <corinna@vinschen.de>
 	of inclusion of ntsecapi.h and subauth.h.
 	* lib/secur32.def: New stub for secur32.dll.
 
-Mon Oct  2 11:15:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-02  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ras.h: New file.
 	* lib/rasapi32.def: Add symbols for RasEnumDevicesA and
 	RasEnumDevicesW.
 
-Mon Oct  2 10:56:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-02  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ntdef.h: Add define for NTAPI.
 
-Sun Oct  1 23:55:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-01  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ipexport.h: Add missing `extern "C"' directives.
 	* include/iphlpapi.h: Ditto.
 	* include/iprtrmib.h: Ditto.
 	* include/iptypes.h: Ditto.
 
-Sun Oct  1 22:09:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-01  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ipifcons.h: New header file.
 	* include/iprtrmib.h: Move operational states to ipifcons.h.
 	* include/iphlpapi.h: Add missing parameters to GetIfTable()
 	declaration.
 
-Sun Oct  1 16:30:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-01  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/iprtrmib.h: Add missing MIB_IF_OPER_STATUS_xxx definitions.
 
-Sun Oct  1 16:13:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-01  Corinna Vinschen  <corinna@vinschen.de>
 
 	* lib/iphlpapi.def: New stub for iphlpapi.dll.
 	* include/iptypes.h: New header file.
@@ -10721,22 +10721,22 @@ Sun Oct  1 16:13:00 2000  Corinna Vinschen <corinna@vinschen.de>
 	* include/iphlpapi.h: Ditto.
 	* include/iprtrmib.h: Ditto.
 
-Sun Oct  1  2:54:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-10-01  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/ntdef.h: New file.
 
-Fri Aug 18 17:17:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-08-18  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winnt.h:Add enums for TokenRestrictedSids and TokenSessionId
 	to TOKEN_INFORMATION_CLASS type.
 	Add QUOTA_LIMITS type.
 
-Tue Aug  8 21:29:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-08-08  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/userenv.h: New header file.
 	* lib/userenv.def: New stub for userenv.dll.
 
-Tue Aug  8 10:25:14 2000  Christopher Faylor <cgf@cygnus.com>
+2000-08-08  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winuser.h: Correct PCWPSTRUCT typo.
 	(discovered by Axel Riese)
@@ -10745,7 +10745,7 @@ Tue Aug  8 10:25:14 2000  Christopher Faylor <cgf@cygnus.com>
 
 	* include/windows.h: optimize non-inclusion of repeat headers
 
-Fri Jul 21 12:10:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-07-21  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winnt.h: Add missing typedefs for PTOKEN_SOURCE and
 	LPTOKEN_SOURCE.
@@ -10754,7 +10754,7 @@ Fri Jul 21 12:10:00 2000  Corinna Vinschen <corinna@vinschen.de>
 
 	* include/shlobj.h: add CSIDL_COMMON_*
 
-Tue Jun 27 19:35:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-06-27  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winbase.h: Add stream ids BACKUP_OBJECT_ID,
 	BACKUP_REPARSE_DATA and BACKUP_SPARSE_BLOCK.
@@ -10773,26 +10773,26 @@ Tue Jun 27 19:35:00 2000  Corinna Vinschen <corinna@vinschen.de>
 	REPARSE_GUID_DATA_BUFFER and REPARSE_POINT_INFORMATION.
 	* lib/psapi.def: New file.
 
-Thu Jun 22 14:36:19 2000  Christopher Faylor <cgf@cygnus.com>
+2000-06-22  Christopher Faylor  <cgf@cygnus.com>
 
 	* rpcdce.h: Protect OPTIONAL definition since it may be (legally)
 	previously defined.
 	* windef.h : Ditto.
 
-2000-06-14  Kazuhiro Fujieda <fujieda@jaist.ac.jp>
+2000-06-14  Kazuhiro Fujieda  <fujieda@jaist.ac.jp>
 
 	* include/winnt.h: Add some missing defines related to locale
 	identifiers.  Translate values of LANG_* and SUBLANG_* into hexadecimal.
 
-Thu May 27 15:57:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-05-27  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/wincrypt.h: Add missing CRYPT_MACHINE_KEYSET define.
 
-Thu May 18 11:37:00 2000  Corinna Vinschen <corinna@vinschen.de>
+2000-05-18  Corinna Vinschen  <corinna@vinschen.de>
 
 	* include/winnt.h: Add some missing TAPE_DRIVE_* defines.
 
-Wed Apr 26 11:04:18 2000  Christopher Faylor <cgf@cygnus.com>
+2000-04-26  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/wininet.h: Add another "INTERNET_OPTIONS".
 
@@ -10807,12 +10807,12 @@ Wed Apr 26 11:04:18 2000  Christopher Faylor <cgf@cygnus.com>
 	* include/wingdi.h: Add LPFNDEVMODE and LPFNDEVCAPS callbacks.
 	* include/winuser.h: Add WM_* macros. Add PCOPYDATASTRUCT typedef.
 
-Mon Apr 10 22:58:25 2000  Christopher Faylor <cgf@cygnus.com>
+2000-04-10  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winbase.h: Change first argument of ENUMRES* types to
 	coincide with Microsoft usage.
 
-Sat Apr  1 20:51:47 2000  Christopher Faylor <cgf@cygnus.com>
+2000-04-01  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/wininet.h: Add three more "INTERNET_OPTIONS".
 
@@ -10826,7 +10826,7 @@ Sat Apr  1 20:51:47 2000  Christopher Faylor <cgf@cygnus.com>
 	* include/rpcdcep.h: Likewise.
 	* include/winsock.h: Likewise.
 
-Sun Mar 26 13:41:47 2000  Christopher Faylor <cgf@cygnus.com>
+2000-03-26  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/winnt.h: Eliminate duplicate PCONTEXT and LPCONTEXT typedefs.
 
@@ -10856,7 +10856,7 @@ Sun Mar 26 13:41:47 2000  Christopher Faylor <cgf@cygnus.com>
 	(NT_TIB): Define.
 	* include/tlhelp32.h: New file.
 
-Mon Feb 28 17:08:03 2000  Christopher Faylor <cgf@cygnus.com>
+2000-02-28  Christopher Faylor  <cgf@cygnus.com>
 
 	* include/rapi.h: New file.
 	* lib/rapi.def: New file.
@@ -10940,7 +10940,7 @@ Mon Feb 28 17:08:03 2000  Christopher Faylor <cgf@cygnus.com>
 	* lib/dsound.def: Likewise.
 	* lib/ws2_32.def: Likewise.
 
-Wed Dec 22 02:53:22 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-12-22  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/windef.h (HMONITOR, HTERMINAL, HWINEVENTHOOK): Define
 	handles.
@@ -10964,7 +10964,7 @@ Wed Dec 22 02:53:22 1999  Mumit Khan  <khan@xraylith.wisc.edu>
 	* include/olectl.h: Likewise.
 	* include/oleidl.h: Likewise.
 
-Tue Dec 21 02:22:14 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-12-21  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* Snapshot 1999-12-21.
 
@@ -10991,7 +10991,7 @@ Tue Dec 21 02:22:14 1999  Mumit Khan  <khan@xraylith.wisc.edu>
 	value of _WIN32_WINNT.
 	* include/winuser.h: Reorganize SM_* defines in numerical order.
 
-Tue Dec 14 21:58:03 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-12-14  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/windef.h: Make RECTL a distinct type from RECT.
 	* include/windows.h: Define upto 8 DUMMYUNIONNAMEs for DirectX.
@@ -11012,7 +11012,7 @@ Tue Dec 14 21:58:03 1999  Mumit Khan  <khan@xraylith.wisc.edu>
 	* lib/wsock32.def (AcceptEx@32): Export.
 	(GetAcceptExSockaddrs@32): Likewise.
 
-Thu Nov 18 00:12:43 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-11-18  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* Snapshot 1999-11-18.
 
@@ -11026,11 +11026,11 @@ Thu Nov 18 00:12:43 1999  Mumit Khan  <khan@xraylith.wisc.edu>
 	Add packing directives for various structures. All structure
 	sizes now conform to MSVC.
 
-Sun Nov  7 02:50:09 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-11-07  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	Released 1999-11-07.
 
-Sat Nov  6 21:25:48 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-11-06  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/winsock2.h: New file. Mostly a stub for now.
 	* include/winbase.h (DllMain): Delete prototype.
@@ -11064,7 +11064,7 @@ Sat Nov  6 21:25:48 1999  Mumit Khan  <khan@xraylith.wisc.edu>
 	(IErrorInfo): Define.
 	* include/winuser.h (SIF_TRACKPOS): Define.
 
-Wed Nov  3 19:34:12 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-11-03  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	Fix Merge errors:
 	* include/winnt.h (PSID): Uncomment definition.
@@ -11079,28 +11079,28 @@ Wed Nov  3 19:34:12 1999  Mumit Khan  <khan@xraylith.wisc.edu>
 	include/shellapi.h, include/winbase.h, include/wingdi.h,
 	include/winnt.h, include/winsock.h: Merged with winsup-19991026.
 
-Sun Oct 31 00:23:50 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-10-31  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/wingdi.h (PHYSICAL*, SCALINGFACTOR*): New. From
 	Marius Kjeldahl <kjeldahl@hotmail.com>.
 
-Sun Aug 29 18:07:42 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-08-29  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/winnt.h (APPLICATION_ERROR_MASK): Add macros.
 	(ERROR_SEVERITY_*): Likewise.
 
-Tue Aug 17 21:05:21 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-08-17  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/winbase.h (TLS_OUT_OF_INDEXES): Add macro.
 	(DllMain): Fix prototype.
 
-Mon Aug  2 23:31:30 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-08-02  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/commdlg.h: Enclose within pack(push,1) and pack(pop).
 	(cderr.h): Don't include.
 	* include/winuser.h: Fix macro definitions.
 
-Mon Aug 02 14:31:37 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	Merge with winsup 1999-07-29:
 	* include/wincon.h (MOUSE_WHEELED): Define.
@@ -11110,16 +11110,16 @@ Mon Aug 02 14:31:37 1999  Anders Norlander  <anorland@hem2.passagen.se>
 	is equal to PVOID in the Platform SDK! So don't depend on accessing
 	members through ->.
 
-Mon Aug 02 13:58:52 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	* lib/Makefile.in (install-headers): Don't @ commands.
 	(install-libraries): Ditto.
 
-Mon Aug 02 13:49:01 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	* include/sqlext.h: Use #include <sql.h> instead of "sql.h".
 
-Mon Aug 02 13:47:15 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	Patch from Mumit Khan:
 	* include/windows.h: Fix typo in winsock.h include guard and add
@@ -11127,23 +11127,23 @@ Mon Aug 02 13:47:15 1999  Anders Norlander  <anorland@hem2.passagen.se>
 	* include/winnt.h (__int64): Undefine first.
 	(struct _SID): Declare.
 
-Mon Aug 02 13:40:28 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	* include/winnt.h: Add some REG_* defines reported by Boris Lantrewitz.
 
-Mon Aug 02 13:33:11 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	Patch from Mumit Khan:
 	* Makefile.in: Do the right thing when cross-compiling.
 	* include/windef.h: Don't define _export and __export if already
 	defined.
 
-Mon Aug 02 13:24:43 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	* include/basetyps.h (DECLARE_INTERFACE): Use com_interface attribute.
 	(DECLARE_INTERFACE_): Ditto.
 
-Mon Aug 02 13:17:26 1999  Anders Norlander  <anorland@hem2.passagen.se>
+1999-08-02  Anders Norlander  <anorland@hem2.passagen.se>
 
 	* include/mmsystem.h (HWAVEOUT): Fix missing ')'
 
@@ -11298,7 +11298,7 @@ Mon Aug 02 13:17:26 1999  Anders Norlander  <anorland@hem2.passagen.se>
 
 	* include/zmouse.h (WHEEL_DELTA): Define
 
-Mon Apr 26 16:36:49 1999  Mumit Khan  <khan@xraylith.wisc.edu>
+1999-04-26  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* include/ddeml.h (HSZPAIR): Declare.
 	* include/zmouse.h: New file.
