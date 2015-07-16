@@ -7,7 +7,7 @@ PACKAGE_TARNAME := @PACKAGE_TARNAME@
 PACKAGE_VERSION := @PACKAGE_VERSION@
 
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2014, MinGW.org Project
+# Copyright (C) 2014, 2015, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -16,11 +16,11 @@ PACKAGE_VERSION := @PACKAGE_VERSION@
 # the rights to use, copy, modify, merge, publish, distribute, sublicense,
 # and/or sell copies of the Software, and to permit persons to whom the
 # Software is furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice (including the next
 # paragraph) shall be included in all copies or substantial portions of the
 # Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,9 +34,16 @@ PACKAGE_VERSION := @PACKAGE_VERSION@
 # inadvertent override from any included file.
 #
 all:
-PACKAGE_RELEASE := 
+PACKAGE_RELEASE :=
 PACKAGE_RELEASE_TAG := $(PACKAGE_VERSION)$(PACKAGE_RELEASE:%=-%)-mingw32
-NTDDI_VERSION_SPEC := -D NTDDI_VERSION=0x04000000
+
+# Establish the minimum version of Windows which this build is required
+# to support; note that we fix the default as WinNT4, but we define it in
+# a manner which will allow a command line override, and may be adapted,
+# ultimately, to support a configure time assignment.
+#
+NTDDI_VERSION := NTDDI_WINNT4
+NTDDI_VERSION_SPEC := $(NTDDI_VERSION:%=-D NTDDI_VERSION=%)
 
 # Build paths and macros.
 #
@@ -94,12 +101,12 @@ man3dir = ${mandir}/man$(man3ext)
 man3ext = 3
 
 INSTALL = @INSTALL@
-INSTALL_DATA = @INSTALL_DATA@
+INSTALL_DATA = @INSTALL_DATA@ $1 $2
 
-mkinstalldirs = @MKDIR_P@
+mkinstalldirs = @MKDIR_P@ $(addprefix $1,$2)
 
 # Keep the configuration in a consistent state.  Note that we assume
-# that configure has been run initially, (otherwise we wouldn't have 
+# that configure has been run initially, (otherwise we wouldn't have
 # a Makefile to begin with); since this also creates config.status,
 # we may normally assume that it is already available ...
 #
@@ -272,7 +279,7 @@ $(addsuffix .def,$(all_msvcrt)): %.def: ${mingwrt_srcdir}/msvcrt.def.in
 
 # To accommodate the __USE_MINGW_ANSI_STDIO feature, as specified
 # in _mingw.h and stdio.h, while retaining a mechanism for accessing
-# the MSVCRT.DLL functions which it replaces, we augment our import 
+# the MSVCRT.DLL functions which it replaces, we augment our import
 # libraries with extra, alternatively named entry points, each of
 # which implements a vectored jump to the regular entry point for
 # the DLL implementation of its corresponding replaced function.
@@ -623,7 +630,7 @@ bindir docdir includedir libdir mandir htmldir pdfdir:
 	@test -z "$(strip ${DESTDIR})" || case $($@) in ${DESTDIR}?:*) \
 	  $(MAKE) --no-print-directory reject=$@ DESTDIR-UNSUPPORTED;; \
 	  esac
-	$(mkinstalldirs) $($@)
+	$(call mkinstalldirs,,$($@))
 
 # Note: we MUST use a recursive make invocation here, as the
 # "error" function within the accompanying diagnostics would be
@@ -653,6 +660,12 @@ install-stage-1-only: install-headers install-libdir-objects install-libs
 install-stage-1-and-2: install-stage-1-only install-bin
 install-gcc: install-stage-1-only
 
+install-strip: install-strip-mingwrt
+install-strip-%:
+	$(MAKE) --no-print-directory $(MAKEFLAGS) \
+	  STRIP_DATA='cd ${libdir}; $(STRIP) --strip-unneeded $$1' \
+	  STRIP_DLL='cd ${bindir}; $(STRIP) $$1' install-$*
+
 # Install licence files.
 #
 install-license: install-mingwrt-license
@@ -669,23 +682,25 @@ mingwrt-license-files: COPYING CYGWIN_LICENSE DISCLAIMER
 #
 install-mingwrt-license install-w32api-license: install-%: docdir %-files
 %-license-files:
-	$(mkinstalldirs) ${docdir}/$*/$(PACKAGE_VERSION)
-	$(INSTALL_DATA) $^ ${docdir}/$*/$(PACKAGE_VERSION)
+	$(call mkinstalldirs,,${docdir}/$*/$(PACKAGE_VERSION))
+	$(call INSTALL_DATA,$^,${docdir}/$*/$(PACKAGE_VERSION))
 
 # Install headers associated with the MinGW runtime libraries.
 #
 includedirs: mingwrt-includedirs
 install-headers install-mingwrt: install-mingwrt-headers
 
-${includedir}/sys ${includedir}/parts: includedir
-mingwrt-includedirs: ${includedir}/sys ${includedir}/parts
-	$(mkinstalldirs) $^
+mingwrt-includedirs: includedir $(eval mingwrt_include_subdirs=sys parts)
+	$(call mkinstalldirs,${includedir}/,$(mingwrt_include_subdirs))
+
+INSTALL_SUB_HEADERS = $(call INSTALL_DATA,$1/include/$2/*.h,${includedir}/$2)
 
 install-mingwrt-headers: mingwrt-includedirs
-	$(INSTALL_DATA) ${mingwrt_srcdir}/include/*.h ${includedir}
-	$(INSTALL_DATA) ${mingwrt_srcdir}/include/sys/*.h ${includedir}/sys
-	$(INSTALL_DATA) ${mingwrt_srcdir}/include/parts/*.h ${includedir}/parts
-	$(INSTALL_DATA) ${mingwrt_srcdir}/profile/*.h ${includedir}
+	$(call INSTALL_DATA,${mingwrt_srcdir}/include/*.h,${includedir})
+	for dir in $(mingwrt_include_subdirs); do \
+	  $(call INSTALL_SUB_HEADERS,${mingwrt_srcdir},$$dir); \
+	  done
+	$(call INSTALL_DATA,${mingwrt_srcdir}/profile/*.h,${includedir})
 
 # Install libraries, and supporting free standing object files.
 #
@@ -697,16 +712,20 @@ install-mingwrt-libdir-objects: libdir $(call active_goals,install,crt-objects)
 
 install-crt-objects install-deprecated-crt-objects \
 install-mingwrt-libs install-deprecated-mingwrt-libs:
-	$(INSTALL_DATA) $^ ${libdir}
+	$(call INSTALL_DATA,$^,${libdir})
+	$(if $(STRIP_DATA),$(call STRIP_DATA,$^))
+
 
 # Install DLLs.
 #
 install-mingwrt: install-mingwrt-dll
-install-bin install-dll: install-mingwrt-dll 
+install-bin install-dll: install-mingwrt-dll
 install-mingwrt-bin install-w32api-bin: install-%-bin: install-%-dll
 install-mingwrt-dll install-w32api-dll: install-%-dll: bindir install-%-dll-files
 install-%-dll-files:
-	$(INSTALL_DATA) $^ ${bindir}
+	$(call INSTALL_DATA,$^,${bindir})
+	$(if $(STRIP_DLL),$(call STRIP_DLL,$^))
+
 
 # Install manpages.
 #
@@ -721,9 +740,33 @@ mingwrt-man$(man3ext): basename.$(man3ext) dirname.$(man3ext)
 
 install-mingwrt-manpages: mandir mingwrt-man3
 mingwrt-man%:
-	$(mkinstalldirs) ${man$*dir}
-	$(INSTALL_DATA) $^ ${man$*dir}
+	$(call mkinstalldirs,,${man$*dir})
+	$(call INSTALL_DATA,$^,${man$*dir})
 	$(RM) $^
+
+
+# Undo Installation
+# -----------------
+#
+uninstall: uninstall-mingwrt
+uninstall-bin uninstall-dll uninstall-mingwrt: uninstall-mingwrt-dll
+uninstall-mingwrt: uninstall-mingwrt-headers uninstall-mingwrt-libdir-libs
+uninstall-mingwrt: uninstall-mingwrt-libdir-objects
+
+REMOVE_HEADERS = cd $1 && $(RM) $(notdir $(wildcard $2))
+
+uninstall-mingwrt-headers:
+	$(call REMOVE_HEADERS,${includedir},${mingwrt_srcdir}/include/*.h)
+	for dir in $(mingwrt_include_subdirs); do \
+	  files=`cd ${mingwrt_srcdir}/include/$$dir && echo *.h`; \
+	  (cd ${includedir}/$$dir && $(RM) $$files); \
+	  done
+	$(call REMOVE_HEADERS,${includedir},${mingwrt_srcdir}/profile/*.h)
+
+uninstall-mingwrt-dll \
+uninstall-mingwrt-libdir-objects uninstall-mingwrt-libdir-libs: un%:
+	$(MAKE) --no-print-directory $(MAKEFLAGS) mkinstalldirs= \
+	  INSTALL_DATA='cd $$2 && $(RM) $$1' $*
 
 
 # Distribution
@@ -735,18 +778,16 @@ dist: devdist dlldist licdist mandist srcdist
 
 mingwrt-dist-staged w32api-dist-staged: %-dist-staged:
 	$(RM) -r dist/$*
-	$(MAKE) --no-print-directory prefix=`pwd`/dist/$* install-$*
+	$(MAKE) --no-print-directory prefix=`pwd`/dist/$* install-strip-$*
 
 devdist: mingwrt-devdist
 mingwrt_devdist_objects = dist/mingwrt/lib/*.$(OBJEXT)
 mingwrt-devdist w32api-devdist: %-devdist: %-dist-staged
-	$(STRIP) -g $($*_devdist_objects) dist/$*/lib/*.a
 	cd dist/$* && tar chf - --hard-dereference include lib | \
 	  xz -c > ../$*-$(PACKAGE_RELEASE_TAG)-dev.tar.xz
 
 dlldist: mingwrt-dlldist
 mingwrt-dlldist: %-dlldist: %-dist-staged
-	$(STRIP) dist/$*/bin/*.dll
 	cd dist/$* && tar chf - --hard-dereference bin | \
 	  xz -c > ../$*-$(PACKAGE_RELEASE_TAG)-dll.tar.xz
 
@@ -774,7 +815,7 @@ mingwrt-srcdist: mingwrt-srcdist-dir mingwrt-srcdist-files
 
 mingwrt-srcdist-dir:
 	$(RM) -r dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
-	$(mkinstalldirs) dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
+	$(call mkinstalldirs,,dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION))
 
 mingwrt-srcdist-files:
 	(cd ${mingwrt_srcdir} && tar chf - --hard-dereference $(notdir $^)) | \

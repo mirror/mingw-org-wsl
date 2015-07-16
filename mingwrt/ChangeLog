@@ -1,3 +1,15 @@
+2015-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Incorporate build system updates from w32api package.
+
+	* Makefile.in (NTDDI_VERSION): Set default to NTDDI_WINNT4.
+	(mkinstalldirs, INSTALL_DATA): Reimplement to support $(call ...)
+	(install-strip, uninstall): New make command goals; implement them.
+	(mingwrt-dist-staged): Use 'install-strip' in this rule; hence...
+	(devdist, dlldist): ...these have no need to strip explicitly.
+	(INSTALL_SUB_HEADERS): New macro; implement it, and use it...
+	(install-mingwrt-headers): ...here.
+
 2015-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Adapt platform feature checks to NTDDI_VERSION conventions.
