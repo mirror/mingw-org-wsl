@@ -1,3 +1,14 @@
+2015-08-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Build system corrections for GCC build time support.
+
+	* configure.ac (AC_PROG_CC): Don't use this; we need...
+	(MINGW_AC_PROG_CC_COMPILE_ONLY): ...this alternative, to support
+	building with only a stage 1 partially built GCC installation.
+
+	* Makefile.in (install-headers): New make objective; map it to...
+	(install-w32api-headers): ...this, for which it is a logical alias.
+
 2015-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Overhaul and streamline build system configuration.

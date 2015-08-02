@@ -237,6 +237,7 @@ w32api-include-dirs: includedir
 
 w32api-lib-dirs: libdir
 
+install-headers: install-w32api-headers
 install-w32api-headers: w32api-include-dirs
 	$(call INSTALL_DATA,${srcdir}/include/*.h,${includedir})
 	for dir in $(w32api_extra_include_dirs); do \

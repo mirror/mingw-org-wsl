@@ -35,7 +35,7 @@
   AC_CONFIG_SRCDIR([include/w32api.h])
   MINGW_AC_CONFIG_EXTRA_SRCDIR([mingwrt],[include/_mingw.h])
 
-  AC_PROG_CC
+  MINGW_AC_PROG_CC_COMPILE_ONLY
 
   AC_CHECK_TOOL([AS],[as],[as])
   AC_CHECK_TOOL([DLLTOOL],[dlltool],[dlltool])
