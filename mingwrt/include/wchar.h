@@ -220,79 +220,13 @@ _CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsftime (wchar_t*, size_t, const wchar_t
 #endif /* _WTIME_DEFINED */
 
 
-#ifndef _WSTRING_DEFINED
-/*
- * Unicode versions of the standard string calls.
- * Also in string.h.
+/* Wide character string functions must be specified here, as required
+ * by the ISO-C Standard; however, MSVC contravenes this standard by also
+ * requiring them to appear in <string.h>, so we specify them in a shared
+ * <parts/wchar.h> header, which we may include both here and in <string.h>
  */
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcscat (wchar_t*, const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcschr (const wchar_t*, wchar_t);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wcscmp (const wchar_t*, const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wcscoll (const wchar_t*, const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcscpy (wchar_t*, const wchar_t*);
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	wcscspn (const wchar_t*, const wchar_t*);
-/* Note:  _wcserror requires __MSVCRT_VERSION__ >= 0x0700.  */
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	wcslen (const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsncat (wchar_t*, const wchar_t*, size_t);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wcsncmp(const wchar_t*, const wchar_t*, size_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsncpy(wchar_t*, const wchar_t*, size_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcspbrk(const wchar_t*, const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsrchr(const wchar_t*, wchar_t);
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsspn(const wchar_t*, const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsstr(const wchar_t*, const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcstok(wchar_t*, const wchar_t*);
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsxfrm(wchar_t*, const wchar_t*, size_t);
+#include <parts/wchar.h>
 
-#ifndef	__STRICT_ANSI__
-/*
- * Unicode versions of non-ANSI functions provided by CRTDLL.
- */
-
-/* NOTE: _wcscmpi not provided by CRTDLL, this define is for portability */
-#define		_wcscmpi	_wcsicmp
-
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsdup (const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wcsicmp (const wchar_t*, const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wcsicoll (const wchar_t*, const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcslwr (wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wcsnicmp (const wchar_t*, const wchar_t*, size_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsnset (wchar_t*, wchar_t, size_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsrev (wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsset (wchar_t*, wchar_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wcsupr (wchar_t*);
-
-#ifdef __MSVCRT__
-_CRTIMP int __cdecl __MINGW_NOTHROW  _wcsncoll(const wchar_t*, const wchar_t*, size_t);
-_CRTIMP int   __cdecl __MINGW_NOTHROW _wcsnicoll(const wchar_t*, const wchar_t*, size_t);
-#if __MSVCRT_VERSION__ >= 0x0700
-_CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW _wcserror(int);
-_CRTIMP  wchar_t* __cdecl __MINGW_NOTHROW __wcserror(const wchar_t*);
-#endif
-#endif
-
-#ifndef	_NO_OLDNAMES
-/* NOTE: There is no _wcscmpi, but this is for compatibility. */
-int __cdecl __MINGW_NOTHROW wcscmpi (const wchar_t *, const wchar_t *);
-#ifndef __NO_INLINE__
-__CRT_INLINE int __cdecl __MINGW_NOTHROW
-wcscmpi (const wchar_t * __ws1, const wchar_t * __ws2)
-  {return _wcsicmp (__ws1, __ws2);}
-#endif
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsdup (const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wcsicmp (const wchar_t*, const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wcsicoll (const wchar_t*, const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcslwr (wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wcsnicmp (const wchar_t*, const wchar_t*, size_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsnset (wchar_t*, wchar_t, size_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsrev (wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsset (wchar_t*, wchar_t);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW wcsupr (wchar_t*);
-#endif	/* Not _NO_OLDNAMES */
-
-#endif	/* Not strict ANSI */
-
-#define _WSTRING_DEFINED
-#endif  /* _WSTRING_DEFINED */
 
 /* These are resolved by -lmingwex. Alternatively, they can be resolved by
    adding -lmsvcp60 to your command line, which will give you the VC++

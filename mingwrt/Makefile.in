@@ -351,7 +351,7 @@ $(foreach name,coldname $(all_moldname),lib$(name).a): lib%.a: %.def
 # Microsoft DLLs, but which nevertheless are easily emulated.
 #
 $(foreach name,coldname $(all_moldname),lib$(name).a): $(addsuffix .$(OBJEXT), \
-  isascii iscsym iscsymf strcasecmp strncasecmp toascii wcscmpi)
+  isascii iscsym iscsymf toascii)
 
 coldname.def: %.def: ${mingwrt_srcdir}/moldname.def.in
 	$(CC) -C -E -P -D__FILENAME__=$@ -D__CRTDLL__ -xc-header $< > $@

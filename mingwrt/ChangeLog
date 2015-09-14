@@ -1,3 +1,38 @@
+2015-09-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make strings.h mostly POSIX.1-2008 compliant.
+
+	* include/strings.h: Rewritten.  Do not include...
+	(string.h): ...this; mandated by POSIX.1, it now defines...
+	(strcasecmp, strncasecmp): ...these POSIX.1 functions, complete with
+	prototypes, possible in-line implementations, and JMPSTUB references
+	to corresponding external implementations, which will now become
+	automatically created within libmingwex.a
+
+	* include/parts/strings.h: New file; it declares prototypes for...
+	(_stricmp, _strnicmp): ...these MSVC functions; nominally declared in
+	string.h, but we also require them in strings.h
+
+	* include/parts/wchar.h: New file; it declares prototypes for all wide
+	character functions which MSVC specifies in both wchar.h and string.h
+
+	* include/string.h: Miscellaneous layout adjustments.
+	(strcasecmp, strncasecmp): Delete; they belong in strings.h
+	(_stricmp, _strnicmp): Factor out; include them from parts/strings.h
+	[!_WSTRING_DEFINED]: Factor out all associated function prototypes;
+	include them from parts/wchar.h instead.
+
+	* include/wchar.h [!_WSTRING_DEFINED]: Delete all associated function
+	prototypes; include them from parts/wchar.h instead, so making this
+	guard macro redundant; delete it.
+
+	* Makefile.in (strcasecmp.$OBJEXT, strncasecmp.$OBJEXT)
+	(wcscmpi.$OBJEXT): Implementations are now automatically generated
+	from header file, for inclusion in libmingwex.a; remove free-standing
+	implementations from the entire family of liboldname libraries, and...
+	* strcasecmp.c strncasecmp.c wcscmpi.c: ...delete corresponding source
+	files; they are no longer required.
+
 2015-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Incorporate build system updates from w32api package.
