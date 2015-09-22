@@ -1,3 +1,12 @@
+2015-09-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct defect in build system compilation rule.
+
+	* Makefile.in (scrnsavw.$OBJEXT): Do not use $^ to represent the
+	source file; it expands to also include prerequisite header files,
+	which should not appear on the compilation command line.  Rewrite
+	rule in static pattern format, and use $< instead.
+
 2015-08-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Build system corrections for GCC build time support.

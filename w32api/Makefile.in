@@ -158,8 +158,8 @@ libuuid.a: objsafe-uuid.$(OBJEXT) ocidl-uuid.$(OBJEXT) oleacc-uuid.$(OBJEXT)
 libuuid.a: olectlid-uuid.$(OBJEXT) oleidl-uuid.$(OBJEXT) power-uuid.$(OBJEXT)
 libuuid.a: servprov-uuid.$(OBJEXT) unknwn-uuid.$(OBJEXT) urlmon-uuid.$(OBJEXT)
 
-scrnsavw.$(OBJEXT): scrnsave.c
-	$(CC) -c -D UNICODE $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) $(INCLUDES) -o $@ $^
+scrnsavw.$(OBJEXT): %.$(OBJEXT): scrnsave.c
+	$(CC) -c -D UNICODE $(CPPFLAGS) $(CFLAGS) $(DEPFLAGS) $(INCLUDES) -o $@ $<
 
 libshell32.a: shell32.$(OBJEXT)
 libgdiplus.a: gdiplus.$(OBJEXT)
