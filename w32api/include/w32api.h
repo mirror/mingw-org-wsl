@@ -135,9 +135,40 @@ __WIN32_DEPRECATED_ALIAS( long,  IE7,		_WIN32_IE_IE70 )
 #elif defined _UNICODE && ! defined UNICODE
 # define UNICODE  _UNICODE
 #endif
+/* Related to the UNICODE macro definition, there are many functions in
+ * the Win32 API with a generic name, which is mapped to a variant with
+ * wchar_t UTF-16LE encoding of string arguments, in cases when UNICODE
+ * is defined, as facilitated by the following macro...
+ */
+#ifdef UNICODE
+ /* ...by appending a "W" suffix to the generic function name...
+  */
+# define __AW_SUFFIXED__(__NAME__)  __NAME__##W
+#else
+ /* ...or by appending an "A" suffix, to select an ANSI variant with
+  * char encoding of string arguments, when UNICODE is not defined.
+  */
+# define __AW_SUFFIXED__(__NAME__)  __NAME__##A
+#endif
+/* Further related, the __AW_EXTENDED__ macro reproduces the effect of
+ * __AW_SUFFIXED__, with the addition of a single underscore character
+ * separating the base name from the appropriate suffix.
+ */
+#define __AW_EXTENDED__(__NAME__)  __AW_SUFFIXED__(__NAME__##_)
+
+/* __AW_EXTENDED__ may often be used to map manifest string constants.
+ * The following triplet provide a convenient mechanism to derive the
+ * UNICODE variant of the string from its ANSI definition; (note that
+ * this requires a two stage expansion, to ensure that the "L" prefix
+ * is attached to the expansion of the ANSI string definition, rather
+ * than just to the defining macro name).
+ */
+#define __AW_STRING_A__(__TEXT__)  __TEXT__
+#define __AW__WCHAR_T__(__TEXT__)  __AW_STRING_A__(L##__TEXT__)
+#define __AW_STRING_W__(__TEXT__)  __AW__WCHAR_T__(__TEXT__)
 
 #ifdef __cplusplus
-/* When compiling C++ code, these macros provide a convenient notation,
+/* When compiling C++ code, these macros provide a convenient notation
  * for designating those sections of system header files which declare
  * prototypes for API functions with "C" binding...
  */

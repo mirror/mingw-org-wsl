@@ -1,3 +1,91 @@
+2015-09-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Code clean-up; fix MinGW-Bug [#2263].
+
+	* include/w32api.h (__AW_SUFFIXED__): New macro; define it.
+	(__AW_EXTENDED__, __AW_STRING_A__, __AW_STRING_W__): Likewise.
+	(__AW__WCHAR_T__): Likewise; this is a helper for __AW_STRING_W__.
+
+	* include/wincrypt.h: Assert copyright; tidy layout; replace all C++
+	style comments, using ISO-C conforming style; remove all redundant
+	parameter names from function prototype declarations, throughout.
+	(pragma GCC system_header): Remove pointless conditional guard.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use to wrap extern "C" declarations.
+	[WINVER >= 0x500, WINVER >= 0x501]: Replace conditionals with...
+	[WINVER >= _WIN32_WINNT_WIN2K, WINVER >= _WIN32_WINNT_WINXP]: ...these
+	alternatives, respectively; they offer improved self-documentation.
+	(MS_DEF_PROV, MS_ENHANCED_PROV, MS_STRONG_PROV, MS_SCARD_PROV)
+	(MS_DEF_RSA_SIG_PROV, MS_DEF_RSA_SCHANNEL_PROV, MS_DEF_DSS_PROV)
+	(MS_DEF_DSS_DH_PROV, MS_ENH_DSS_DH_PROV, MS_DEF_DH_SCHANNEL_PROV)
+	(MS_ENH_RSA_AES_PROV): Redefine as __AW_EXTENDED__ derivatives.
+	(MS_DEF_PROV_W, MS_ENHANCED_PROV_W, MS_STRONG_PROV_W, MS_SCARD_PROV_W)
+	(MS_DEF_RSA_SIG_PROV_W, MS_DEF_RSA_SCHANNEL_PROV_W, MS_DEF_DSS_PROV_W)
+	(MS_DEF_DSS_DH_PROV_W, MS_ENH_DSS_DH_PROV_W, MS_DEF_DH_SCHANNEL_PROV_W)
+	(MS_ENH_RSA_AES_PROV_W): Redefine; use __AW_STRING_W__ to derive them
+	from their __AW_STRING_A__ equivalent string constant definitions.
+	(GET_ALG_CLASS): Redefine, expressing result in terms of...
+	(ALG_CLASS_ALL): ...this manifest bit mask; also redefined, preferring
+	a hexadecimal expression of the mask value over the former decimal.
+	(GET_ALG_TYPE, GET_ALG_SID): Similarly, use hexadecimal mask values.
+	(ALG_CLASS_SIGNATURE, ALG_CLASS_MSG_ENCRYPT, ALG_CLASS_DATA_ENCRYPT)
+	(ALG_CLASS_HASH, ALG_CLASS_KEY_EXCHANGE, ALG_TYPE_DSS, ALG_TYPE_RSA)
+	(ALG_TYPE_BLOCK, ALG_TYPE_STREAM, ALG_TYPE_DH, ALG_TYPE_SECURECHANNEL)
+	(CRYPT_UPDATE_KEY, CRYPT_NEWKEYSET, CRYPT_DELETEKEYSET, CRYPT_SILENT)
+	(CRYPT_MACHINE_KEYSET, CRYPT_USER_PROTECTED, CRYPT_CREATE_SALT)
+	(CRYPT_EXPORTABLE, CRYPT_ENCRYPT, CRYPT_DECRYPT, CRYPT_EXPORT)
+	(CRYPT_READ, CRYPT_WRITE, CRYPT_MAC, CERT_TRUST_IS_NOT_TIME_VALID)
+	(CERT_TRUST_IS_NOT_TIME_NESTED, CERT_TRUST_IS_REVOKED)
+	(CERT_TRUST_IS_NOT_SIGNATURE_VALID, CERT_TRUST_IS_NOT_VALID_FOR_USAGE)
+	(CERT_TRUST_IS_UNTRUSTED_ROOT, CERT_TRUST_REVOCATION_STATUS_UNKNOWN)
+	(CERT_TRUST_IS_CYCLIC, CERT_TRUST_CTL_IS_NOT_SIGNATURE_VALID)
+	(CERT_TRUST_IS_PARTIAL_CHAIN, CERT_TRUST_CTL_IS_NOT_TIME_VALID)
+	(CERT_TRUST_CTL_IS_NOT_VALID_FOR_USAGE, CERT_TRUST_IS_SELF_SIGNED)
+	(CERT_TRUST_HAS_EXACT_MATCH_ISSUER, CERT_TRUST_HAS_KEY_MATCH_ISSUER)
+	(CERT_TRUST_HAS_NAME_MATCH_ISSUER, CERT_TRUST_IS_COMPLEX_CHAIN)
+	(CERT_CHAIN_POLICY_BASE, CERT_CHAIN_POLICY_AUTHENTICODE)
+	(CERT_CHAIN_POLICY_AUTHENTICODE_TS, CERT_CHAIN_POLICY_SSL)
+	(CERT_CHAIN_POLICY_BASIC_CONSTRAINTS, CERT_CHAIN_POLICY_NT_AUTH)
+	(CERT_NAME_STR_REVERSE_FLAG, CERT_NAME_STR_DISABLE_IE4_UTF8_FLAG)
+	(CERT_NAME_STR_CRLF_FLAG, CERT_NAME_STR_ENABLE_UTF8_UNICODE_FLAG)
+	(CERT_NAME_STR_ENABLE_T61_UNICODE_FLAG, CERT_NAME_STR_NO_PLUS_FLAG)
+	(CERT_NAME_STR_NO_QUOTING_FLAG, CERT_NAME_STR_SEMICOLON_FLAG)
+	(CERT_FIND_CERT_ID, CERT_FIND_CTL_USAGE, CERT_FIND_ENHKEY_USAGE)
+	(CERT_FIND_EXISTING, CERT_FIND_HASH, CERT_FIND_ISSUER_ATTR)
+	(CERT_FIND_ISSUER_NAME, CERT_FIND_ISSUER_OF, CERT_FIND_KEY_IDENTIFIER)
+	(CERT_FIND_KEY_SPEC, CERT_FIND_MD5_HASH, CERT_FIND_PROPERTY)
+	(CERT_FIND_PUBLIC_KEY, CERT_FIND_SHA1_HASH, CERT_FIND_SIGNATURE_HASH)
+	(CERT_FIND_SUBJECT_ATTR, CERT_FIND_SUBJECT_CERT, CERT_FIND_SUBJECT_NAME)
+	(CERT_FIND_SUBJECT_STR_A, CERT_FIND_SUBJECT_STR_W)
+	(CERT_FIND_ISSUER_STR_A, CERT_FIND_ISSUER_STR_W)
+	(CERT_FIND_OR_ENHKEY_USAGE_FLAG, CERT_FIND_OPTIONAL_ENHKEY_USAGE_FLAG)
+	(CERT_FIND_NO_ENHKEY_USAGE_FLAG, CERT_FIND_VALID_ENHKEY_USAGE_FLAG)
+	(CERT_FIND_EXT_ONLY_ENHKEY_USAGE_FLAG, CERT_UNICODE_IS_RDN_ATTRS_FLAG)
+	(CERT_CASE_INSENSITIVE_IS_RDN_ATTRS_FLAG, CERT_CHAIN_FIND_BY_ISSUER)
+	(CERT_CHAIN_FIND_BY_ISSUER_COMPARE_KEY_FLAG)
+	(CERT_CHAIN_FIND_BY_ISSUER_COMPLEX_CHAIN_FLAG)
+	(CERT_CHAIN_FIND_BY_ISSUER_CACHE_ONLY_FLAG)
+	(CERT_CHAIN_FIND_BY_ISSUER_CACHE_ONLY_URL_FLAG)
+	(CERT_CHAIN_FIND_BY_ISSUER_LOCAL_MACHINE_FLAG)
+	(CERT_CHAIN_FIND_BY_ISSUER_NO_KEY_FLAG)
+	(CERT_SYSTEM_STORE_LOCAL_MACHINE): All represent bit-mapped values;
+	express them in hexadecimal, in preference to original decimal form.
+	(CERT_FIND_SUBJECT_STR, CERT_FIND_ISSUER_STR): Redefine them as
+	__AW_EXTENDED__ macros, for UNICODE/non-UNICODE cases respectively.
+	(szOID_CRL_DIST_POINTS): Correct defective definition; value should be
+	a string literal, but was missing delimiting quotes; insert them.
+	(CertNameToStr, CertOpenSystemStore, CertGetNameString, CryptSignHash)
+	(CryptAcquireContext, CryptVerifySignature, CryptGetDefaultProvider)
+	(CryptEnumProviders, CryptSetProvider): Define as __AW_SUFFIXED__
+	aliases for each of the UNICODE/non-UNICODE cases respectively.
+	(CryptEnumProvidersA): Correct prototype declaration; 5th parameter
+	was declared as type LPTSTR, but should be type LPSTR.
+	(CryptEnumProvidersW): Likewise; 5th parameter should be type LPWSTR.
+	(CryptGetDefaultProviderW): Likewise; 4th parameter was declared as
+	type LPSTR, but should be type LPWSTR.
+	[defined MINGW_TENTATIVE_ASSUMPTIONS] (X509_ANY_STRING)
+	(X509_CRL_REASON_CODE, X509_DSS_PUBLICKEY, X509_UNICODE_ANY_STRING)
+	(struct _CERT_ALT_NAME_ENTRY): Add tentative definitions.
+
 2015-09-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct defect in build system compilation rule.
