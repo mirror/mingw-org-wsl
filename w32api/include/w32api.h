@@ -60,56 +60,55 @@
  * of required operating system and Internet Explorer version support, when
  * assigning WINVER, _WIN32_WINDOWS, _WIN32_WINNT, and _WIN32_IE values.
  *
- * Formerly defined as macros, these are now considered deprecated in favour
- * of manifest definitions from <sdkddkver.h>; hence, reimplement in terms of
- * static long integer constants, and flag as deprecated.
- */
-#define __WIN32_DEPRECATED_ALIAS( __type__, __name__, __value__ )\
-  static const __type__ __name__ __attribute__((__deprecated__)) = __value__;
-
-/* _WIN32_WINDOWS and/or WINVER may be set to any of the following manifest
+ * Each of the following "old name" macros is now considered deprecated in
+ * favour of manifest "preferred name" macro definitions from <sdkddkver.h>.
+ * Hence, redefine each in terms of the appropriate "preferred name" macro;
+ * new code should avoid the old names, and use the preferred name instead.
+ *
+ *
+ * _WIN32_WINDOWS and/or WINVER may be set to any of the following manifest
  * values, to specify a minimum Win9x support level requirement:
  *
- * 				 Old Name	Preferred Name
- * 				 -------------	-----------------
+ *      Old Name	Preferred Name
+ *      -------------	------------------
  */
-__WIN32_DEPRECATED_ALIAS( long,  Windows95,	_WIN32_WINDOWS_95 )
-__WIN32_DEPRECATED_ALIAS( long,  Windows98,	_WIN32_WINDOWS_98 )
-__WIN32_DEPRECATED_ALIAS( long,  WindowsME,	_WIN32_WINDOWS_ME )
+#define Windows95	_WIN32_WINDOWS_95
+#define Windows98	_WIN32_WINDOWS_98
+#define WindowsME	_WIN32_WINDOWS_ME
 
 /* _WIN32_WINNT and/or WINVER may be set to any of the following manifest
  * values, to specify a minimum WinNT support level requirement:
  *
- * 				 Old Name	Preferred Name
- * 				 -------------	-----------------
+ *      Old Name	Preferred Name
+ *      -------------	------------------
  */
-__WIN32_DEPRECATED_ALIAS( long,  WindowsNT4,	_WIN32_WINNT_NT4 )
-__WIN32_DEPRECATED_ALIAS( long,  Windows2000,	_WIN32_WINNT_WIN2K )
-__WIN32_DEPRECATED_ALIAS( long,  WindowsXP,	_WIN32_WINNT_WINXP )
-__WIN32_DEPRECATED_ALIAS( long,  Windows2003,	_WIN32_WINNT_WS03 )
-__WIN32_DEPRECATED_ALIAS( long,  WindowsVista,	_WIN32_WINNT_VISTA )
+#define WindowsNT4	_WIN32_WINNT_NT4
+#define Windows2000	_WIN32_WINNT_WIN2K
+#define WindowsXP	_WIN32_WINNT_WINXP
+#define Windows2003	_WIN32_WINNT_WS03
+#define WindowsVista	_WIN32_WINNT_VISTA
 
 /* _WIN32_IE may be set to any of the following manifest values, to
  * specify a minimum Internet Explorer support level requirement:
  *
- * 				 Old Name	Preferred Name
- * 				 -------------	-----------------
+ *      Old Name	Preferred Name
+ *      -------------	------------------
  */
-__WIN32_DEPRECATED_ALIAS( long,  IE3,		_WIN32_IE_IE30 )
-__WIN32_DEPRECATED_ALIAS( long,  IE301, 	_WIN32_IE_IE301 )
-__WIN32_DEPRECATED_ALIAS( long,  IE302, 	_WIN32_IE_IE302 )
-__WIN32_DEPRECATED_ALIAS( long,  IE4,		_WIN32_IE_IE40 )
-__WIN32_DEPRECATED_ALIAS( long,  IE401, 	_WIN32_IE_IE401 )
-__WIN32_DEPRECATED_ALIAS( long,  IE5,		_WIN32_IE_IE50 )
-__WIN32_DEPRECATED_ALIAS( long,  IE5a,		_WIN32_IE_IE50 )
-__WIN32_DEPRECATED_ALIAS( long,  IE5b,		_WIN32_IE_IE50 )
-__WIN32_DEPRECATED_ALIAS( long,  IE501, 	_WIN32_IE_IE501 )
-__WIN32_DEPRECATED_ALIAS( long,  IE55,		_WIN32_IE_IE55 )
-__WIN32_DEPRECATED_ALIAS( long,  IE56,		_WIN32_IE_IE56 )
-__WIN32_DEPRECATED_ALIAS( long,  IE6,		_WIN32_IE_IE60 )
-__WIN32_DEPRECATED_ALIAS( long,  IE601, 	_WIN32_IE_IE60SP1 )
-__WIN32_DEPRECATED_ALIAS( long,  IE602, 	_WIN32_IE_IE60SP2 )
-__WIN32_DEPRECATED_ALIAS( long,  IE7,		_WIN32_IE_IE70 )
+#define IE3		_WIN32_IE_IE30
+#define IE301		_WIN32_IE_IE301
+#define IE302		_WIN32_IE_IE302
+#define IE4		_WIN32_IE_IE40
+#define IE401		_WIN32_IE_IE401
+#define IE5		_WIN32_IE_IE50
+#define IE5a		_WIN32_IE_IE50
+#define IE5b		_WIN32_IE_IE50
+#define IE501		_WIN32_IE_IE501
+#define IE55		_WIN32_IE_IE55
+#define IE56		_WIN32_IE_IE56
+#define IE6		_WIN32_IE_IE60
+#define IE601		_WIN32_IE_IE60SP1
+#define IE602		_WIN32_IE_IE60SP2
+#define IE7		_WIN32_IE_IE70
 
 
 /* Only Microsoft could attempt to justify this insanity: when building
