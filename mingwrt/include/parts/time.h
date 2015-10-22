@@ -104,20 +104,37 @@
  */
 struct timespec
 {
-  /* Period is sum of tv_sec + tv_nsec; use explicitly sized types
-   * to avoid 32-bit vs. 64-bit time_t ambiguity...
+  /* Period is sum of tv_sec + tv_nsec; while 32-bits is sufficient
+   * to accommodate tv_nsec, we use 64-bit __time64_t for tv_sec, to
+   * ensure that we have a sufficiently large field to accommodate
+   * Microsoft's ambiguous __time32_t vs. __time64_t representation
+   * of time_t; we may resolve this ambiguity locally, by casting a
+   * pointer to a struct timespec to point to an identically sized
+   * struct __mingw32_timespec, which is defined below.
+   */
+  __time64_t	  tv_sec;	/* seconds; accept 32 or 64 bits */
+  __int32  	  tv_nsec;	/* nanoseconds */
+};
+
+struct __mingw32_expanded_timespec
+{
+  /* Equivalent of struct timespec, with disambiguation for the
+   * 32-bit vs. 64-bit tv_sec field declaration.  Period is the
+   * sum of tv_sec + tv_nsec; we use explicitly sized types to
+   * avoid 32-bit vs. 64-bit time_t ambiguity...
    */
   union
   { /* ...within this anonymous union, allowing tv_sec to accommodate
      * seconds expressed in either of Microsoft's (ambiguously sized)
      * time_t representations.
      */
-    time_t	  tv_sec;	/* ambiguously 32 or 64 bits */
-    __time32_t	__tv32_sec;	/* unambiguously 32 bits */
     __time64_t	__tv64_sec;	/* unambiguously 64 bits */
+    __time32_t	__tv32_sec;	/* unambiguously 32 bits */
+    time_t	  tv_sec;	/* ambiguously 32 or 64 bits */
   };
   __int32  	  tv_nsec;	/* nanoseconds */
 };
+
 # define __struct_timespec_defined  1
 #endif
 

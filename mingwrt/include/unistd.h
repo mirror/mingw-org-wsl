@@ -110,8 +110,8 @@ __CRT_INLINE __LIBIMPL__(( FUNCTION = nanosleep ))
 int nanosleep( const struct timespec *period, struct timespec *residual )
 {
   if( residual != (void *)(0) )
-    residual->__tv64_sec = (__time64_t)(residual->tv_nsec = 0);
-  return __mingw_sleep((unsigned)(period->__tv64_sec), (period->__tv64_sec < 0LL)
+    residual->tv_sec = (__time64_t)(residual->tv_nsec = 0);
+  return __mingw_sleep((unsigned)(period->tv_sec), (period->tv_sec < 0LL)
     ? (unsigned)(-1) : (unsigned)(period->tv_nsec));
 }
 #endif

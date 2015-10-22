@@ -258,6 +258,20 @@ _CRTIMP size_t __cdecl __MINGW_NOTHROW		wcsftime (wchar_t*, size_t, const wchar_
 #define _WTIME_DEFINED
 #endif /* _WTIME_DEFINED */
 
+#ifdef _MINGW32_EXTENDED_SOURCE
+__CRT_ALIAS __LIBIMPL__(( FUNCTION = mingw_timespec ))
+/*
+ * This non-ANSI convenience function facilitates access to entities
+ * defined as struct timespec, while exposing the broken down form of
+ * the tv_sec field, as declared within struct __mingw32_timespec.  It
+ * is exposed only when _MINGW32_EXTENDED_SOURCE is defined, which is
+ * normally implicitly the case, except when in __STRICT_ANSI__ mode
+ * unless the user defines it explicitly.
+ */
+struct __mingw32_expanded_timespec *mingw_timespec( struct timespec *__tv )
+{ return (struct __mingw32_expanded_timespec *)(__tv); }
+#endif
+
 _END_C_DECLS
 
 #endif /* ! RC_INVOKED */

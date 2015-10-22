@@ -433,4 +433,12 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 # endif
 #endif
 
+#if ! defined _MINGW32_EXTENDED_SOURCE && ! defined __STRICT_ANSI__
+/*
+ * Enable mingw32 extensions by default, except when __STRICT_ANSI__
+ * conformity mode has been enabled.
+ */
+# define _MINGW32_EXTENDED_SOURCE  1
+#endif
+
 #endif /* __MINGW_H: $RCSfile$: end of file */

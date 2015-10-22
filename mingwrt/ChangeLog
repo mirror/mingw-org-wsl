@@ -1,3 +1,23 @@
+2015-10-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rationalize definition of struct timespec.
+
+	* include/parts/time.h (struct timespec): Redefine; use __time64_t for
+	tv_sec field, in place of anonymous union, thus avoiding missing brace
+	warnings when initializing; leave a copy of the previous definition...
+	(struct __mingw32_expanded_timespec): ...named thus.
+
+	* include/unistd.h (nanosleep): Adjust inline implementation, to match
+	altered specification of tv_sec field in struct timespec.
+
+	* include/_mingw.h (_MINGW32_EXTENDED_SOURCE): New feature test macro.
+	[! defined __STRICT_ANSI__]: Define it, making it a default feature.
+
+	* include/time.h [_MINGW32_EXTENDED_SOURCE] (mingw_timespec): New
+	convenience function; defined as inline, with __LIBIMPL__ equivalent,
+	it facilitates interpretation of an instance of struct timespec as if
+	it were defined as struct __mingw32_expanded_timespec.
+
 2015-09-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make strings.h mostly POSIX.1-2008 compliant.
