@@ -1,5 +1,22 @@
 2015-10-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Windows application module version information API updates.
+
+	* include/winver.h: Assert copyright; tidy layout.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these, as appropriate.
+	(__AW_SUFFIXED__): Use throughout, to identify generic functions
+	having both ANSI and UTF-16LE specific alternative implementations.
+	[NTDDI_VERSION >= NTDDI_VISTA] (GetFileVersionInfoEx): New function.
+	[NTDDI_VERSION >= NTDDI_VISTA] (GetFileVersionInfoSizeEx): Likewise;
+	note that both are generic, with ANSI and UTF-16LE implementations,
+	but the ANSI implementations are missing from MSVCRT.DLL when...
+	[NTDDI_VERSION < NTDDI_WIN8]: ...this.
+
+	* lib/version.def (GetFileVersionInfoExA, GetFileVersionInfoExW)
+	(GetFileVersionInfoSizeExA, GetFileVersionInfoSizeExW): Add symbols.
+
+2015-10-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Revert a failed experimental macro construct.
 
 	* include/w32api.h (__W32API_DEPRECATED_ALIAS): Delete this; it bloats
