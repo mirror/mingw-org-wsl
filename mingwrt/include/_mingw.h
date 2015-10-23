@@ -387,15 +387,13 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 #endif
 
 #ifndef _POSIX_C_SOURCE
- /*
-  * Users may define this, either directly or indirectly, to explicitly
+ /* Users may define this, either directly or indirectly, to explicitly
   * enable a particular level of visibility for the subset of those POSIX
   * features which are supported by MinGW; (notice that this offers no
   * guarantee that any particular POSIX feature will be supported).
   */
 # if defined _XOPEN_SOURCE
-  /*
-   * Specifying this is the preferred method for setting _POSIX_C_SOURCE;
+  /* Specifying this is the preferred method for setting _POSIX_C_SOURCE;
    * (POSIX defines an explicit relationship to _XOPEN_SOURCE).  Note that
    * any such explicit setting will augment the set of features which are
    * available to any compilation unit, even if it seeks to be strictly
@@ -424,12 +422,22 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 #  define _POSIX_C_SOURCE  200809L
 
 # elif defined _POSIX_SOURCE
-  /*
-   * Now formally deprecated by POSIX, some old code may specify this;
+  /* Now formally deprecated by POSIX, some old code may specify this;
    * it will enable a minimal level of POSIX support, in addition to the
    * limited feature set enabled for strict ANSI-C conformity.
    */
 #  define _POSIX_C_SOURCE  1L
+# endif
+#endif
+
+#ifndef _ISOC99_SOURCE
+ /* libmingwex.a provides free-standing implementations for many of the
+  * functions which were introduced in C99; MinGW headers do not expose
+  * prototypes for these, unless this feature test macro is defined, by
+  * the user, or implied by other standards...
+  */
+# if __STDC_VERSION__ >= 199901L || _POSIX_C_SOURCE >= 200112L
+#  define _ISOC99_SOURCE  1
 # endif
 #endif
 

@@ -1,3 +1,28 @@
+2015-10-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make atof() and strtod() conform to ISO-C; fix MinGW-Bug [#2273]
+
+	* include/_mingw.h (_ISOC99_SOURCE): Ensure this feature test macro is
+	defined, when implied by any STDC or POSIX version selection, viz. ...
+	[__STDC_VERSION__ >= 199901L || _POSIX_C_SOURCE >= 200112L]: ...this.
+
+	* include/stdlib.h: Assert copyright; tidy layout.
+	(_STDLIB_H_): Multiple inclusion guard macro renamed...
+	(_STDLIB_H): ...to this, preferring no trailing underscore.
+	[!defined __NO_ISOCEXT]: Delete double negative references; use...
+	[defined _ISOC99_SOURCE]: ...this feature test instead, when...
+	(lldiv_t): ...defining this C99 specific aggregate data type, and...
+	(lldiv, llabs, atoll, strtoll, strtoull, strtof, strtold, wcstof)
+	(wcstold, _Exit): ...declaring these C99 function prototypes.
+	(wtoll, lltoa, ulltoa, lltow, ulltow): Mark as deprecated, pending
+	future removal; not in MSVCRT.DLL, these conform to no known standard.
+	[__USE_MINGW_ANSI_STDIO] (atof, strtod): Implement inline, using...
+	(__strtod): ...this libmingwex.a provided function; it handles string
+	representations of hexadecimal-floats, infinities and NaNs, whereas...
+	(strtod): ...this MSVCRT.DLL implementation does not.
+	(__MSVCRT_VERSION__): Prefer symbolic comparison...
+	[>= __MSVCR80_DLL]: ...for this requirement.
+
 2015-10-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Rationalize definition of struct timespec.
