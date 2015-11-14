@@ -1,3 +1,162 @@
+2015-11-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor for Windows DDK synchronization; fix MinGW-Bug [#1954].
+
+	* include/parts/winioctl.h: New file; it provides infrastructure for
+	sharing of common code between DDK headers and primary <winioctl.h>
+	(__IOCTL_STORAGE_, __IOCTL_DISK_, __FILE_RW_ACCESS, __FILE_AM_BUFFERED)
+	(__FILE_RD_BUFFERED, __FILE_RW_BUFFERED): New internal convenience
+	macros; they facilitate more consise expression of factored out IOCTL
+	and FSCTL macros; define them.
+
+	* include/ddk/ntddk.h: Assert copyright; tidy layout.
+	(__NTDDK_H): Multiple inclusion guard macro, renamed to...
+	(_DDK_NTDDK_H): ...this; it provides better indication of location.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them.
+
+	* include/ddk/winddk.h: Assert copyright; tidy layout.
+	(__WINDDK_H): Multiple inclusion guard macro, renamed to...
+	(_DDK_WINDDK_H): ...this; it provides better indication of location.
+	[!defined _DDK_NTDDK_H]: Forbid direct inclusion; emit diagnostic.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them.
+	(METHOD_BUFFERED, METHOD_IN_DIRECT, METHOD_OUT_DIRECT)
+	(METHOD_NEITHER): Redefine as enumeration; factor it out.
+	(FILE_ANY_ACCESS, FILE_SPECIAL_ACCESS, FILE_READ_ACCESS)
+	(FILE_WRITE_ACCESS): Likewise.
+	(CTL_CODE, DEVICE_TYPE_FROM_CTL_CODE): Factor out.
+	[defined _DRIVE_LAYOUT_INFORMATION_MBR_DEFINED]: Delete guard.
+	(struct _DRIVE_LAYOUT_INFORMATION_MBR, DRIVE_LAYOUT_INFORMATION_MBR)
+	(PDRIVE_LAYOUT_INFORMATION_MBR): Factor out, without guard.
+	(struct _DRIVE_LAYOUT_INFORMATION_GPT, DRIVE_LAYOUT_INFORMATION_GPT)
+	(PDRIVE_LAYOUT_INFORMATION_GPT): Factor out.
+	(struct _PARTITION_INFORMATION_MBR, PARTITION_INFORMATION_MBR)
+	(PPARTITION_INFORMATION_MBR): Likewise.
+	(FILE_DEVICE_BEEP, FILE_DEVICE_CD_ROM, FILE_DEVICE_CD_ROM_FILE_SYSTEM)
+	(FILE_DEVICE_CONTROLLER, FILE_DEVICE_DATALINK, FILE_DEVICE_DFS)
+	(FILE_DEVICE_DISK, FILE_DEVICE_DISK_FILE_SYSTEM)
+	(FILE_DEVICE_FILE_SYSTEM, FILE_DEVICE_INPORT_PORT)
+	(FILE_DEVICE_KEYBOARD, FILE_DEVICE_MAILSLOT, FILE_DEVICE_MIDI_IN)
+	(FILE_DEVICE_MIDI_OUT, FILE_DEVICE_MOUSE)
+	(FILE_DEVICE_MULTI_UNC_PROVIDER, FILE_DEVICE_NAMED_PIPE)
+	(FILE_DEVICE_NETWORK, FILE_DEVICE_NETWORK_BROWSER)
+	(FILE_DEVICE_NETWORK_FILE_SYSTEM, FILE_DEVICE_NULL)
+	(FILE_DEVICE_PARALLEL_PORT, FILE_DEVICE_PHYSICAL_NETCARD)
+	(FILE_DEVICE_PRINTER, FILE_DEVICE_SCANNER)
+	(FILE_DEVICE_SERIAL_MOUSE_PORT, FILE_DEVICE_SERIAL_PORT)
+	(FILE_DEVICE_SCREEN, FILE_DEVICE_SOUND, FILE_DEVICE_STREAMS)
+	(FILE_DEVICE_TAPE, FILE_DEVICE_TAPE_FILE_SYSTEM, FILE_DEVICE_TRANSPORT)
+	(FILE_DEVICE_UNKNOWN, FILE_DEVICE_VIDEO, FILE_DEVICE_VIRTUAL_DISK)
+	(FILE_DEVICE_WAVE_IN, FILE_DEVICE_WAVE_OUT, FILE_DEVICE_8042_PORT)
+	(FILE_DEVICE_NETWORK_REDIRECTOR, FILE_DEVICE_BATTERY)
+	(FILE_DEVICE_BUS_EXTENDER, FILE_DEVICE_MODEM, FILE_DEVICE_VDM)
+	(FILE_DEVICE_MASS_STORAGE, FILE_DEVICE_SMB, FILE_DEVICE_KS)
+	(FILE_DEVICE_CHANGER, FILE_DEVICE_SMARTCARD, FILE_DEVICE_ACPI)
+	(FILE_DEVICE_DVD, FILE_DEVICE_FULLSCREEN_VIDEO)
+	(FILE_DEVICE_DFS_FILE_SYSTEM, FILE_DEVICE_DFS_VOLUME)
+	(FILE_DEVICE_SERENUM, FILE_DEVICE_TERMSRV, FILE_DEVICE_KSEC)
+	(FILE_DEVICE_FIPS): Redefine as enumeration; factor it out.
+	(enum _PARTITION_STYLE, PARTITION_STYLE): Factor out; add...
+	(PARTITION_STYLE_RAW): ...this new enumeration state; previously, it
+	was defined only when including this enumeration from winioctl.h
+	(struct _CREATE_DISK_MBR, CREATE_DISK_MBR, PCREATE_DISK_MBR)
+	(struct _CREATE_DISK_GPT, CREATE_DISK_GPT, PCREATE_DISK_GPT)
+	(struct _CREATE_DISK, CREATE_DISK, PCREATE_DISK): Factor out;
+	include parts/winioctl.h
+
+	* include/ddk/ntddstor.h: Assert copyright; tidy layout.
+	(__NTDDSTOR_H): Multiple inclusion guard macro, renamed to...
+	(_DDK_NTDDSTOR_H): ...this; to provide better indication of location.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them.
+	(struct _STORAGE_BUS_TYPE, STORAGE_BUS_TYPE, PSTORAGE_BUS_TYPE)
+	(IOCTL_STORAGE_BASE, IOCTL_STORAGE_RESERVE, IOCTL_STORAGE_RELEASE)
+	(IOCTL_STORAGE_CHECK_VERIFY, IOCTL_STORAGE_CHECK_VERIFY2)
+	(IOCTL_STORAGE_MEDIA_REMOVAL, IOCTL_STORAGE_EJECT_MEDIA)
+	(IOCTL_STORAGE_LOAD_MEDIA, IOCTL_STORAGE_LOAD_MEDIA2)
+	(IOCTL_STORAGE_EJECTION_CONTROL, IOCTL_STORAGE_FIND_NEW_DEVICES)
+	(IOCTL_STORAGE_GET_MEDIA_TYPES, IOCTL_STORAGE_GET_MEDIA_TYPES_EX)
+	(IOCTL_STORAGE_GET_MEDIA_SERIAL_NUMBER, IOCTL_STORAGE_PREDICT_FAILURE)
+	(IOCTL_STORAGE_QUERY_PROPERTY, IOCTL_STORAGE_GET_DEVICE_NUMBER)
+	(IOCTL_STORAGE_RESET_BUS, IOCTL_STORAGE_RESET_DEVICE)
+	(IOCTL_STORAGE_MCN_CONTROL): Factor out; include parts/winioctl.h
+
+	* include/ddk/ntdddisk.h: Assert copyright; tidy layout.
+	(__NTDDDISK_H): Multiple inclusion guard macro, renamed to...
+	(_DDK_NTDDDISK_H): ...this; to provide better indication of location.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them.
+	(IOCTL_DISK_BASE, IOCTL_DISK_GET_LENGTH_INFO)
+	(IOCTL_DISK_IS_WRITABLE, IOCTL_DISK_REASSIGN_BLOCKS)
+	(IOCTL_DISK_FIND_NEW_DEVICES, IOCTL_DISK_GET_MEDIA_TYPES)
+	(IOCTL_DISK_GET_DRIVE_LAYOUT, IOCTL_DISK_SET_DRIVE_LAYOUT)
+	(IOCTL_DISK_GET_PARTITION_INFO, IOCTL_DISK_SET_PARTITION_INFO)
+	(IOCTL_DISK_GET_DRIVE_LAYOUT_EX, IOCTL_DISK_SET_DRIVE_LAYOUT_EX)
+	(IOCTL_DISK_GET_DRIVE_GEOMETRY, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX)
+	(IOCTL_DISK_CREATE_DISK, IOCTL_DISK_VERIFY, IOCTL_DISK_CHECK_VERIFY)
+	(IOCTL_DISK_GET_PARTITION_INFO_EX, IOCTL_DISK_SET_PARTITION_INFO_EX)
+	(IOCTL_DISK_GET_CACHE_INFORMATION, IOCTL_DISK_SET_CACHE_INFORMATION)
+	(IOCTL_DISK_DELETE_DRIVE_LAYOUT, IOCTL_DISK_GROW_PARTITION)
+	(IOCTL_DISK_FORMAT_TRACKS, IOCTL_DISK_FORMAT_TRACKS_EX)
+	(IOCTL_DISK_PERFORMANCE, IOCTL_DISK_PERFORMANCE_OFF)
+	(IOCTL_DISK_UPDATE_DRIVE_SIZE, IOCTL_DISK_RESERVE): Factor out; all of
+	these macros are now defined in parts/winioctl.h; include it.
+	(PARTITION_ENTRY_UNUSED, PARTITION_FAT_12, PARTITION_XENIX_1)
+	(PARTITION_XENIX_2, PARTITION_FAT_16, PARTITION_EXTENDED)
+	(PARTITION_HUGE, PARTITION_IFS, PARTITION_OS2BOOTMGR, PARTITION_FAT32)
+	(PARTITION_FAT32_XINT13, PARTITION_XINT13, PARTITION_XINT13_EXTENDED)
+	(PARTITION_PREP, PARTITION_LDM, PARTITION_UNIX, PARTITION_NTFT)
+	(VALID_NTFT): Redefine as enumeration; factor it out.
+	(IsRecognizedPartition, IsContainerPartition): Factor out.
+	(enum _MEDIA_TYPE, MEDIA_TYPE, PMEDIA_TYPE): Factor out, adding...
+	(F3_200Mb_512, F3_240M_512, F3_32M_512): ...these new state values.
+	(enum _DETECTION_TYPE, DETECTION_TYPE): Factor out.
+	(struct _DISK_INT13_INFO, DISK_INT13_INFO, PDISK_INT13_INFO)
+	(struct _DISK_EX_INT13_INFO, DISK_EX_INT13_INFO, PDISK_EX_INT13_INFO)
+	(struct _DISK_DETECTION_INFO, DISK_DETECTION_INFO, PDISK_DETECTION_INFO)
+	(struct _DISK_GEOMETRY_EX, DISK_GEOMETRY_EX, PDISK_GEOMETRY_EX)
+	(struct _DISK_GEOMETRY, DISK_GEOMETRY, PDISK_GEOMETRY)
+	(DiskGeometryGetPartition, DiskGeometryGetDetect): Factor out.
+	(struct _PARTITION_INFORMATION): Change field data types for...
+	(HiddenSectors, PartitionNumber): ...these, from DWORD to ULONG...
+	(PartitionType): ...and this from BYTE to UCHAR, to keep consistent
+	with Windows DDK convention, then factor out struct, together with...
+	(PARTITION_INFORMATION, PPARTITION_INFORMATION): ...these.
+	(struct _PARTITION_INFORMATION_GPT, struct _DISK_PARTITION_INFO)
+	(PARTITION_INFORMATION_GPT, *PPARTITION_INFORMATION_GPT)
+	(DISK_PARTITION_INFO, *PDISK_PARTITION_INFO): Factor out.
+	(struct _GET_LENGTH_INFORMATION) 
+	(GET_LENGTH_INFORMATION, PGET_LENGTH_INFORMATION)
+	(struct _DISK_PERFORMANCE, DISK_PERFORMANCE, PDISK_PERFORMANCE)
+	(struct _DISK_PERFORMANCE_EX, DISK_PERFORMANCE_EX, PDISK_PERFORMANCE_EX)
+	(struct _FORMAT_PARAMETERS, struct _FORMAT_EX_PARAMETERS)
+	(FORMAT_PARAMETERS, PFORMAT_PARAMETERS, FORMAT_EX_PARAMETERS)
+	(PFORMAT_EX_PARAMETERS): Factor out.
+	(struct _REASSIGN_BLOCKS): Change field data types for...
+	(Reserved, Count): ...these fields, from WORD to USHORT, and...
+	(BlockNumber): ...this from DWORD to ULONG, per Windows DDK
+	convention, then factor out the struct definition, together with...
+	(REASSIGN_BLOCKS, PREASSIGN_BLOCKS): ...these associated typedefs.
+	(struct _SET_PARTITION_INFORMATION, SET_PARTITION_INFORMATION)
+	(PSET_PARTITION_INFORMATION): Factor out.
+	(struct _VERIFY_INFORMATION): Change field data type for...
+	(Length): ...this field, from DWORD to ULONG, per DDK convention, then
+	factor out the entire struct definition, together with...
+	(VERIFY_INFORMATION, PVERIFY_INFORMATION): ...these associated typedefs.
+	(DISK_CACHE_RETENTION_PRIORITY): Factor out enumerated typedef.
+	(struct _DISK_CACHE_INFORMATION, struct _DISK_GROW_PARTITION)
+	(DISK_CACHE_INFORMATION, PDISK_CACHE_INFORMATION, DISK_GROW_PARTITION)
+	(PDISK_GROW_PARTITION): Factor out.
+
+	* include/winioctl.h: Assert copyright; tidy layout; incorporate
+	definitions from Windows DDK headers, by including parts/winioctl.h;
+	delete duplicate definitions already identified as having been factored
+	out from ddk/winddk.h, ddk/ntddstor.h, and ddk/ntdddisk.h; accept type
+	compatible changes from DWORD to ULONG, WORD to USHORT, and BYTE to
+	UCHAR, resulting in no significant changes, except that...
+	(struct _DISK_PERFORMANCE): ...this is extended, by addition of...
+	(IdleTime, SplitCount, QueryTime, StorageDeviceNumber)
+	(StorageManagerName): ...these previously missing fields, originally
+	appropriately defined in ddk/ntdddisk.h, thus fixing bug [#1954].
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them.
+
 2015-10-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Windows application module version information API updates.
