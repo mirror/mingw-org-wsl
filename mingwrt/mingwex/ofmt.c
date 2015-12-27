@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2014, MinGW.org Project
+ * Copyright (C) 2014, 2015, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -86,6 +86,10 @@
  */
 extern unsigned int __mingw_output_format_flag;
 
+static __inline__ __attribute__((__always_inline__))
+unsigned int update_output_format_flag( unsigned int style )
+{ return (__mingw_output_format_flag & ~_EXPONENT_DIGIT_MASK) | style; }
+
 #if defined __varofmt__
 /*
  * Here, we actually allocate the storage for recording the preferred
@@ -108,7 +112,7 @@ unsigned int __mingw_get_output_format_fallback( void )
   /* Our replacement function simply returns the current setting of
    * the assigned formatting style...
    */
-  return __mingw_output_format_flag;
+  return __mingw_output_format_flag & _EXPONENT_DIGIT_MASK;
 }
 /* ...and, in the case of _set_output_format(), we simply map the
  * requisite name to the common function implementation.
@@ -139,9 +143,8 @@ int __mingw_set_printf_count_output_fallback( int mode )
  * Here, we are wrapping the _set_printf_count_output() function...
  */
 # define RTNTYPE   int
-# define ARGTYPE   int
 # define FUNCTION _set_printf_count_output
-# define ARGLIST   mode
+# define ARGLIST   int mode
 
 #define api_helper_result api_helper( mode )
 extern int __mingw_set_printf_count_output_fallback( int );
@@ -151,9 +154,8 @@ extern int __mingw_set_printf_count_output_fallback( int );
  * ...while here, it is _get_printf_count_output().
  */
 # define RTNTYPE   int
-# define ARGTYPE   void
 # define FUNCTION _get_printf_count_output
-# define ARGLIST
+# define ARGLIST   void
 
 #define api_helper_result api_helper()
 extern int __mingw_get_printf_count_output_fallback( void );
@@ -165,8 +167,7 @@ extern int __mingw_get_printf_count_output_fallback( void );
  */
 # define RTNTYPE   unsigned int
 # define FUNCTION _set_output_format
-# define ARGTYPE   unsigned int
-# define ARGLIST   style
+# define ARGLIST   unsigned int style
 
 /* Our replacement function emulates the documented behaviour of
  * its MSVCRT counterpart, assigning a new value for the recorded
@@ -181,8 +182,8 @@ api_invoke( unsigned int (*api_helper)(unsigned int), unsigned int style )
    * to retrieve the previous value for return; thus it is able
    * to use a handler in common with _get_output_format()...
    */
-  unsigned int retval = api_helper( style );
-  __mingw_output_format_flag = style;
+  unsigned int retval = api_helper( style &= _EXPONENT_DIGIT_MASK );
+  __mingw_output_format_flag = update_output_format_flag( style );
   return retval;
 }
 /* ...while declaring its formal prototype as external.
@@ -197,10 +198,17 @@ extern unsigned int __mingw_set_output_format_fallback( unsigned int );
  */
 # define RTNTYPE   unsigned int
 # define FUNCTION _get_output_format
-# define ARGTYPE   void
-# define ARGLIST
+# define ARGLIST   void
 
-#define api_helper_result __mingw_output_format_flag = api_helper()
+static __inline__ __attribute__((__always_inline__))
+unsigned int api_invoke( unsigned int (*api_helper)( void ) )
+{
+  unsigned int retval = api_helper();
+  __mingw_output_format_flag = update_output_format_flag( retval );
+  return retval;
+}
+
+#define api_helper_result api_invoke( api_helper )
 extern unsigned int __mingw_get_output_format_fallback( void );
 #endif
 
@@ -217,11 +225,11 @@ extern unsigned int __mingw_get_output_format_fallback( void );
 #define __api_name__(FUNCTION)  __stringify__(FUNCTION)
 #define __stringify__(TEXT) #TEXT
 
-RTNTYPE __mingw_(FUNCTION)( ARGTYPE ARGLIST )
+RTNTYPE __mingw_(FUNCTION)( ARGLIST )
 {
   /* Our generic interface maps an indirect call to the API...
    */
-  static RTNTYPE (*api_helper)( ARGTYPE ARGLIST ) = NULL;
+  static RTNTYPE (*api_helper)( ARGLIST ) = NULL;
 
   /* ...such that it will prefer an MSVCRT implementation...
    */

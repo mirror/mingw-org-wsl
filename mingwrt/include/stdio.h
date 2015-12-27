@@ -188,11 +188,9 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	unlink (const char*);
 #endif /* __STRICT_ANSI__ */
 
 _CRTIMP int __cdecl __MINGW_NOTHROW	setvbuf (FILE*, char*, int, size_t);
-
 _CRTIMP void __cdecl __MINGW_NOTHROW	setbuf (FILE*, char*);
 
-/*
- * Formatted Output
+/* Formatted Output
  *
  * MSVCRT implementations are not ANSI C99 conformant...
  * we offer these conforming alternatives from libmingwex.a
@@ -208,6 +206,33 @@ extern int __mingw_stdio_redirect__(vfprintf)(FILE*, const char*, __VALIST);
 extern int __mingw_stdio_redirect__(vprintf)(const char*, __VALIST);
 extern int __mingw_stdio_redirect__(vsprintf)(char*, const char*, __VALIST);
 extern int __mingw_stdio_redirect__(vsnprintf)(char*, size_t, const char*, __VALIST);
+
+/* When using these C99 conforming alternatives, we may wish to support
+ * some of Microsoft's quirky formatting options, even when they violate
+ * strict C99 conformance.
+ */
+#define _MSVC_PRINTF_QUIRKS		0x0100U
+#define _QUERY_MSVC_PRINTF_QUIRKS	~0U, 0U
+#define _DISABLE_MSVC_PRINTF_QUIRKS	~_MSVC_PRINTF_QUIRKS, 0U
+#define _ENABLE_MSVC_PRINTF_QUIRKS	~0U, _MSVC_PRINTF_QUIRKS
+
+/* Those quirks which conflict with ANSI C99 specified behaviour are
+ * disabled by default; use the following function, like this:
+ *
+ *   _mingw_output_format_control( _ENABLE_MSVC_PRINTF_QUIRKS );
+ *
+ * to enable them, like this:
+ *
+ *   state = _mingw_output_format_control( _QUERY_MSVC_PRINTF_QUIRKS )
+ *		& _MSVC_PRINTF_QUIRKS;
+ *
+ * to ascertain the currently active enabled state, or like this:
+ *
+ *   _mingw_output_format_control( _DISABLE_MSVC_PRINTF_QUIRKS );
+ *
+ * to disable them again.
+ */
+extern unsigned int _mingw_output_format_control( unsigned int, unsigned int );
 
 #if __USE_MINGW_ANSI_STDIO
 /*
@@ -522,6 +547,11 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_setmaxstdio (int);
  * we will provide this regardless of Microsoft's negligence.
  */
 #define _THREE_DIGIT_EXPONENT  0
+
+/* Once again, unspecified by Microsoft, (and mostly redundant),
+ * it is convenient to specify a combining mask for these.
+ */
+#define _EXPONENT_DIGIT_MASK  (_TWO_DIGIT_EXPONENT | _THREE_DIGIT_EXPONENT)
 
 unsigned int __cdecl __mingw_get_output_format (void);
 unsigned int __cdecl __mingw_set_output_format (unsigned int);

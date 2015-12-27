@@ -1,3 +1,33 @@
+2015-12-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Improve ISO-C conformity in MinGW printf(); cf. MinGW-Bug [#1761]
+
+	* mingwex/ofmtctl.c: New file; it implements...
+	(_mingw_output_format_control): ...this new function; it provides
+	additional MinGW specific printf() format processing options.
+
+	* Makefile.in (libmingwex.a) [prerequisites]: Add ofmtctl.$OBJEXT
+
+	* include/stdio.h (_mingw_output_format_control): Declare it.
+	(_EXPONENT_DIGIT_MASK, _MSVC_PRINTF_QUIRKS, _QUERY_MSVC_PRINTF_QUIRKS)
+	(_ENABLE_MSVC_PRINTF_QUIRKS, _DISABLE_MSVC_PRINTF_QUIRKS): New
+	manifest constant expressions; define them.
+
+	* mingwex/stdio/pformat.c: Revise licensing terms.
+	(__pformat) [%le, %lE, %lf, %lF, %lg, %lG, %lx, %lX]: When...
+	[_mingw_output_format_flag & _MSVC_PRINTF_QUIRKS == 0]: ...ignore `l'
+	modifier; this matches the behaviour specified by ISO-C99, else...
+	[_mingw_output_format_flag & _MSVC_PRINTF_QUIRKS != 0]: ...revert to
+	previous MSVC compatible behaviour, treating it as an `L' modifier.
+	[!_WIN32] (_MSVC_PRINTF_QUIRKS): Force the zero match case.
+
+	* mingwex/ofmt.c (ARGLIST): Subsume references to...
+	(ARGTYPE): ...this now obsolete macro; delete it throughout.
+	(update_output_format_flag): New inline function; it restricts flag
+	operations to affect only Microsoft's exponent digit bits.
+	[FUNCTION == _set_output_format]: Use it.
+	[FUNCTION == _get_output_format]: Likewise.
+
 2015-10-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make atof() and strtod() conform to ISO-C; fix MinGW-Bug [#2273]

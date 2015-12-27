@@ -1,7 +1,7 @@
 /* FIXME: to be removed one day; for now we explicitly are not
  * prepared to support the POSIX-XSI additions to the C99 standard.
  */
-#undef   WITH_XSI_FEATURES
+#undef  WITH_XSI_FEATURES
 
 /* pformat.c
  *
@@ -13,15 +13,27 @@
  * to support Microsoft's non-standard format specifications.
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2008, 2009, 2011, 2014, 2015, MinGW.org Project
  *
- * This is free software.  You may redistribute and/or modify it as you
- * see fit, without restriction of copyright.
  *
- * This software is provided "as is", in the hope that it may be useful,
- * but WITHOUT WARRANTY OF ANY KIND, not even any implied warranty of
- * MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.  At no
- * time will the author accept any form of liability for any damages,
- * however caused, resulting from the use of this software.
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  * The elements of this implementation which deal with the formatting
  * of floating point numbers, (i.e. the `%e', `%E', `%f', `%F', `%g'
@@ -2217,25 +2229,42 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	       */
 	      ++fmt;
 	      length = PFORMAT_LENGTH_LLONG;
+	      state = PFORMAT_END;
+	      break;
 	    }
 
 	    else
-	      /* Modifier is `l'; data type is `long' sized...
+	    { /* Modifier is `l'; data type is `long' sized...
 	       */
 	      length = PFORMAT_LENGTH_LONG;
 
-#           ifndef _WIN32
-	      /*
-	       * Microsoft's MSVCRT implementation also uses `l'
-	       * as a modifier for `long double'; if we don't want
-	       * to support that, we end this case here...
+	      /* Microsoft's MSVCRT implementation also uses `l'
+	       * as a modifier for `long double'; however, this
+	       * conflicts with the usage specified by ISO-C and
+	       * POSIX, so we definitely shouldn't support this
+	       * anomaly for non-Windows builds...
 	       */
-	      state = PFORMAT_END;
-	      break;
-
-	      /* otherwise, we simply fall through...
+#	      ifndef _WIN32
+#		undef  _MSVC_PRINTF_QUIRKS
+#		define _MSVC_PRINTF_QUIRKS  0
+#	      endif
+	      /* ...nor should we support it by default, even in
+	       * Windows builds, but we grant the user a mechanism
+	       * to enable it via __mingw_output_format_flag.
 	       */
-#	    endif
+	      if( (__mingw_output_format_flag & _MSVC_PRINTF_QUIRKS) == 0 )
+	      {
+		/* When support for this Microsoft anomaly is NOT
+		 * enabled, we must end this case right here...
+		 */
+		state = PFORMAT_END;
+		break;
+	      }
+	      /* ...otherwise, we simply fall through, considering
+	       * the `l' modifier as equivalent to `L`, in the case
+	       * of floating point formats...
+	       */
+	    }
 
 	  case 'L':
 	    /*
