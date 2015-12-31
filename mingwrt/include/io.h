@@ -6,6 +6,7 @@
  *
  * System level I/O functions and types.
  *
+ * TODO: File requires review; rationalization and refactoring recommended.
  */
 #ifndef	_IO_H_
 #define	_IO_H_
@@ -295,12 +296,10 @@ __CRT_ALIAS int __cdecl __MINGW_NOTHROW	_findnexti64 (intptr_t _v1, struct _find
 #endif /* __MSVCRT_VERSION__ >= 0x0800 */
 
 #ifndef __NO_MINGW_LFS
-__CRT_INLINE off64_t lseek64 (int, off64_t, int);
+__CRT_INLINE __off64_t lseek64 (int, __off64_t, int);
 __CRT_INLINE __JMPSTUB__(( FUNCTION = lseek64, REMAPPED = _lseeki64 ))
-off64_t lseek64 (int fd, off64_t offset, int whence)
-{
-  return _lseeki64(fd, (__int64) offset, whence);
-}
+__off64_t lseek64 (int fd, __off64_t offset, int whence)
+{ return _lseeki64(fd, (__int64)(offset), whence); }
 #endif
 
 #endif /* __MSVCRT__ */

@@ -10,6 +10,7 @@
  * NOTE: The file manipulation functions provided by Microsoft seem to
  * work with either slash (/) or backslash (\) as the directory separator.
  *
+ * TODO: File requires review; rationalization and refactoring recommended.
  */
 
 #ifndef _STDIO_H_
@@ -625,34 +626,27 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	fileno (FILE*);
 #define fileno(__F) ((__F)->_file)
 #endif
 
-#if defined (__MSVCRT__) && !defined (__NO_MINGW_LFS)
+#if defined (__MSVCRT__) && ! defined (__NO_MINGW_LFS)
 #include <sys/types.h>
 __CRT_INLINE __JMPSTUB__(( FUNCTION = fopen64, REMAPPED = fopen ))
 FILE* __cdecl __MINGW_NOTHROW fopen64 (const char* filename, const char* mode)
 { return fopen (filename, mode); }
 
-int __cdecl __MINGW_NOTHROW fseeko64 (FILE*, off64_t, int);
+int __cdecl __MINGW_NOTHROW fseeko64 (FILE*, __off64_t, int);
 
 #ifdef __USE_MINGW_FSEEK
-int __cdecl __MINGW_NOTHROW __mingw_fseeko64 (FILE *, off64_t, int);
+int __cdecl __MINGW_NOTHROW __mingw_fseeko64 (FILE *, __off64_t, int);
 #define fseeko64(fp, offset, whence)  __mingw_fseeko64(fp, offset, whence)
 #endif
 
 __CRT_INLINE __LIBIMPL__(( FUNCTION = ftello64 ))
-off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE * stream)
-{
-  fpos_t pos;
-  if (fgetpos(stream, &pos))
-    return  -1LL;
-  else
-   return ((off64_t) pos);
-}
-#endif /* __NO_MINGW_LFS */
+__off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE * stream)
+{ fpos_t __pos; return (fgetpos(stream, &__pos)) ? -1LL : (__off64_t)(__pos); }
 
-#endif	/* Not __STRICT_ANSI__ */
+#endif /* __MSVCRT__ && !__NO_MINGW_LFS */
+#endif	/* !__STRICT_ANSI__ */
 
 /* Wide  versions */
-
 #ifndef _WSTDIO_DEFINED
 /*  also in wchar.h - keep in sync */
 _CRTIMP int __cdecl __MINGW_NOTHROW	fwprintf (FILE*, const wchar_t*, ...);

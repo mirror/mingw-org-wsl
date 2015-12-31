@@ -1,3 +1,27 @@
+2015-12-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid user namespace pollution by non-standard type 'off64_t'.
+
+	* include/sys/types.h (off64_t): Rename it as...
+	(__off64_t): ...this implementation-private alternative name, so
+	eliminating the potential for user namespace pollution.
+
+	* include/io.h (lseek64): Use '__off64_t', instead of 'off64_t', as
+	return type, and type of offset argument, in both prototype and inline
+	implementation; note that this addresses the issue of pollution in the
+	user namespace, while avoiding the issue of MinGW-Bug [#].
+
+	* include/stdio.h (fseeko64, __mingw_fseeko64): Use '__off64_t'
+	instead of 'off64_t', as offset argument type in function prototypes.
+	(ftello64): Likewise, for return type of inline function.
+
+	* mingwex/mingw-fseek.c: Assert copyright; tidy layout.
+	(WIN32_LEAN_AND_MEAN): Define, to minimize impact of <windows.h>.
+	(__mingw_fseeko64): Use '__off64_t' per modified function prototype.
+
+	* mingwex/stdio/fseeko64.c: Assert copyright.
+	(fseeko64): Use '__off64_t' per modified function prototype.
+
 2015-12-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Improve ISO-C conformity in MinGW printf(); cf. MinGW-Bug [#1761]

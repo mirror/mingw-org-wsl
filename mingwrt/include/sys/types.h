@@ -128,7 +128,7 @@ typedef long long fpos64_t;
 
 #ifndef _OFF64_T_
 #define _OFF64_T_
-typedef long long off64_t;
+typedef __int64 __off64_t;
 #endif
 
 #if _POSIX_C_SOURCE

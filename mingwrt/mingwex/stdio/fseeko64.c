@@ -1,9 +1,42 @@
-#include <stdio.h>
+/*
+ * fseeko64.c
+ *
+ * Seek to 64-offset within a file stream; uses same reference bases
+ * as fseek(), but offset is an implementation specific __off64_t type.
+ *
+ * $Id$
+ *
+ * Written by Kees Zeelenberg <kzlg@users.sourceforge.net>
+ * and Danny Smith <dannysmith@users.sourceforge.net>
+ * Copyright (C) 2004, 2005, 2015, MinGW.org Project
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ */
 #include <io.h>
+#include <stdio.h>
 #include <errno.h>
 
 int __cdecl
-fseeko64 (FILE* stream, off64_t offset, int whence)
+fseeko64 (FILE* stream, __off64_t offset, int whence)
 {
   fpos_t pos;
   if (whence == SEEK_CUR)
@@ -11,16 +44,16 @@ fseeko64 (FILE* stream, off64_t offset, int whence)
       /* If stream is invalid, fgetpos sets errno. */
       if (fgetpos (stream, &pos))
         return (-1);
-      pos += (fpos_t) offset;
+      pos += (fpos_t)(offset);
     }
   else if (whence == SEEK_END)
     {
       /* If writing, we need to flush before getting file length.  */
       fflush (stream);
-      pos = (fpos_t) (_filelengthi64 (_fileno (stream)) + offset);
+      pos = (fpos_t)(_filelengthi64 (_fileno (stream)) + offset);
     }
   else if (whence == SEEK_SET)
-    pos = (fpos_t) offset;
+    pos = (fpos_t)(offset);
   else
     {
       errno = EINVAL;
@@ -28,3 +61,5 @@ fseeko64 (FILE* stream, off64_t offset, int whence)
     }
   return fsetpos (stream, &pos);
 }
+
+/* $RCSfile$: end of file */
