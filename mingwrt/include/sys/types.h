@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Rob Savoye <rob@cygnus.com>
- * Copyright (C) 1997-1999, 2001, 2003, 2004, 2008, 2011, 2014-2015,
+ * Copyright (C) 1997-1999, 2001, 2003, 2004, 2008, 2011, 2014-2016,
  *   MinGW.org Project.
  *
  *
@@ -31,105 +31,153 @@
  *
  */
 #ifndef _SYS_TYPES_H
-#define _SYS_TYPES_H
 #pragma GCC system_header
 
-/* All the headers include this file. */
+/* All the headers include this file.
+ */
 #include <_mingw.h>
 
-#ifndef RC_INVOKED
+/* Duplicates of some type definitions from here are also to be
+ * provided by other system headers; use __need_TYPENAME selector
+ * macros to make them selectively visible...
+ */
+#if ! defined __need_off_t && ! defined __need___off64_t \
+ && ! defined __need_ssize_t
+ /*
+  * ...and define the multiple inclusion guard macro for this
+  * header, ONLY IF no such selector macro is defined.
+  */
+#define _SYS_TYPES_H
+#endif
 
+#ifndef RC_INVOKED
+/* First handle those typedefs which POSIX requires us to be able
+ * to expose selectively, via other system headers.
+ */
+#if ! defined __have_typedef_off_t \
+ && ( defined _SYS_TYPES_H || defined __need_off_t )
+ /*
+  * We base this on an implementation specific private typedef,
+  * analogous to our __off64_t (defined below)...
+  */
+  typedef __int32  __off32_t;
+
+ /* The POSIX off_t typedef is uglified, by Microsoft, as _off_t;
+  * ensure that we provide support for the Microsoft form...
+  */
+  typedef __off32_t  _off_t;
+
+# if _POSIX_C_SOURCE
+  /* ...but note that this form should ALWAYS be preferred when
+   * compiling POSIX compatible source code.
+   */
+  typedef _off_t  off_t;
+# endif
+# if __GNUC__ < 4
+  /* Some compilers, including GCC prior to v4, may get upset
+   * if we try to specifiy these typedefs more than once.
+   */
+#  define __have_typedef_off_t
+# endif
+# undef __need_off_t
+#endif
+
+#if ! defined __have_typedef___off64_t \
+ && ( defined _SYS_TYPES_H || defined __need___off64_t )
+ /*
+  * This is neither an ISO-C standard type, nor even a POSIX
+  * standard type; keep it runtime implementation specific.
+  */
+  typedef __int64  __off64_t;
+
+# if __GNUC__ < 4
+  /* Some compilers, including GCC prior to v4, may get upset
+   * if we try to specifiy these typedefs more than once.
+   */
+#  define __have_typedef___off64_t
+# endif
+# undef __need___off64_t
+#endif
+
+#if ! defined __have_typedef_ssize_t \
+ && ( defined _SYS_TYPES_H || defined __need_ssize_t )
+ /*
+  * POSIX ssize_t typedef, uglified by Microsoft as _ssize_t; ensure
+  * that we support the Microsoft form...
+  */
+  typedef int  _ssize_t;
+
+# if _POSIX_C_SOURCE
+  /* ...but note that this form should ALWAYS be preferred when
+   * compiling POSIX compatible source code.
+   */
+  typedef _ssize_t  ssize_t;
+# endif
+# if __GNUC__ < 4
+  /* Some compilers, including GCC prior to v4, may get upset
+   * if we try to specifiy these typedefs more than once.
+   */
+#  define __have_typedef_ssize_t
+# endif
+# undef __need_ssize_t
+#endif
+
+#ifdef _SYS_TYPES_H
+/* This is normal <sys/types.h> inclusion, i.e. for its own sake.
+ *
+ * A small subset of the required type definitions are actually
+ * furnished by <stddef.h>; get them by selective inclusion...
+ */
 #define __need_size_t
 #define __need_ptrdiff_t
 #define __need_wchar_t
 #include <stddef.h>
 
+/* Similarly, from this <time.h> subsidiary component...
+ */
 #define __need_time_t
 #define _FAKE_TIME_H_SOURCED 1
 #include <parts/time.h>
 
-
-#ifndef	_OFF_T_
-#define	_OFF_T_
-typedef long _off_t;
-
-#ifndef	_NO_OLDNAMES
-typedef _off_t	off_t;
-#endif
-#endif	/* Not _OFF_T_ */
-
-
-#ifndef _DEV_T_
-#define	_DEV_T_
+/* Today, Microsoft generally prefers to prefix POSIX type names
+ * with an ugly initial underscore; ensure that we provide support
+ * for this ungainly practice.
+ */
 #ifdef __MSVCRT__
-typedef unsigned int _dev_t;
+ /* Additionally, note that _dev_t is a special case, requiring
+  * this definition when linking with MSVCRT.DLL...
+  */
+typedef unsigned int	_dev_t;
+
 #else
-typedef short _dev_t;
+ /* ...but this alternative, when linking with CRTDLL.DLL
+  */
+typedef short		_dev_t;
+
+#endif
+ /* ...while the remaining type names have consistent definitions,
+  * regardless of any particular DLL association.
+  */
+typedef short		_ino_t;
+typedef unsigned short	_mode_t;
+typedef int		_pid_t;
+typedef int		_sigset_t;
+
+/* Users who value portability should prefer...
+ */
+#if _POSIX_C_SOURCE || ! defined _NO_OLDNAMES
+ /* ...the standard POSIX type names, (which are consistent with
+  * earlier Microsoft naming practice, and are also historically
+  * exposed by MinGW, except when _NO_OLDNAMES is defined).
+  */
+typedef _dev_t		 dev_t;
+typedef _ino_t		 ino_t;
+typedef _mode_t 	 mode_t;
+typedef _pid_t		 pid_t;
+typedef _sigset_t	 sigset_t;
 #endif
 
-#ifndef	_NO_OLDNAMES
-typedef _dev_t	dev_t;
-#endif
-#endif	/* Not _DEV_T_ */
-
-
-#ifndef _INO_T_
-#define	_INO_T_
-typedef short _ino_t;
-
-#ifndef	_NO_OLDNAMES
-typedef _ino_t	ino_t;
-#endif
-#endif	/* Not _INO_T_ */
-
-
-#ifndef _PID_T_
-#define	_PID_T_
-typedef int	_pid_t;
-
-#ifndef	_NO_OLDNAMES
-typedef _pid_t	pid_t;
-#endif
-#endif	/* Not _PID_T_ */
-
-
-#ifndef _MODE_T_
-#define	_MODE_T_
-typedef unsigned short _mode_t;
-
-#ifndef	_NO_OLDNAMES
-typedef _mode_t	mode_t;
-#endif
-#endif	/* Not _MODE_T_ */
-
-
-#ifndef _SIGSET_T_
-#define	_SIGSET_T_
-typedef int	_sigset_t;
-
-#ifndef	_NO_OLDNAMES
-typedef _sigset_t	sigset_t;
-#endif
-#endif	/* Not _SIGSET_T_ */
-
-#ifndef _SSIZE_T_
-#define _SSIZE_T_
-typedef int _ssize_t;
-
-#ifndef	_NO_OLDNAMES
-typedef _ssize_t ssize_t;
-#endif
-#endif /* Not _SSIZE_T_ */
-
-#ifndef _FPOS64_T_
-#define _FPOS64_T_
-typedef long long fpos64_t;
-#endif
-
-#ifndef _OFF64_T_
-#define _OFF64_T_
-typedef __int64 __off64_t;
-#endif
+typedef __int64 	 fpos64_t;
 
 #if _POSIX_C_SOURCE
 /* useconds_t is an obsolete POSIX data type; we continue to define
@@ -138,6 +186,7 @@ typedef __int64 __off64_t;
  */
 typedef unsigned long useconds_t __MINGW_ATTRIB_DEPRECATED;
 #endif
+#endif  /* _SYS_TYPES_H normal inclusion */
 
 #endif	/* ! RC_INVOKED */
-#endif	/* ! _SYS_TYPES_H: $RCSfile$: end of file */
+#endif	/* !_SYS_TYPES_H: $RCSfile$: end of file */

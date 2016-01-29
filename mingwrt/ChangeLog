@@ -1,3 +1,31 @@
+2016-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Enable selective definition of POSIX system types.
+
+	* include/sys/types.h (_SYS_TYPES_H): Do NOT define, if including with
+	any specific __need_TYPE selector having been set prior to inclusion;
+	DO define it when no such selector is present, and undefine all such
+	selectors as may have been set, after evaluation of their effects.
+	(_DEV_T_, _FPOS64_T_, _INO_T_, _MODE_T_, _OFF_T_, _OFF64_T_, _PID_T_)
+	(_SIGSET_T_, _SSIZE_T_): Unnecessary guard macros; delete them; this
+	accommodates reorganization of the file, to achieve a tidier layout.
+	(__have_typedef_off_t): New repeat definition guard; define it for
+	compilers which may choke on any repeated typedef for either of...
+	(off_t, _off_t): ...these; make them selectively defineable for...
+	[_SYS_TYPES_H && !__have_typedef_off_t]: ...non-selective inclusion...
+	[__need_off_t && !__have_typedef_off_t]: ...this specific selection;
+	in either case, redefine them in terms of...
+	(__off32_t): ...this new internal type, for consistency with...
+	(__off64_t): ...this previously defined non-standard type; also make
+	it selectively defineable, either by...
+	[_SYS_TYPES_H && !__have_typedef___off64_t]: ...non-selective, or...
+	[__need_off_t && !__have_typedef___off64_t]: ...selective inclusion.
+	(__have_typedef___off64_t): New repeat definition guard; define it.
+	(ssize_t, _ssize_t): Also make them selectively defineable, on...
+	[_SYS_TYPES_H && !__have_typedef_ssize_t]: ...non-selective, or...
+	[__need_off_t && !__have_typedef_ssize_t]: ...selective inclusion.
+	(__have_typedef_ssize_t): New repeat definition guard; define it.
+
 2015-12-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid user namespace pollution by non-standard type 'off64_t'.
