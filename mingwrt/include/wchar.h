@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Rob Savoye <rob@cygnus.com>
- * Copyright (C) 1997, 1999-2009, 2011, 2015, MinGW.org Project.
+ * Copyright (C) 1997, 1999-2009, 2011, 2015, 2016, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -34,21 +34,22 @@
 #define _WCHAR_H
 #pragma GCC system_header
 
-/* All the headers include this file. */
+/* All the headers include this file.
+ */
 #include <_mingw.h>
 
-/* MSDN says that isw* char classifications are in wchar.h and wctype.h.
- * Although the wctype names are ANSI, their exposure in this header is
- * not; nevertheless, we replicate them here, for MSDN conformity.
- */
-#include <wctype.h>
-
 #ifndef __STRICT_ANSI__
-/* This is also necessary, to support the non-ANSI wchar.h declarations
- * which MSDN identifies as being provided here.
- */
+ /* MSDN says that isw* char classifications are in wchar.h and wctype.h.
+  * Although the wctype names are ANSI, their exposure in this header is
+  * not; nevertheless, we replicate them here, for MSDN conformity.
+  */
+# include <wctype.h>
+
+ /* This is also necessary, to support the non-ANSI wchar.h declarations
+  * which MSDN identifies as being provided here.
+  */
 # include <sys/types.h>
-#endif /* __STRICT_ANSI__ */
+#endif	/* !__STRICT_ANSI__ */
 
 #define WCHAR_MIN	0
 #define WCHAR_MAX	0xffff
@@ -56,122 +57,80 @@
 # define WEOF		(wchar_t)(0xffff)
 
 #ifndef RC_INVOKED
-
-#define __need_size_t
-#define __need_wint_t
-#define __need_wchar_t
-#define __need_NULL
-#include <stddef.h>
-
-#ifndef __VALIST
-# if defined __GNUC__ && __GNUC__ >= 3
-#  define __need___va_list
-#  include <stdarg.h>
-#  define __VALIST __builtin_va_list
-# else
-#  define __VALIST char*
-# endif
-#endif
-
+#define __WCHAR_H_SOURCED__
+/* ISO-C, POSIX, and Microsoft specify an overlap of content between
+ * <wchar.h> and other system header files; by inclusion of such other
+ * headers within this "__WCHAR_H_SOURCED__" scope, we may selectively
+ * retrieve the overlapping content, without requiring duplication of
+ * that content here; thus, from...
+ */
+#include <stdio.h>
+/* ...we obtain (possibly indirect) definitions and declarations for:
+ *
+ *  macros  NULL, FILENAME_MAX
+ *  types   size_t, wchar_t, wint_t, va_list (a.k.a. __VALIST), FILE
+ *  types   ssize_t, off_t, __off64_t, (conditionally, as needed)
+ *
+ *  int     fwprintf (FILE *, const wchar_t *, ...);
+ *  int     wprintf (const wchar_t *, ...);
+ *  int     vfwprintf (FILE *, const wchar_t *, __VALIST);
+ *  int     vwprintf (const wchar_t *, __VALIST);
+ *  int     snwprintf (wchar_t *, size_t, const wchar_t *, ...);
+ *  int    _snwprintf (wchar_t *, size_t, const wchar_t *, ...);
+ *  int    _vscwprintf (const wchar_t *, __VALIST);
+ *  int    _vsnwprintf (wchar_t *, size_t, const wchar_t *, __VALIST);
+ *  int     vsnwprintf (wchar_t *, size_t, const wchar_t *, __VALIST);
+ *  int     fwscanf (FILE *, const wchar_t *, ...);
+ *  int     wscanf (const wchar_t *, ...);
+ *  int     swscanf (const wchar_t *, const wchar_t *, ...);
+ *  int     vwscanf (const wchar_t *, __VALIST);
+ *  int     vfwscanf (FILE *, const wchar_t *, __VALIST);
+ *  int     vswscanf (const wchar_t *, const wchar_t *, __VALIST);
+ *  wint_t  fgetwc (FILE *);
+ *  wint_t  fputwc (wchar_t, FILE *);
+ *  wint_t  ungetwc (wchar_t, FILE *);
+ *
+ *  The following pair of Microsoft functions conflict with their
+ *  corresponding ISO-C prototypes; consequently they will not be
+ *  declared when "__STRICT_ANSI__" checking is in effect:
+ *
+ *  int  swprintf (wchar_t *, const wchar_t *, ...);
+ *  int  vswprintf (wchar_t *, const wchar_t *, __VALIST);
+ *
+ *  The following group of functions is specified by ISO-C, but
+ *  their Microsoft implementations are available only if use of
+ *  "__MSVCRT__" is specified:
+ *
+ *  wchar_t * fgetws (wchar_t *, int, FILE *);
+ *  int       fputws (const wchar_t *, FILE *);
+ *  wint_t    getwc (FILE *);
+ *  wint_t    getwchar (void);
+ *  wint_t    putwc (wint_t, FILE *);
+ *  wint_t    putwchar (wint_t);
+ *
+ *  The following group of functions is also dependent on use of
+ *  "__MSVCRT__"; however, these are Microsoft specific, so their
+ *  are not declared if "__STRICT_ANSI__" checking is specified:
+ *
+ *  wchar_t * _getws (wchar_t *);
+ *  int       _putws (const wchar_t *);
+ *  FILE    * _wfdopen(int, const wchar_t *);
+ *  FILE    * _wfopen (const wchar_t *, const wchar_t *);
+ *  FILE    * _wfreopen (const wchar_t *, const wchar_t *, FILE *);
+ *  FILE    * _wfsopen (const wchar_t *, const wchar_t *, int);
+ *  wchar_t * _wtmpnam (wchar_t *);
+ *  wchar_t * _wtempnam (const wchar_t *, const wchar_t *);
+ *  int       _wrename (const wchar_t *, const wchar_t *);
+ *  int       _wremove (const wchar_t *);
+ *  void      _wperror (const wchar_t *);
+ *  FILE    * _wpopen (const wchar_t *, const wchar_t *);
+ *
+ */
 _BEGIN_C_DECLS
 
-#ifndef _FILE_DEFINED  /* Also in stdio.h */
-#define	_FILE_DEFINED
-typedef struct _iobuf
-{
-	char*	_ptr;
-	int	_cnt;
-	char*	_base;
-	int	_flag;
-	int	_file;
-	int	_charbuf;
-	int	_bufsiz;
-	char*	_tmpfname;
-} FILE;
-#endif	/* Not _FILE_DEFINED */
-
-#define __need_time_t
-#define _FAKE_TIME_H_SOURCED 1
-#include <parts/time.h>
-
-#ifndef _TM_DEFINED /* Also in time.h */
-struct tm {
-        int tm_sec;     /* seconds after the minute - [0,59] */
-        int tm_min;     /* minutes after the hour - [0,59] */
-        int tm_hour;    /* hours since midnight - [0,23] */
-        int tm_mday;    /* day of the month - [1,31] */
-        int tm_mon;     /* months since January - [0,11] */
-        int tm_year;    /* years since 1900 */
-        int tm_wday;    /* days since Sunday - [0,6] */
-        int tm_yday;    /* days since January 1 - [0,365] */
-        int tm_isdst;   /* daylight savings time flag */
-        };
-#define _TM_DEFINED
-#endif
-
-#ifndef _WSTDIO_DEFINED
-/*  Also in stdio.h - keep in sync */
-_CRTIMP int __cdecl __MINGW_NOTHROW	fwprintf (FILE*, const wchar_t*, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wprintf (const wchar_t*, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_snwprintf (wchar_t*, size_t, const wchar_t*, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	vfwprintf (FILE*, const wchar_t*, __VALIST);
-_CRTIMP int __cdecl __MINGW_NOTHROW	vwprintf (const wchar_t*, __VALIST);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_vsnwprintf (wchar_t*, size_t, const wchar_t*, __VALIST);
-_CRTIMP int __cdecl __MINGW_NOTHROW	fwscanf (FILE*, const wchar_t*, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	wscanf (const wchar_t*, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	swscanf (const wchar_t*, const wchar_t*, ...);
-_CRTIMP wint_t __cdecl __MINGW_NOTHROW	fgetwc (FILE*);
-_CRTIMP wint_t __cdecl __MINGW_NOTHROW	fputwc (wchar_t, FILE*);
-_CRTIMP wint_t __cdecl __MINGW_NOTHROW	ungetwc (wchar_t, FILE*);
-
-/* These differ from the ISO C prototypes, which have a maxlen parameter like snprintf.  */
-#ifndef __STRICT_ANSI__
-_CRTIMP int __cdecl __MINGW_NOTHROW	swprintf (wchar_t*, const wchar_t*, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	vswprintf (wchar_t*, const wchar_t*, __VALIST);
-#endif
-
-#ifdef __MSVCRT__
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW fgetws (wchar_t*, int, FILE*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	fputws (const wchar_t*, FILE*);
-_CRTIMP wint_t __cdecl __MINGW_NOTHROW	getwc (FILE*);
-_CRTIMP wint_t __cdecl __MINGW_NOTHROW	getwchar (void);
-_CRTIMP wint_t __cdecl __MINGW_NOTHROW	putwc (wint_t, FILE*);
-_CRTIMP wint_t __cdecl __MINGW_NOTHROW	putwchar (wint_t);
-#ifndef __STRICT_ANSI__
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _getws (wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_putws (const wchar_t*);
-_CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wfdopen(int, const wchar_t *);
-_CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wfopen (const wchar_t*, const wchar_t*);
-_CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wfreopen (const wchar_t*, const wchar_t*, FILE*);
-_CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wfsopen (const wchar_t*, const wchar_t*, int);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wtmpnam (wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wtempnam (const wchar_t*, const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wrename (const wchar_t*, const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wremove (const wchar_t*);
-_CRTIMP void __cdecl __MINGW_NOTHROW	_wperror (const wchar_t*);
-_CRTIMP FILE* __cdecl __MINGW_NOTHROW	_wpopen (const wchar_t*, const wchar_t*);
-#endif  /* __STRICT_ANSI__ */
-#endif	/* __MSVCRT__ */
-
-#ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
-int __cdecl __MINGW_NOTHROW snwprintf (wchar_t*, size_t, const wchar_t*, ...);
-int __cdecl __MINGW_NOTHROW vsnwprintf (wchar_t*, size_t, const wchar_t*, __VALIST);
-#ifndef __NO_INLINE__
-__CRT_INLINE int __cdecl __MINGW_NOTHROW
-vsnwprintf (wchar_t* s, size_t n, const wchar_t* format, __VALIST arg)
-  { return _vsnwprintf ( s, n, format, arg);}
-#endif
-int __cdecl __MINGW_NOTHROW vwscanf (const wchar_t * __restrict__, __VALIST);
-int __cdecl __MINGW_NOTHROW vfwscanf (FILE * __restrict__,
-		       const wchar_t * __restrict__, __VALIST);
-int __cdecl __MINGW_NOTHROW vswscanf (const wchar_t * __restrict__,
-		       const wchar_t * __restrict__, __VALIST);
-#endif
-
-#define _WSTDIO_DEFINED
-#endif /* _WSTDIO_DEFINED */
-
-#ifndef _WSTDLIB_DEFINED /* also declared in stdlib.h */
+#ifndef _WSTDLIB_DEFINED
+/* Also declared in stdlib.h; FIXME: should be factored out.
+ */
 _CRTIMP long __cdecl __MINGW_NOTHROW 	wcstol (const wchar_t*, wchar_t**, int);
 _CRTIMP unsigned long __cdecl __MINGW_NOTHROW wcstoul (const wchar_t*, wchar_t**, int);
 _CRTIMP double __cdecl __MINGW_NOTHROW	wcstod (const wchar_t*, wchar_t**);
@@ -192,9 +151,9 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, s
 #endif /* _WSTDLIB_DEFINED */
 
 #ifndef _WTIME_DEFINED
-#ifndef __STRICT_ANSI__
-#ifdef __MSVCRT__
-/* wide function prototypes, also declared in time.h */
+#if defined __MSVCRT__ && ! defined __STRICT_ANSI__
+/* Wide function prototypes, also declared in time.h; FIXME: factor out.
+ */
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wasctime (const struct tm*);
 #if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t*);
@@ -213,8 +172,7 @@ _CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_
 #endif
 #endif
 
-#endif /* __MSVCRT__ */
-#endif /* __STRICT_ANSI__ */
+#endif	/* __MSVCRT__ && ! __STRICT_ANSI__ */
 _CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsftime (wchar_t*, size_t, const wchar_t*, const struct tm*);
 #define _WTIME_DEFINED
 #endif /* _WTIME_DEFINED */
@@ -312,7 +270,6 @@ struct __wfinddata64_t {
 };
 #endif
 #if __MSVCRT_VERSION__ >= 0x0800
-#include <stdio.h>
 struct __wfinddata32_t {
 	unsigned	attrib;
 	__time32_t	time_create;
@@ -558,7 +515,9 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wsetlocale (int, const wchar_t*);
 #define _WLOCALE_DEFINED
 #endif
 
-#ifndef _WPROCESS_DEFINED  /* also declared in process.h */
+#ifndef _WPROCESS_DEFINED
+/* Also declared in process.h; FIXME: to be factored out.
+ */
 #include <stdint.h>  /* For intptr_t.  */
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecl	(const wchar_t*, const wchar_t*, ...);
 _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecle	(const wchar_t*, const wchar_t*, ...);
@@ -584,5 +543,6 @@ _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnvpe	(int, const wchar_t*, const 
 
 _END_C_DECLS
 
+#undef __WCHAR_H_SOURCED__
 #endif /* ! RC_INVOKED */
 #endif /* ! _WCHAR_H */

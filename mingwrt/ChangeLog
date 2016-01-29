@@ -1,5 +1,37 @@
 2016-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Refactor <stdio.h> vs. <wchar.h> to avoid duplication.
+
+	* include/wchar.h: Some minor layout adjustments.
+	(__WCHAR_H_SOURCED__): New macro; define it temporarily, only while
+	within the scope of reading <wchar.h>; undefine it at end of file.
+	(struct tm): Do not define; it is sufficient to keep it opaque.
+	(FILE, FILENAME_MAX, NULL, __VALIST, off_t, __off64_t, size_t)
+	(ssize_t, va_list, wchar_t, wint_t): Do not require or define them
+	directly; delegate to indirect definition by including <stdio.h>.
+	(fgetwc, fputwc, fgetws, fputws, fwprintf, fwscanf, getwc, getwchar)
+	(_getws, putwc, putwchar, _putws, snwprintf, _snwprintf, swprintf)
+	(swscanf, ungetwc, vfwprintf, vfwscanf, _vscwprintf, vsnwprintf)
+	(_vsnwprintf, vswprintf, vwprintf, vswscanf, vwscanf, _wfdopen)
+	(_wfopen, _wfreopen, _wfsopen, _wperror, _wpopen, wprintf, _wrename)
+	(_wremove, wscanf, _wtmpnam, _wtempnam): Omit prototypes; acquire them
+	indirectly, by selective inclusion from <stdio.h>; hence include it.
+
+	* include/stdio.h: Assert copyright; tidy layout.
+	[__WCHAR_H_SOURCED__]: Selectively define and declare only those
+	entities which are required by <wchar.h>; do not define...
+	[__WCHAR_H_SOURCED__] (_STDIO_H): ...this; define it only if...
+	[!__WCHAR_H_SOURCED__]: ...this; define and declare ALL entities which
+	are normally specified within <stdio.h>, INCLUDING those specifically
+	itemised above, as selectively required by <wchar.h>.
+
+	* pseudo-reloc.c: Some minor layout adjustments.
+	(WIN32_LEAN_AND_MEAN): Define it; we don't need the windows baggage.
+	[typedef ptrdiff_t]: Do not assume this is gratuitously defined;
+	include <stdint.h> to guarantee it.
+
+2016-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Enable selective definition of POSIX system types.
 
 	* include/sys/types.h (_SYS_TYPES_H): Do NOT define, if including with

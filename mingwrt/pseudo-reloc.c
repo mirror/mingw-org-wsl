@@ -1,25 +1,32 @@
-/* pseudo-reloc.c
-
-   Contributed by Egor Duda  <deo@logos-m.ru>
-   Modified by addition of runtime_pseudo_reloc version 2
-   by Kai Tietz  <kai.tietz@onevision.com>
-
-   THIS SOFTWARE IS NOT COPYRIGHTED
-
-   This source code is offered for use in the public domain. You may
-   use, modify or distribute it freely.
-
-   This code is distributed in the hope that it will be useful but
-   WITHOUT ANY WARRANTY. ALL WARRENTIES, EXPRESS OR IMPLIED ARE HEREBY
-   DISCLAMED. This includes but is not limited to warrenties of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
-
-#include <windows.h>
+/*
+ * pseudo-reloc.c
+ *
+ * Contributed by Egor Duda  <deo@logos-m.ru>
+ * Modified by addition of runtime_pseudo_reloc version 2
+ * by Kai Tietz  <kai.tietz@onevision.com>
+ *
+ * THIS SOFTWARE IS NOT COPYRIGHTED
+ *
+ * This source code is offered for use in the public domain. You may
+ * use, modify or distribute it freely.
+ *
+ * This code is distributed in the hope that it will be useful but
+ * WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
+ * DISCLAMED. This includes but is not limited to warrenties of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ */
 #include <stdio.h>
+#include <stddef.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <memory.h>
+
+/* We need some of the MS-Windows data types and structures;
+ * define them, but with minimal namespace pollution.
+ */
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 
 #if defined(__CYGWIN__)
 #include <wchar.h>
@@ -312,16 +319,16 @@ do_pseudo_reloc (void * start, void * end, void * base)
 	    break;
 	  case 32:
 	    reldata = (ptrdiff_t) (*((unsigned int *)reloc_target));
-#ifdef _WIN64
-	    if ((reldata & 0x80000000) != 0)
-	      reldata |= ~((ptrdiff_t) 0xffffffff);
-#endif
+#	    ifdef _WIN64
+	      if ((reldata & 0x80000000) != 0)
+	        reldata |= ~((ptrdiff_t) 0xffffffff);
+#	    endif
 	    break;
-#ifdef _WIN64
+#	  ifdef _WIN64
 	  case 64:
 	    reldata = (ptrdiff_t) (*((unsigned long long *)reloc_target));
 	    break;
-#endif
+#	  endif
 	  default:
 	    reldata=0;
 	    __report_error ("  Unknown pseudo relocation bit size %d.\n",
@@ -336,20 +343,20 @@ do_pseudo_reloc (void * start, void * end, void * base)
       /* Write the new relocation value back to *reloc_target */
       switch ((r->flags & 0xff))
 	{
-         case 8:
-           __write_memory ((void *) reloc_target, &reldata, 1);
-	   break;
-	 case 16:
-           __write_memory ((void *) reloc_target, &reldata, 2);
-	   break;
-	 case 32:
-           __write_memory ((void *) reloc_target, &reldata, 4);
-	   break;
-#ifdef _WIN64
-	 case 64:
-           __write_memory ((void *) reloc_target, &reldata, 8);
-	   break;
-#endif
+	  case 8:
+	    __write_memory ((void *) reloc_target, &reldata, 1);
+	    break;
+	  case 16:
+	    __write_memory ((void *) reloc_target, &reldata, 2);
+	    break;
+	  case 32:
+	    __write_memory ((void *) reloc_target, &reldata, 4);
+	    break;
+#	  ifdef _WIN64
+	  case 64:
+	    __write_memory ((void *) reloc_target, &reldata, 8);
+	    break;
+#	  endif
 	}
      }
 }
