@@ -1,0 +1,14 @@
+Copyright (C) 2014, 2015, 2016, Keith Marshall
+
+This package aims to collate cross reference data pertaining to the
+functions exported by various versions of the MSVCRT runtime library,
+versus the particular versions of that library in which each function
+appears.  The data tabulated in the working document has been obtained
+by running MinGW.org's pexports tool on various versions of MSVCRT.DLL
+and MSVCRxx.DLL to which I have been able to acquire access, or which
+other contributors have provided in pexports symbol listing format.
+
+To compile the final PDF document from the provided source, you will
+require working GCC, GhostScript, and GNU Troff installations, within
+a shell environment which supports interpretation of Bourne shell
+scripts and GNU compatible makefiles.

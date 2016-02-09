@@ -1,0 +1,102 @@
+2016-02-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Support forced simplex vs. duplex document layout reprints.
+
+	* README.in msvcrt-xref.ms: Update copyright notices.
+	* Makefile.in (simplex, duplex): New rules; implement them, using...
+	(publication-clean): ...this additional new helper rule; it ensures
+	that any existing output file is removed, to force the reprint.
+
+2015-11-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement cross-reference document publishing infrastructure.
+
+	* README.in msvcrt-xref.ms: New files.
+	* fdl-1.3.ms: New file; this is a verbatim copy of the GNU Free
+	Documentation License, with groff -ms markup inserted.
+
+	* configure.ac Makefile.in: Add rules for detection and deployment of
+	GNU troff typesetting tools; use them to compile the publication ready
+	PDF form of the cross-reference document, and README file.
+
+2014-09-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Improve identification for historical msvcrt.dll versions.
+
+	* msvcrt.def.in: Update symbol visibility filters...
+	[__MSVCRT_VERSION__==0x0500]: ...exclude symbols which are present in
+	WinXP and later, but which were not available in Win2K; furthermore...
+	[__MSVCRT_VERSION__>=0x0410 && __MSVCRT_VERSION__< 0x0412]: ...also
+	exclude symbols present in Win98-SE, but not present in Win98, and...
+	[__MSVCRT_VERSION__< 0x0410]: ...exclude those not present in WinNT4.
+
+2014-09-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include exported symbols specific to msvcr120.dll
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x12000000]: Add symbols which
+	were not present in previous versions, appropriately filtered.
+
+2014-09-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include exported symbols specific to msvcr110.dll
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x11000000]: Add symbols which
+	were not present in previous versions, appropriately filtered.
+
+2014-09-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include exported symbols specific to msvcr100.dll
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x10000000]: Add symbols which
+	were not present in previous versions, appropriately filtered.
+
+2014-09-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include exported symbols specific to msvcr090.dll
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x09000000]: Add symbols which
+	were not present in previous versions, appropriately filtered.
+
+2014-09-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include exported symbols specific to msvcr080.dll
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x08000000]: Add symbols which
+	were not present in previous versions, appropriately filtered.
+
+2014-09-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include exported symbols specific to msvcr071.dll
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x07100000]: Add symbols which
+	were not present in previous versions, appropriately filtered.
+
+2014-09-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include exported symbols specific to msvcr070.dll
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x07000000]: Add symbols which
+	were not present in previous versions, appropriately filtered.
+
+2014-09-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add msvcrt.dll symbols which became available in Vista/Win7.
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x0600]: Add symbols which were
+	added for the Vista release of msvcrt.dll; note that there appear to
+	be no further additions pertinent to the subsequent release for...
+	[__MSVCRT_VERSION__>=0x0601]: ...this, identifying Win7.
+
+2014-09-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add msvcrt.dll symbols which became available in WinXP.
+
+	* msvcrt.def.in [__MSVCRT_VERSION__>=0x0501]: Add symbols which were
+	present in the WinXP release of msvcrt.dll, but not in Win98-SE.
+
+2014-09-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Initial commit; establish baseline equivalent to Win98-SE.
+
+	* COPYING Makefile.in configure.ac msvcrt.def.in: New files.

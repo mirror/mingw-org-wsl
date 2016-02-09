@@ -1,0 +1,187 @@
+# @configure_input@
+#
+# $Id$
+#
+# Makefile to compile cross-reference documentation for the symbols
+# exported by various versions of MSVCRT.DLL and MSVCRxx.DLL
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2014, 2015, 2016, MinGW.org Project.
+#
+#
+# This is free software.  Permission is granted to copy, modify and
+# redistribute this software, under the provisions of the GNU General
+# Public License, Version 3, (or, at your option, any later version),
+# as published by the Free Software Foundation; see the file COPYING.
+# (If you have not received the file COPYING with this software, see
+# <http://www.gnu.org/licenses/>).
+#
+# Note, in particular, that this software is provided "as is", in the
+# hope that it may prove useful, but WITHOUT WARRANTY OF ANY KIND; not
+# even an implied WARRANTY OF MERCHANTABILITY, nor of FITNESS FOR ANY
+# PARTICULAR PURPOSE.  Under no circumstances will the author, or the
+# MinGW.org Project, accept liability for any damages, however caused,
+# arising from the use of this software.
+#
+#
+# The default goal is "all"; declare it early, to ensure that it will not
+# be inadvertently overridden, but defer assignment of its actual payload
+# until until the mechanisms for generating it have been identified.
+#
+all:
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+MSG_NEED_GNU_TROFF = Please install the GNU Troff package
+MSG_NEED_GHOSTSCRIPT = Please install GhostScript to produce PDF output
+
+# MS-Windows OS platform specific versions of MSVCRT.DLL are identified
+# by the following set of hexadecimal codes:--
+#
+#   NT4 			0x400UL
+#   Win98			0x410UL
+#   Win98-SE			0x412UL
+#   Win2K			0x500UL
+#   WinXP			0x501UL
+#   Vista			0x600UL
+#   Win7			0x601UL
+#
+msvcrt_platform_versions := 400 410 412 500 501 600 601
+
+# The non-free MSVCRxx.DLL versions, as shipped with various versions of
+# Visual-Studio/MSVC, are identified by the following hexadecimal codes:--
+#
+#   MSVCR70.DLL  		0x07000000UL
+#   MSVCR71.DLL  		0x07100000UL
+#   MSVCR80.DLL  		0x08000000UL
+#   MSVCR90.DLL  		0x09000000UL
+#   MSVCR100.DLL 		0x10000000UL
+#   MSVCR110.DLL 		0x11000000UL
+#   MSVCR120.DLL 		0x12000000UL
+#
+msvcrt_nonfree_version_tags_1 := 70 71 80 90
+msvcrt_nonfree_version_tags_2 := 100 110 120
+msvcrt_nonfree_versions_1 := $(addsuffix 00000,$(msvcrt_nonfree_version_tags_1))
+msvcrt_nonfree_versions_2 := $(addsuffix 00000,$(msvcrt_nonfree_version_tags_2))
+msvcrt_nonfree_versions := $(foreach grp,1 2,$(msvcrt_nonfree_versions_$(grp)))
+
+# We provide a README file, which we generate from the README.in template;
+# it is formatted for online display by processing it with nroff.
+#
+NROFF = $(if @NROFF@,@NROFF@,$(error $(MSG_NEED_GNU_TROFF)))
+
+all: README
+README: README.in
+	printf '.pl 1\n.ll 72\n.hy 0\n' | $(NROFF) - $^ > $@
+
+# The principal payload component is a printable cross-reference document,
+# in either PDF (preferred when an appropriate generator is detected by the
+# configure script) or Postscript format otherwise.  This lists all symbols
+# which are exported by each of the MSVCRT.DLL and MSVCRxx.DLL variants of
+# the C runtime libraries, and identifies the particular DLL versions in
+# which each is present.
+#
+OUTPUT_FORMAT = @OUTPUT_FORMAT@
+
+all: msvcrt-xref.$(OUTPUT_FORMAT)
+platform_dlls := platform nonfree-1 nonfree-2
+msvcrt-xref.$(OUTPUT_FORMAT): $(foreach p,$(platform_dlls),msvcrt-xref.$p.tbl)
+
+# The first step, in generation of the cross-reference document, is to
+# extract an unqualified list of all the symbols, regardless of whichever
+# DLL versions provide them; this list is derived from a single composite
+# template file, (filtered without regard to library version).
+#
+msvcrt.def.tbl: %.tbl: %.in
+	sed -n -e '1,/^EXPORTS/d' -e '/^[A-Z_a-z]/p' $< > $@
+
+# The full gamut of supported DLL versions is the aggregate of the platform
+# specific MSVCRT.DLLs, and the non-free MSVCRxx.DLLs.
+#
+msvcrt_versions := $(msvcrt_platform_versions) $(msvcrt_nonfree_versions)
+
+# For each of these MSVCRT.DLL and MSVCRxx.DLL versions, we use the
+# C pre-processor to generate a version specific filtered symbols list,
+# derived from the same composite template file from which the previous
+# list, (non-specific to DLL version), was generated.
+#
+CC = @CC@
+msvcrt.%.def: msvcrt.def.in
+	$(CC) -xc-header -E -P -D__MSVCRT_VERSION__=0x$*UL $< > $@
+
+classify_symbols = while read symbol; \
+  do echo $$symbol%`grep -q "^$$symbol\\$$" $1 && echo Y || echo N`; \
+  done
+
+msvcrt.%.tbl: msvcrt.%.def msvcrt.def.tbl
+	$(call classify_symbols,$<) < msvcrt.def.tbl > $@
+
+# Having collected the symbols into individual per-library classification
+# tables, we fold those together into documentation group tables.
+#
+msvcrt_xref_prerequisite = $(foreach p,$(msvcrt_$1_versions$2),msvcrt.$p.tbl)
+msvcrt-xref.platform.tbl: $(call msvcrt_xref_prerequisite,platform)
+msvcrt-xref.nonfree-1.tbl: $(call msvcrt_xref_prerequisite,nonfree,_1)
+msvcrt-xref.nonfree-2.tbl: $(call msvcrt_xref_prerequisite,nonfree,_2)
+msvcrt-xref.nonfree.tbl: $(call msvcrt_xref_prerequisite,nonfree)
+msvcrt-xref.%.tbl:
+	cp msvcrt.def.tbl $@
+	for s in $^; do mv -f $@ $@.tmp && join -t% $@.tmp $$s > $@; done
+	$(if $(COMPACT_TABLES),mv -f $@ $@.tmp; sed -n '/%Y/p' $@.tmp > $@)
+	$(RM) $@.tmp
+
+# Regardless of the chosen output format, the document source template
+# must be processed using the pdfroff tool, from GNU troff...
+#
+GROFF = $(if @PDFROFF@,@PDFROFF@,$(error $(MSG_NEED_GNU_TROFF)))
+GROFF_FORMAT_FLAGS = --no-toc-relocation -mpdfmark @GROFF_FORMAT@
+#
+# ...with the appropriate option to curtail post-processing of intermediate
+# groff postscript output, when that is the chosen final output format.
+#
+%.ps: %.ms
+	$(GROFF) -st -I ${srcdir} -ms $(GROFF_FORMAT_FLAGS) --emit-ps $< > $@
+
+# When postscript output already exists, then we may simply post-process
+# it with GhostScript, to subsequently produce PDF output...
+#
+GS = $(if @GS@,@GS@,$(error $(MSG_NEED_GHOSTSCRIPT)))
+GSFLAGS = @GSFLAGS@
+
+%.pdf: %.ps
+	$(GS) $(GSFLAGS) -sDEVICE=pdfwrite -sOutputFile="$@" $<
+
+# ...but, in the normal case, we may simply use pdfroff to produce PDF
+# output directly, without capturing intermediate postscript.
+#
+POST_PDFROFF = $(if @GS@,@PDFROFF@,$(error $(MSG_NEED_GHOSTSCRIPT)))
+PDFROFF = $(if @PDFROFF@,$(POST_PDFROFF),$(error $(MSG_NEED_GNU_TROFF)))
+
+%.pdf: %.ms
+	$(PDFROFF) -st -I ${srcdir} -ms $(GROFF_FORMAT_FLAGS) $< > $@
+
+# Rules to force a rebuild of the PDF or postscript output, in either
+# simplex or duplex printer ready layout format.
+#
+.PHONY: publication-clean
+publication-clean:
+	$(RM) msvcrt-xref*.ps msvcrt-xref*.pdf
+
+simplex: publication-clean
+	$(MAKE) --no-print-directory $(MAKEFLAGS) all
+
+duplex: publication-clean
+	$(MAKE) --no-print-directory $(MAKEFLAGS) $(GROFF_DUPLEX_FLAGS) all
+
+GROFF_DUPLEX_FLAGS = GROFF_FORMAT_FLAGS='$(GROFF_FORMAT_FLAGS) -$@=on'
+
+# Clean-up rules: discard generated files.
+#
+clean mostlyclean:
+	$(RM) *.def *.tbl msvcrt-xref*.ps msvcrt-xref*.pdf
+
+distclean: clean
+	$(RM) -r autom4te.cache build dist
+	$(RM) config.*
+
+# $RCSfile$: end of file

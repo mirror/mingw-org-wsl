@@ -1,0 +1,3650 @@
+/*
+ * $Id$
+ *
+ * Template for generation of MSVCRT.DLL and MSVCRxx.DLL exports
+ * definition files, supporting multiple OS platform versions.
+ *
+ * Compiled by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2014, MinGW.org Project.
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS, NOR THE COPYRIGHT HOLDERS, BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF, OR IN CONNECTION WITH THIS SOFTWARE, OR THE USE OF,
+ * OR OTHER DEALINGS IN THIS SOFTWARE.
+ *
+ *
+ * Process this file with GCC, to generate platform specific, or
+ * DLL version specific exports definition files, e.g.:--
+ *
+ *   gcc -xc-header -E -P -D__DLLNAME__=msvcrt      \
+ *     -D__MSVCRT_VERSION__=0x0410UL msvcrt.def.in  \
+ *     > msvcrt.def
+ *
+ * will generate a definition file mapping the symbols exported by
+ * the version of MSVCRT.DLL shipped with MS-Windows-98.
+ *
+ * Note that mapping of symbols is directed by __MSVCRT_VERSION__;
+ * for the MSVCRT.DLL versions shipped with the various versions of
+ * MS-Windows, this must be a 32-bit unsigned long value with the
+ * high order 16-bits set to zero, and the low order 16-bits set
+ * to the appropriate platform specific hexadecimal value:--
+ *
+ *   NT4			0x0400UL
+ *   Win98			0x0410UL
+ *   Win98-SE			0x0412UL
+ *   Win2K			0x0500UL
+ *   WinXP			0x0501UL
+ *   Vista			0x0600UL
+ *   Win7			0x0601UL
+ *
+ * Conversely, to map symbols exported by the non-free MSVCRxx.DLL
+ * variants shipped with MSVC, __MSVCRT_VERSION__ is specified with
+ * its low order 20-bits set to zero, while the high order 12-bits
+ * are set to identify the the DLL version of interest:--
+ *
+ *   MSVCR70.DLL		0x07000000UL
+ *   MSVCR71.DLL		0x07100000UL
+ *   MSVCR80.DLL		0x08000000UL
+ *   MSVCR90.DLL		0x09000000UL
+ *   MSVCR100.DLL		0x10000000UL
+ *   MSVCR110.DLL		0x11000000UL
+ *   MSVCR120.DLL		0x12000000UL
+ *
+ * Thus, for example, a definitions file to map the symbols which
+ * are exported by MSVCR80.DLL may be generated thus:--
+ *
+ *   gcc -xc-header -E -P -D__DLLNAME__=msvcr80         \
+ *     -D__MSVCRT_VERSION__=0x08000000UL msvcrt.def.in  \
+ *     > msvcr80.def
+ *
+ */
+LIBRARY __DLLNAME__.dll
+EXPORTS
+$I10_OUTPUT
+#if __MSVCRT_VERSION__ == 0x08000000UL
+@_calloc_crt@8
+@_malloc_crt@4
+@_realloc_crt@8
+#endif
+_CIacos
+_CIasin
+_CIatan
+_CIatan2
+_CIcos
+_CIcosh
+_CIexp
+_CIfmod
+_CIlog
+_CIlog10
+_CIpow
+_CIsin
+_CIsinh
+_CIsqrt
+_CItan
+_CItanh
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ >= 0x07000000UL
+_CRT_RTC_INIT
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_CRT_RTC_INITW
+#   if __MSVCRT_VERSION__ >= 0x12000000UL
+_Cbuild
+#   endif
+_CreateFrameInfo
+#  endif
+# else /* __MSVCRT_VERSION__ < 0x07000000UL */
+_CrtCheckMemory
+_CrtDbgBreak
+_CrtDbgReport
+_CrtDbgReportV
+_CrtDbgReportW
+_CrtDbgReportWV
+_CrtDoForAllClientObjects
+_CrtDumpMemoryLeaks
+_CrtIsMemoryBlock
+_CrtIsValidHeapPointer
+_CrtIsValidPointer
+_CrtMemCheckpoint
+_CrtMemDifference
+_CrtMemDumpAllObjectsSince
+_CrtMemDumpStatistics
+_CrtReportBlockType
+_CrtSetAllocHook
+_CrtSetBreakAlloc
+_CrtSetDbgBlockType
+_CrtSetDbgFlag
+_CrtSetDumpClient
+_CrtSetReportFile
+_CrtSetReportHook
+_CrtSetReportHook2
+_CrtSetReportMode
+# endif
+#endif
+_CxxThrowException
+_EH_prolog
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_FCbuild
+# endif
+_FindAndUnlinkFrame
+#endif
+_Getdays
+_Getmonths
+_Gettnames
+_HUGE DATA
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_IsExceptionObjectToBeDestroyed
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_LCbuild
+# elif __MSVCRT_VERSION__ == 0x11000000UL
+_Lock_shared_ptr_spin_lock
+# endif
+_NLG_Dispatch2
+_NLG_Return
+_NLG_Return2
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_SetWinRTOutOfMemoryExceptionCallback
+# endif
+#endif
+_Strftime
+#if __MSVCRT_VERSION__ >= 0x11000000UL
+# if __MSVCRT_VERSION__ == 0x11000000UL
+_Unlock_shared_ptr_spin_lock
+# endif
+_W_Getdays
+_W_Getmonths
+_W_Gettnames
+_Wcsftime
+#endif
+_XcptFilter
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+__AdjustPointer
+__BuildCatchObject
+__BuildCatchObjectHelper
+# endif
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ != 0x07000000UL
+__CppXcptFilter
+# endif
+# if __MSVCRT_VERSION__ < 0x11000000UL
+#  if __MSVCRT_VERSION__ >= 0x0600UL
+#   if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+__CxxCallUnwindDelDtor
+#   endif
+#  endif
+__CxxCallUnwindDtor
+#  if __MSVCRT_VERSION__ >= 0x0600UL
+#   if __MSVCRT_VERSION__ >= 0x08000000UL
+__CxxCallUnwindStdDelDtor
+#   endif
+__CxxCallUnwindVecDtor
+#  endif
+# endif
+__CxxDetectRethrow
+__CxxExceptionFilter
+#endif
+__CxxFrameHandler
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+__CxxFrameHandler2
+__CxxFrameHandler3
+# endif
+#endif
+__CxxLongjmpUnwind
+#if __MSVCRT_VERSION__ >= 0x0501UL
+__CxxQueryExceptionSize
+__CxxRegisterExceptionObject
+__CxxUnregisterExceptionObject
+__DestructExceptionObject
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+__FrameUnwindFilter
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+__GetPlatformExceptionInfo
+#  endif
+# endif
+#endif
+__RTCastToVoid
+__RTDynamicCast
+__RTtypeid
+__STRINGTOLD
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+__STRINGTOLD_L
+__TypeMatch
+#  if __MSVCRT_VERSION__ < 0x11000000UL
+___fls_getvalue@4
+___fls_setvalue@8
+#  elif __MSVCRT_VERSION__ == 0x11000000UL
+___crtCreateSemaphoreExW@24
+#  endif
+# endif
+___lc_codepage_func
+# if __MSVCRT_VERSION__ >= 0x0600UL
+___lc_collate_cp_func
+# endif
+# if __MSVCRT_VERSION__ < 0x11000000UL
+___lc_handle_func
+# else /* __MSVCRT_VERSION__ >= 0x11000000UL */
+___lc_locale_name_func
+# endif
+___mb_cur_max_func
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+___mb_cur_max_l_func
+# endif
+___setlc_active_func
+___unguarded_readlc_active_add_func
+#endif
+__argc DATA
+__argv DATA
+__badioinfo DATA
+#if __MSVCRT_VERSION__ >= 0x07000000UL && __MSVCRT_VERSION__ < 0x08000000UL
+__buffer_overrun
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__clean_type_info_names_internal
+__control87_2
+__create_locale
+#endif
+__crtCompareStringA
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x11000000UL
+__crtCompareStringEx
+# endif
+__crtCompareStringW
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+__crtCreateEventExW
+__crtCreateSemaphoreExW
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x10000000UL
+__crtGetLocaleInfoW
+# if __MSVCRT_VERSION__ >= 0x0501UL
+__crtGetStringTypeW
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x11000000UL
+__crtCreateSymbolicLinkW
+__crtEnumSystemLocalesEx
+__crtFlsAlloc
+__crtFlsFree
+__crtFlsGetValue
+__crtFlsSetValue
+__crtGetDateFormatEx
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+__crtGetFileInformationByHandleEx
+#  endif
+__crtGetLocaleInfoEx
+__crtGetShowWindowMode
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+__crtGetTickCount64
+#  endif
+__crtGetTimeFormatEx
+__crtGetUserDefaultLocaleName
+__crtInitializeCriticalSectionEx
+__crtIsPackagedApp
+__crtIsValidLocaleName
+# endif
+#endif
+__crtLCMapStringA
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x11000000UL
+__crtLCMapStringEx
+# endif
+__crtLCMapStringW
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+__crtSetFileInformationByHandle
+# endif
+# if __MSVCRT_VERSION__ >= 0x11000000UL
+__crtSetThreadStackGuarantee
+__crtSetUnhandledExceptionFilter
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+__crtSleep
+#  endif
+__crtTerminateProcess
+__crtUnhandledException
+# endif
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+__daylight
+#  endif
+# endif
+#endif
+__dllonexit
+__doserrno
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+__dstbias
+# endif
+#endif
+__fpecode
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__free_locale
+# if __MSVCRT_VERSION__ < 0x10000000UL
+__get_app_type
+# endif
+__get_current_locale
+__get_flsindex
+__get_tlsindex
+#endif
+__getmainargs
+__initenv DATA
+#if __MSVCRT_VERSION__ >= 0x0501UL
+__iob_func
+#endif
+__isascii
+__iscsym
+__iscsymf
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__iswcsym
+__iswcsymf
+#endif
+#if __MSVCRT_VERSION__ < 0x10000000UL
+# if __MSVCRT_VERSION__ >= 0x07000000UL
+__lc_clike DATA
+# endif
+__lc_codepage DATA
+# if __MSVCRT_VERSION__ >= 0x0412UL
+__lc_collate_cp DATA
+# endif
+__lc_handle DATA
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__lconv DATA
+#endif
+__lconv_init
+# if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+__libm_sse2_acos
+__libm_sse2_acosf
+__libm_sse2_asin
+__libm_sse2_asinf
+__libm_sse2_atan
+__libm_sse2_atan2
+__libm_sse2_atanf
+__libm_sse2_cos
+__libm_sse2_cosf
+__libm_sse2_exp
+__libm_sse2_expf
+__libm_sse2_log
+__libm_sse2_log10
+__libm_sse2_log10f
+__libm_sse2_logf
+__libm_sse2_pow
+__libm_sse2_powf
+__libm_sse2_sin
+__libm_sse2_sinf
+__libm_sse2_tan
+__libm_sse2_tanf
+# endif
+#endif
+__mb_cur_max DATA
+__p___argc
+__p___argv
+__p___initenv
+__p___mb_cur_max
+__p___wargv
+__p___winitenv
+__p__acmdln
+#if __MSVCRT_VERSION__ < 0x10000000UL
+__p__amblksiz
+#endif
+__p__commode
+__p__daylight
+__p__dstbias
+__p__environ
+#if __MSVCRT_VERSION__ < 0x08000000UL
+__p__fileinfo
+#endif
+__p__fmode
+__p__iob
+#if __MSVCRT_VERSION__ >= 0x0410UL
+__p__mbcasemap
+#endif
+__p__mbctype
+#if __MSVCRT_VERSION__ == 0x08000000UL
+__p__osplatform
+#endif
+#if __MSVCRT_VERSION__ < 0x09000000UL
+__p__osver
+#endif
+__p__pctype
+__p__pgmptr
+__p__pwctype
+__p__timezone
+__p__tzname
+__p__wcmdln
+__p__wenviron
+#if __MSVCRT_VERSION__ < 0x09000000UL
+__p__winmajor
+__p__winminor
+__p__winver
+#endif
+__p__wpgmptr
+#if __MSVCRT_VERSION__ >= 0x0501UL
+__pctype_func
+#endif
+__pioinfo DATA
+# if __MSVCRT_VERSION__ >= 0x0600UL
+__pwctype_func
+#endif
+__pxcptinfoptrs
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__report_gsfailure
+#elif __MSVCRT_VERSION__ >= 0x07000000UL
+__security_error_handler
+#endif
+__set_app_type
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+# if __MSVCRT_VERSION__ < 0x11000000UL
+__set_flsgetvalue
+# endif
+#elif __MSVCRT_VERSION__ >= 0x07000000UL
+__set_buffer_overrun_handler
+#endif
+__setlc_active DATA
+__setusermatherr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+__strncnt
+# endif
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+__swprintf_l
+__sys_errlist
+__sys_nerr
+# endif
+#endif
+__threadhandle
+__threadid
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__timezone
+#endif
+__toascii
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__tzname
+#endif
+__unDName
+#if __MSVCRT_VERSION__ >= 0x0412UL
+__unDNameEx
+#endif
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+__unDNameHelper
+# endif
+__uncaught_exception
+#endif
+__unguarded_readlc_active DATA
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+__vswprintf_l
+#endif
+__wargv DATA
+#if __MSVCRT_VERSION__ >= 0x0501UL
+__wcserror
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+__wcserror_s
+__wcsncnt
+#  endif
+# endif
+#endif
+__wgetmainargs
+__winitenv DATA
+_abnormal_termination
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_abs64
+# endif
+#endif
+_access
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_access_s
+# endif
+#endif
+_acmdln DATA
+#if __MSVCRT_VERSION__ < 0x10000000UL
+_adj_fdiv_m16i
+_adj_fdiv_m32
+_adj_fdiv_m32i
+_adj_fdiv_m64
+_adj_fdiv_r
+_adj_fdivr_m16i
+_adj_fdivr_m32
+_adj_fdivr_m32i
+_adj_fdivr_m64
+_adj_fpatan
+_adj_fprem
+_adj_fprem1
+_adj_fptan
+_adjust_fdiv DATA
+_aexit_rtn DATA
+#endif
+#if __MSVCRT_VERSION__ >= 0x0501UL
+_aligned_free
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_aligned_free_dbg
+# endif
+_aligned_malloc
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_aligned_malloc_dbg
+# elif __MSVCRT_VERSION__ >= 0x08000000UL
+_aligned_msize
+# endif
+_aligned_offset_malloc
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_aligned_offset_malloc_dbg
+# endif
+_aligned_offset_realloc
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_aligned_offset_realloc_dbg
+# elif __MSVCRT_VERSION__ >= 0x08000000UL
+_aligned_offset_recalloc
+# endif
+_aligned_realloc
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_aligned_realloc_dbg
+# elif __MSVCRT_VERSION__ >= 0x08000000UL
+_aligned_recalloc
+# endif
+#endif
+_amsg_exit
+_assert
+_atodbl
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_atodbl_l
+_atof_l
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_atoflt
+#  endif
+_atoflt_l
+# endif
+#endif
+_atoi64
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_atoi64_l
+_atoi_l
+_atol_l
+# endif
+#endif
+_atoldbl
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_atoldbl_l
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_atoll_l
+#endif
+_beep
+_beginthread
+_beginthreadex
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_byteswap_uint64
+_byteswap_ulong
+_byteswap_ushort
+#endif
+_c_exit
+_cabs
+_callnewh
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_calloc_crt
+#elif __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_calloc_dbg
+#endif
+_cexit
+_cgets
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_cgets_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x0501UL
+_cgetws
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_cgetws_s
+#  endif
+# endif
+#endif
+_chdir
+_chdrive
+_chgsign
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_chgsignf
+#endif
+#if __MSVCRT_VERSION__ >= 0x0412UL
+_chkesp
+#endif
+_chmod
+_chsize
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_chsize_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL
+_chvalidator
+_chvalidator_l
+# endif
+#endif
+_clearfp
+_close
+_commit
+_commode DATA
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_configthreadlocale
+#endif
+_control87
+_controlfp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_controlfp_s
+# endif
+#endif
+_copysign
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_copysignf
+#endif
+_cprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_cprintf_l
+_cprintf_p
+_cprintf_p_l
+_cprintf_s
+_cprintf_s_l
+# endif
+#endif
+_cputs
+#if __MSVCRT_VERSION__ >= 0x0501UL
+_cputws
+#endif
+_creat
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_create_locale
+_crt_debugger_hook
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL
+_crtAssertBusy
+_crtBreakAlloc
+_crtDbgFlag
+# endif
+#endif
+_cscanf
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_cscanf_l
+_cscanf_s
+_cscanf_s_l
+_ctime32
+_ctime32_s
+#  endif
+# endif
+_ctime64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ctime64_s
+#  endif
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x07000000UL
+; TODO(REVIEW): in MSVCRT.dll...
+; TODO(REVIEW): pexports may fail to qualify _ctype as DATA.
+#endif
+#if __MSVCRT_VERSION__ < 0x07100000UL
+_ctype DATA
+#endif
+_cwait
+#if __MSVCRT_VERSION__ >= 0x0501UL
+_cwprintf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_cwprintf_l
+_cwprintf_p
+_cwprintf_p_l
+_cwprintf_s
+_cwprintf_s_l
+#  endif
+# endif
+_cwscanf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_cwscanf_l
+_cwscanf_s
+_cwscanf_s_l
+#  endif
+# endif
+#endif
+_daylight DATA
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_dclass
+# elif __MSVCRT_VERSION__ < 0x10000000UL
+_decode_pointer
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_difftime32
+_difftime64
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_dosmaperr
+#endif
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_dpcomp
+_dsign
+#endif
+_dstbias DATA
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_dtest
+#endif
+_dup
+_dup2
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_dupenv_s
+#endif
+_ecvt
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ecvt_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL && __MSVCRT_VERSION__ < 0x10000000UL
+_encode_pointer
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL && __MSVCRT_VERSION__ < 0x11000000UL
+_encoded_null
+#endif
+_endthread
+_endthreadex
+_environ DATA
+_eof
+_errno
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_except1
+#endif
+_except_handler2
+_except_handler3
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_except_handler4_common
+# endif
+#endif
+_execl
+_execle
+_execlp
+_execlpe
+_execv
+_execve
+_execvp
+_execvpe
+_exit
+_expand
+#if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_expand_dbg
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_fclose_nolock
+#endif
+_fcloseall
+_fcvt
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_fcvt_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_fdclass
+#endif
+_fdopen
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_fdpcomp
+_fdsign
+_fdtest
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_fflush_nolock
+#endif
+_fgetchar
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_fgetwc_nolock
+#endif
+_fgetwchar
+_filbuf
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_fileinfo DATA
+#endif
+_filelength
+_filelengthi64
+_fileno
+_findclose
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_findfirst
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_findfirst32
+_findfirst32i64
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_findfirst64
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_findfirsti64
+_findnext
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_findfirst64i32
+_findnext32
+_findnext32i64
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_findnext64
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_findnexti64
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_findnext64i32
+#endif
+_finite
+_flsbuf
+_flushall
+_fmode DATA
+_fpclass
+_fpieee_flt
+_fpreset
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_fprintf_l
+_fprintf_p
+_fprintf_p_l
+_fprintf_s_l
+# endif
+#endif
+_fputchar
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_fputwc_nolock
+#endif
+_fputwchar
+#if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_free_dbg
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_fread_nolock
+_fread_nolock_s
+_free_locale
+#  endif
+_freea
+_freea_s
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_freefls
+#  endif
+_fscanf_l
+_fscanf_s_l
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_fseek_nolock
+#  endif
+_fseeki64
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_fseeki64_nolock
+#endif
+_fsopen
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_fstat
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_fstat32
+_fstat32i64
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_fstat64
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_fstati64
+_ftime
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_fstat64i32
+_ftell_nolock
+_ftelli64
+_ftelli64_nolock
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ftime32
+_ftime32_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_ftime64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ftime64_s
+#  endif
+# endif
+#endif
+_ftol
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL
+_ftol2
+_ftol2_sse
+_ftol2_sse_excpt
+# endif
+#endif
+_fullpath
+#if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_fullpath_dbg
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_futime
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_futime32
+#  endif
+# endif
+_futime64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_fwprintf_l
+_fwprintf_p
+_fwprintf_p_l
+_fwprintf_s_l
+#   if __MSVCRT_VERSION__ >= 0x08000000UL
+_fwrite_nolock
+#   endif
+_fwscanf_l
+_fwscanf_s_l
+#  endif
+# endif
+#endif
+_gcvt
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_gcvt_s
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+#   if __MSVCRT_VERSION__ < 0x10000000UL
+_get_amblksiz
+#   endif
+_get_current_locale
+_get_daylight
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_get_doserrno
+#   if __MSVCRT_VERSION__ >= 0x08000000UL
+_get_dstbias
+#   endif
+#   if __MSVCRT_VERSION__ < 0x07000000UL
+_get_environ
+#   endif
+_get_errno
+#   if __MSVCRT_VERSION__ < 0x07000000UL
+_get_fileinfo
+#   endif
+_get_fmode
+#  endif
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x07100000UL
+_get_heap_handle
+# endif
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_get_invalid_parameter_handler
+# endif
+#endif
+_get_osfhandle
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+#  if __MSVCRT_VERSION__ < 0x09000000UL
+_get_osplatform
+_get_osver
+#  endif
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_get_output_format
+_get_pgmptr
+# endif
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_get_printf_count_output
+_get_purecall_handler
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x10000000UL
+_get_sbh_threshold
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_get_terminate
+_get_timezone
+_get_tzname
+_get_unexpected
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL
+_get_wenviron
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+#  if __MSVCRT_VERSION__ < 0x09000000UL
+_get_winmajor
+_get_winminor
+_get_winver
+#  endif
+_get_wpgmptr
+# endif
+# if __MSVCRT_VERSION__ >= 0x09000000UL
+_getc_nolock
+# endif
+#endif
+_getch
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_getch_nolock
+#endif
+_getche
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_getche_nolock
+#endif
+_getcwd
+_getdcwd
+#if __MSVCRT_VERSION__ >= 0x08000000UL && __MSVCRT_VERSION__ < 0x11000000UL
+_getdcwd_nolock
+#endif
+_getdiskfree
+_getdllprocaddr
+_getdrive
+_getdrives
+_getmaxstdio
+_getmbcp
+_getpid
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_getptd
+#endif
+_getsystime
+_getw
+#if __MSVCRT_VERSION__ >= 0x0501UL
+_getwch
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_getwch_nolock
+# endif
+_getwche
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_getwche_nolock
+# endif
+#endif
+_getws
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_getws_s
+#endif
+_global_unwind2
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_gmtime32
+_gmtime32_s
+#  endif
+# endif
+_gmtime64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_gmtime64_s
+#  endif
+# endif
+#endif
+_heapadd
+_heapchk
+_heapmin
+_heapset
+_heapused
+_heapwalk
+_hypot
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_hypotf
+#endif
+_i64toa
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_i64toa_s
+# endif
+#endif
+_i64tow
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_i64tow_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_initptd
+# endif
+#endif
+_initterm
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_initterm_e
+# endif
+#endif
+_inp
+_inpd
+_inpw
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_invalid_parameter
+# endif
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_invalid_parameter_noinfo
+#  if __MSVCRT_VERSION__ >= 0x10000000UL
+_invalid_parameter_noinfo_noreturn
+#  endif
+_invoke_watson
+# endif
+# if __MSVCRT_VERSION__ == 0x11000000UL
+; TODO(REVIEW): in MSVCR110.dll...
+; TODO(REVIEW): pexports fails to qualify _iob as DATA.
+# endif
+#endif
+_iob DATA
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_isalnum_l
+_isalpha_l
+# endif
+#endif
+_isatty
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_isblank_l
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_iscntrl_l
+# endif
+#endif
+_isctype
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_isctype_l
+_isdigit_l
+_isgraph_l
+_isleadbyte_l
+_islower_l
+# endif
+#endif
+_ismbbalnum
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbalnum_l
+# endif
+#endif
+_ismbbalpha
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbalpha_l
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_ismbbblank
+_ismbbblank_l
+# endif
+#endif
+_ismbbgraph
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbgraph_l
+# endif
+#endif
+_ismbbkalnum
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbkalnum_l
+# endif
+#endif
+_ismbbkana
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbkana_l
+# endif
+#endif
+_ismbbkprint
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbkprint_l
+# endif
+#endif
+_ismbbkpunct
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbkpunct_l
+# endif
+#endif
+_ismbblead
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbblead_l
+# endif
+#endif
+_ismbbprint
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbprint_l
+# endif
+#endif
+_ismbbpunct
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbpunct_l
+# endif
+#endif
+_ismbbtrail
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbbtrail_l
+# endif
+#endif
+_ismbcalnum
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcalnum_l
+# endif
+#endif
+_ismbcalpha
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcalpha_l
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_ismbcblank
+_ismbcblank_l
+# endif
+#endif
+_ismbcdigit
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcdigit_l
+# endif
+#endif
+_ismbcgraph
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcgraph_l
+# endif
+#endif
+_ismbchira
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbchira_l
+# endif
+#endif
+_ismbckata
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbckata_l
+# endif
+#endif
+_ismbcl0
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcl0_l
+# endif
+#endif
+_ismbcl1
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcl1_l
+# endif
+#endif
+_ismbcl2
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcl2_l
+# endif
+#endif
+_ismbclegal
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbclegal_l
+# endif
+#endif
+_ismbclower
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbclower_l
+# endif
+#endif
+_ismbcprint
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcprint_l
+# endif
+#endif
+_ismbcpunct
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcpunct_l
+# endif
+#endif
+_ismbcspace
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcspace_l
+# endif
+#endif
+_ismbcsymbol
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcsymbol_l
+# endif
+#endif
+_ismbcupper
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbcupper_l
+# endif
+#endif
+_ismbslead
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbslead_l
+# endif
+#endif
+_ismbstrail
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ismbstrail_l
+# endif
+#endif
+_isnan
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_isprint_l
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_ispunct_l
+#  endif
+_isspace_l
+_isupper_l
+_iswalnum_l
+_iswalpha_l
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+_iswblank_l
+#  endif
+_iswcntrl_l
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_iswcsym_l
+_iswcsymf_l
+#  endif
+_iswctype_l
+_iswdigit_l
+_iswgraph_l
+_iswlower_l
+_iswprint_l
+_iswpunct_l
+_iswspace_l
+_iswupper_l
+_iswxdigit_l
+_isxdigit_l
+# endif
+#endif
+_itoa
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_itoa_s
+# endif
+#endif
+_itow
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_itow_s
+# endif
+#endif
+_j0
+_j1
+_jn
+_kbhit
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+_ldclass
+_ldpcomp
+_ldsign
+_ldtest
+#endif
+_lfind
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_lfind_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x11000000UL
+_libm_sse2_acos_precise
+_libm_sse2_asin_precise
+_libm_sse2_atan_precise
+_libm_sse2_cos_precise
+_libm_sse2_exp_precise
+_libm_sse2_log10_precise
+_libm_sse2_log_precise
+_libm_sse2_pow_precise
+_libm_sse2_sin_precise
+_libm_sse2_sqrt_precise
+_libm_sse2_tan_precise
+# endif
+#endif
+_loaddll
+_local_unwind2
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_local_unwind4
+_localtime32
+_localtime32_s
+#  endif
+# endif
+_localtime64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_localtime64_s
+#  endif
+# endif
+#endif
+_lock
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_lock_file
+#endif
+_locking
+_logb
+_longjmpex
+_lrotl
+_lrotr
+_lsearch
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_lsearch_s
+# endif
+#endif
+_lseek
+_lseeki64
+_ltoa
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ltoa_s
+# endif
+#endif
+_ltow
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ltow_s
+# endif
+#endif
+_makepath
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_makepath_s
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_malloc_crt
+#  else /* __MSVCRT_VERSION__ < 0x07000000UL */
+_malloc_dbg
+#  endif
+# endif
+#endif
+_mbbtombc
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbbtombc_l
+# endif
+#endif
+_mbbtype
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_mbbtype_l
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x0410UL
+_mbcasemap DATA
+#endif
+_mbccpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbccpy_l
+_mbccpy_s
+_mbccpy_s_l
+# endif
+#endif
+_mbcjistojms
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbcjistojms_l
+# endif
+#endif
+_mbcjmstojis
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbcjmstojis_l
+# endif
+#endif
+_mbclen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbclen_l
+# endif
+#endif
+_mbctohira
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbctohira_l
+# endif
+#endif
+_mbctokata
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbctokata_l
+# endif
+#endif
+_mbctolower
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbctolower_l
+# endif
+#endif
+_mbctombb
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbctombb_l
+# endif
+#endif
+_mbctoupper
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbctoupper_l
+# endif
+#endif
+_mbctype DATA
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mblen_l
+# endif
+#endif
+_mbsbtype
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsbtype_l
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_mbscat
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbscat_s
+_mbscat_s_l
+# endif
+#endif
+_mbschr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbschr_l
+# endif
+#endif
+_mbscmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbscmp_l
+# endif
+#endif
+_mbscoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbscoll_l
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_mbscpy
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbscpy_s
+_mbscpy_s_l
+# endif
+#endif
+_mbscspn
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbscspn_l
+# endif
+#endif
+_mbsdec
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsdec_l
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_mbsdup
+#endif
+_mbsicmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsicmp_l
+# endif
+#endif
+_mbsicoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsicoll_l
+# endif
+#endif
+_mbsinc
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsinc_l
+# endif
+#endif
+_mbslen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbslen_l
+# endif
+#endif
+_mbslwr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbslwr_l
+_mbslwr_s
+_mbslwr_s_l
+# endif
+#endif
+_mbsnbcat
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbcat_l
+_mbsnbcat_s
+_mbsnbcat_s_l
+# endif
+#endif
+_mbsnbcmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbcmp_l
+# endif
+#endif
+_mbsnbcnt
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbcnt_l
+# endif
+#endif
+_mbsnbcoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbcoll_l
+# endif
+#endif
+_mbsnbcpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbcpy_l
+_mbsnbcpy_s
+_mbsnbcpy_s_l
+# endif
+#endif
+_mbsnbicmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbicmp_l
+# endif
+#endif
+_mbsnbicoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbicoll_l
+# endif
+#endif
+_mbsnbset
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnbset_l
+_mbsnbset_s
+_mbsnbset_s_l
+# endif
+#endif
+_mbsncat
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsncat_l
+_mbsncat_s
+_mbsncat_s_l
+# endif
+#endif
+_mbsnccnt
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnccnt_l
+# endif
+#endif
+_mbsncmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsncmp_l
+# endif
+#endif
+_mbsncoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsncoll_l
+# endif
+#endif
+_mbsncpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsncpy_l
+_mbsncpy_s
+_mbsncpy_s_l
+# endif
+#endif
+_mbsnextc
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnextc_l
+# endif
+#endif
+_mbsnicmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnicmp_l
+# endif
+#endif
+_mbsnicoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnicoll_l
+# endif
+#endif
+_mbsninc
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsninc_l
+_mbsnlen
+_mbsnlen_l
+# endif
+#endif
+_mbsnset
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsnset_l
+_mbsnset_s
+_mbsnset_s_l
+# endif
+#endif
+_mbspbrk
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbspbrk_l
+# endif
+#endif
+_mbsrchr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsrchr_l
+# endif
+#endif
+_mbsrev
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsrev_l
+# endif
+#endif
+_mbsset
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsset_l
+_mbsset_s
+_mbsset_s_l
+# endif
+#endif
+_mbsspn
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsspn_l
+# endif
+#endif
+_mbsspnp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsspnp_l
+# endif
+#endif
+_mbsstr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsstr_l
+# endif
+#endif
+_mbstok
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbstok_l
+_mbstok_s
+_mbstok_s_l
+_mbstowcs_l
+_mbstowcs_s_l
+# endif
+#endif
+_mbstrlen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbstrlen_l
+_mbstrnlen
+_mbstrnlen_l
+# endif
+#endif
+_mbsupr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mbsupr_l
+_mbsupr_s
+_mbsupr_s_l
+_mbtowc_l
+# endif
+#endif
+_memccpy
+_memicmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_memicmp_l
+# endif
+#endif
+_mkdir
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL
+_mkgmtime
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mkgmtime32
+_mkgmtime64
+# endif
+#endif
+_mktemp
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_mktemp_s
+_mktime32
+#  endif
+# endif
+_mktime64
+#endif
+_msize
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL
+_msize_debug
+# endif
+#endif
+_nextafter
+_onexit
+_open
+_open_osfhandle
+#if __MSVCRT_VERSION__ < 0x09000000UL
+# if __MSVCRT_VERSION__ >= 0x0500UL
+_osplatform DATA
+# endif
+_osver DATA
+#endif
+_outp
+_outpd
+_outpw
+_pclose
+_pctype DATA
+_pgmptr DATA
+_pipe
+_popen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_printf_l
+_printf_p
+_printf_p_l
+_printf_s_l
+# endif
+#endif
+_purecall
+_putch
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_putch_nolock
+#endif
+_putenv
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_putenv_s
+# endif
+#endif
+_putw
+#if __MSVCRT_VERSION__ >= 0x0501UL
+_putwch
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_putwch_nolock
+# endif
+#endif
+_putws
+_pwctype DATA
+_read
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_realloc_crt
+#  elif __MSVCRT_VERSION__ < 0x07000000UL
+_realloc_dbg
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_recalloc
+_recalloc_crt
+#  endif
+# endif
+_resetstkoflw
+#endif
+_rmdir
+_rmtmp
+_rotl
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_rotl64
+# endif
+#endif
+_rotr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_rotr64
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x10000000UL
+_safe_fdiv
+_safe_fdivr
+_safe_fprem
+_safe_fprem1
+#endif
+_scalb
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_scanf_l
+_scanf_s_l
+#  endif
+# endif
+_scprintf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_scprintf_l
+#   if __MSVCRT_VERSION__ >= 0x08000000UL
+_scprintf_p
+#   endif
+_scprintf_p_l
+#  endif
+# endif
+_scwprintf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_scwprintf_l
+#   if __MSVCRT_VERSION__ >= 0x08000000UL
+_scwprintf_p
+#   endif
+_scwprintf_p_l
+#  endif
+# endif
+#endif
+_searchenv
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_searchenv_s
+# endif
+#endif
+_seh_longjmp_unwind
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_seh_longjmp_unwind4
+#  endif
+# endif
+_set_SSE2_enable
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_set_abort_behavior
+#   if __MSVCRT_VERSION__ < 0x10000000UL
+_set_amblksiz
+#   endif
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_set_controlfp
+_set_doserrno
+_set_errno
+#  endif
+# endif
+#endif
+_set_error_mode
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL
+_set_fileinfo
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_set_fmode
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_set_invalid_parameter_handler
+_set_malloc_crt_max_wait
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_set_output_format
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_set_printf_count_output
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x07100000UL
+_set_purecall_handler
+#  endif
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x10000000UL
+_set_sbh_threshold
+#endif
+#if __MSVCRT_VERSION__ >= 0x07000000UL && __MSVCRT_VERSION__ < 0x08000000UL
+_set_security_error_handler
+#endif
+_seterrormode
+_setjmp
+_setjmp3
+_setmaxstdio
+_setmbcp
+_setmode
+_setsystime
+_sleep
+_snprintf
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_snprintf_c
+_snprintf_c_l
+_snprintf_l
+_snprintf_s
+_snprintf_s_l
+#  endif
+# endif
+_snscanf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_snscanf_l
+_snscanf_s
+_snscanf_s_l
+#  endif
+# endif
+#endif
+_snwprintf
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_snwprintf_l
+_snwprintf_s
+_snwprintf_s_l
+#  endif
+# endif
+_snwscanf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_snwscanf_l
+_snwscanf_s
+_snwscanf_s_l
+#  endif
+# endif
+#endif
+_sopen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_sopen_s
+# endif
+#endif
+_spawnl
+_spawnle
+_spawnlp
+_spawnlpe
+_spawnv
+_spawnve
+_spawnvp
+_spawnvpe
+_splitpath
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_splitpath_s
+_sprintf_l
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_sprintf_p
+#  endif
+_sprintf_p_l
+_sprintf_s_l
+_sscanf_l
+_sscanf_s_l
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_stat
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_stat32
+_stat32i64
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_stat64
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_stati64
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_stat64i32
+#endif
+_statusfp
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_statusfp2
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_strcmpi
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strcoll_l
+# endif
+#endif
+_strdate
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strdate_s
+# endif
+#endif
+_strdup
+#if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_strdup_dbg
+#endif
+_strerror
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strerror_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_strftime_l
+# endif
+#endif
+_stricmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_stricmp_l
+# endif
+#endif
+_stricoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_stricoll_l
+# endif
+#endif
+_strlwr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strlwr_l
+_strlwr_s
+_strlwr_s_l
+# endif
+#endif
+_strncoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strncoll_l
+# endif
+#endif
+_strnicmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strnicmp_l
+# endif
+#endif
+_strnicoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strnicoll_l
+# endif
+#endif
+_strnset
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strnset_s
+# endif
+#endif
+_strrev
+_strset
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strset_s
+# endif
+#endif
+_strtime
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strtime_s
+_strtod_l
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+_strtof_l
+#  endif
+# endif
+_strtoi64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strtoi64_l
+#   if __MSVCRT_VERSION__ >= 0x12000000UL
+_strtoimax_l
+#   endif
+_strtol_l
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+_strtold_l
+_strtoll_l
+#  endif
+# endif
+_strtoui64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strtoui64_l
+_strtoul_l
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+_strtoull_l
+_strtoumax_l
+#  endif
+# endif
+#endif
+_strupr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_strupr_l
+_strupr_s
+_strupr_s_l
+_strxfrm_l
+# endif
+#endif
+_swab
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_swprintf
+_swprintf_c
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x09000000UL
+_swprintf_c_l
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_swprintf_p
+#  endif
+_swprintf_p_l
+_swprintf_s_l
+_swscanf_l
+_swscanf_s_l
+# endif
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+; TODO(REVIEW): in Vista/Win7 releases of MSVCRT.dll...
+; TODO(REVIEW): pexports fails to qualify either _sys_errlist,
+; TODO(REVIEW): or _sys_nerr as DATA.
+# elif __MSVCRT_VERSION__ >= 0x11000000UL
+; TODO(REVIEW): in MSVCR110.dll and later...
+; TODO(REVIEW): pexports fails to qualify _sys_errlist as DATA.
+# endif
+#endif
+_sys_errlist DATA
+_sys_nerr DATA
+_tell
+_telli64
+_tempnam
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL
+_tempnam_dbg
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_time32
+#  endif
+# endif
+_time64
+#endif
+_timezone DATA
+_tolower
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_tolower_l
+# endif
+#endif
+_toupper
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_toupper_l
+_towlower_l
+_towupper_l
+# endif
+#endif
+_tzname DATA
+_tzset
+_ui64toa
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ui64toa_s
+# endif
+#endif
+_ui64tow
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ui64tow_s
+# endif
+#endif
+_ultoa
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ultoa_s
+# endif
+#endif
+_ultow
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_ultow_s
+# endif
+#endif
+_umask
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_umask_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_ungetc_nolock
+# endif
+#endif
+_ungetch
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_ungetch_nolock
+_ungetwc_nolock
+# endif
+_ungetwch
+# if __MSVCRT_VERSION__ >= 0x08000000UL
+_ungetwch_nolock
+# endif
+#endif
+_unlink
+_unloaddll
+_unlock
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+_unlock_file
+#else /* __MSVCRT_VERSION__ < 0x08000000UL */
+_utime
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_utime32
+#  endif
+# endif
+_utime64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+_vacopy
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_vcprintf
+_vcprintf_l
+_vcprintf_p
+_vcprintf_p_l
+_vcprintf_s
+_vcprintf_s_l
+_vcwprintf
+_vcwprintf_l
+_vcwprintf_p
+_vcwprintf_p_l
+_vcwprintf_s
+_vcwprintf_s_l
+_vfprintf_l
+_vfprintf_p
+_vfprintf_p_l
+_vfprintf_s_l
+_vfwprintf_l
+_vfwprintf_p
+_vfwprintf_p_l
+_vfwprintf_s_l
+_vprintf_l
+_vprintf_p
+_vprintf_p_l
+_vprintf_s_l
+#  endif
+# endif
+#endif
+#if __MSVCRT_VERSION__ >= 0x0501UL
+_vscprintf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_vscprintf_l
+#   if __MSVCRT_VERSION__ >= 0x08000000UL
+_vscprintf_p
+#   endif
+_vscprintf_p_l
+#  endif
+# endif
+_vscwprintf
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_vscwprintf_l
+#   if __MSVCRT_VERSION__ >= 0x08000000UL
+_vscwprintf_p
+#   endif
+_vscwprintf_p_l
+#  endif
+# endif
+#endif
+_vsnprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_vsnprintf_c
+_vsnprintf_c_l
+_vsnprintf_l
+_vsnprintf_s
+_vsnprintf_s_l
+# endif
+#endif
+_vsnwprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_vsnwprintf_l
+_vsnwprintf_s
+_vsnwprintf_s_l
+_vsprintf_l
+_vsprintf_p
+_vsprintf_p_l
+_vsprintf_s_l
+_vswprintf
+_vswprintf_c
+_vswprintf_c_l
+_vswprintf_l
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_vswprintf_p
+#  endif
+_vswprintf_p_l
+_vswprintf_s_l
+_vwprintf_l
+_vwprintf_p
+_vwprintf_p_l
+_vwprintf_s_l
+# endif
+#endif
+_waccess
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_waccess_s
+# endif
+#endif
+_wasctime
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wasctime_s
+_wassert
+# endif
+#endif
+_wchdir
+_wchmod
+_wcmdln DATA
+_wcreat
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ >= 0x11000000UL
+_wcreate_locale
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcscoll_l
+# endif
+#endif
+_wcsdup
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL
+_wcsdup_dbg
+#  endif
+# endif
+_wcserror
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcserror_s
+_wcsftime_l
+#  endif
+# endif
+#endif
+_wcsicmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsicmp_l
+# endif
+#endif
+_wcsicoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsicoll_l
+# endif
+#endif
+_wcslwr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcslwr_l
+_wcslwr_s
+_wcslwr_s_l
+# endif
+#endif
+_wcsncoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsncoll_l
+# endif
+#endif
+_wcsnicmp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsnicmp_l
+# endif
+#endif
+_wcsnicoll
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsnicoll_l
+# endif
+#endif
+_wcsnset
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsnset_s
+# endif
+#endif
+_wcsrev
+_wcsset
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsset_s
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_wcstod_l
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+_wcstof_l
+#  endif
+# endif
+_wcstoi64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcstoi64_l
+#   if __MSVCRT_VERSION__ >= 0x12000000UL
+_wcstoimax_l
+#   endif
+_wcstol_l
+#   if __MSVCRT_VERSION__ >= 0x12000000UL
+_wcstold_l
+_wcstoll_l
+#   endif
+_wcstombs_l
+_wcstombs_s_l
+#  endif
+# endif
+_wcstoui64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcstoui64_l
+_wcstoul_l
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+_wcstoull_l
+_wcstoumax_l
+#  endif
+# endif
+#endif
+_wcsupr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wcsupr_l
+_wcsupr_s
+_wcsupr_s_l
+_wcsxfrm_l
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_wctime
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wctime32
+_wctime32_s
+#  endif
+# endif
+_wctime64
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wctime64_s
+_wctomb_l
+_wctomb_s_l
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL
+; TODO(REVIEW): in Vista/Win7 releases of MSVCRT.dll...
+#  endif
+#  if __MSVCRT_VERSION__ >= 0x09000000UL
+; TODO(REVIEW): in MSVCR90.dll and later...
+#  endif
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x09000000UL
+; TODO(REVIEW): pexports fails to qualify _wctype as DATA.
+#  endif
+_wctype DATA
+#  if __MSVCRT_VERSION__ >= 0x08000000UL
+_wdupenv_s
+#  endif
+# endif
+#endif
+_wenviron DATA
+_wexecl
+_wexecle
+_wexeclp
+_wexeclpe
+_wexecv
+_wexecve
+_wexecvp
+_wexecvpe
+_wfdopen
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_wfindfirst
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_wfindfirst32
+_wfindfirst32i64
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_wfindfirst64
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_wfindfirsti64
+_wfindnext
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_wfindfirst64i32
+_wfindnext32
+_wfindnext32i64
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_wfindnext64
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_wfindnexti64
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_wfindnext64i32
+#endif
+_wfopen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wfopen_s
+# endif
+#endif
+_wfreopen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wfreopen_s
+# endif
+#endif
+_wfsopen
+_wfullpath
+#if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_wfullpath_dbg
+#endif
+_wgetcwd
+_wgetdcwd
+#if __MSVCRT_VERSION__ >= 0x08000000UL && __MSVCRT_VERSION__ < 0x11000000UL
+_wgetdcwd_nolock
+#endif
+_wgetenv
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wgetenv_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x09000000UL
+_winmajor DATA
+_winminor DATA
+# if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_winput_s
+# endif
+_winver DATA
+#endif
+_wmakepath
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wmakepath_s
+# endif
+#endif
+_wmkdir
+_wmktemp
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wmktemp_s
+# endif
+#endif
+_wopen
+#if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_woutput_s
+#endif
+_wperror
+_wpgmptr DATA
+_wpopen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wprintf_l
+_wprintf_p
+_wprintf_p_l
+_wprintf_s_l
+# endif
+#endif
+_wputenv
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wputenv_s
+# endif
+#endif
+_wremove
+_wrename
+_write
+_wrmdir
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wscanf_l
+_wscanf_s_l
+# endif
+#endif
+_wsearchenv
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wsearchenv_s
+# endif
+#endif
+_wsetlocale
+_wsopen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wsopen_s
+# endif
+#endif
+_wspawnl
+_wspawnle
+_wspawnlp
+_wspawnlpe
+_wspawnv
+_wspawnve
+_wspawnvp
+_wspawnvpe
+_wsplitpath
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wsplitpath_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_wstat
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_wstat32
+_wstat32i64
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+_wstat64
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_wstati64
+#else /* __MSVCRT_VERSION__ >= 0x08000000UL */
+_wstat64i32
+#endif
+_wstrdate
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wstrdate_s
+# endif
+#endif
+_wstrtime
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wstrtime_s
+# endif
+#endif
+_wsystem
+_wtempnam
+#if __MSVCRT_VERSION__ >= 0x0600UL && __MSVCRT_VERSION__ < 0x07000000UL
+_wtempnam_dbg
+#endif
+_wtmpnam
+#if __MSVCRT_VERSION__ >= 0x0501UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wtmpnam_s
+#  endif
+# endif
+_wtof
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wtof_l
+#  endif
+# endif
+#endif
+_wtoi
+_wtoi64
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wtoi64_l
+_wtoi_l
+# endif
+#endif
+_wtol
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wtol_l
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+_wtoll
+_wtoll_l
+# endif
+#endif
+_wunlink
+#if __MSVCRT_VERSION__ < 0x08000000UL
+_wutime
+#endif
+#if __MSVCRT_VERSION__ >= 0x0500UL
+# if __MSVCRT_VERSION__ >= 0x0600UL
+#  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+_wutime32
+#  endif
+# endif
+_wutime64
+#endif
+_y0
+_y1
+_yn
+abort
+abs
+acos
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+acosh
+acoshf
+acoshl
+#endif
+asctime
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+asctime_s
+# endif
+#endif
+asin
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+asinh
+asinhf
+asinhl
+#endif
+atan
+atan2
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+atanh
+atanhf
+atanhl
+#endif
+atexit
+atof
+atoi
+atol
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+atoll
+#endif
+bsearch
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+bsearch_s
+btowc
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+cabs
+cabsf
+cabsl
+cacos
+cacosf
+cacosh
+cacoshf
+cacoshl
+cacosl
+# endif
+#endif
+calloc
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+carg
+cargf
+cargl
+casin
+casinf
+casinh
+casinhf
+casinhl
+casinl
+catan
+catanf
+catanh
+catanhf
+catanhl
+catanl
+cbrt
+cbrtf
+cbrtl
+ccos
+ccosf
+ccosh
+ccoshf
+ccoshl
+ccosl
+#endif
+ceil
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+cexp
+cexpf
+cexpl
+cimag
+cimagf
+cimagl
+#endif
+clearerr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+clearerr_s
+# endif
+#endif
+clock
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+clog
+clog10
+clog10f
+clog10l
+clogf
+clogl
+conj
+conjf
+conjl
+copysign
+copysignf
+copysignl
+#endif
+cos
+cosh
+#if __MSVCRT_VERSION__ < 0x08000000UL
+ctime
+difftime
+#endif
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+cpow
+cpowf
+cpowl
+cproj
+cprojf
+cprojl
+creal
+crealf
+creall
+csin
+csinf
+csinh
+csinhf
+csinhl
+csinl
+csqrt
+csqrtf
+csqrtl
+ctan
+ctanf
+ctanh
+ctanhf
+ctanhl
+ctanl
+#endif
+div
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+erf
+erfc
+erfcf
+erfcl
+erff
+erfl
+#endif
+exit
+exp
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+exp2
+exp2f
+exp2l
+expm1
+expm1f
+expm1l
+#endif
+fabs
+fclose
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+fdim
+fdimf
+fdiml
+feclearexcept
+fegetenv
+fegetexceptflag
+fegetround
+feholdexcept
+#endif
+feof
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+feraiseexcept
+#endif
+ferror
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+fesetenv
+fesetexceptflag
+fesetround
+fetestexcept
+feupdateenv
+#endif
+fflush
+fgetc
+fgetpos
+fgets
+fgetwc
+fgetws
+floor
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+fma
+fmaf
+fmal
+fmax
+fmaxf
+fmaxl
+fmin
+fminf
+fminl
+#endif
+fmod
+fopen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+fopen_s
+# endif
+#endif
+fprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+fprintf_s
+# endif
+#endif
+fputc
+fputs
+fputwc
+fputws
+fread
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+fread_s
+#endif
+free
+freopen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+freopen_s
+# endif
+#endif
+frexp
+fscanf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+fscanf_s
+# endif
+#endif
+fseek
+fsetpos
+ftell
+fwprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+fwprintf_s
+# endif
+#endif
+fwrite
+fwscanf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+fwscanf_s
+# endif
+#endif
+getc
+getchar
+getenv
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+getenv_s
+# endif
+#endif
+gets
+#if __MSVCRT_VERSION__ >= 0x08000000UL
+gets_s
+#endif
+getwc
+getwchar
+#if __MSVCRT_VERSION__ < 0x08000000UL
+gmtime
+#endif
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+ilogb
+ilogbf
+ilogbl
+imaxabs
+imaxdiv
+#endif
+is_wctype
+isalnum
+isalpha
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+isblank
+#endif
+iscntrl
+isdigit
+isgraph
+isleadbyte
+islower
+isprint
+ispunct
+isspace
+isupper
+iswalnum
+iswalpha
+iswascii
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+iswblank
+#endif
+iswcntrl
+iswctype
+iswdigit
+iswgraph
+iswlower
+iswprint
+iswpunct
+iswspace
+iswupper
+iswxdigit
+isxdigit
+labs
+ldexp
+ldiv
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+lgamma
+lgammaf
+lgammal
+#endif
+#if __MSVCRT_VERSION__ >= 0x10000000UL
+llabs
+lldiv
+#endif
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+llrint
+llrintf
+llrintl
+llround
+llroundf
+llroundl
+#endif
+localeconv
+#if __MSVCRT_VERSION__ < 0x08000000UL
+localtime
+#endif
+log
+log10
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+log1p
+log1pf
+log1pl
+log2
+log2f
+log2l
+logb
+logbf
+logbl
+#endif
+longjmp
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+lrint
+lrintf
+lrintl
+lround
+lroundf
+lroundl
+#endif
+malloc
+mblen
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+mbrlen
+mbrtowc
+#  if __MSVCRT_VERSION__ < 0x07000000UL
+mbsdup_dbg
+#  endif
+mbsrtowcs
+mbsrtowcs_s
+# endif
+#endif
+mbstowcs
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+mbstowcs_s
+# endif
+#endif
+mbtowc
+memchr
+memcmp
+memcpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+memcpy_s
+# endif
+#endif
+memmove
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+memmove_s
+# endif
+#endif
+memset
+#if __MSVCRT_VERSION__ < 0x08000000UL
+mktime
+#endif
+modf
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+nan
+nanf
+nanl
+nearbyint
+nearbyintf
+nearbyintl
+nextafter
+nextafterf
+nextafterl
+nexttoward
+nexttowardf
+nexttowardl
+norm
+normf
+norml
+#endif
+perror
+pow
+printf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+printf_s
+# endif
+#endif
+putc
+putchar
+puts
+putwc
+putwchar
+qsort
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+qsort_s
+# endif
+#endif
+raise
+rand
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+rand_s
+# endif
+#endif
+realloc
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+remainder
+remainderf
+remainderl
+#endif
+remove
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+remquo
+remquof
+remquol
+#endif
+rename
+rewind
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+rint
+rintf
+rintl
+round
+roundf
+roundl
+scalbln
+scalblnf
+scalblnl
+scalbn
+scalbnf
+scalbnl
+#endif
+scanf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+scanf_s
+# endif
+#endif
+setbuf
+setlocale
+setvbuf
+signal
+sin
+sinh
+sprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+sprintf_s
+# endif
+#endif
+sqrt
+srand
+sscanf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+sscanf_s
+# endif
+#endif
+strcat
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+strcat_s
+# endif
+#endif
+strchr
+strcmp
+strcoll
+strcpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+strcpy_s
+# endif
+#endif
+strcspn
+strerror
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+strerror_s
+# endif
+#endif
+strftime
+strlen
+strncat
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+strncat_s
+# endif
+#endif
+strncmp
+strncpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+strncpy_s
+strnlen
+# endif
+#endif
+strpbrk
+strrchr
+strspn
+strstr
+strtod
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+strtof
+strtoimax
+#endif
+strtok
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+strtok_s
+# endif
+#endif
+strtol
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+strtold
+strtoll
+#endif
+strtoul
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+strtoull
+strtoumax
+#endif
+strxfrm
+#if __MSVCRT_VERSION__ < 0x08000000UL
+swprintf
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+swprintf_s
+# endif
+#endif
+swscanf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+swscanf_s
+# endif
+#endif
+system
+tan
+tanh
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+tgamma
+tgammaf
+tgammal
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+time
+#endif
+tmpfile
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+tmpfile_s
+# endif
+#endif
+tmpnam
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+tmpnam_s
+# endif
+#endif
+tolower
+toupper
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+towctrans
+#endif
+towlower
+towupper
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+trunc
+truncf
+truncl
+#endif
+ungetc
+ungetwc
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL
+utime
+# endif
+#endif
+vfprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+vfprintf_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+vfscanf
+vfscanf_s
+# endif
+#endif
+vfwprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+vfwprintf_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+vfwscanf
+vfwscanf_s
+# endif
+#endif
+vprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+vprintf_s
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL
+vsnprintf
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+vscanf
+vscanf_s
+# endif
+#endif
+vsprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+vsprintf_s
+# endif
+#endif
+#if __MSVCRT_VERSION__ < 0x08000000UL
+vswprintf
+#endif
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+vsscanf
+vsscanf_s
+# endif
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+vswprintf_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+vswscanf
+vswscanf_s
+# endif
+#endif
+vwprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+vwprintf_s
+#  if __MSVCRT_VERSION__ >= 0x12000000UL
+vwscanf
+vwscanf_s
+#  endif
+wcrtomb
+wcrtomb_s
+# endif
+#endif
+wcscat
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wcscat_s
+# endif
+#endif
+wcschr
+wcscmp
+wcscoll
+wcscpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wcscpy_s
+# endif
+#endif
+wcscspn
+wcsftime
+wcslen
+wcsncat
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wcsncat_s
+# endif
+#endif
+wcsncmp
+wcsncpy
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wcsncpy_s
+wcsnlen
+# endif
+#endif
+wcspbrk
+wcsrchr
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wcsrtombs
+wcsrtombs_s
+# endif
+#endif
+wcsspn
+wcsstr
+wcstod
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+wcstof
+wcstoimax
+#endif
+wcstok
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wcstok_s
+# endif
+#endif
+wcstol
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+wcstold
+wcstoll
+#endif
+wcstombs
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wcstombs_s
+# endif
+#endif
+wcstoul
+#if __MSVCRT_VERSION__ >= 0x12000000UL
+wcstoull
+wcstoumax
+#endif
+wcsxfrm
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wctob
+# endif
+#endif
+wctomb
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wctomb_s
+# endif
+# if __MSVCRT_VERSION__ >= 0x12000000UL
+wctrans
+wctype
+# endif
+# if __MSVCRT_VERSION__ >= 0x10000000UL
+wmemcpy_s
+wmemmove_s
+# endif
+#endif
+wprintf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wprintf_s
+# endif
+#endif
+wscanf
+#if __MSVCRT_VERSION__ >= 0x0600UL
+# if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
+wscanf_s
+# endif
+#endif
+
+/* $RCSfile$: end of file */
