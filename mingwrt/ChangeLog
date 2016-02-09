@@ -1,5 +1,22 @@
 2016-02-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Adapt msvcrt-xref to become msvcrt.def.in provider.
+
+	* Makefile.in (msvcrt_version_script) [__MSVCRT_VERSION__]: Adjust
+	filter value assignment; scale it upwards, by a factor of 0x10000.
+	(%.def.in) [vpath]: Make it refer to msvcrt-xref directory.
+	(%.def) [msvcr*]: Do not preserve comments; define...
+	(__DLLNAME__): ...this preprocessor symbol.
+
+	* msvcrt.def.in: Content is obsolete; delete file and replace with...
+	* msvcrt-xref/msvcrt.def.in: ...this updated alternative.
+	(__MINGW_DLSYM): New preprocessor macro; define it conditionally...
+	[__MSVCRT_VERSION__ != 0]: ...to emit in-scope symbols it declares...
+	[__MSVCRT_VERSION__ == 0]: ...to hide symbols it declares, followed by
+	redefinition of __MSVCRT_VERSION__ itself, to a value of 0x10000.
+
+2016-02-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Import msvcrt-xref documentation resources.
 
 	* msvcrt-xref: New directory.

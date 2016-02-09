@@ -1,3 +1,13 @@
+2016-02-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Adapt for use in MSVCRT.DLL import library generation.
+
+	* msvcrt.def.in: Adapt for mingwrt build system integration.
+	(__MINGW_DLSYM): New preprocessor macro; define it conditionally...
+	[__MSVCRT_VERSION__ != 0]: ...to emit in-scope symbols it declares...
+	[__MSVCRT_VERSION__ == 0]: ...to hide symbols it declares, followed by
+	redefinition of __MSVCRT_VERSION__ itself, to a value of 0x10000.
+
 2016-02-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Support forced simplex vs. duplex document layout reprints.

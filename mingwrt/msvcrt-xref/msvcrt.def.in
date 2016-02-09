@@ -5,7 +5,7 @@
  * definition files, supporting multiple OS platform versions.
  *
  * Compiled by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2014, MinGW.org Project.
+ * Copyright (C) 2014, 2016, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -75,6 +75,26 @@
  */
 LIBRARY __DLLNAME__.dll
 EXPORTS
+#if __MSVCRT_VERSION__
+ /* A DLL version specification has been provided; all symbols which
+  * are defined are pertinent, regardless of any provision for dynamic
+  * loading which may be implemented in libmingwex.a
+  */
+# define __MINGW_DLSYM(__NAME__)  __NAME__
+#else
+ /* No valid DLL version specification has been provided; assume that
+  * we are constructing an import library definitions file pertaining
+  * to MSVCRT.DLL, and reset __MSVCRT_VERSION__ to represent its most
+  * recent evolutionary release.
+  */
+# undef __MSVCRT_VERSION__
+# define __MSVCRT_VERSION__       0x10000UL
+ /*
+  * Also, avoid declaring any symbols as exported, where libmingwex.a
+  * makes provision for dynamic look-up at run time.
+  */
+# define __MINGW_DLSYM(__NAME__) ;__NAME__: dlsym hook in libmingwex.a
+#endif
 $I10_OUTPUT
 #if __MSVCRT_VERSION__ == 0x08000000UL
 @_calloc_crt@8
@@ -1024,7 +1044,7 @@ _get_osver
 #  endif
 # endif
 # if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
-_get_output_format
+__MINGW_DLSYM(_get_output_format)
 _get_pgmptr
 # endif
 # if __MSVCRT_VERSION__ >= 0x08000000UL
@@ -2042,7 +2062,7 @@ _set_invalid_parameter_handler
 _set_malloc_crt_max_wait
 #  endif
 #  if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
-_set_output_format
+__MINGW_DLSYM(_set_output_format)
 #  endif
 #  if __MSVCRT_VERSION__ >= 0x08000000UL
 _set_printf_count_output

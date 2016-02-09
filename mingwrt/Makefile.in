@@ -240,7 +240,7 @@ $(addsuffix .$(OBJEXT), gcrt0 gcrt1 gcrt2): %.$(OBJEXT): gcrt0.c
 #
 msvcrt_versions := 70 71 80 90 100
 msvcrt_version_script = echo $1 | awk '\
-  { printf "0x%03d0", gensub( "^[^1-9]*([0-9]*).*", "\\\\1", 1 ) \
+  { printf "0x%03d00000", gensub( "^[^1-9]*([0-9]*).*", "\\\\1", 1 ) \
   }'
 
 extra_objects_filter = $(filter %.$(OBJEXT),$1)
@@ -272,8 +272,9 @@ all-deprecated-mingwrt all-deprecated-libmsvcrt: all-libcrtdll
 # definition file, from a common source.
 #
 .SUFFIXES: .def.in .def
-$(addsuffix .def,$(all_msvcrt)): %.def: ${mingwrt_srcdir}/msvcrt.def.in
-	$(CC) -C -E -P -D__FILENAME__=$@ -D__$*__=1 \
+vpath %.def.in ${mingwrt_srcdir}/msvcrt-xref
+$(addsuffix .def,$(all_msvcrt)): %.def: msvcrt.def.in
+	$(CC) -E -P -D__FILENAME__=$@ -D__DLLNAME__=$* \
 	  -D__MSVCRT_VERSION__=`$(call msvcrt_version_script,$*)` \
 	  -xc-header $< > $@
 
