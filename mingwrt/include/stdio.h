@@ -217,10 +217,13 @@ typedef struct _iobuf
 } FILE;
 
 #endif  /* ! (_STDIO_H && _WCHAR_H) */
-
 #ifdef _STDIO_H
-
-/* The standard file handles
+/* Content to be exposed only when including <stdio.h> in its own right;
+ * these will not be exposed when __WCHAR_H_SOURCE__ is defined, as will
+ * be the case when <stdio.h> is included indirectly, by <wchar.h>
+ *
+ *
+ * The standard file handles
  */
 #ifndef __DECLSPEC_SUPPORTED
 
@@ -432,12 +435,117 @@ __cdecl __MINGW_NOTHROW  int snprintf (char *, size_t, const char *, ...);
 __cdecl __MINGW_NOTHROW  int vsnprintf (char *, size_t, const char *, __VALIST);
 
 __cdecl __MINGW_NOTHROW  int vscanf (const char * __restrict__, __VALIST);
+
 __cdecl __MINGW_NOTHROW
 int vfscanf (FILE * __restrict__, const char * __restrict__, __VALIST);
+
 __cdecl __MINGW_NOTHROW
 int vsscanf (const char * __restrict__, const char * __restrict__, __VALIST);
 
 #endif  /* !__NO_ISOCEXT */
+#if __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
+/*
+ * In MSVCR80.DLL, (and its descendants), Microsoft introduced variants
+ * of the printf() functions, with names qualified by an underscore prefix
+ * and "_p" or "_p_l" suffixes; implemented in Microsoft's typically crass,
+ * non-standard, and non-portable fashion, these provide support for access
+ * to printf() arguments in random order, as was standardised by POSIX as a
+ * feature of the optional Extended Systems Interface (XSI) specification,
+ * and is now required for conformity with the POSIX.1-2008 base standard.
+ * Although these additional Microsoft functions were subsequently added
+ * to MSVCRT.DLL, from Windows-Vista onward, and they are prototyped here,
+ * MinGW applications are strenuously encouraged to avoid using them; a
+ * much better alternative is to "#define _XOPEN_SOURCE 700" before any
+ * system header is included, then use POSIX standard printf() functions
+ * instead; this is both portable to many non-Windows platforms, and it
+ * offers better compatibility with earlier Windows versions.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _printf_p (const char *, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _fprintf_p (FILE *, const char *, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _sprintf_p (char *, size_t, const char *, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vprintf_p (const char *, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vfprintf_p (FILE *, const char *, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vsprintf_p (char *, size_t, const char *, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _printf_p_l (const char *, locale_t, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _fprintf_p_l (FILE *, const char *, locale_t, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _sprintf_p_l (char *, size_t, const char *, locale_t, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vprintf_p_l (const char *, locale_t, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vfprintf_p_l (FILE *, const char *, locale_t, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vsprintf_p_l (char *, size_t, const char *, locale_t, __VALIST);
+
+#endif  /* MSVCR80.DLL and descendants, or MSVCRT.DLL since Vista */
+#endif	/* <stdio.h> included in its own right */
+#if ! (defined _STDIO_H && defined _WCHAR_H) \
+ && __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
+/*
+ * Wide character variants of the foregoing "positional parameter" printf()
+ * functions; MSDN says that these should be declared when either <stdio.h>, or
+ * <wchar.h> is included, so we make them selectively available to <wchar.h>,
+ * but, just as in the foregoing, we advise against their use.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _wprintf_p (const wchar_t *, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _fwprintf_p (FILE *, const wchar_t *, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _swprintf_p (wchar_t *, size_t, const wchar_t *, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vwprintf_p (const wchar_t *, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vfwprintf_p (FILE *, const wchar_t *, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vswprintf_p (wchar_t *, size_t, const wchar_t *, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _wprintf_p_l (const wchar_t *, locale_t, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _fwprintf_p_l (FILE *, const wchar_t *, locale_t, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _swprintf_p_l (wchar_t *, size_t, const wchar_t *, locale_t, ...);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vwprintf_p_l (const wchar_t *, locale_t, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vfwprintf_p_l (FILE *, const wchar_t *, locale_t, __VALIST);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+int _vswprintf_p_l (wchar_t *, size_t, const wchar_t *, locale_t, __VALIST);
+
+#endif	/* ! (defined _STDIO_H && defined _WCHAR_H) */
+#ifdef _STDIO_H
+/* Once again, back to <stdio.h> specific declarations.
+ */
 
 /* Formatted Input
  */
@@ -535,7 +643,7 @@ _CRTIMP __cdecl __MINGW_NOTHROW  int    _fseeki64_nolock (FILE *, __int64, int);
 _CRTIMP __cdecl __MINGW_NOTHROW __int64 _ftelli64_nolock (FILE *);
 
 #endif  /* MSVCR80.DLL and later derivatives ONLY */
-#endif  /* MSVCR80.DLL and later or MSVCRT.DLL since Vista */
+#endif  /* MSVCR80.DLL and descendants, or MSVCRT.DLL since Vista */
 
 #ifdef __USE_MINGW_FSEEK
 /* Workaround for a limitation on Win9x where a file is not zero padded

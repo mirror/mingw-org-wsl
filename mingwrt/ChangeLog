@@ -1,3 +1,18 @@
+2016-02-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add prototypes for Microsoft's _printf_p() family of functions.
+
+	* include/stdio.h [>=__MSVCR80_DLL || >=_WIN32_WINNT_VISTA]
+	(_printf_p, _printf_p_l, _vprintf_p, _vprintf_p_l, _fprintf_p)
+	(_fprintf_p_l, _vfprintf_p, _vfprintf_p_l, _sprintf_p, _sprintf_p_l)
+	(_vsprintf_p, _vsprintf_p_l): Add function prototypes; they require
+	either a non-free MSVC runtime, or MSVCRT.DLL from Vista onward.
+	(_wprintf_p, _wprintf_p_l, _vwprintf_p, _vwprintf_p_l, _fwprintf_p)
+	(_fwprintf_p_l, _vfwprintf_p, _vfwprintf_p_l, _swprintf_p)
+	(_swprintf_p_l, _vswprintf_p, _vswprintf_p_l): Likewise; make them
+	available for selective inclusion by both <stdio.h> and <wchar.h>...
+	[_STDIO_H || __WCHAR_H_SOURCED__]: ...when either of these defined.
+
 2016-02-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Adapt msvcrt-xref to become msvcrt.def.in provider.
@@ -45,7 +60,9 @@
 	indirectly, by selective inclusion from <stdio.h>; hence include it.
 
 	* include/stdio.h: Assert copyright; tidy layout.
-	[__WCHAR_H_SOURCED__]: Selectively define and declare only those
+	(_STDIO_H_): Multiple inclusion guard macro, renamed as...
+	(_STDIO_H): ...this, but defined conditionally, subject to...
+	[__WCHAR_H_SOURCED__]: ...selectively define and declare only those
 	entities which are required by <wchar.h>; do not define...
 	[__WCHAR_H_SOURCED__] (_STDIO_H): ...this; define it only if...
 	[!__WCHAR_H_SOURCED__]: ...this; define and declare ALL entities which
