@@ -13,7 +13,7 @@
  * to support Microsoft's non-standard format specifications.
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2008, 2009, 2011, 2014, 2015, MinGW.org Project
+ * Copyright (C) 2008, 2009, 2011, 2014-2016, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -67,6 +67,7 @@
  ******************************************************************
  *
  */
+#include <ctype.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <stddef.h>
@@ -99,6 +100,21 @@
 #endif /* !defined _VALUES_H -- end of file */
 
 #include "pformat.h"
+
+#ifndef NL_ARGMAX
+/* POSIX expects this to have been defined in <limits.h>, with a value
+ * no less than 9; provide this slightly more generous definition, since
+ * MinGW's <limits.h> may not have defined it, (as is the normal case),
+ * and we need it to guard against uncontrolled stack growth.
+ */
+#define NL_ARGMAX  16
+#endif
+
+#if __GNUC__ && ! defined __NO_INLINE__
+# define __pformat_inline__  __inline__ __attribute__((__always_inline__))
+#else
+# define __pformat_inline__
+#endif
 
 /* Bit-map constants, defining the internal format control
  * states, which propagate through the flags.
@@ -153,8 +169,7 @@
 #define PFORMAT_INFNAN      -32768
 
 #ifdef _WIN32
-/*
- * The Microsoft standard for printing `%e' format exponents is
+/* The Microsoft standard for printing `%e' format exponents is
  * with a minimum of three digits, unless explicitly set otherwise,
  * by a prior invocation of the `_set_output_format()' function.
  *
@@ -180,25 +195,27 @@
  *    variable, (which users should consider to be private).
  */
 extern unsigned int __mingw_output_format_flag;
-static __inline__ __attribute__((__always_inline__))
+
+static __pformat_inline__
 int __pformat_exponent_digits( void )
 {
+  /* Local helper function, required to resolve the value for the
+   * PFORMAT_MINEXP macro in the _WIN32 implementation case.
+   */
   char *exponent_digits = getenv( "PRINTF_EXPONENT_DIGITS" );
   return ((exponent_digits != NULL) && ((unsigned)(*exponent_digits - '0') < 3))
     || (__mingw_output_format_flag & _TWO_DIGIT_EXPONENT)
     ? 2 : 3 ;
 }
 #else
-/*
- * When we don't care to mimic Microsoft's standard behaviour,
+/* When we don't care to mimic Microsoft's standard behaviour,
  * we adopt the C99/POSIX standard of two digit exponents.
  */
 # define PFORMAT_MINEXP         2
 #endif
 
 typedef union
-{
-  /* A data type agnostic representation,
+{ /* A data type agnostic representation,
    * for printf arguments of any integral data type...
    */
   signed long             __pformat_long_t;
@@ -213,8 +230,7 @@ typedef union
 } __pformat_intarg_t;
 
 typedef enum
-{
-  /* Format interpreter state indices...
+{ /* Format interpreter state indices...
    * (used to identify the active phase of format string parsing).
    */
   PFORMAT_INIT = 0,
@@ -225,11 +241,11 @@ typedef enum
 } __pformat_state_t;
 
 typedef enum
-{
-  /* Argument length classification indices...
+{ /* Argument length classification indices...
    * (used for arguments representing integer data types).
    */
   PFORMAT_LENGTH_INT = 0,
+  PFORMAT_LENGTH_DEFAULT = PFORMAT_LENGTH_INT,
   PFORMAT_LENGTH_SHORT,
   PFORMAT_LENGTH_LONG,
   PFORMAT_LENGTH_LLONG,
@@ -241,15 +257,15 @@ typedef enum
  * collapse this to a simple assignment.
  */
 #define __pformat_arg_length( type )    \
-  sizeof( type ) == sizeof( long long ) ? PFORMAT_LENGTH_LLONG : \
+  sizeof( type ) == sizeof( int )       ? PFORMAT_LENGTH_INT   : \
   sizeof( type ) == sizeof( long )      ? PFORMAT_LENGTH_LONG  : \
+  sizeof( type ) == sizeof( long long ) ? PFORMAT_LENGTH_LLONG : \
   sizeof( type ) == sizeof( short )     ? PFORMAT_LENGTH_SHORT : \
   sizeof( type ) == sizeof( char )      ? PFORMAT_LENGTH_CHAR  : \
   /* should never need this default */    PFORMAT_LENGTH_INT
 
 typedef struct
-{
-  /* Formatting and output control data...
+{ /* Formatting and output control data...
    * An instance of this control block is created, (on the stack),
    * for each call to `__pformat()', and is passed by reference to
    * each of the output handlers, as required.
@@ -350,7 +366,7 @@ void __pformat_putchars( const char *s, int count, __pformat_t *stream )
     __pformat_putc( '\x20', stream );
 }
 
-static __inline__
+static __pformat_inline__
 void __pformat_puts( const char *s, __pformat_t *stream )
 {
   /* Handler for `%s' conversion specifications.
@@ -429,7 +445,7 @@ void __pformat_wputchars( const wchar_t *s, int count, __pformat_t *stream )
     __pformat_putc( '\x20', stream );
 }
 
-static __inline__ __attribute__((__always_inline__))
+static __pformat_inline__
 void __pformat_wcputs( const wchar_t *s, __pformat_t *stream )
 {
   /* Handler for `%S' (`%ls') conversion specifications.
@@ -712,8 +728,7 @@ void __pformat_xint( int fmt, __pformat_intarg_t value, __pformat_t *stream )
 }
 
 typedef union
-{
-  /* A multifaceted representation of an IEEE extended precision,
+{ /* A multifaceted representation of an IEEE extended precision,
    * (80-bit), floating point number, facilitating access to its
    * component parts.
    */
@@ -728,7 +743,7 @@ typedef union
 } __pformat_fpreg_t;
 
 #ifdef _WIN32
-/* TODO: make this unconditional in final release...
+/* TODO: maybe make this unconditional in final release...
  * (see note at head of associated `#else' block.
  */
 #include "gdtoa.h"
@@ -786,7 +801,7 @@ char *__pformat_cvt( int mode, __pformat_fpreg_t x, int nd, int *dp, int *sign )
   return __gdtoa( &fpi, e, &x.__pformat_fpreg_bits, &k, mode, nd, dp, &ep );
 }
 
-static __inline__ __attribute__((__always_inline__))
+static __pformat_inline__
 char *__pformat_ecvt( long double x, int precision, int *dp, int *sign )
 {
   /* A convenience wrapper for the above...
@@ -796,7 +811,7 @@ char *__pformat_ecvt( long double x, int precision, int *dp, int *sign )
   return __pformat_cvt( 2, z, precision, dp, sign );
 }
 
-static __inline__ __attribute__((__always_inline__))
+static __pformat_inline__
 char *__pformat_fcvt( long double x, int precision, int *dp, int *sign )
 {
   /* A convenience wrapper for the above...
@@ -933,15 +948,14 @@ void __pformat_emit_radix_point( __pformat_t *stream )
     __pformat_putc( '.', stream );
 }
 
-static __inline__ __attribute__((__always_inline__))
+static __pformat_inline__
 void __pformat_emit_numeric_value( int c, __pformat_t *stream )
 {
   /* Convenience helper to transfer numeric data from an internal
    * formatting buffer to the ultimate destination...
    */
   if( c == '.' )
-    /*
-     * converting this internal representation of the the radix
+    /* converting this internal representation of the the radix
      * point to the appropriately localised representation...
      */
     __pformat_emit_radix_point( stream );
@@ -1735,13 +1749,689 @@ void __pformat_xldouble( long double x, __pformat_t *stream )
   }
 }
 
-int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
+static __pformat_inline__
+/* Inline helper to accumulate a running total of successive
+ * decimal digits, optimized to use bitwise shifts to multiply
+ * the total of more significant digits by ten.
+ */
+int __pformat_imul10plus( int total, int units )
+{ return units + ((total == 0) ? 0 : ((total + (total << 2)) << 1)); }
+
+static
+int __pformat_read_arg_index( const char **fmt )
 {
-  int c;
+  /* Compute a positional argument index from a format string
+   * reference of the form "%n$" or "*n$"; (the introducing '%'
+   * or '*' character is assumed to have been identified already,
+   * by the calling function, and the scan pointer should now be
+   * pointing to the first digit of the prospective index value).
+   * The returned index value is required to lie in the range
+   * 1 .. NL_ARGMAX, otherwise zero is returned.
+   */
+  int index = 0;
+  if( isdigit( **fmt ) )
+    do { /* Scan the sequence of digits corresponding to "n", and
+	  * interpret as a decimal number; use shifts to accumulate
+	  * powers of ten, for increasingly significant digits.
+	  */
+	 if( (index = __pformat_imul10plus( index, **fmt - '0')) > NL_ARGMAX )
+	 {
+	   /* The accumulated total of the scanned digits exceeds
+	    * NL_ARGMAX; skip any residual sequence, and bail out.
+	    */
+	   while( isdigit( *++*fmt ) );
+	   return 0;
+	 }
+       } while( isdigit( *++*fmt ) );
+
+  /* The scanned digit sequence must terminate with a '$',
+   * otherwise it is not a valid index representation.
+   */
+  return (**fmt == '$') ? index : 0;
+}
+
+static __pformat_inline__
+/* Depending on context, it may be necessary to advance the format scan
+ * pointer, before interpreting the index value; this inline wrapper is
+ * provided to facilitate compliance with this requirement.
+ */
+int __pformat_read_arg_index_after( const char **fmt )
+{ ++*fmt; return __pformat_read_arg_index( fmt ); }
+
+static
+int __pformat_arg_index( const char **fmt )
+{
+  /* Interpret argument index references of the form "%n$" and "*m$",
+   * within the format string; when a valid index (> 0) is identified,
+   * advance the format string pointer beyond the delimiting '$' symbol
+   * and return the index value, otherwise leave the format pointer as
+   * it was on entry, and return zero.
+   */
+  const char *scan = *fmt;
+  int arg_index = __pformat_read_arg_index( &scan );
+  if( *scan++ == '$' ) *fmt = scan;
+  return arg_index;
+}
+
+/* Note that the preceding function returns an argument index in the
+ * range 1 .. NL_ARGMAX, (as stipulated by POSIX), but that we need it
+ * as a zero-based index for array references; the following macro is
+ * provided, for notational convenience, when making the adjustment.
+ */
+#define zero_adjusted(arg_index)  (--arg_index)
+
+static __pformat_inline__
+const char *__pformat_ignore_flags( const char *fmt )
+{
+  /* Advance the format string scan pointer, stepping over, and
+   * otherwise ignoring any specified flag characters.
+   */
+  while( strchr( "+-' 0#", *fmt ) ) ++fmt; return fmt;
+}
+
+static
+const char *__pformat_look_ahead( const char *fmt )
+{
+  /* Advance the format string scan pointer, stepping over, and
+   * otherwise ignoring a field width or precision specification.
+   */
+  if( *fmt == '*' ) ++fmt; else while( isdigit( *fmt ) ) ++fmt;
+  return fmt;
+}
+
+static __pformat_inline__
+const char *__pformat_look_ahead_beyond_flags( const char *fmt )
+{
+  /* Advance the format string scan pointer, stepping over, and
+   * otherwise ignoring any specified flag characters, or following
+   * field width and precision specifications.
+   */
+  return (*(fmt = __pformat_look_ahead( __pformat_ignore_flags( fmt ))) == '.')
+    ? __pformat_look_ahead( ++fmt ) : fmt;
+}
+
+static
+__pformat_length_t __pformat_check_length_modifier( const char **fmt )
+{
+  /* Check for, and evaluate the effect of, argument length
+   * modifiers, at the format scan pointer location; advance
+   * the scan pointer to step over any such modifiers.
+   */
+  const char *check = *fmt;
+  __pformat_length_t modifier = PFORMAT_LENGTH_DEFAULT;
+  switch( *check++ )
+  {
+    case 'h': case 'l':
+      /* The "h" and "l" modifiers are special, insofar as they
+       * must support "hh" and "ll" variants...
+       */
+      if( *check == **fmt )
+        switch( *check++ )
+	{ /* ...thus, in the "hh" and "ll" cases, we need...
+	   */
+	  case 'h': modifier = PFORMAT_LENGTH_CHAR; break;
+	  case 'l': modifier = PFORMAT_LENGTH_LLONG;
+	}
+      else switch( **fmt )
+      { /* ...while the bare "h" and "l" cases give us...
+	 */
+	case 'h': modifier = PFORMAT_LENGTH_SHORT; break;
+	case 'l': modifier = PFORMAT_LENGTH_LONG;
+      }
+      break;
+
+    /* The remaining ISO-C/POSIX modifiers have only a single
+     * character representation...
+     */
+    case 'j': modifier = __pformat_arg_length( intmax_t ); break;
+    case 't': modifier = __pformat_arg_length( ptrdiff_t ); break;
+    case 'z': modifier = __pformat_arg_length( size_t ); break;
+
+    /* ...and "L" is returned "as is", anticipating evaluation
+     * of its effect in the calling function.
+     */
+    case 'L': modifier = (__pformat_length_t)('L'); break;
+
+    case 'I':
+#   ifdef _WIN32
+      /* Microsoft also uses "I32" or "I64", as non-standard length
+       * modifiers; accommodate this anomaly, noting that, in each
+       * case, the modifier consumes two characters beyond the "I".
+       */
+      check += 2;
+      if( strncmp( "I32", *fmt, 3 ) == 0 )
+      {
+	/* Microsoft's "I32" modifier is equivalent to ISO-C's
+	 * (and POSIX's) "l"...
+	 */
+	modifier = PFORMAT_LENGTH_LONG;
+	break;
+      }
+      else if( strncmp( "I64", *fmt, 3 ) == 0 )
+      {
+	/* ...while their "I64" is equivalent to "ll"...
+	 */
+	modifier = PFORMAT_LENGTH_LLONG;
+	break;
+      }
+      else
+      { /* ...and their unqualified 'I' is a non-standard
+	 * substitute for either 't' or 'z', (which they may
+	 * not support at all); we advise against this usage,
+	 * but wil accept it as (primarily) a reference to
+	 * the 'ptrdiff_t' case.
+	 */
+	modifier = __pformat_arg_length( ptrdiff_t );
+	++*fmt;
+      }
+#   endif
+
+    /* When no modifier has been identified, reset the checking
+     * pointer, to leave the format scan pointer unchanged.
+     */
+    default: check = *fmt;
+  }
+  /* Update the format scan pointer, to step over any identified
+   * modifier characters, and return the modifier effect.
+   */
+  *fmt = check;
+  return modifier;
+}
+
+static __pformat_inline__
+/* A trivial wrapper function, to facilitate evaluation of length
+ * modifiers for which the initial (or only) character has already
+ * been stepped past by the format scanner.
+ */
+__pformat_length_t __pformat_length_modifier( const char **fmt )
+{ --*fmt; return __pformat_check_length_modifier( fmt ); }
+
+enum
+{ /* Classification codes for the three fundamental conversion
+   * type groups, which apply to printf() arguments, equivalent
+   * to the return values from __pformat_is_conversion_type().
+   */
+  PFORMAT_TYPE_DOUBLE = 1,
+  PFORMAT_TYPE_INTEGER,
+  PFORMAT_TYPE_POINTER
+};
+
+static __pformat_inline__
+int __pformat_is_conversion_type( int fmt_value )
+{
+  /* Confirm that a specified format string character value
+   * matches one of the recognised conversion type codes; the
+   * codes are specified within three groups: the first group
+   * represents floating point types, the second are integer
+   * types and the third (smaller group) are pointer types;
+   * these correspond to the three classification groups,
+   * as defined by the preceding enumeration.
+   */
+  const char *check, *valid_chars = "aAeEfFgG" "cCdiouxX" "npsS";
+  return (check = strchr( valid_chars, fmt_value ))
+    ? 1 + (check - valid_chars) / 8 : 0;
+}
+
+enum
+{ /* The array indicies used to classify the content of the
+   * following argument reference data type.
+   */
+  PFORMAT_CONVERSION_TYPE = 0,
+  PFORMAT_LENGTH_MODIFIER,
+  PFORMAT_ARGMAP_ENTRIES
+};
+
+typedef union
+{ /* An aggregate data type, used to classify printf() arguments.
+   */
+  unsigned short  init;
+  unsigned char   ref[PFORMAT_ARGMAP_ENTRIES];
+} __pformat_argmap_t;
+
+static __pformat_inline__
+int __pformat_is_alt_ldouble_modifier( int length )
+#ifdef _WIN32
+{ /* Helper routine, to determine if an 'l' length modifier is
+   * to be treated as equivalent to 'L', as it is in MSVCRT.DLL's
+   * implementation of the printf() functions.
+   */
+  return (__mingw_output_format_flag & _MSVC_PRINTF_QUIRKS)
+    ? (length == PFORMAT_LENGTH_LONG) : 0;
+}
+#else
+{ /* For any non-windows build, there is no reason for it to be so.
+   */
+  return 0;
+}
+#endif
+
+static __pformat_inline__
+int __pformat_is_ldouble( int length )
+{
+  /* Helper routine to identify an argument length modifier, as a
+   * reference to the 'long double' type, whether explicitly by use
+   * of the ISO-C 'L' modifier, or by non-standard Microsoft usage
+   * of 'l', when explicitly allowed by the user.
+   */
+  return (length == 'L') || __pformat_is_alt_ldouble_modifier( length );
+}
+
+static __pformat_inline__
+int __pformat_indexed_argc( const char *fmt )
+{
+  /* Pre-scan the format string, and evaluate it as a potential
+   * candidate for "%n$"/"*m$" positional argument addressing; set
+   * the anticipated argument count for this style of processing.
+   */
+  int index, argc = 0;
+
+  do { /* Scan the format string, character by character, to identify
+	* any conversion specifications which may be present.
+	*/
+       if( *fmt == '%' )
+       { /* When a candidate conversion specification is located, save
+	  * its starting scan position, in case we subsequently reject
+	  * it, and need to back-track.
+	  */
+	 const char *backtrack = fmt++;
+
+	 /* Attempt to extract a positional argument reference index
+	  * from this conversion specification.
+	  */
+	 if( (index = __pformat_read_arg_index( &fmt )) == 0 )
+	 {
+	   /* Unless this is a "%%" specification, (or an obfuscated
+	    * variant of this), then we have identified a conversion
+	    * specification which does not comply with the rules for
+	    * positional argument indexing...
+	    */
+	   if( *fmt == '$' )
+	     /* This is an explicit indexed parameter reference, but
+	      * the index value is either explicitly zero, (which is
+	      * not a valid index), or it exceeds NL_ARGMAX, (which
+	      * is similarly invalid); bail out immediately.
+	      */
+	     return 0;
+
+	   /* In this case, it appears that it may be just a regular
+	    * conversion specification, (which isn't compatible with
+	    * use of positional indexing elsewhere within the format
+	    * string), but we do need to look ahead, because it may
+	    * be the "%%" case, (which is allowed); first, skip over
+	    * any flags, width, or precision specifications...
+	    */
+	   fmt = __pformat_look_ahead_beyond_flags( fmt );
+
+	   /* ...then ignore any argument length modifiers; (ignore
+	    * any numeric field here, since it would indicate use of
+	    * a positionally indexed field width specification, which
+	    * should not be used in this context, so we will catch it
+	    * later, as unexpected, and thus initiate backtrack.
+	    */
+	   (void)__pformat_check_length_modifier( &fmt );
+
+	   /* If all is valid so far, we should now be looking at the
+	    * terminal conversion type specifier; if this is also valid,
+	    * and is not the "%" specifier...
+	    */
+	   if( __pformat_is_conversion_type( *fmt ) )
+	   {
+	     /* ...then we may immediately reject this format string,
+	      * because it is not compatible with the requirements for
+	      * indexing of positional arguments.
+	      */
+	     return 0;
+	   }
+
+	   /* If we're still here, we haven't rejected this entire
+	    * format string out of hand; the current specification may
+	    * represent (some variation of) "%%"...
+	    */
+	   if( *fmt != '%' )
+	   { /* ...or it may be malformed, in which case we back-track
+	      * and attempt to recover.
+	      */
+	     fmt = backtrack;
+	   }
+	 }
+	 else
+	 { /* This conversion specification includes a valid positional
+	    * argument index; we should still subject it to a look-ahead
+	    * validation scan, which may also serve to capture any other
+	    * indexed argument references, such as may be present within
+	    * its field width and/or precision specifications.
+	    */
+	   int subindex;
+
+	   /* At this point, "fmt" refers to the '$' symbol at the end
+	    * of the argument index specification; advance it past that,
+	    * and any following flags, to locate a possible field width
+	    * specification, which may be...
+	    */
+	   if( *(fmt = __pformat_ignore_flags( ++fmt )) == '*' )
+	   {
+	     /* ...an indirect specification, resolved by reference to
+	      * a passed argument, in which case this argument reference
+	      * must also be indexed; bail out if it isn't...
+	      */
+	     if( (subindex = __pformat_read_arg_index_after( &fmt )) == 0 )
+	       return 0;
+
+	     /* ...but, record it in case its index value may be the
+	      * greatest seen so far...
+	      */
+	     if( subindex > index )
+	       index = subindex;
+
+	     /* ...and advance the scan beyond its terminal '$' symbol.
+	      */
+	     ++fmt;
+	   }
+	   /* Alternatively, a field width may be direcly specified, as
+	    * a sequence of numeric digits, in which case we may simply
+	    * advance our scan beyond it.
+	    */
+	   else while( isdigit( *fmt ) )
+	     ++fmt;
+
+	   /* Any field width specification, even if omitted, and thus
+	    * represented as a zero-length entity, may be followed by a
+	    * precision specification; if present, this will always be
+	    * introduced by a single '.'...
+	    */
+	   if( *fmt == '.' )
+	   { /* ...which, when present, may also be represented as...
+	      */
+	     if( *++fmt == '*' )
+	     { /* ...an indirect argument reference, subject to the same
+		* constraints and processing requirements as apply in the
+		* case of an indexed field width...
+		*/
+	       if( (subindex = __pformat_read_arg_index_after( &fmt )) == 0 )
+		 return 0;
+	       if( subindex > index )
+		 index = subindex;
+	       ++fmt;
+	     }
+	     /* ...or alternatively, as a directly specified sequence of
+	      * numeric digits, which we may also step over.
+	      */
+	     else while( isdigit( *fmt ) )
+	       ++fmt;
+	   }
+
+	   /* If we are still here, then "fmt" will be pointing at any
+	    * argument length modifiers which may be present; step over
+	    * any which are...
+	    */
+	   (void)__pformat_check_length_modifier( &fmt );
+
+	   /* ...and we should now have a pointer to the conversion
+	    * type specifier, which we may now validate.
+	    */
+	   if( __pformat_is_conversion_type( *fmt ) )
+	   {
+	     /* We've successfully verified that the current conversion
+	      * specification is a suitable candidate for participation
+	      * in format references to positional arguments; update the
+	      * current indexed argument count, to reflect the largest
+	      * index which has been seen so far...
+	      */
+	     if( index > argc ) argc = index;
+	   }
+	   /* ...otherwise, we may have (some variant of) "%%"...
+	    */
+	   else if( *fmt != '%' )
+	   {
+	     /* ...or a malformed specification, in which case we choose
+	      * to back-track, and attempt recovery.
+	      */
+	     fmt = backtrack;
+	   }
+	 }
+       }
+       /* Unless we've already bailed out, because we've deemed that the
+	* current format string is unsuitable for indexing of positional
+	* arguments, continue scanning it.
+	*/
+     } while( *fmt++ );
+
+  /* Finally, when the format string has been validated for indexing of
+   * positional arguments, return the anticipated argument count, deduced
+   * as the maximum valid index value seen.
+   */
+  return argc;
+}
+
+static
+size_t __pformat_sizeof_argument( unsigned char *map )
+{
+  /* Classify printf() arguments by storage size, based on
+   * the content of the 'ref' fields of a '__pformat_argmap_t'.
+   */
+  switch( __pformat_is_conversion_type( map[PFORMAT_CONVERSION_TYPE] ) )
+  {
+    case PFORMAT_TYPE_DOUBLE:
+      /* All floating point arguments are promoted to 'double'
+       * type, unless explicitly specified as 'long double'.
+       */
+      return (__pformat_is_ldouble( map[PFORMAT_LENGTH_MODIFIER] ))
+	? sizeof( long double ) : sizeof( double );
+
+    case PFORMAT_TYPE_POINTER:
+      /* All pointer types share a common size, as categorized
+       * by the generic 'void *'.
+       */
+      return sizeof( void * );
+
+    case PFORMAT_TYPE_INTEGER:
+      /* Integer data types may be explicitly qualified to be
+       * 'long' or 'long long'...
+       */
+      switch( map[PFORMAT_LENGTH_MODIFIER] )
+      { case PFORMAT_LENGTH_LONG: return sizeof( long );
+	case PFORMAT_LENGTH_LLONG: return sizeof( long long );
+      }
+  }
+  /* ...but anything which is not otherwise classified, may be
+   * assumed to have the size of a generic 'int', (to which any
+   * smaller data type is always promoted).
+   */
+  return sizeof( int );
+}
+
+static
+int __pformat_argmap( int argc, const char *fmt, __pformat_argmap_t *map )
+{
+  /* Construct a classification map for the set of indexed arguments,
+   * which have been identified by an initial format string scan, (as
+   * performed by a prior invocation of the __pformat_indexed_argc()
+   * function); begin by initialising the entire mapping array to the
+   * 'unclassified' state, (i.e. set all elements to zero).
+   */
+  int index; for( index = 0; index < argc; index++ ) map[index].init = 0;
+
+  do { /* Scan the format string again, character-by-character, and for
+	* each possible conversion specification found...
+	*/
+       if( *fmt == '%' )
+       { /* ...save the starting point, in case this is a false match,
+	  * and we need to back-track, then attempt to read the index
+	  * for the associated argument, which we expect to be present.
+	  */
+	 const char *backtrack = fmt++;
+	 if( (index = __pformat_read_arg_index( &fmt )) > 0 )
+	 {
+	   /* We successfully read an index value; set aside space to
+	    * identify the associated conversion type, to capture any
+	    * additional indices for dynamic field width or precision
+	    * references, and assume default argument size.
+	    */
+	   int format, subindex[2] = { 0, 0 };
+	   __pformat_length_t length = PFORMAT_LENGTH_DEFAULT;
+
+	   /* We don't care what format control flags may be present,
+	    * so step over them, to check for a possible output field
+	    * width specification...
+	    */
+	   if( *(fmt = __pformat_ignore_flags( ++fmt )) == '*' )
+	   {
+	     /* ...and, when one is found to be specified dynamically,
+	      * attempt to read a (required) argument index, which is
+	      * to be associated with it...
+	      */
+	     if( (subindex[0] = __pformat_read_arg_index_after( &fmt )) == 0 )
+	       /*
+		* ...or mark the entire conversion specification as
+		* being improperly indexed.
+		*/
+	       index = 0;
+
+	     else
+	       /* We read an acceptable index value; the format scan
+		* pointer now refers to its terminal '$' symbol, so we
+		* step over it before we continue.
+		*/
+	       ++fmt;
+	   }
+	   else
+	     /* If there is a field width specification present at all,
+	      * then it is specified as a static digit string; we don't
+	      * care what it is, so step over it.
+	      */
+	     while( isdigit( *fmt ) ) ++fmt;
+
+	   if( *fmt == '.' )
+	   { /* This indicates that we have a precision specification...
+	      */
+	     if( *++fmt == '*' )
+	     {
+	       /* ...and that is dynamically specified, so we must read
+		* an argument reference index to associate with it...
+		*/
+	       if( (subindex[1] = __pformat_read_arg_index_after( &fmt )) == 0 )
+		 /*
+		  * ...otherwise, we again invalidate the containing
+		  * conversion specification...
+		  */
+		 index = 0;
+
+	       else
+		 /* ...or we step over the terminal '$' of a valid
+		  * index value.
+		  */
+		 ++fmt;
+	     }
+	     else
+	       /* This precision specification is represented by a
+		* statically specified digit sequence; once again, we
+		* don't care what it is, so step over it.
+		*/
+	       while( isdigit( *fmt ) ) ++fmt;
+	   }
+
+	   /* By now, the format scan pointer will be referring to any
+	    * argument length modifier which may be present; this must
+	    * be recorded in our argument map, so classify it.
+	    */
+	   switch( length = __pformat_check_length_modifier( &fmt ) )
+	   {
+	     /* In the phase of execution when this is invoked, while
+	      * evaluating the space occupied by the arguments, we know
+	      * that all smaller than 'int' will be promoted to 'int'
+	      * as the default minimum size; thus, we assess those
+	      * of smaller size as having default length.
+	      */
+	     case PFORMAT_LENGTH_CHAR:
+	     case PFORMAT_LENGTH_SHORT:
+	       length = PFORMAT_LENGTH_DEFAULT;
+	   }
+
+	   /* All of the indicies associated with the current conversion
+	    * specification have now been checked, and when valid, only a
+	    * final check on the conversion type itself remains...
+	    */
+	   if(  (index > 0)
+	   &&  ((format = __pformat_is_conversion_type( *fmt )) > 0)  )
+	   {
+	     /* ...before we record the classification data for this
+	      * argument into its appropriate slot in the mapping array;
+	      * note that we take care to update each mapping entry, to
+	      * record the maximum size represented by any reference to
+	      * the argument at the indexed position...
+	      */
+	     unsigned char argmap[PFORMAT_ARGMAP_ENTRIES] = { *fmt, length };
+	     size_t argsize = __pformat_sizeof_argument( argmap );
+	     if( (map[--index].init == 0)
+	     ||  (argsize > __pformat_sizeof_argument( map[index].ref ))  )
+	     {
+	       /* ...recording both the conversion type classification,
+		* and any associated argument length modifier.
+		*/
+	       map[index].ref[PFORMAT_CONVERSION_TYPE] = (unsigned char)(format);
+	       map[index].ref[PFORMAT_LENGTH_MODIFIER] = (unsigned char)(length);
+	     }
+	     /* Similarly, for each of the output field width and the
+	      * precision specifications, if either has been specified
+	      * dynamically, we record the associated indices as being
+	      * associated with (at least) an 'int' argument; (notice
+	      * that we don't update any previously assigned map data
+	      * here, because anything which was previously assigned
+	      * must already be suitable as an 'int' reference.
+	      */
+	     for( index = 0; index < 2; index++ )
+	       if( (subindex[index]-- > 0) && (map[subindex[index]].init == 0) )
+		 map[subindex[index]].init = (unsigned char)('d');
+	   }
+	   else
+	     /* When the conversion specification cannot be successfully
+	      * verified, it should either represent an (effective) "%%",
+	      * or we must back-track.
+	      */
+	     if( *fmt != '%' ) fmt = backtrack;
+	 }
+	 else
+	 { /* Since "fmt" has already been validated for participation
+	    * in indexed argument processing, we can only get to here if
+	    * this is an effective "%%" specification, or it is so badly
+	    * malformed that it is unrecognizable as a valid conversion
+	    * specification; step over any flags, width and/or precision
+	    * specifications, and length modifiers, to determine which
+	    * of these applies, back-tracking when malformed.
+	    */
+	   fmt = __pformat_look_ahead_beyond_flags( fmt );
+	   (void)__pformat_check_length_modifier( &fmt );
+	   if( *fmt != '%' ) fmt = backtrack;
+	 }
+       }
+     } while( *fmt++ ); /* Continue character-by-character scan. */
+
+  /* Finally, we are able to verify the one remaining criterion, as yet
+   * unchecked, which is a prerequisite for successful indexed processing
+   * of printf() arguments: the specified indices, when serially sorted,
+   * must represent a continuously numbered sequence, starting from one.
+   * with no omissions; this corresponds to a fully populated map array,
+   * with no residual zero entries...
+   */
+  for( index = 0; index < argc; index++ )
+    /* so, in the event that we find any such unpopulated entry, we must
+     * ultimately reject the specified format string, as being viable for
+     * indexed processing of arguments...
+     */
+    if( map[index].init == 0 ) argc = 0;
+
+  /* ...and our final argument count either remains unchanged, or has been
+   * reset to zero to indicate an ultimately non-viable format string.
+   */
+  return argc;
+}
+
+int __pformat( int flags, void *dest, int max, const char *fmt, va_list args )
+{
+  int c, argc;
 
   __pformat_t stream =
-  {
-    /* Create and initialise a format control block
+  { /* Create and initialise a format control block
      * for this output request.
      */
     dest,					/* output goes to here        */
@@ -1754,6 +2444,77 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
     max,					/* establish output limit     */
     PFORMAT_MINEXP				/* exponent chars preferred   */
   };
+
+  /* Establish a variant argument resource pool, to support processing of
+   * the passed-in argument vector in either sequential or random order.
+   */
+  va_list argv, argv_indexed[argc = __pformat_indexed_argc( fmt )];
+  if( argc > 0 )
+  { /* All argument references, within the format string, are specified in
+     * the "%n$" or "*m$" positionally indexed style; construct an argument
+     * classification table, verify continuity of the index sequence...
+     */
+    __pformat_argmap_t specs[argc];
+    if( (argc = __pformat_argmap( argc, fmt, specs )) > 0 )
+    {
+      /* ...and, on successful classification with no discontinuities, set
+       * up a temporary local copy of the passed-in argument vector, which
+       * we may then prescan...
+       */
+      va_copy( argv, args );
+      for( c = 0; c < argc; c++ )
+      { /* ...storing an indexed reference to the starting boundary of each
+	 * argument, before advancing to the next argument boundary...
+	 */
+	va_copy( argv_indexed[c], argv );
+	switch( specs[c].ref[PFORMAT_CONVERSION_TYPE] )
+	{
+	  /* ...noting that, regardless of conversion type, we don't need
+	   * the argument values at this prescan phase, (so we may simply
+	   * discard them), but we do need to adjust the va_list reference
+	   * pointer as appropriate to the conversion type; thus...
+	   */
+	  case PFORMAT_TYPE_DOUBLE:
+	    /* ...for floating point types, we must discriminate between
+	     * 'double' and 'long double', (but not 'float', because that
+	     * is always promoted to 'double')...
+	     */
+	    if( __pformat_is_ldouble( specs[c].ref[PFORMAT_LENGTH_MODIFIER] ) )
+	      (void)(va_arg( argv, long double ));
+	    else (void)(va_arg( argv, double ));
+	    break;
+
+	  case PFORMAT_TYPE_POINTER:
+	    /* ...all pointer types need identically the same adjustment
+	     * as the generic 'void *' pointer...
+	     */
+	    (void)(va_arg( argv, void * ));
+	    break;
+
+	  case PFORMAT_TYPE_INTEGER: default:
+	    /* ...and all other types may be effectively be considered to
+	     * be represented as integer types, for which...
+	     */
+	    switch( specs[c].ref[PFORMAT_LENGTH_MODIFIER] )
+	    { case PFORMAT_LENGTH_LONG: (void)(va_arg( argv, long )); break;
+	      case PFORMAT_LENGTH_LLONG: (void)(va_arg( argv, long long ));
+		break;
+	      default: (void)(va_arg( argv, int ));
+	    }
+	}
+      }
+      /* Terminate processing of the temporary copy of the argument vector,
+       * in preparation for its immediate reinitialisation.
+       */
+      va_end( argv );
+    }
+  }
+  /* Initialise (or reinitialise) a local copy of the passed-in argument
+   * vector, such that it will be suitable for sequential processing of the
+   * arguments, while still allowing for it to be reinitialised, as may be
+   * required for processing the arguments in indexed random order.
+   */
+  va_copy( argv, args );
 
   format_scan: while( (c = *fmt++) != 0 )
   {
@@ -1775,6 +2536,21 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
        */
       const char *backtrack = fmt;
 
+      /* If random order processing of arguments is specified by the
+       * current format string, retrieve the index associated with the
+       * current conversion specification.
+       */
+      int arg_index;
+      if( (argc > 0) && ((arg_index = __pformat_arg_index( &fmt )) > 0) )
+      {
+	/* Having established the appropriate index value, we may clear
+	 * the current assignment for the active argv reference, and then
+	 * reassign it to refer to the corresponding indexed argument.
+	 */
+	va_end( argv );
+	va_copy( argv, argv_indexed[zero_adjusted(arg_index)] );
+      }
+
       /* Restart capture for dynamic field width and precision specs...
        */
       int *width_spec = &stream.width;
@@ -1785,8 +2561,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
       stream.width = stream.precision = PFORMAT_IGNORE;
 
       while( *fmt )
-      {
-	switch( c = *fmt++ )
+      { switch( c = *fmt++ )
 	{
 	  /* Data type specifiers...
 	   * All are terminal, so exit the conversion spec parsing loop
@@ -1794,8 +2569,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	   * in the regular format string parser.
 	   */
 	  case '%':
-	    /*
-	     * Not strictly a data type specifier...
+	    /* Not strictly a data type specifier...
 	     * it simply converts as a literal `%' character.
 	     *
 	     * FIXME: should we require this to IMMEDIATELY follow the
@@ -1807,15 +2581,13 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'C':
-	    /*
-	     * Equivalent to `%lc'; set `length' accordingly,
+	    /* Equivalent to `%lc'; set `length' accordingly,
 	     * and simply fall through.
 	     */
 	    length = PFORMAT_LENGTH_LONG;
 
 	  case 'c':
-	    /*
-	     * Single, (or single multibyte), character output...
+	    /* Single, (or single multibyte), character output...
 	     *
 	     * We handle these by copying the argument into our local
 	     * `argval' buffer, and then we pass the address of that to
@@ -1852,8 +2624,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'S':
-	    /*
-	     * Equivalent to `%ls'; set `length' accordingly,
+	    /* Equivalent to `%ls'; set `length' accordingly,
 	     * and simply fall through.
 	     */
 	    length = PFORMAT_LENGTH_LONG;
@@ -1867,7 +2638,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	       */
 	      __pformat_wcputs( va_arg( argv, wchar_t * ), &stream );
 	    }
-
 	    else
 	      /* This is normal string output;
 	       * we simply invoke the appropriate handler...
@@ -1876,12 +2646,8 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 
 	    goto format_scan;
 
-	  case 'o':
-	  case 'u':
-	  case 'x':
-	  case 'X':
-	    /*
-	     * Unsigned integer values; octal, decimal or hexadecimal format...
+	  case 'o': case 'u': case 'x': case 'X':
+	    /* Unsigned integer values; octal, decimal or hexadecimal format...
 	     */
 	    if( length == PFORMAT_LENGTH_LLONG )
 	      /*
@@ -1921,8 +2687,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	     * common format handlers...
 	     */
 	    if( c == 'u' )
-	      /*
-	       * depending on whether output is to be encoded in
+	      /* depending on whether output is to be encoded in
 	       * decimal format...
 	       */
 	      __pformat_int( argval, &stream );
@@ -1934,10 +2699,8 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 
 	    goto format_scan;
 
-	  case 'd':
-	  case 'i':
-	    /*
-	     * Signed integer values; decimal format...
+	  case 'd': case 'i':
+	    /* Signed integer values; decimal format...
 	     * This is similar to `u', but must process `argval' as signed,
 	     * and be prepared to handle negative numbers.
 	     */
@@ -1977,8 +2740,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'p':
-	    /*
-	     * Pointer argument; format as hexadecimal, subject to...
+	    /* Pointer argument; format as hexadecimal, subject to...
 	     */
 	    if( (state == PFORMAT_INIT) && (stream.flags == flags) )
 	    {
@@ -1999,16 +2761,14 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'e':
-	    /*
-	     * Floating point format, with lower case exponent indicator
+	    /* Floating point format, with lower case exponent indicator
 	     * and lower case `inf' or `nan' representation when required;
 	     * select lower case mode, and simply fall through...
 	     */
 	    stream.flags |= PFORMAT_XCASE;
 
 	  case 'E':
-	    /*
-	     * Floating point format, with upper case exponent indicator
+	    /* Floating point format, with upper case exponent indicator
 	     * and upper case `INF' or `NAN' representation when required,
 	     * (or lower case for all of these, on fall through from above);
 	     * select lower case mode, and simply fall through...
@@ -2028,16 +2788,14 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'f':
-	    /*
-	     * Fixed point format, using lower case for `inf' and
+	    /* Fixed point format, using lower case for `inf' and
 	     * `nan', when appropriate; select lower case mode, and
 	     * simply fall through...
 	     */
 	    stream.flags |= PFORMAT_XCASE;
 
 	  case 'F':
-	    /*
-	     * Fixed case format using upper case, or lower case on
+	    /* Fixed case format using upper case, or lower case on
 	     * fall through from above, for `INF' and `NAN'...
 	     */
 	    if( stream.flags & PFORMAT_LDOUBLE )
@@ -2055,16 +2813,14 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'g':
-	    /*
-	     * Generalised floating point format, with lower case
+	    /* Generalised floating point format, with lower case
 	     * exponent indicator when required; select lower case
 	     * mode, and simply fall through...
 	     */
 	    stream.flags |= PFORMAT_XCASE;
 
 	  case 'G':
-	    /*
-	     * Generalised floating point format, with upper case,
+	    /* Generalised floating point format, with upper case,
 	     * or on fall through from above, with lower case exponent
 	     * indicator when required...
 	     */
@@ -2083,16 +2839,14 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'a':
-	    /*
-	     * Hexadecimal floating point format, with lower case radix
+	    /* Hexadecimal floating point format, with lower case radix
 	     * and exponent indicators; select the lower case mode, and
 	     * fall through...
 	     */
 	    stream.flags |= PFORMAT_XCASE;
 
 	  case 'A':
-	    /*
-	     * Hexadecimal floating point format; handles radix and
+	    /* Hexadecimal floating point format; handles radix and
 	     * exponent indicators in either upper or lower case...
 	     */
 	    if( stream.flags & PFORMAT_LDOUBLE )
@@ -2109,8 +2863,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    goto format_scan;
 
 	  case 'n':
-	    /*
-	     * Save current output character count...
+	    /* Save current output character count...
 	     */
 	    if( length == PFORMAT_LENGTH_CHAR )
 	      /*
@@ -2148,149 +2901,56 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	   * These are non-terminal; each sets the format parser
 	   * into the PFORMAT_END state, and ends with a `break'.
 	   */
-	  case 'h':
-	    /*
-	     * Interpret the argument as explicitly of a `short'
-	     * or `char' data type, truncated from the standard
-	     * length defined for integer promotion.
-	     */
-	    if( *fmt == 'h' )
-	    {
-	      /* Modifier is `hh'; data type is `char' sized...
-	       * Skip the second `h', and set length accordingly.
-	       */
-	      ++fmt;
-	      length = PFORMAT_LENGTH_CHAR;
-	    }
-
-	    else
-	      /* Modifier is `h'; data type is `short' sized...
-	       */
-	      length = PFORMAT_LENGTH_SHORT;
-
-	    state = PFORMAT_END;
-	    break;
-
-	  case 'j':
-	    /*
-	     * Interpret the argument as being of the same size as
-	     * a `intmax_t' entity...
-	     */
-	    length = __pformat_arg_length( intmax_t );
-	    state = PFORMAT_END;
-	    break;
-
+	  case 'h': case 'j': case 'l': case 't': case 'z':
 #	  ifdef _WIN32
-
-	    case 'I':
-	      /*
-	       * The MSVCRT implementation of the printf() family of
-	       * functions explicitly uses...
+	    /* While the preceding five are ISO-C standards, not
+	     * all are supported by Microsoft's implementation of
+	     * printf(); we will generally favour the semantics as
+	     * specified by ISO-C, but except in case of conflict,
+	     * we also attempt to support Microsoft alternatives.
+	     * Thus, we also recognise their 'I' modifier...
+	     */
+	  case 'I':
+	    /* ...interpreting all six appropriately...
+	     */
+	    length = __pformat_length_modifier( &fmt );
+	    /*
+	     * ...while further noting that they accept 'l' as an
+	     * alternative to 'L', as a qualifier for 'long double';
+	     * this DOES conflict with ISO-C usage, so we offer it as
+	     * an optional user choice, whether the Microsoft usage is
+	     * to be supported, or (by default) to ignore such usage
+	     * entirely, as required by ISO-C.
+	     */
+	    if( (c != 'l') || !__pformat_is_alt_ldouble_modifier( length ) )
+	    {
+	      /* In the case where the Microsoft usage is to be ignored,
+	       * we mark the end of conversion specification analysis,
+	       * (as in the case of any modifier other than 'l')...
 	       */
-	      if( (fmt[0] == '6') && (fmt[1] == '4') )
-	      {
-		/* I64' instead of `ll',
-		 * when referring to `long long' integer types...
-		 */
-		length = PFORMAT_LENGTH_LLONG;
-		fmt += 2;
-	      }
-
-	      else if( (fmt[0] == '3') && (fmt[1] == '2') )
-	      {
-		/* and `I32' instead of `l',
-		 * when referring to `long' integer types...
-		 */
-		length = PFORMAT_LENGTH_LONG;
-		fmt += 2;
-	      }
-
-	      else
-		/* or unqualified `I' instead of `t' or `z',
-		 * when referring to `ptrdiff_t' or `size_t' entities;
-		 * (we will choose to map it to `ptrdiff_t').
-		 */
-		length = __pformat_arg_length( ptrdiff_t );
-
 	      state = PFORMAT_END;
 	      break;
-
+	    }
+	    /* ...or, if the Microsoft usage option is enabled, simply
+	     * fall through to the next case, and handle 'l' as if it
+	     * were 'L'...
+	     */
+#	  else
+	    /* ...whereas, if building for any non-windows platform,
+	     * we simply analyse each of the five standard modifiers,
+	     * and end the case analysis immediately.
+	     */
+	    length = __pformat_length_modifier( &fmt );
+	    state = PFORMAT_END;
+	    break;
 #	  endif
 
-	  case 'l':
-	    /*
-	     * Interpret the argument as explicitly of a
-	     * `long' or `long long' data type.
-	     */
-	    if( *fmt == 'l' )
-	    {
-	      /* Modifier is `ll'; data type is `long long' sized...
-	       * Skip the second `l', and set length accordingly.
-	       */
-	      ++fmt;
-	      length = PFORMAT_LENGTH_LLONG;
-	      state = PFORMAT_END;
-	      break;
-	    }
-
-	    else
-	    { /* Modifier is `l'; data type is `long' sized...
-	       */
-	      length = PFORMAT_LENGTH_LONG;
-
-	      /* Microsoft's MSVCRT implementation also uses `l'
-	       * as a modifier for `long double'; however, this
-	       * conflicts with the usage specified by ISO-C and
-	       * POSIX, so we definitely shouldn't support this
-	       * anomaly for non-Windows builds...
-	       */
-#	      ifndef _WIN32
-#		undef  _MSVC_PRINTF_QUIRKS
-#		define _MSVC_PRINTF_QUIRKS  0
-#	      endif
-	      /* ...nor should we support it by default, even in
-	       * Windows builds, but we grant the user a mechanism
-	       * to enable it via __mingw_output_format_flag.
-	       */
-	      if( (__mingw_output_format_flag & _MSVC_PRINTF_QUIRKS) == 0 )
-	      {
-		/* When support for this Microsoft anomaly is NOT
-		 * enabled, we must end this case right here...
-		 */
-		state = PFORMAT_END;
-		break;
-	      }
-	      /* ...otherwise, we simply fall through, considering
-	       * the `l' modifier as equivalent to `L`, in the case
-	       * of floating point formats...
-	       */
-	    }
-
 	  case 'L':
-	    /*
-	     * Identify the appropriate argument as a `long double',
+	    /* Identify the appropriate argument as a `long double',
 	     * when associated with `%a', `%A', `%e', `%E', `%f', `%F',
 	     * `%g' or `%G' format specifications.
 	     */
 	    stream.flags |= PFORMAT_LDOUBLE;
-	    state = PFORMAT_END;
-	    break;
-
-	  case 't':
-	    /*
-	     * Interpret the argument as being of the same size as
-	     * a `ptrdiff_t' entity...
-	     */
-	    length = __pformat_arg_length( ptrdiff_t );
-	    state = PFORMAT_END;
-	    break;
-
-	  case 'z':
-	    /*
-	     * Interpret the argument as being of the same size as
-	     * a `size_t' entity...
-	     */
-	    length = __pformat_arg_length( size_t );
 	    state = PFORMAT_END;
 	    break;
 
@@ -2309,7 +2969,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	      width_spec = &stream.precision;
 	      state = PFORMAT_GET_PRECISION;
 	    }
-
 	    else
 	      /* We've already seen a precision specification,
 	       * so this is just junk; proceed to end game.
@@ -2324,16 +2983,29 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	   * derived from the argument list...
 	   */
 	  case '*':
-	    /*
-	     * When this appears...
+	    /* When this appears...
 	     */
 	    if(   width_spec
 	    &&  ((state == PFORMAT_INIT) || (state == PFORMAT_GET_PRECISION)) )
 	    {
-	      /* in proper context; assign to field width
-	       * or precision, as appropriate.
+	      /* ...in proper context; assign to field width
+	       * or precision, as appropriate...
 	       */
-	      if( (*width_spec = va_arg( argv, int )) < 0 )
+	      if( (argc > 0) && ((arg_index = __pformat_arg_index( &fmt )) > 0) )
+	      {
+		/* ...from the specified indexed argument, when
+		 * processing arguments in indexed order...
+		 */
+		va_list argv;
+		va_copy( argv, argv_indexed[zero_adjusted(arg_index)] );
+		*width_spec = va_arg( argv, int );
+		va_end( argv );
+	      }
+	      /* ...or otherwise, from the next available
+	       * sequentially accessed argument.
+	       */
+	      else *width_spec = va_arg( argv, int );
+	      if( *width_spec < 0 )
 	      {
 		/* Assigned value was negative...
 		 */
@@ -2345,7 +3017,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 		  stream.flags |= PFORMAT_LJUSTIFY;
 		  stream.width = -stream.width;
 		}
-
 		else
 		  /* while as a precision specification,
 		   * it should simply be ignored.
@@ -2353,7 +3024,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 		  stream.precision = PFORMAT_IGNORE;
 	      }
 	    }
-
 	    else
 	      /* out of context; give up on width and precision
 	       * specifications for this conversion.
@@ -2371,16 +3041,14 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	   * and are non-terminal, so again, end with `break'.
 	   */
 	  case '#':
-	    /*
-	     * Select alternate PFORMAT_HASHED output style.
+	    /* Select alternate PFORMAT_HASHED output style.
 	     */
 	    if( state == PFORMAT_INIT )
 	      stream.flags |= PFORMAT_HASHED;
 	    break;
 
 	  case '+':
-	    /*
-	     * Print a leading sign with numeric output,
+	    /* Print a leading sign with numeric output,
 	     * for both positive and negative values.
 	     */
 	    if( state == PFORMAT_INIT )
@@ -2388,8 +3056,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    break;
 
 	  case '-':
-	    /*
-	     * Select left justification of displayed output
+	    /* Select left justification of displayed output
 	     * data, within the output field width, instead of
 	     * the default flush right justification.
 	     */
@@ -2400,8 +3067,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 #	  ifdef WITH_XSI_FEATURES
 
 	    case '\'':
-	      /*
-	       * This is an XSI extension to the POSIX standard,
+	      /* This is an XSI extension to the POSIX standard,
 	       * which we do not support, at present.
 	       */
 	      if( state == PFORMAT_INIT )
@@ -2411,8 +3077,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 #	  endif
 
 	  case '\x20':
-	    /*
-	     * Reserve a single space, within the output field,
+	    /* Reserve a single space, within the output field,
 	     * for display of the sign of signed data; this will
 	     * be occupied by the minus sign, if the data value
 	     * is negative, or by a plus sign if the data value
@@ -2425,8 +3090,7 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    break;
 
 	  case '0':
-	    /*
-	     * May represent a flag, to activate the `pad with zeros'
+	    /* May represent a flag, to activate the `pad with zeros'
 	     * option, or it may simply be a digit in a width or in a
 	     * precision specification...
 	     */
@@ -2439,12 +3103,11 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	    }
 
 	  default:
-	    /*
-	     * If we didn't match anything above, then we will check
+	    /* If we didn't match anything above, then we will check
 	     * for digits, which we may accumulate to generate field
 	     * width or precision specifications...
 	     */
-	    if( (state < PFORMAT_END) && ('9' >= c) && (c >= '0') )
+	    if( (state < PFORMAT_END) && isdigit( c ) )
 	    {
 	      if( state == PFORMAT_INIT )
 		/*
@@ -2461,29 +3124,15 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 
 	      if( width_spec )
 	      {
-		/* We are accepting a width or precision specification...
+		/* We are accepting a width or precision specification;
+		 * add the units value represented by the current digit,
+		 * to ten times the value accumulated so far.
 		 */
-		if( *width_spec < 0 )
-		  /*
-		   * and accumulation hasn't started yet; we simply
-		   * initialise the accumulator with the current digit
-		   * value, converting from ASCII to decimal.
-		   */
-		  *width_spec = c - '0';
-
-		else
-		  /* Accumulation has already started; we perform a
-		   * `leftwise decimal digit shift' on the accumulator,
-		   * (i.e. multiply it by ten), then add the decimal
-		   * equivalent value of the current digit.
-		   */
-		  *width_spec = *width_spec * 10 + c - '0';
+		*width_spec = __pformat_imul10plus( *width_spec, c - '0' );
 	      }
 	    }
-
 	    else
-	    {
-	      /* We found a digit out of context, or some other character
+	    { /* We found a digit out of context, or some other character
 	       * with no designated meaning; reject this format specification,
 	       * backtrack, and emit it as literal text...
 	       */
@@ -2494,13 +3143,18 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list argv )
 	}
       }
     }
-
     else
       /* We just parsed a character which is not included within any format
        * specification; we simply emit it as a literal.
        */
       __pformat_putc( c, &stream );
   }
+
+  /* Clean up the resource pool, which was allocated for local processing of
+   * the passed-in argument vector in either sequential or random order.
+   */
+  while( argc-- > 0 ) va_end( argv_indexed[argc] );
+  va_end( argv );
 
   /* When we have fully dispatched the format string, the return value is the
    * total number of bytes we transferred to the output destination.

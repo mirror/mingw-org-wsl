@@ -1,5 +1,26 @@
 2016-02-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Implement support for POSIX "%n$*m$" printf() format control.
+
+	* mingwex/stdio/pformat.c (NL_ARGMAX): New macro; nominally, it should
+	be defined in <limits.h>, but MinGW may not do so; provide a fallback.
+	(__pformat_inline__): New macro; define, and use it where appropriate.
+	(PFORMAT_CONVERSION_TYPE, PFORMAT_LENGTH_MODIFIER)
+	(PFORMAT_TYPE_DOUBLE, PFORMAT_TYPE_INTEGER, PFORMAT_TYPE_POINTER)
+	(PFORMAT_LENGTH_DEFAULT): New enumerated values; define them.
+	(PFORMAT_ARGMAP_ENTRIES): New enumerated value tally; use it in...
+	(__pformat_argmap_t): ...this new union data type; define it.
+	(__pformat_indexed_argc, __pformat_sizeof_argument, __pformat_argmap)
+	(__pformat_imul10plus, __pformat_arg_index, __pformat_read_arg_index)
+	(__pformat_read_arg_index_after, __pformat_look_ahead_beyond_flags)
+	(__pformat_look_ahead, __pformat_ignore_flags, __pformat_is_ldouble)
+	(__pformat_is_conversion_type, __pformat_is_alt_ldouble_modifier)
+	(__pformat_length_modifier, __pformat_check_length_modifier): New
+	locally defined static and/or inline functions; implement, and...
+	(__pformat): ...use them.
+
+2016-02-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Add prototypes for Microsoft's _printf_p() family of functions.
 
 	* include/stdio.h [>=__MSVCR80_DLL || >=_WIN32_WINNT_VISTA]
