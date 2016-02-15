@@ -54,7 +54,7 @@
 #define WCHAR_MIN	0
 #define WCHAR_MAX	0xffff
 
-# define WEOF		(wchar_t)(0xffff)
+#define WEOF		(wchar_t)(0xffff)
 
 #ifndef RC_INVOKED
 #define __WCHAR_H_SOURCED__
@@ -90,16 +90,16 @@
  *  wint_t  fputwc (wchar_t, FILE *);
  *  wint_t  ungetwc (wchar_t, FILE *);
  *
- *  The following pair of Microsoft functions conflict with their
- *  corresponding ISO-C prototypes; consequently they will not be
- *  declared when "__STRICT_ANSI__" checking is in effect:
+ * The following pair of Microsoft functions conflict with their
+ * corresponding ISO-C prototypes; consequently they will not be
+ * declared when "__STRICT_ANSI__" checking is in effect:
  *
  *  int  swprintf (wchar_t *, const wchar_t *, ...);
  *  int  vswprintf (wchar_t *, const wchar_t *, __VALIST);
  *
- *  The following group of functions is specified by ISO-C, but
- *  their Microsoft implementations are available only if use of
- *  "__MSVCRT__" is specified:
+ * The following group of functions is specified by ISO-C, but
+ * their Microsoft implementations are available only if use of
+ * "__MSVCRT__" is specified:
  *
  *  wchar_t * fgetws (wchar_t *, int, FILE *);
  *  int       fputws (const wchar_t *, FILE *);
@@ -108,13 +108,13 @@
  *  wint_t    putwc (wint_t, FILE *);
  *  wint_t    putwchar (wint_t);
  *
- *  The following group of functions is also dependent on use of
- *  "__MSVCRT__"; however, these are Microsoft specific, so their
- *  are not declared if "__STRICT_ANSI__" checking is specified:
+ * The following group of functions is also dependent on use of
+ * "__MSVCRT__"; however, these are Microsoft specific, so they
+ * are not declared if "__STRICT_ANSI__" checking is specified:
  *
  *  wchar_t * _getws (wchar_t *);
  *  int       _putws (const wchar_t *);
- *  FILE    * _wfdopen(int, const wchar_t *);
+ *  FILE    * _wfdopen (int, const wchar_t *);
  *  FILE    * _wfopen (const wchar_t *, const wchar_t *);
  *  FILE    * _wfreopen (const wchar_t *, const wchar_t *, FILE *);
  *  FILE    * _wfsopen (const wchar_t *, const wchar_t *, int);
@@ -150,32 +150,42 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, s
 #define  _WSTDLIB_DEFINED
 #endif /* _WSTDLIB_DEFINED */
 
-#ifndef _WTIME_DEFINED
-#if defined __MSVCRT__ && ! defined __STRICT_ANSI__
-/* Wide function prototypes, also declared in time.h; FIXME: factor out.
+/* Also in similar fashion, from...
  */
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wasctime (const struct tm*);
-#if __MSVCRT_VERSION__ < 0x0800
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t*);
-#endif
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wstrdate (wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wstrtime (wchar_t*);
-#if __MSVCRT_VERSION__ >= 0x601
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime64 (const __time64_t*);
-#endif
-#if __MSVCRT_VERSION__ >= 0x0800
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW	_wctime32 (const __time32_t*);
-#ifndef _USE_32BIT_TIME_T
-_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_wctime64 (_v)); }
-#else
-_CRTALIAS wchar_t* __cdecl __MINGW_NOTHROW	_wctime (const time_t* _v)	{ return(_wctime32 (_v)); }
-#endif
-#endif
-
-#endif	/* __MSVCRT__ && ! __STRICT_ANSI__ */
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	wcsftime (wchar_t*, size_t, const wchar_t*, const struct tm*);
-#define _WTIME_DEFINED
-#endif /* _WTIME_DEFINED */
+#include <time.h>
+/* ...we obtain an opaque forward declaration of:
+ *
+ *  struct tm
+ *
+ * ...prototype declarations for the following ISO-C99 function,
+ * (which is always provided):
+ *
+ *  size_t wcsftime (wchar_t *, size_t, const wchar_t *, const struct tm *);
+ *
+ * ...together with the following non-ISO-C functions, (which are
+ * NOT exposed when "__STRICT_ANSI__" checking is enabled):
+ *
+ *  wchar_t *_wctime (const time_t *);
+ *  wchar_t *_wasctime (const struct tm *);
+ *  wchar_t *_wstrdate (wchar_t *);
+ *  wchar_t *_wstrtime (wchar_t *);
+ *
+ * Of the preceding group, we also note that, while it remains in
+ * all versions of MSVCRT.DLL, (using a strictly 32-bit data type
+ * to represent its "time_t" argument), the _wctime() function is
+ * NOT present in MSVCR80.DLL, and later versions of the non-free
+ * MSVC runtime libraries, in which it is replaced by either of:
+ *
+ *  wchar_t *_wctime64 (const __time64_t *);
+ *  wchar_t *_wctime32 (const __time32_t *);
+ *
+ * ...with the actual replacement being chosen at compile time, on
+ * the basis of the user specified "_USE_32BIT_TIME_T" feature test
+ * macro, (a Microsoft specific, brain damaged concept), which maps
+ * _wctime() function itself, as in in-line alias for the selected
+ * replacement library function.
+ *
+ */
 
 
 /* Wide character string functions must be specified here, as required

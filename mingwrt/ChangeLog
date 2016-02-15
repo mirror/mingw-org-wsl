@@ -1,3 +1,21 @@
+2016-02-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor <time.h> vs. <wchar.h> to avoid duplication.
+
+	* include/wchar.h (__WCHAR_H_SOURCED__): New macro; define it...
+	[_WCHAR_H]: ...at start of processing in this scope; delete at end.
+	(struct tm): Delete definition; delegate it, together with each of...
+	(_wctime, _wasctime, _wstrdate, _wstrtime, _wctime64, _wctime32)
+	(wcsftime): ...these function prototypes; delete them, but note in
+	comments, that they remain declared, via delegation to...
+	* include/time.h: ...this; include it selectively, subject to...
+	[defined __WCHAR_H_SOURCED__](__need_wchar_decls): ...this; define it.
+	[defined __WCHAR_H_SOURCED__](_TIME_H): Suppress its definition.
+	[_TIME_H]: Process all definitions and declarations; otherwise...
+	[__need_wchar_decls]: ...process only <wchar.h> shared content, but...
+	[_TIME_H && _WCHAR_H]: ...not on second, or later, time of processing.
+	(_WTIME_DEFINED): Obsolete macro; delete all references.
+
 2016-02-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement support for POSIX "%n$*m$" printf() format control.
