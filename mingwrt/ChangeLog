@@ -1,5 +1,22 @@
 2016-02-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Refactor to make <parts/time.h> redundant.
+
+	* include/sys/types.h (time_t, __time32_t, __time32_t)
+	[__need_time_t && !__have_typedef_time_t]: Reproduce definitions...
+	* include/parts/time.h: ...from here; preserve selective exposure.
+
+	* include/time.h (time_t, __time32_t, __time32_t): Get them...
+	* include/sys/types.h: ...from here, by selective inclusion.
+
+	* include/time.h (struct timespec, struct __mingw_extended_timespec)
+	[__need_struct_timespec && !__struct_timespec_defined]: Reproduce...
+	* include/parts/time.h: ...from here; preserve selective exposure.
+
+	* include/parts/time.h: Delete file; it is no longer required.
+
+2016-02-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Declare the nanosleep() function where POSIX expects it.
 
 	* include/time.h (__mingw_sleep): Declare function prototype.

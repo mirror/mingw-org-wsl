@@ -36,15 +36,15 @@
  * the normal _TIME_H guard macro; initially, we also clear all of those
  * declaraction subset selection macros which are applicable herein.
  */
+#undef __need_time_t
 #undef __need_struct_timespec
 #undef __need_wchar_decls
 
 #if defined __WCHAR_H_SOURCED__
-/* This is selective inclusion by <wchar.h>, exposing only a subset of the
- * content from <time.h>; thus, we do not define the _TIME_H guard macro, so
- * we need to fake it, to get content from <parts/time.h>
+/* This is selective inclusion by <wchar.h>; thus, we do not define the
+ * _TIME_H guard macro, and we select only the minimally required subset
+ * of declarations to be exposed from within <time.h>
  */
-# define _FAKE_TIME_H_SOURCED 1
 # define __need_wchar_decls 1
 
 /* Both ISO-C and POSIX stipulate that <wchar.h> shall declare "struct tm"
@@ -74,16 +74,68 @@ struct tm;
 #endif
 
 #ifndef RC_INVOKED
-/* Some elements declared in <time.h> may also be required by other
- * header files, without necessarily including <time.h> itself; such
- * elements are declared in the local <parts/time.h> system header,
- * and must be selected prior to inclusion:
+/* Irrespective of whether this is normal or selective inclusion of
+ * <time.h>, we ALWAYS require the definition for time_t; get it by
+ * selective inclusion from its primary source, in <sys/types.h>
  */
-#define __need_time_t
-#include <parts/time.h>
+#define __need_time_t 1
+#include <sys/types.h>
+
+#if defined __need_struct_timespec && ! __struct_timespec_defined
+/* Structure timespec is mandated by POSIX, for specification of
+ * intervals with the greatest precision supported by the OS kernel.
+ * Although this allows for specification to nanosecond precision, do
+ * not be deluded into any false expectation that such short intervals
+ * can be realized on Windows; on Win9x derivatives, the metronome used
+ * by the process scheduler has a period of ~55 milliseconds, while for
+ * WinNT derivatives, the corresponding period is ~15 milliseconds; thus,
+ * the shortest intervals which can be realistically timed will range
+ * from 0..55 milliseconds on Win9x hosts, and from 0..15 ms on WinNT,
+ * with period values normally distributed around means of ~27.5 ms
+ * and ~7.5 ms, for the two system types respectively.
+ */
+struct timespec
+{ /* Period is sum of tv_sec + tv_nsec; while 32-bits is sufficient
+   * to accommodate tv_nsec, we use 64-bit __time64_t for tv_sec, to
+   * ensure that we have a sufficiently large field to accommodate
+   * Microsoft's ambiguous __time32_t vs. __time64_t representation
+   * of time_t; we may resolve this ambiguity locally, by casting a
+   * pointer to a struct timespec to point to an identically sized
+   * struct __mingw32_timespec, which is defined below.
+   */
+  __time64_t	  tv_sec;	/* seconds; accept 32 or 64 bits */
+  __int32  	  tv_nsec;	/* nanoseconds */
+};
+
+# ifdef _MINGW32_EXTENDED_SOURCE
+struct __mingw32_expanded_timespec
+{
+  /* Equivalent of struct timespec, with disambiguation for the
+   * 32-bit vs. 64-bit tv_sec field declaration.  Period is the
+   * sum of tv_sec + tv_nsec; we use explicitly sized types to
+   * avoid 32-bit vs. 64-bit time_t ambiguity...
+   */
+  union
+  { /* ...within this anonymous union, allowing tv_sec to accommodate
+     * seconds expressed in either of Microsoft's (ambiguously sized)
+     * time_t representations.
+     */
+    __time64_t	__tv64_sec;	/* unambiguously 64 bits */
+    __time32_t	__tv32_sec;	/* unambiguously 32 bits */
+    time_t	  tv_sec;	/* ambiguously 32 or 64 bits */
+  };
+  __int32  	  tv_nsec;	/* nanoseconds */
+};
+# endif /* _MINGW32_EXTENDED_SOURCE */
+
+# define __struct_timespec_defined  1
+#endif
 
 #ifdef _TIME_H
 #ifdef _MINGW32_EXTENDED_SOURCE
+
+_BEGIN_C_DECLS
+
 __CRT_ALIAS __LIBIMPL__(( FUNCTION = mingw_timespec ))
 /* This non-ANSI convenience function facilitates access to entities
  * defined as struct timespec, while exposing the broken down form of
@@ -94,7 +146,10 @@ __CRT_ALIAS __LIBIMPL__(( FUNCTION = mingw_timespec ))
  */
 struct __mingw32_expanded_timespec *mingw_timespec( struct timespec *__tv )
 { return (struct __mingw32_expanded_timespec *)(__tv); }
-#endif
+
+_END_C_DECLS
+
+#endif	/* _MINGW32_EXTENDED_SOURCE */
 
 /* <time.h> is also required to duplicate the following type definitions,
  * which are nominally defined in <stddef.h>
@@ -266,7 +321,6 @@ __CRT_ALIAS __cdecl __MINGW_NOTHROW  struct tm *localtime (const time_t *__v)
  *          elements).
  */
 #ifdef __MSVCRT__
-
 /* These are for compatibility with pre-VC 5.0 supplied MSVCRT.DLL
  */
 extern _CRTIMP __cdecl __MINGW_NOTHROW  int   *__p__daylight (void);
@@ -316,8 +370,8 @@ __MINGW_IMPORT char *tzname[2];
  * of macros.
  */
 #define daylight  _daylight
-/*
- * NOTE: timezone not defined as a macro because it would conflict with
+
+/* NOTE: timezone not defined as a macro because it would conflict with
  * struct timezone in sys/time.h.  Also, tzname used to a be macro, but
  * now it's in moldname.
  */
@@ -334,21 +388,7 @@ __MINGW_IMPORT char 	*tzname[2];
  */
 __cdecl __MINGW_NOTHROW
 int nanosleep( const struct timespec *, struct timespec * );
-/*
- * NOTE:
- *
- * Structure timespec is mandated by POSIX, for specification of
- * intervals with the greatest precision supported by the OS kernel.
- * Although this allows for specification to nanosecond precision, do
- * not be deluded into any false expectation that such short intervals
- * can be realized on Windows; on Win9x derivatives, the metronome used
- * by the process scheduler has a period of ~55 milliseconds, while for
- * WinNT derivatives, the corresponding period is ~15 milliseconds; thus,
- * the shortest intervals which can be realistically timed will range
- * from 0..55 milliseconds on Win9x hosts, and from 0..15 ms on WinNT,
- * with period values normally distributed around means of ~27.5 ms
- * and ~7.5 ms, for the two system types respectively.
- */
+
 #ifndef __NO_INLINE__
 /* We may conveniently provide an in-line implementation here,
  * in terms of the __mingw_sleep() helper function.
@@ -438,6 +478,7 @@ _END_C_DECLS
 
 /* We're done with all <time.h> specific content selectors; clear them.
  */
+#undef __need_time_t
 #undef __need_struct_timespec
 #undef __need_wchar_decls
 
