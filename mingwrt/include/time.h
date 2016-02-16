@@ -325,6 +325,47 @@ __MINGW_IMPORT char 	*tzname[2];
 
 #endif	/* ! __MSVCRT__ */
 #endif	/* ! _NO_OLDNAMES */
+
+#if _POSIX_C_SOURCE
+/* The nanosleep() function provides the most general purpose API for
+ * process/thread suspension; it provides for specification of periods
+ * ranging from ~7.5 ms mean, (on WinNT derivatives; ~27.5 ms on Win9x),
+ * extending up to ~136 years, (effectively eternity).
+ */
+__cdecl __MINGW_NOTHROW
+int nanosleep( const struct timespec *, struct timespec * );
+/*
+ * NOTE:
+ *
+ * Structure timespec is mandated by POSIX, for specification of
+ * intervals with the greatest precision supported by the OS kernel.
+ * Although this allows for specification to nanosecond precision, do
+ * not be deluded into any false expectation that such short intervals
+ * can be realized on Windows; on Win9x derivatives, the metronome used
+ * by the process scheduler has a period of ~55 milliseconds, while for
+ * WinNT derivatives, the corresponding period is ~15 milliseconds; thus,
+ * the shortest intervals which can be realistically timed will range
+ * from 0..55 milliseconds on Win9x hosts, and from 0..15 ms on WinNT,
+ * with period values normally distributed around means of ~27.5 ms
+ * and ~7.5 ms, for the two system types respectively.
+ */
+#ifndef __NO_INLINE__
+/* We may conveniently provide an in-line implementation here,
+ * in terms of the __mingw_sleep() helper function.
+ */
+__cdecl __MINGW_NOTHROW
+int __mingw_sleep( unsigned long, unsigned long );
+
+__CRT_INLINE __LIBIMPL__(( FUNCTION = nanosleep ))
+int nanosleep( const struct timespec *period, struct timespec *residual )
+{
+  if( residual != (void *)(0) )
+    residual->tv_sec = (__time64_t)(residual->tv_nsec = 0);
+  return __mingw_sleep((unsigned)(period->tv_sec), (period->tv_sec < 0LL)
+    ? (unsigned)(-1) : (unsigned)(period->tv_nsec));
+}
+#endif	/* !__NO_INLINE__ */
+#endif	/* _POSIX_C_SOURCE */
 #endif	/* _TIME_H included in its own right */
 
 #if __need_wchar_decls && ! (defined _TIME_H && defined _WCHAR_H)

@@ -1,3 +1,14 @@
+2016-02-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Declare the nanosleep() function where POSIX expects it.
+
+	* include/time.h (__mingw_sleep): Declare function prototype.
+	(nanosleep): Declare prototype, and provide in-line implementation;
+	this is a reproduction of the original implementation, relocated...
+	* include/unistd.h (nanosleep): ...from here; remove it; hence...
+	(struct timespec): ...this need not be declared here, and there is
+	no need to include <parts/time.h>; remove reference.
+
 2016-02-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor <time.h> vs. <wchar.h> to avoid duplication.
