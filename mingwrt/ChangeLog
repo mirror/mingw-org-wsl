@@ -1,3 +1,27 @@
+2016-02-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor to make <parts/time.h> and <parts/wchar.h> redundant.
+
+	* include/string.h: Tidy layout.
+	(__STRING_H_SOURCED__): New macro; define it at start; delete at end.
+	(_stricmp, _strnicmp): Include their prototypes, selectively from...
+	* include/strings.h [__STRING_H_SOURCED__]: ...here, reproduce them...
+	* include/parts/strings.h: ...from here; file is obsolete; delete it.
+
+	* include/string.h (_wcscmpi): Define alias.
+	(wcscat, wcschr, wcscmp, wcscoll, wcscpy, wcscspn, wcslen, wcsncat)
+	(wcsncmp, wcsncpy, wcspbrk, wcsrchr, wcsspn, wcsstr, wcstok, wcsxfrm)
+	(_wcsdup, _wcsicmp, _wcsicoll, _wcslwr, _wcsnicmp, _wcsnset, _wcsrev)
+	(_wcsset, _wcsupr, _wcsncoll, _wcsnicoll, _wcserror, __wcserror)
+	(wcscmpi, wcscmpi, wcsdup, wcsicmp, wcsicoll, wcslwr, wcsnicmp)
+	(wcsnset, wcsrev, wcsset, wcsupr): Selectively include prototypes...
+	* include/wchar.h [__STRING_H_SOURCED__]: ...from here; reproduce...
+	* include/parts/wchar.h: ...from here; file is obsolete; delete it.
+
+	* include/strings.h (_STRINGS_H): Do not define it, when...
+	[__STRING_H_SOURCED__]: ...selectively included by <string.h>.
+	* include/wchar.h (_WCHAR_H) [__STRING_H_SOURCED__]: Likewise.
+
 2016-02-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor to make <parts/time.h> redundant.
@@ -139,7 +163,7 @@
 	* pseudo-reloc.c: Some minor layout adjustments.
 	(WIN32_LEAN_AND_MEAN): Define it; we don't need the windows baggage.
 	[typedef ptrdiff_t]: Do not assume this is gratuitously defined;
-	include <stdint.h> to guarantee it.
+	include <stddef.h> to guarantee it.
 
 2016-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 

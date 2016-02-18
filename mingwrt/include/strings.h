@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2015, MinGW.org Project.
+ * Copyright (C) 2015, 2016, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -30,10 +30,24 @@
  *
  */
 #ifndef _STRINGS_H
-#define _STRINGS_H
 #pragma GCC system_header
 
-/* All MinGW system headers must include this...
+/* In addition to the POSIX strcasecmp() and strncasecmp() functions,
+ * this header declares the prototypes for the MSVC specific stricmp()
+ * and strincmp() functions, which MSVC expects to find in <string.h>;
+ * thus, we support selective partial inclusion by <string.h>, to make
+ * this pair of function prototypes available as MSVC expects...
+ */
+#ifndef __STRING_H_SOURCED__
+/* ...and we define the _STRINGS_H guard macro only when NOT included
+ * in this partial fashion.
+ */
+#define _STRINGS_H
+
+/* All MinGW system headers must include <_mingw.h>; if we had been
+ * sourced by <string.h>, we could safely assume that it had already
+ * done this, but since that doesn't apply in this case, we must do
+ * it ourselves.
  */
 #include <_mingw.h>
 
@@ -49,13 +63,27 @@ _BEGIN_C_DECLS
 int __cdecl __MINGW_NOTHROW strcasecmp( const char *, const char * );
 int __cdecl __MINGW_NOTHROW strncasecmp( const char *, const char *, size_t );
 
-#ifndef __NO_INLINE__
-/* Provide in-line implementations for each of the preceding two functions,
- * effectively aliasing them to their MSVCRT.DLL (non-standard) equivalents,
- * (for which we maintain prototypes in <parts/strings.h>).
- */
-#include <parts/strings.h>
+#endif	/* ! RC_INVOKED */
+#endif	/* !__STRING_H_SOURCED__ */
 
+#if ! (defined _STRINGS_H && defined __NO_INLINE__)
+/* These are the MSVCRT.DLL equivalents for POSIX.1's strcasecmp() and
+ * strncasecmp() functions, for which we provide in-line implementations
+ * in <strings.h> respectively; MSVC expects to find these prototypes in
+ * <string.h>, but we also need them here, in <strings.h>, to facilitate
+ * the in-line function implementations; we declare them here, and allow
+ * <string.h> to include them selectively.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  int _stricmp( const char *, const char * );
+_CRTIMP __cdecl __MINGW_NOTHROW  int _strnicmp( const char *, const char *, size_t );
+#endif	/* !(_STRINGS_H && __NO_INLINE__) */
+
+#if defined _STRINGS_H && ! defined RC_INVOKED
+#ifndef __NO_INLINE__
+/* Provide in-line implementations for strcasecmp(), and strncasecmp(),
+ * effectively aliasing them to the respective MSVCRT.DLL (non-standard)
+ * equivalents, as prototyped above.
+ */
 __CRT_ALIAS __JMPSTUB__(( FUNCTION = strcasecmp, REMAPPED = _stricmp ))
   int strcasecmp( const char *__s1, const char *__s2 )
   { return _stricmp( __s1, __s2 ); }
@@ -64,9 +92,9 @@ __CRT_ALIAS __JMPSTUB__(( FUNCTION = strncasecmp, REMAPPED = _strnicmp ))
   int strncasecmp( const char *__s1, const char *__s2, size_t __n )
   { return _strnicmp( __s1, __s2, __n ); }
 
-#endif /* ! __NO_INLINE__ */
+#endif	/* !__NO_INLINE__ */
 
 _END_C_DECLS
 
-#endif /* ! RC_INVOKED */
-#endif /* ! _STRINGS_H: $RCSfile$: end of file */
+#endif	/* _STRINGS_H && ! RC_INVOKED */
+#endif	/* !_STRINGS_H: $RCSfile$: end of file */

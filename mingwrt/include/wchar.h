@@ -31,17 +31,31 @@
  *
  */
 #ifndef _WCHAR_H
-#define _WCHAR_H
 #pragma GCC system_header
 
-/* All the headers include this file.
+/* This header declares prototypes for wchar_t string functions, as are
+ * prescribed by ISO-C, but which MSVC also expects, (in contravention of
+ * ISO-C prescriptions), to find in <string.h>.  To accommodate this MSVC
+ * anomaly, we make provision for <string.h> to include a selected subset
+ * of <wchar.h>; thus, we do not immediately define _WCHAR_T...
+ */
+#ifndef __STRING_H_SOURCED__
+/* ...but defer it until we have confirmed that this is NOT inclusion for
+ * only this subset of <wchar.h> declarations.
+ */
+#define _WCHAR_H
+
+/* All MinGW headers are required to include <_mingw.h>; in the case of
+ * selective inclusion by <string.h>, we expect it to have already done
+ * so, but since that doesn't apply here, we must do it ourselves.
  */
 #include <_mingw.h>
 
 #ifndef __STRICT_ANSI__
- /* MSDN says that isw* char classifications are in wchar.h and wctype.h.
-  * Although the wctype names are ANSI, their exposure in this header is
-  * not; nevertheless, we replicate them here, for MSDN conformity.
+ /* MSDN says that isw* char classifications appear in both <wchar.h>,
+  * and in <wctype.h>.  Although these <wctype.h> classifications are as
+  * prescribed by ISO-C, their exposure in <wchar.h> is not; nonetheless,
+  * we replicate them here, for MSDN conformity.
   */
 # include <wctype.h>
 
@@ -186,15 +200,109 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, s
  * replacement library function.
  *
  */
-
+_BEGIN_C_DECLS
 
 /* Wide character string functions must be specified here, as required
  * by the ISO-C Standard; however, MSVC contravenes this standard by also
- * requiring them to appear in <string.h>, so we specify them in a shared
- * <parts/wchar.h> header, which we may include both here and in <string.h>
+ * requiring them to appear in <string.h>.  We declare them here, where
+ * they rightfully belong, but we also arrange for them to be available
+ * for selective inclusion by <string.h>; to facilitate this, we must
+ * change the declarative condition...
  */
-#include <parts/wchar.h>
+#endif	/* ! RC_INVOKED */
+#endif	/* !__STRING_H_SOURCED__ */
+#if ! (defined RC_INVOKED || (defined _WCHAR_H && defined _STRING_H))
+/* ...such that these declarations are exposed when either _WCHAR_H, or
+ * _STRING_H is defined, (but not both, since that would indicate that
+ * these declarations have already been processed).
+ *
+ *
+ * Wide character versions of the ISO-C standard string functions.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcscat (wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcschr (const wchar_t *, wchar_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int wcscmp (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int wcscoll (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcscpy (wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t wcscspn (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t wcslen (const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsncat (wchar_t *, const wchar_t *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int wcsncmp (const wchar_t *, const wchar_t *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsncpy (wchar_t *, const wchar_t *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcspbrk (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsrchr (const wchar_t *, wchar_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t wcsspn (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsstr (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcstok (wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t wcsxfrm (wchar_t *, const wchar_t *, size_t);
 
+#ifndef __STRICT_ANSI__
+/* UTF-16LE versions of non-ANSI string functions provided by CRTDLL.DLL
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wcsdup (const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _wcsicmp (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _wcsicoll (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wcslwr (wchar_t*);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _wcsnicmp (const wchar_t *, const wchar_t *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wcsnset (wchar_t *, wchar_t, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wcsrev (wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wcsset (wchar_t *, wchar_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wcsupr (wchar_t *);
+
+#ifdef __MSVCRT__
+_CRTIMP __cdecl __MINGW_NOTHROW  int _wcsncoll (const wchar_t *, const wchar_t *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _wcsnicoll (const wchar_t *, const wchar_t *, size_t);
+
+/* A wide character counterpart to the strerror() API was introduced in
+ * MSVCR70.DLL, and subsequently back-ported to MSVCRT.DLL in WinXP.
+ */
+#if __MSVCRT_VERSION__ >= __MSVCR70_DLL || NTDDI_VERSION >= NTDDI_WINXP
+ /*
+  * These are are the wide character counterparts to the strerror()
+  * function itself, and the _strerror() function, respectively.
+  */
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wcserror (int);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *__wcserror (const wchar_t *);
+
+#endif	/* MSVCR70.DLL || WinXP */
+#endif	/* __MSVCRT__ */
+
+/* MSVCRT.DLL provides neither _wcscmpi() nor wcscmpi(); the heritage
+ * is uncertain, but for the convenience, (and portability), of legacy
+ * applications which assume wcscmpi() should be available:
+ */
+#define _wcscmpi _wcsicmp
+int __cdecl __MINGW_NOTHROW  wcscmpi (const wchar_t *, const wchar_t *);
+
+#ifndef __NO_INLINE__
+__CRT_ALIAS __JMPSTUB__(( FUNCTION = wcscmpi, REMAPPED = _wcsicmp ))
+  int wcscmpi (const wchar_t *__ws1, const wchar_t *__ws2)
+  { return _wcsicmp (__ws1, __ws2); }
+#endif	/* __NO_INLINE__ */
+
+#ifndef _NO_OLDNAMES
+/* Older CRTDLL.DLL versions may have provided these alternatively named
+ * functions; we continue to support them, via the OLDNAME libraries:
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsdup (const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int wcsicmp (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int wcsicoll (const wchar_t *, const wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcslwr (wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int wcsnicmp (const wchar_t *, const wchar_t *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsnset (wchar_t *, wchar_t, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsrev (wchar_t *);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsset (wchar_t *, wchar_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsupr (wchar_t *);
+
+#endif	/* !_NO_OLDNAMES */
+#endif	/* !__STRICT_ANSI__ */
+
+/* This completes the set of declarations which are to be duplicated by
+ * inclusion of <string.h>; revert the declarative condition, to make it
+ * specific to <wchar.h> alone.
+ */
+#endif	/* !(RC_INVOKED || (_WCHAR_H && _STRING_H)) */
+#if defined _WCHAR_H && ! defined RC_INVOKED
 
 /* These are resolved by -lmingwex. Alternatively, they can be resolved by
    adding -lmsvcp60 to your command line, which will give you the VC++
@@ -549,10 +657,10 @@ _CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnvpe	(int, const wchar_t*, const 
 
 #define _WPROCESS_DEFINED
 #endif
-#endif /* ! __STRICT_ANSI__ */
+#endif	/* ! __STRICT_ANSI__ */
 
 _END_C_DECLS
 
 #undef __WCHAR_H_SOURCED__
-#endif /* ! RC_INVOKED */
-#endif /* ! _WCHAR_H */
+#endif	/* _WCHAR_H && ! RC_INVOKED */
+#endif	/* !_WCHAR_H: $RCSfile$: end of file */

@@ -6,7 +6,8 @@
  * $Id$
  *
  * Written by Rob Savoye <rob@cygnus.com>
- * Copyright (C) 1997-2000, 2002-2004, 2007, 2009, 2015, MinGW.org Project.
+ * Copyright (C) 1997-2000, 2002-2004, 2007, 2009, 2015, 2016,
+ *  MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -30,6 +31,7 @@
  *
  */
 #ifndef _STRING_H
+#pragma GCC system_header
 #define _STRING_H
 
 /* All MinGW system headers must include this...
@@ -52,101 +54,107 @@
 
 _BEGIN_C_DECLS
 
+#define __STRING_H_SOURCED__
 /* Prototypes for the ISO-C Standard library string functions.
  */
-_CRTIMP void * __cdecl __MINGW_NOTHROW	memchr (const void*, int, size_t) __MINGW_ATTRIB_PURE;
-_CRTIMP int    __cdecl __MINGW_NOTHROW 	memcmp (const void*, const void*, size_t) __MINGW_ATTRIB_PURE;
-_CRTIMP void * __cdecl __MINGW_NOTHROW 	memcpy (void*, const void*, size_t);
-_CRTIMP void * __cdecl __MINGW_NOTHROW	memmove (void*, const void*, size_t);
-_CRTIMP void * __cdecl __MINGW_NOTHROW	memset (void*, int, size_t);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strcat (char*, const char*);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strchr (const char*, int)  __MINGW_ATTRIB_PURE;
-_CRTIMP int    __cdecl __MINGW_NOTHROW	strcmp (const char*, const char*)  __MINGW_ATTRIB_PURE;
-_CRTIMP int    __cdecl __MINGW_NOTHROW	strcoll (const char*, const char*);	/* Compare using locale */
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strcpy (char*, const char*);
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	strcspn (const char*, const char*)  __MINGW_ATTRIB_PURE;
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strerror (int); /* NOTE: NOT an old name wrapper. */
+_CRTIMP __cdecl __MINGW_NOTHROW  void *memchr (const void *, int, size_t) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  int memcmp (const void *, const void *, size_t) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  void *memcpy (void *, const void *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  void *memmove (void *, const void *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  void *memset (void *, int, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strcat (char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strchr (const char *, int) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  int strcmp (const char *, const char *) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  int strcoll (const char *, const char *); /* Compare using locale */
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strcpy (char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t strcspn (const char *, const char *) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strerror (int); /* NOTE: NOT an old name wrapper. */
 
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	strlen (const char*)  __MINGW_ATTRIB_PURE;
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strncat (char*, const char*, size_t);
-_CRTIMP int    __cdecl __MINGW_NOTHROW	strncmp (const char*, const char*, size_t)  __MINGW_ATTRIB_PURE;
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strncpy (char*, const char*, size_t);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strpbrk (const char*, const char*)  __MINGW_ATTRIB_PURE;
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strrchr (const char*, int)  __MINGW_ATTRIB_PURE;
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	strspn (const char*, const char*)  __MINGW_ATTRIB_PURE;
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strstr (const char*, const char*)  __MINGW_ATTRIB_PURE;
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strtok (char*, const char*);
-_CRTIMP size_t __cdecl __MINGW_NOTHROW	strxfrm (char*, const char*, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t strlen (const char *) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strncat (char *, const char *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int strncmp (const char *, const char *, size_t) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strncpy (char *, const char *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strpbrk (const char *, const char *) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strrchr (const char *, int) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t strspn (const char *, const char *) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strstr (const char *, const char *) __MINGW_ATTRIB_PURE;
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strtok (char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  size_t strxfrm (char *, const char *, size_t);
 
 #ifndef __STRICT_ANSI__
 /*
  * Extra non-ANSI functions provided by the CRTDLL library
  */
-_CRTIMP char * __cdecl __MINGW_NOTHROW	_strerror (const char *);
-_CRTIMP void * __cdecl __MINGW_NOTHROW	_memccpy (void*, const void*, int, size_t);
-_CRTIMP int    __cdecl __MINGW_NOTHROW 	_memicmp (const void*, const void*, size_t);
-_CRTIMP char * __cdecl __MINGW_NOTHROW 	_strdup (const char*) __MINGW_ATTRIB_MALLOC;
-_CRTIMP int    __cdecl __MINGW_NOTHROW	_strcmpi (const char*, const char*);
-_CRTIMP int    __cdecl __MINGW_NOTHROW	_stricoll (const char*, const char*);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	_strlwr (char*);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	_strnset (char*, int, size_t);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	_strrev (char*);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	_strset (char*, int);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	_strupr (char*);
-_CRTIMP void   __cdecl __MINGW_NOTHROW	_swab (const char*, char*, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *_strerror (const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  void *_memccpy (void *, const void *, int, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _memicmp (const void *, const void *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *_strdup (const char *) __MINGW_ATTRIB_MALLOC;
+_CRTIMP __cdecl __MINGW_NOTHROW  int _strcmpi (const char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _stricoll (const char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *_strlwr (char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *_strnset (char *, int, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *_strrev (char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *_strset (char *, int);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *_strupr (char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  void _swab (const char *, char *, size_t);
 
 /* MSVC's non-ANSI _stricmp() and _strnicmp() functions must also be
  * prototyped here, but we need to share them with <strings.h>, where
- * we declare their POSIX strcasecmp() and strncasecmp() equivalents.
+ * we declare their POSIX strcasecmp() and strncasecmp() equivalents;
+ * get the requisite prototypes by selective <strings.h> inclusion.
  */
-#define _FAKE_STRINGS_H_SOURCED 1
-#include <parts/strings.h>
+#include <strings.h>
 
 # ifdef __MSVCRT__
  /* These were not present in the CRTDLL prior to the first release of
   * MSVCRT.DLL, but are available in all versions of that library.
   */
-_CRTIMP int    __cdecl __MINGW_NOTHROW  _strncoll(const char*, const char*, size_t);
-_CRTIMP int    __cdecl __MINGW_NOTHROW  _strnicoll(const char*, const char*, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _strncoll(const char *, const char *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int _strnicoll(const char *, const char *, size_t);
 # endif
 
 # ifndef _NO_OLDNAMES
  /* Non-underscore decorated versions of non-ANSI functions. They live in the
   * OLDNAMES libraries, whence they provide a little extra portability.
   */
-_CRTIMP void * __cdecl __MINGW_NOTHROW	memccpy (void*, const void*, int, size_t);
-_CRTIMP int    __cdecl __MINGW_NOTHROW	memicmp (const void*, const void*, size_t);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strdup (const char*) __MINGW_ATTRIB_MALLOC;
-_CRTIMP int    __cdecl __MINGW_NOTHROW	strcmpi (const char*, const char*);
-_CRTIMP int    __cdecl __MINGW_NOTHROW	stricmp (const char*, const char*);
-_CRTIMP int    __cdecl __MINGW_NOTHROW	stricoll (const char*, const char*);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strlwr (char*);
-_CRTIMP int    __cdecl __MINGW_NOTHROW	strnicmp (const char*, const char*, size_t);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strnset (char*, int, size_t);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strrev (char*);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strset (char*, int);
-_CRTIMP char * __cdecl __MINGW_NOTHROW	strupr (char*);
+_CRTIMP __cdecl __MINGW_NOTHROW  void *memccpy (void *, const void *, int, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  int memicmp (const void *, const void *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strdup (const char *) __MINGW_ATTRIB_MALLOC;
+_CRTIMP __cdecl __MINGW_NOTHROW  int strcmpi (const char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int stricmp (const char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int stricoll (const char *, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strlwr (char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  int strnicmp (const char *, const char *, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strnset (char *, int, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strrev (char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strset (char *, int);
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strupr (char *);
 
 #  ifndef _UWIN
   /* FIXME: Do we really care that UWin doesn't support this?  We are
    * under no obligation to support UWin.
    */
-_CRTIMP void   __cdecl __MINGW_NOTHROW	swab (const char*, char*, size_t);
+_CRTIMP __cdecl __MINGW_NOTHROW  void swab (const char *, char *, size_t);
 
 #  endif /* ! _UWIN */
 # endif /* ! _NO_OLDNAMES */
 
-# define _FAKE_WCHAR_H_SOURCED 1
-# define __need_wstring_function_prototypes
- /* This inclusion of <wchar.h> string function prototypes is required for
-  * MSVC <string.h> compatibility.  Strictly conforming ISO-C applications
-  * should include <wchar.h>; they should not rely on this anomaly.
-  */
-# include <parts/wchar.h>
+/* MSVC also expects <string.h> to declare duplicates of the wchar_t
+ * string functions which are nominally declared in <wchar.h>, (which
+ * is where ISO-C specifies that they should be declared).  For the
+ * convenience of applications which rely on this Microsoft anomaly,
+ * inclusion of <wchar.h>, within the current __STRING_H_SOURCED__
+ * scope, will selectively expose the required function prototypes;
+ * however, strictly ISO-C conforming applications should include
+ * <wchar.h> directly; they should not rely on this MSVC specific
+ * anomalous behaviour.
+ */
+#include <wchar.h>
 
 #endif /* ! __STRICT_ANSI__ */
+#undef __STRING_H_SOURCED__
 
 _END_C_DECLS
 
-#endif /* ! RC_INVOKED */
-#endif /* ! _STRING_H: $RCSfile$: end of file */
+#endif	/* ! RC_INVOKED */
+#endif	/* !_STRING_H: $RCSfile$: end of file */
