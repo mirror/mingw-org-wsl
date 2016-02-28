@@ -1,3 +1,10 @@
+2016-02-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct atexit() and _onexit() export declaration regression.
+
+	* msvcrt-xref/msvcrt.def.in (atexit, _onexit): These must be exported
+	as DATA; declare them accordingly.
+
 2016-02-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor to make <parts/time.h> and <parts/wchar.h> redundant.

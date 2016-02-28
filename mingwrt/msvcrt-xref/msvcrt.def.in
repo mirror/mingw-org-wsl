@@ -1911,7 +1911,9 @@ _msize_debug
 # endif
 #endif
 _nextafter
-_onexit
+; pexports doesn't report it as such, but libmsvcrt.a needs
+; _onexit to be qualified as DATA.
+_onexit DATA
 _open
 _open_osfhandle
 #if __MSVCRT_VERSION__ < 0x09000000UL
@@ -2914,7 +2916,9 @@ atanh
 atanhf
 atanhl
 #endif
-atexit
+; pexports doesn't report it as such, but libmsvcrt.a needs
+; atexit to be qualified as DATA.
+atexit DATA
 atof
 atoi
 atol
