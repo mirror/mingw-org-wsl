@@ -45,7 +45,7 @@
  * _TIME_H guard macro, and we select only the minimally required subset
  * of declarations to be exposed from within <time.h>
  */
-# define __need_wchar_decls 1
+# define __need_wchar_decls  1
 
 /* Both ISO-C and POSIX stipulate that <wchar.h> shall declare "struct tm"
  * as an incomplete structure, with its complete declaration to be provided
@@ -69,8 +69,8 @@ struct tm;
 #define CLOCKS_PER_SEC	((clock_t)(1000))
 #define CLK_TCK 	CLOCKS_PER_SEC
 
-#define __need_struct_timespec 1
-#define __need_wchar_decls 1
+#define __need_struct_timespec  1
+#define __need_wchar_decls  1
 #endif
 
 #ifndef RC_INVOKED
@@ -78,7 +78,7 @@ struct tm;
  * <time.h>, we ALWAYS require the definition for time_t; get it by
  * selective inclusion from its primary source, in <sys/types.h>
  */
-#define __need_time_t 1
+#define __need_time_t  1
 #include <sys/types.h>
 
 #if defined __need_struct_timespec && ! __struct_timespec_defined
@@ -107,7 +107,7 @@ struct timespec
   __int32  	  tv_nsec;	/* nanoseconds */
 };
 
-# ifdef _MINGW32_EXTENDED_SOURCE
+# ifdef _MINGW32_SOURCE_EXTENDED
 struct __mingw32_expanded_timespec
 {
   /* Equivalent of struct timespec, with disambiguation for the
@@ -126,13 +126,13 @@ struct __mingw32_expanded_timespec
   };
   __int32  	  tv_nsec;	/* nanoseconds */
 };
-# endif /* _MINGW32_EXTENDED_SOURCE */
+# endif /* _MINGW32_SOURCE_EXTENDED */
 
 # define __struct_timespec_defined  1
 #endif
 
 #ifdef _TIME_H
-#ifdef _MINGW32_EXTENDED_SOURCE
+#ifdef _MINGW32_SOURCE_EXTENDED
 
 _BEGIN_C_DECLS
 
@@ -140,7 +140,7 @@ __CRT_ALIAS __LIBIMPL__(( FUNCTION = mingw_timespec ))
 /* This non-ANSI convenience function facilitates access to entities
  * defined as struct timespec, while exposing the broken down form of
  * the tv_sec field, as declared within struct __mingw32_timespec.  It
- * is exposed only when _MINGW32_EXTENDED_SOURCE is defined, which is
+ * is exposed only when _MINGW32_SOURCE_EXTENDED is defined, which is
  * normally implicitly the case, except when in __STRICT_ANSI__ mode
  * unless the user defines it explicitly.
  */
@@ -149,7 +149,7 @@ struct __mingw32_expanded_timespec *mingw_timespec( struct timespec *__tv )
 
 _END_C_DECLS
 
-#endif	/* _MINGW32_EXTENDED_SOURCE */
+#endif	/* _MINGW32_SOURCE_EXTENDED */
 
 /* <time.h> is also required to duplicate the following type definitions,
  * which are nominally defined in <stddef.h>

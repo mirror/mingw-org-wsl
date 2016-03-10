@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Mumit Khan  <khan@xraylith.wisc.edu>
- * Copyright (C) 1999, 2001-2011, 2014, 2015, MinGW.org Project
+ * Copyright (C) 1999, 2001-2011, 2014-2016, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -84,7 +84,8 @@
  * or by inclusion in __MINGW_FEATURES__:
  *
  * __USE_MINGW_ANSI_STDIO          Select a more ANSI C99 compatible
- *                                 implementation of printf() and friends.
+ *                                 implementation of printf() and friends;
+ *                                 (users should not set this directly).
  *
  * Other macros:
  *
@@ -211,11 +212,11 @@
 #  ifndef __MINGW_IMPORT
    /* Note the extern. This is needed to work around GCC's
       limitations in handling dllimport attribute.  */
-#   define __MINGW_IMPORT  extern __attribute__ ((__dllimport__))
+#   define __MINGW_IMPORT  extern __attribute__((__dllimport__))
 #  endif
 #  ifndef _CRTIMP
 #   ifdef __USE_CRTIMP
-#    define _CRTIMP  __attribute__ ((dllimport))
+#    define _CRTIMP  __attribute__((dllimport))
 #   else
 #    define _CRTIMP
 #   endif
@@ -234,10 +235,10 @@
  * void __attribute__ ((__cdecl)) foo(void);
  */
 # ifndef __cdecl
-#  define __cdecl  __attribute__ ((__cdecl__))
+#  define __cdecl  __attribute__((__cdecl__))
 # endif
 # ifndef __stdcall
-#  define __stdcall __attribute__ ((__stdcall__))
+#  define __stdcall __attribute__((__stdcall__))
 # endif
 # ifndef __int64
 #  define __int64 long long
@@ -314,23 +315,23 @@
 # define __UNUSED_PARAM(x)
 #else
 # ifdef __GNUC__
-#  define __UNUSED_PARAM(x) x __attribute__ ((__unused__))
+#  define __UNUSED_PARAM(x) x __attribute__((__unused__))
 # else
 #  define __UNUSED_PARAM(x) x
 # endif
 #endif
 
 #ifdef __GNUC__
-#define __MINGW_ATTRIB_NORETURN __attribute__ ((__noreturn__))
-#define __MINGW_ATTRIB_CONST __attribute__ ((__const__))
+#define __MINGW_ATTRIB_NORETURN __attribute__((__noreturn__))
+#define __MINGW_ATTRIB_CONST __attribute__((__const__))
 #else
 #define __MINGW_ATTRIB_NORETURN
 #define __MINGW_ATTRIB_CONST
 #endif
 
 #if __MINGW_GNUC_PREREQ (3, 0)
-#define __MINGW_ATTRIB_MALLOC __attribute__ ((__malloc__))
-#define __MINGW_ATTRIB_PURE __attribute__ ((__pure__))
+#define __MINGW_ATTRIB_MALLOC __attribute__((__malloc__))
+#define __MINGW_ATTRIB_PURE __attribute__((__pure__))
 #else
 #define __MINGW_ATTRIB_MALLOC
 #define __MINGW_ATTRIB_PURE
@@ -340,19 +341,19 @@
    variadiac macro facility, because variadic macros cause syntax
    errors with  --traditional-cpp.  */
 #if  __MINGW_GNUC_PREREQ (3, 3)
-#define __MINGW_ATTRIB_NONNULL(arg) __attribute__ ((__nonnull__ (arg)))
+#define __MINGW_ATTRIB_NONNULL(arg) __attribute__((__nonnull__(arg)))
 #else
 #define __MINGW_ATTRIB_NONNULL(arg)
 #endif /* GNUC >= 3.3 */
 
 #if  __MINGW_GNUC_PREREQ (3, 1)
-#define __MINGW_ATTRIB_DEPRECATED __attribute__ ((__deprecated__))
+#define __MINGW_ATTRIB_DEPRECATED __attribute__((__deprecated__))
 #else
 #define __MINGW_ATTRIB_DEPRECATED
 #endif /* GNUC >= 3.1 */
 
 #if  __MINGW_GNUC_PREREQ (3, 3)
-#define __MINGW_NOTHROW __attribute__ ((__nothrow__))
+#define __MINGW_NOTHROW __attribute__((__nothrow__))
 #else
 #define __MINGW_NOTHROW
 #endif /* GNUC >= 3.3 */
@@ -364,10 +365,14 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 /* Activation of MinGW specific extended features:
  */
 #ifndef __USE_MINGW_ANSI_STDIO
-/*
+/* Users should not set this directly; rather, define one (or more)
+ * of the feature test macros (tabulated below), or specify any of the
+ * compiler's command line options, (e.g. -posix, -ansi, or -std=c...),
+ * which cause _POSIX_SOURCE, or __STRICT_ANSI__ to be defined.
+ *
  * We must check this BEFORE we specifiy any implicit _POSIX_C_SOURCE,
- * otherwise we would always implicitly choose __USE_MINGW_ANSI_STDIO;
- * if user didn't specify it explicitly...
+ * otherwise we would always implicitly choose __USE_MINGW_ANSI_STDIO,
+ * even if none of these selectors are specified explicitly...
  */
 # if   defined __STRICT_ANSI__  ||  defined _ISOC99_SOURCE \
    ||  defined _POSIX_SOURCE    ||  defined _POSIX_C_SOURCE \
@@ -441,12 +446,12 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 # endif
 #endif
 
-#if ! defined _MINGW32_EXTENDED_SOURCE && ! defined __STRICT_ANSI__
+#if ! defined _MINGW32_SOURCE_EXTENDED && ! defined __STRICT_ANSI__
 /*
  * Enable mingw32 extensions by default, except when __STRICT_ANSI__
  * conformity mode has been enabled.
  */
-# define _MINGW32_EXTENDED_SOURCE  1
+# define _MINGW32_SOURCE_EXTENDED  1
 #endif
 
 #endif /* __MINGW_H: $RCSfile$: end of file */

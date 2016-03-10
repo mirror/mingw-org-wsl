@@ -1,3 +1,16 @@
+2016-03-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Feature test _MINGW32_EXTENDED_SOURCE renamed.
+
+	* include/_mingw.h (_MINGW32_EXTENDED_SOURCE): Rename to...
+	(_MINGW32_SOURCE_EXTENDED): ...this, to improve naming consistency...
+	(_XOPEN_SOURCE_EXTENDED): ...with this POSIX-XSI feature test.
+	(__USE_MINGW_ANSI_STDIO): Note that it is intended for internal use;
+	users should enable any conventional feature test which implies it.
+
+	* include/time.h (_MINGW32_EXTENDED_SOURCE): Update references...
+	(_MINGW32_SOURCE_EXTENDED): ...i.e. to refer to this.
+
 2016-02-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct atexit() and _onexit() export declaration regression.
@@ -211,7 +224,7 @@
 	* include/io.h (lseek64): Use '__off64_t', instead of 'off64_t', as
 	return type, and type of offset argument, in both prototype and inline
 	implementation; note that this addresses the issue of pollution in the
-	user namespace, while avoiding the issue of MinGW-Bug [#].
+	user namespace, while avoiding the issue of MinGW-Bug [#2024].
 
 	* include/stdio.h (fseeko64, __mingw_fseeko64): Use '__off64_t'
 	instead of 'off64_t', as offset argument type in function prototypes.
