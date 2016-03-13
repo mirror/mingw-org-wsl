@@ -1,3 +1,10 @@
+2016-03-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct conditional compilation block nesting errors.
+
+	* include/stdio.h include/time.h (_BEGIN_C_DECLS, _END_C_DECLS): Keep
+	them balanced within, and around, conditional compilation blocks.
+
 2016-03-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Feature test _MINGW32_EXTENDED_SOURCE renamed.

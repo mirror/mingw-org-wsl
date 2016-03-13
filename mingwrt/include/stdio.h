@@ -241,9 +241,18 @@ __MINGW_IMPORT FILE _iob[];	/* An array of FILE imported from DLL. */
 #define stdout	(&_iob[STDOUT_FILENO])
 #define stderr	(&_iob[STDERR_FILENO])
 
+/* Need to close the current _STDIO_H specific block here...
+ */
+#endif
+/* ...because, we need this regardless of the inclusion mode...
+ */
 _BEGIN_C_DECLS
 
-/* File Operations
+#ifdef _STDIO_H
+/* ...then revert to _STDIO_H specific mode, to declare...
+ *
+ *
+ * File Operations
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  FILE * fopen (const char *, const char *);
 _CRTIMP __cdecl __MINGW_NOTHROW  FILE * freopen (const char *, const char *, FILE *);

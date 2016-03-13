@@ -406,6 +406,9 @@ int nanosleep( const struct timespec *period, struct timespec *residual )
 }
 #endif	/* !__NO_INLINE__ */
 #endif	/* _POSIX_C_SOURCE */
+
+_END_C_DECLS
+
 #endif	/* _TIME_H included in its own right */
 
 #if __need_wchar_decls && ! (defined _TIME_H && defined _WCHAR_H)
@@ -416,6 +419,8 @@ int nanosleep( const struct timespec *period, struct timespec *residual )
  * _wctime() function, are visible only on the first time parse, when
  * one of either _TIME_H, or _WCHAR_H, but not both, is defined.
  */
+_BEGIN_C_DECLS
+
 #if defined __MSVCRT__ && ! defined __STRICT_ANSI__
 _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wasctime (const struct tm *);
 _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wstrdate (wchar_t *);
@@ -472,9 +477,9 @@ __CRT_ALIAS __cdecl __MINGW_NOTHROW  wchar_t *_wctime (const time_t *__v)
 _CRTIMP __cdecl __MINGW_NOTHROW
 size_t wcsftime (wchar_t *, size_t, const wchar_t *, const struct tm *);
 
-#endif	/* ! (defined _TIME_H && defined _WCHAR_H) */
-
 _END_C_DECLS
+
+#endif	/* ! (defined _TIME_H && defined _WCHAR_H) */
 
 /* We're done with all <time.h> specific content selectors; clear them.
  */
