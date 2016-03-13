@@ -694,12 +694,15 @@ install-headers install-mingwrt: install-mingwrt-headers
 mingwrt-includedirs: includedir $(eval mingwrt_include_subdirs=sys parts)
 	$(call mkinstalldirs,${includedir}/,$(mingwrt_include_subdirs))
 
+SUB_HEADERS_PRESENT = echo $1/include/$2/*.h | grep -v '[*]' > /dev/null
 INSTALL_SUB_HEADERS = $(call INSTALL_DATA,$1/include/$2/*.h,${includedir}/$2)
 
 install-mingwrt-headers: mingwrt-includedirs
 	$(call INSTALL_DATA,${mingwrt_srcdir}/include/*.h,${includedir})
 	for dir in $(mingwrt_include_subdirs); do \
-	  $(call INSTALL_SUB_HEADERS,${mingwrt_srcdir},$$dir); \
+	  if $(call SUB_HEADERS_PRESENT,${mingwrt_srcdir},$$dir); then \
+	    $(call INSTALL_SUB_HEADERS,${mingwrt_srcdir},$$dir); \
+	    fi; \
 	  done
 	$(call INSTALL_DATA,${mingwrt_srcdir}/profile/*.h,${includedir})
 
