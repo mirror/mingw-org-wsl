@@ -88,6 +88,14 @@
   */
   typedef __int64  __off64_t;
 
+# ifndef __STRICT_ANSI__
+  /* GCC itself, (specifically libgfortran.a), gratuitously
+   * assumes that non-standard type off64_t is defined; make
+   * it so, pending upstream correction.
+   */
+  typedef __off64_t  off64_t;
+# endif
+
 # if __GNUC__ < 4
   /* Some compilers, including GCC prior to v4, may get upset
    * if we try to specifiy these typedefs more than once.

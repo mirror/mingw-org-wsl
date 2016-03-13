@@ -1,5 +1,13 @@
 2016-03-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Reinstate typedef for non-standard off64_t.
+
+	* include/sys/types.h [!__STRICT_ANSI__] (off64_t): Define it as...
+	(__off64_t): ...typedef derived from this; although non-standard, it
+	is gratuitously required when building GCC's libgfortran.a
+
+2016-03-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Correct conditional compilation block nesting errors.
 
 	* include/stdio.h include/time.h (_BEGIN_C_DECLS, _END_C_DECLS): Keep
