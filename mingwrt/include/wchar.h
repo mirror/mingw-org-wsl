@@ -200,7 +200,7 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, s
  * replacement library function.
  *
  */
-_BEGIN_C_DECLS
+
 
 /* Wide character string functions must be specified here, as required
  * by the ISO-C Standard; however, MSVC contravenes this standard by also
