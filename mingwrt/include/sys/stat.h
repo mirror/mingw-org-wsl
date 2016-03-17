@@ -205,6 +205,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_chmod (const char*, int);
 #if __MSVCRT_VERSION__ < 0x0800
 _CRTIMP int __cdecl __MINGW_NOTHROW	_stat (const char*, struct _stat*);
 #endif
+_CRTIMP int __cdecl __MINGW_NOTHROW	_umask (int);
 
 #ifndef	_NO_OLDNAMES
 /* FIXME for __MSVCRT_VERSION__ >= 0x0800 */
@@ -212,6 +213,7 @@ _CRTIMP int __cdecl __MINGW_NOTHROW	_stat (const char*, struct _stat*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	fstat (int, struct stat*);
 _CRTIMP int __cdecl __MINGW_NOTHROW	chmod (const char*, int);
 _CRTIMP int __cdecl __MINGW_NOTHROW	stat (const char*, struct stat*);
+_CRTIMP int __cdecl __MINGW_NOTHROW	umask (int);
 
 #endif	/* Not _NO_OLDNAMES */
 

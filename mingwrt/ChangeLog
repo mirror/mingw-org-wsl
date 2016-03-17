@@ -1,5 +1,13 @@
 2016-03-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Relocate misplaced umask() function prototypes.
+
+	* include/sys/stat.h (umask, _umask): Declare prototypes; duplicate...
+	* include/io.h (umask, _umask): ...these; POSIX doesn't expect them
+	here, but leave them for backward, or Microsoft, compatibility.
+
+2016-03-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Correct another _BEGIN_C_DECLS imbalance error.
 
 	* include/wchar.h (_BEGIN_C_DECLS): One misplaced, superfluous, and
