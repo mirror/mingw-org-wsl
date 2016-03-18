@@ -1,3 +1,22 @@
+2016-03-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor out <stdlib.h> vs. <wchar.h> duplicate declarations.
+
+	* include/stdlib.h [__WCHAR_H_SOURCED__]
+	(_STDLIB_H): Do not define it; restrict visible declarations to...
+	(wcstol, wcstoul, wcstod, _wgetenv, _wputenv, _wsearchenv, _wsystem)
+	(_wmakepath, _wsplitpath, _wfullpath, wcstof, wcstold): ...this subset
+	of regular <stdlib.h> content; full content is declared only when...
+	[!__WCHAR_H_SOURCED__] (_STDLIB_H): ...this applies; define it.
+	(_WSTDLIB_DEFINED): Do not define it; delete all references.
+	(pragma GCC system_header): Declare it; tidy layout.
+
+	* include/wchar.h: Delete duplicated declarations for...
+	(wcstol, wcstoul, wcstod, _wgetenv, _wputenv, _wsearchenv, _wsystem)
+	(_wmakepath, _wsplitpath, _wfullpath, wcstof, wcstold): ...these;
+	include <stdlib.h> selectively, to maintain their visibility.
+	(_WSTDLIB_DEFINED): Delete all references.
+
 2016-03-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Relocate misplaced umask() function prototypes.

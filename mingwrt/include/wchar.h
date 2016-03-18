@@ -139,39 +139,49 @@
  *  void      _wperror (const wchar_t *);
  *  FILE    * _wpopen (const wchar_t *, const wchar_t *);
  *
+ *
+ * In similar fashion, from...
  */
-_BEGIN_C_DECLS
-
-#ifndef _WSTDLIB_DEFINED
-/* Also declared in stdlib.h; FIXME: should be factored out.
- */
-_CRTIMP long __cdecl __MINGW_NOTHROW 	wcstol (const wchar_t*, wchar_t**, int);
-_CRTIMP unsigned long __cdecl __MINGW_NOTHROW wcstoul (const wchar_t*, wchar_t**, int);
-_CRTIMP double __cdecl __MINGW_NOTHROW	wcstod (const wchar_t*, wchar_t**);
-#if !defined __NO_ISOCEXT /* in libmingwex.a */
-float __cdecl __MINGW_NOTHROW wcstof (const wchar_t * __restrict__, wchar_t ** __restrict__);
-long double __cdecl __MINGW_NOTHROW wcstold (const wchar_t * __restrict__, wchar_t ** __restrict__);
-#endif /* __NO_ISOCEXT */
-#ifdef __MSVCRT__
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wgetenv(const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wputenv(const wchar_t*);
-_CRTIMP void __cdecl __MINGW_NOTHROW	_wsearchenv(const wchar_t*, const wchar_t*, wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wsystem(const wchar_t*);
-_CRTIMP void __cdecl __MINGW_NOTHROW	_wmakepath(wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*);
-_CRTIMP void __cdecl __MINGW_NOTHROW	_wsplitpath (const wchar_t*, wchar_t*, wchar_t*, wchar_t*, wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, size_t);
-#endif
-#define  _WSTDLIB_DEFINED
-#endif /* _WSTDLIB_DEFINED */
-
-/* Also in similar fashion, from...
+#include <stdlib.h>
+/* ...we obtain prototypes for universally supported functions:
+ *
+ *  long wcstol (const wchar_t *, wchar_t **, int);
+ *  unsigned long wcstoul (const wchar_t *, wchar_t **, int);
+ *  double wcstod (const wchar_t *, wchar_t **);
+ *
+ * The following are Microsoft specific, and require MSCVRT.DLL,
+ * or any of its non-free derivatives; they are not available to
+ * applications which use CRTDLL.DLL:
+ *
+ *  wchar_t *_wgetenv (const wchar_t *);
+ *  int _wputenv (const wchar_t *);
+ *  void _wsearchenv (const wchar_t *, const wchar_t *, wchar_t *);
+ *  int _wsystem (const wchar_t *);
+ *  void _wmakepath (wchar_t *, const wchar_t *, const wchar_t *,
+ *          const wchar_t *, const wchar_t *
+ *        );
+ *  void _wsplitpath (const wchar_t *, wchar_t *, wchar_t *,
+ *          wchar_t *, wchar_t *
+ *        );
+ *  wchar_t *_wfullpath (wchar_t *, const wchar_t *, size_t);
+ *
+ * ...while this pair are ISO-C99 standards, which are available
+ * in libmingwex.a, but not in any version of MSVCRT.DLL, (nor in
+ * any of its non-free derivatives prior to MSVCR120.DLL), nor in
+ * CRTDLL.DLL:
+ *
+ *  float wcstof (const wchar_t *restrict, wchar_t **restrict);
+ *  long double wcstold (const wchar_t *restrict, wchar_t **restrict);
+ *
+ *
+ * Again, in similar fashion, from...
  */
 #include <time.h>
 /* ...we obtain an opaque forward declaration of:
  *
  *  struct tm
  *
- * ...prototype declarations for the following ISO-C99 function,
+ * ...and prototype declarations for the following ISO-C99 function,
  * (which is always provided):
  *
  *  size_t wcsftime (wchar_t *, size_t, const wchar_t *, const struct tm *);
@@ -196,11 +206,11 @@ _CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wfullpath (wchar_t*, const wchar_t*, s
  * ...with the actual replacement being chosen at compile time, on
  * the basis of the user specified "_USE_32BIT_TIME_T" feature test
  * macro, (a Microsoft specific, brain damaged concept), which maps
- * _wctime() function itself, as in in-line alias for the selected
+ * _wctime() itself, as an in-line alias for its corresponding
  * replacement library function.
  *
  */
-
+_BEGIN_C_DECLS
 
 /* Wide character string functions must be specified here, as required
  * by the ISO-C Standard; however, MSVC contravenes this standard by also
@@ -351,11 +361,12 @@ unsigned long long __cdecl __MINGW_NOTHROW wcstoull(const wchar_t * __restrict__
 			    wchar_t ** __restrict__, int);
 #endif /* __NO_ISOCEXT */
 
-#ifndef	__STRICT_ANSI__
-/* non-ANSI wide char functions from io.h, direct.h, sys/stat.h and locale.h.  */
-
-#ifndef	_FSIZE_T_DEFINED
-typedef	unsigned long	_fsize_t;
+#ifndef __STRICT_ANSI__
+/* non-ANSI wide char functions from io.h, direct.h, sys/stat.h and locale.h
+ * FIXME: these should be factored out, to avoid duplication.
+ */
+#ifndef _FSIZE_T_DEFINED
+typedef unsigned long  _fsize_t;
 #define _FSIZE_T_DEFINED
 #endif
 
@@ -504,7 +515,7 @@ struct _stat
 	time_t	st_ctime;	/* Creation time */
 };
 
-#ifndef	_NO_OLDNAMES
+#ifndef _NO_OLDNAMES
 /* NOTE: Must be the same as _stat above. */
 struct stat
 {
