@@ -1,5 +1,13 @@
 2016-03-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Resolve some "implicit function declaration" warnings.
+
+	* setargv.c (isspace): Include <ctype.h> for declaration.
+	* cpu_features.h (__cpu_features_init): Declare function prototype.
+	* crt1.c (_setargv): Likewise; (this isn't needed elsewhere).
+
+2016-03-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Factor out <stdlib.h> vs. <wchar.h> duplicate declarations.
 
 	* include/stdlib.h [__WCHAR_H_SOURCED__]

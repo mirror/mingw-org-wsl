@@ -15,6 +15,7 @@
 #define  _CRT_3DNOWP		0x0200
 
 extern unsigned int __cpu_features;
+extern void __cpu_features_init (void);
 
 /* Currently we use this in fpenv  functions */
 #define __HAS_SSE  __cpu_features & _CRT_SSE

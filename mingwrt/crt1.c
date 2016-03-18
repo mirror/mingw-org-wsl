@@ -30,6 +30,7 @@ extern void _pei386_runtime_relocator (void);
 /* Main program entry point, and argument initialization hook.
  */
 extern int main (int, char **, char **);
+extern void _setargv (void);
 
 int    _argc = 0;
 char **_argv = NULL;
