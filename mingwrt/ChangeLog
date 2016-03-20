@@ -1,3 +1,20 @@
+2016-03-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor out <locale.h> vs. <wchar.h> duplicate declarations.
+
+	* include/locale.h: Assert copyright; tidy layout.
+	(_LOCALE_H_): Rename multiple inclusion guard macro, to...
+	(_LOCALE_H): ...this; do not define it when...
+	[__WCHAR_H_SOURCED__]: ...this applies; restrict declarations...
+	(_wsetlocale): ...to just this one visible function prototype.
+	[!__WCHAR_H_SOURCED__] (_LOCALE_H): Define it; expose all content.
+	(_WLOCALE_DEFINED): Do not define it; delete all references.
+	(pragma GCC system_header): Declare it.
+
+	* include/wchar.h (_wsetlocale): Delete prototype; maintain its
+	visibility by selective inclusion of <locale.h> instead.
+	(_WLOCALE_DEFINED): Delete all references.
+
 2016-03-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Resolve some "implicit function declaration" warnings.

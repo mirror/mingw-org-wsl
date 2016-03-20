@@ -209,6 +209,14 @@
  * _wctime() itself, as an in-line alias for its corresponding
  * replacement library function.
  *
+ *
+ * Also, from...
+ */
+#include <locale.h>
+/* ...we obtain the declaration for:
+ *
+ *   wchar_t *_wsetlocale (int, const wchar_t *);
+ *
  */
 _BEGIN_C_DECLS
 
@@ -638,11 +646,6 @@ _CRTALIAS int __cdecl __MINGW_NOTHROW	_wstati64 (const wchar_t* _v1, struct _sta
 #endif  /* __MSVCRT__ */
 #define _WSTAT_DEFINED
 #endif /* ! _WSTAT_DEFIND  */
-
-#ifndef _WLOCALE_DEFINED  /* also declared in locale.h */
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wsetlocale (int, const wchar_t*);
-#define _WLOCALE_DEFINED
-#endif
 
 #ifndef _WPROCESS_DEFINED
 /* Also declared in process.h; FIXME: to be factored out.
