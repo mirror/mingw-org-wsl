@@ -1911,7 +1911,7 @@ _msize_debug
 # endif
 #endif
 _nextafter
-; pexports doesn't report it as such, but libmsvcrt.a needs
+; pexports does not report it as such, but libmsvcrt.a needs
 ; _onexit to be qualified as DATA.
 _onexit DATA
 _open
@@ -2916,7 +2916,7 @@ atanh
 atanhf
 atanhl
 #endif
-; pexports doesn't report it as such, but libmsvcrt.a needs
+; pexports does not report it as such, but libmsvcrt.a needs
 ; atexit to be qualified as DATA.
 atexit DATA
 atof

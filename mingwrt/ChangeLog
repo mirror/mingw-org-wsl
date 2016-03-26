@@ -1,3 +1,9 @@
+2016-03-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Evade CPP mismatched apostrophe warnings in windres comments.
+
+	* msvcrt-xref/msvcrt.def.in (; pexports): 1,Gs/doesn't/does not/g
+
 2016-03-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor out <locale.h> vs. <wchar.h> duplicate declarations.
@@ -5,8 +11,8 @@
 	* include/locale.h: Assert copyright; tidy layout.
 	(_LOCALE_H_): Rename multiple inclusion guard macro, to...
 	(_LOCALE_H): ...this; do not define it when...
-	[__WCHAR_H_SOURCED__]: ...this applies; restrict declarations...
-	(_wsetlocale): ...to just this one visible function prototype.
+	[__WCHAR_H_SOURCED__]: ...this applies; restrict declarations to...
+	(_wsetlocale): ...just this one visible function prototype.
 	[!__WCHAR_H_SOURCED__] (_LOCALE_H): Define it; expose all content.
 	(_WLOCALE_DEFINED): Do not define it; delete all references.
 	(pragma GCC system_header): Declare it.
