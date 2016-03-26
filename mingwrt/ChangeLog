@@ -1,5 +1,40 @@
 2016-03-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Factor out <direct.h> vs. <dos.h> duplicate declarations.
+
+	* include/dos.h: Assert copyright; tidy layout.
+	(pragma GCC system_header): Declare it.
+	(_DOS_H_): Rename multiple inclusion guard macro, to adopt...
+	(_DOS_H): ...this preferred convention; do not define it when...
+	[__DIRECT_H_SOURCED__]: ...this applies; restrict declarations to...
+	(struct _diskfree_t): ...this aggregate data type, together with...
+	[_NO_OLDNAMES] (diskfree_t): ...this alternative name for it, and...
+	(_getdiskfree): ...this associated function.
+	[!__DIRECT_H_SOURCED__] (_DOS_H): Define it; expose all content, but
+	emit a warning that this header is obsolete, and should not be used.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use to wrap extern "C" declarations.
+	(_DISKFREE_T_DEFINED): Do not define it; delete all references.
+	(__need_wchar_t): Do not define it; it isn't needed here, and hence,
+	neither is it necessary to #include <stddef.h>; do not do so.  Also,
+	do not #include <_mingw.h> explicitly, but always #include <io.h>,
+	which will implicitly #include <_mingw.h> anyway.
+
+	* include/direct.h: Assert copyright; tidy layout.
+	(pragma GCC system_header): Declare it.
+	(_DIRECT_H_): Rename this multiple inclusion guard macro...
+	(_DIRECT_H): ...to adopt this preferred naming convention.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use to wrap extern "C" declarations.
+	(_DISKFREE_T_DEFINED, diskfree_t, struct _diskfree_t): Do not define.
+	(_getdiskfree): Likewise, do not declare prototype; instead...
+	(__DIRECT_H_SOURCED__): ...define this, and #include <dos.h>; also
+	delegate indirect inclusion of <_mingw.h> and <io.h> to this, rather
+	than include them directly; undefine __DIRECT_H_SOURCED__ when done.
+	(__need_wchar_t): Do not define it, and do not #include <stddef.h>;
+	although needed, we may inherit it indirectly from <sys/types.h>,
+	included by <io.h> via <dos.h>.
+
+2016-03-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Evade CPP mismatched apostrophe warnings in windres comments.
 
 	* msvcrt-xref/msvcrt.def.in (; pexports): 1,Gs/doesn't/does not/g
