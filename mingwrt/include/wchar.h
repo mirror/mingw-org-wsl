@@ -174,6 +174,19 @@
  *  long double wcstold (const wchar_t *restrict, wchar_t **restrict);
  *
  *
+ * while from...
+ */
+#include <direct.h>
+/* ...we obtain prototypes for each of the following functions,
+ * (none of which are available when using CRTDLL.DLL):
+ *
+ *  int _wchdir (const wchar_t *);
+ *  wchar_t *_wgetcwd (wchar_t *, int);
+ *  wchar_t *_wgetdcwd (int, wchar_t *, int);
+ *  int _wmkdir (const wchar_t *);
+ *  int _wrmdir (const wchar_t *);
+ *
+ *
  * Again, in similar fashion, from...
  */
 #include <time.h>
@@ -486,18 +499,6 @@ _CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddat
 #endif /* defined (__MSVCRT__) */
 #define _WIO_DEFINED
 #endif /* _WIO_DEFINED */
-
-#ifndef _WDIRECT_DEFINED
-/* Also in direct.h */
-#ifdef __MSVCRT__
-_CRTIMP int __cdecl __MINGW_NOTHROW	  _wchdir (const wchar_t*);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW  _wgetcwd (wchar_t*, int);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW  _wgetdcwd (int, wchar_t*, int);
-_CRTIMP int __cdecl __MINGW_NOTHROW	  _wmkdir (const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	  _wrmdir (const wchar_t*);
-#endif	/* __MSVCRT__ */
-#define _WDIRECT_DEFINED
-#endif /* _WDIRECT_DEFINED */
 
 #ifndef _STAT_DEFINED
 /*

@@ -32,6 +32,14 @@
  */
 #ifndef _DIRECT_H
 #pragma GCC system_header
+
+/* In addition to inclusion in its own right, this header supports
+ * selective inclusion by <wchar.h>; thus...
+ */
+#ifndef __WCHAR_H_SOURCED__
+ /* ...we defer definition of the normal multiple inclusion guard,
+  * until we know that this is NOT a selective inclusion request.
+  */
 #define _DIRECT_H
 
 #define __DIRECT_H_SOURCED__
@@ -45,32 +53,43 @@
 #include <dos.h>
 
 #undef __DIRECT_H_SOURCED__
+#endif	/* !__WCHAR_H_SOURCED__ */
+
 #ifndef RC_INVOKED
 
 _BEGIN_C_DECLS
 
-/* Functions for manipulating disk drive selection.
+#ifdef _DIRECT_H
+/* Functions for manipulating disk drive selection; these are declared
+ * only when <direct.h> is included in its own right.
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int _getdrive (void);
 _CRTIMP __cdecl __MINGW_NOTHROW  unsigned long _getdrives(void);
 _CRTIMP __cdecl __MINGW_NOTHROW  int _chdrive (int);
 _CRTIMP __cdecl __MINGW_NOTHROW  char *_getdcwd (int, char*, int);
 
-/* The following group of functions  are available only within
- * MSVCRT.DLL, (i.e. they are NOT provided by CRTDLL.DLL); they
- * are also declared in <wchar.h>, hence avoid declaring them a
- * second time.
- */
-#if defined __MSVCRT__ && ! defined _WDIRECT_DEFINED
+#endif	/* _DIRECT_H */
 
+/* The following group of function prototypes are to be declared
+ * either when including <dirent.h> in its own right, or when it
+ * is included selectively by <wchar.h>; however...
+ */
+#if defined __MSVCRT__ && ! (defined _DIRENT_H && defined _WCHAR_H)
+ /*
+  * ...they are available only within MSVCRT.DLL, (i.e. they are
+  * NOT provided by CRTDLL.DLL), and if both _DIRENT_H and _WCHAR_H
+  * are already defined, by the time we get to here, then this must
+  * be an inclusion of <dirent.h> in its own right, AFTER they have
+  * already been declared on behalf of <wchar.h>; there is no need
+  * to declare them again.
+  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int _wchdir (const wchar_t *);
 _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wgetcwd (wchar_t *, int);
 _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wgetdcwd (int, wchar_t *, int);
 _CRTIMP __cdecl __MINGW_NOTHROW  int _wmkdir (const wchar_t *);
 _CRTIMP __cdecl __MINGW_NOTHROW  int _wrmdir (const wchar_t *);
 
-#define _WDIRECT_DEFINED
-#endif	/* __MSVCRT__ && !_WDIRECT_DEFINED */
+#endif	/* __MSVCRT__ && ! (defined _DIRENT_H && defined _WCHAR_H) */
 
 _END_C_DECLS
 

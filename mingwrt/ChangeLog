@@ -1,3 +1,17 @@
+2016-03-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor out <wchar.h> vs. <direct.h> duplicate declarations.
+
+	* include/direct.h: Conditionally partition it, such that...
+	[__WCHAR_H_SOURCED__] (_DIRECT_H): Do not define it; declare only...
+	(_wchdir, wchar_t, wchar_t, _wmkdir, _wrmdir): ...these, otherwise...
+	[!__WCHAR_H_SOURCED__] (_DIRECT_H): Define it; expose all content.
+	(_WDIRECT_DEFINED): Never define it; delete all references.
+
+	* include/wchar.h (_WDIRECT_DEFINED): Delete all references.
+	(_wchdir, wchar_t, wchar_t, _wmkdir, _wrmdir): Delete prototypes;
+	selectively #include <direct.h> to reproduce them.
+
 2016-03-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor out <direct.h> vs. <dos.h> duplicate declarations.
