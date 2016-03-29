@@ -1,3 +1,39 @@
+2016-03-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor out <wchar.h> vs. <sys/stat.h> duplicate declarations.
+
+	* include/sys/stat.h: Assert copyright; tidy layout.
+	(pragma GCC system_header): Declare it.
+	(_STAT_H_): Rename multiple inclusion guard macro; adopt...
+	(_SYS_STAT_H): ...this preferred naming convention; however, when...
+	[__WCHAR_H_SOURCED__] (_SYS_STAT_H): ...do not define it; declare...
+	(_wstat, _wstati64, _wstat64, _wstat32): ...these functions, and...
+	(_wstat32i64, _wstat64i32): ...these, as appropriate to user specified
+	__MSVCRT_VERSION__ and _WIN32_WINNT macro definitions, namely...
+	[__MSVCRT_VERSION__ >= 0x601]: ...this, updated to become...
+	[__MSVCRT_VERSION__ >= __MSVCR61_DLL]: ...this; augment it with...
+	[|| _WIN32_WINNT >= _WIN32_WINNT_WIN2K]: ...this complement; also...
+	[__MSVCRT_VERSION__ < 0x800]: this, updated to become...
+	[__MSVCRT_VERSION__ < __MSVCR80_DLL]: ...this; likewise...
+	[__MSVCRT_VERSION__ >= 0x800]: ...this, which becomes...
+	[__MSVCRT_VERSION__ >= __MSVCR80_DLL]: ...this.
+	(__struct_stat_defined): New macro; define, and use it to define...
+	(struct stat, struct _stat, struct _stati64, struct __stat64)
+	(struct __stat32, struct _stat32i64, struct _stat64i32): ...these.
+	[!__WCHAR_H_SOURCED__] (_SYS_STAT_H): Define it; also include
+	<sys/types.h>, delegating to it the inclusion of <_mingw.h>, and
+	definition of types size_t and wchar_t; declare all header content,
+	including that declared when __WCHAR_H_SOURCED__ is defined, unless
+	already declared as a result of selective inclusion by <wchar.h>
+	(__need_size_t, __need_wchar_t): Do not define them; consequently,
+	there is no need to include <stddef.h>; do not do so.
+
+	* include/wchar.h (_wstat, _wstati64, _wstat64): Factor out.
+	(_wstat32, _wstat32i64, _wstat64i32, struct stat, struct _stat)
+	(struct _stati64, struct __stat64, struct __stat32, struct _stat32i64)
+	(struct _stat64i32): Likewise; reproduce them by selective inclusion
+	of <sys/stat.h>
+
 2016-03-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor out <wchar.h> vs. <direct.h> duplicate declarations.
@@ -2813,7 +2849,7 @@
 
 	* include/wchar.h (WCHAR_MAX): Define as 0xffff, so preprocessor
 	#if (WCHAR_MAX <= WCHAR_MIN) is false.
-	* include/stdint.h (WCHAR_MAX): Likwise.
+	* include/stdint.h (WCHAR_MAX): Likewise.
 	(WINT_MAX): Likewise.
 
 2005-05-03  Danny Smith  <dannysmith@users.sourceforge.net>
@@ -2905,7 +2941,7 @@
 2005-02-07  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/sys/stat.h (struct stat): Guard with _NO_OLDNAMES.
-	* include/wchar.h (struct stat): Likwwise.
+	* include/wchar.h (struct stat): Likewise.
 	Bug reported to Debian by Anand Kumria <wildfire@progsoc.org>
 
 	* include/sys/stat.h: Remove empty __STRICT_ANSI__ guard.
@@ -3415,7 +3451,7 @@
 	* include/sys/stat.h (__stat64): Add struct definition.
 	(_fstat64): Add prototype for __MSVCRT_VERSION__ >= 0x0601.
 	(_stat64): Likewise.
-	(_wstat64): Likwise.
+	(_wstat64): Likewise.
 	* include/sys/types.h (__time64_t): Add typedef.
 	* include/wchar.h (__wfinddata64_t): Add structure definition.
 	(__stat64): Likewise.
@@ -3423,7 +3459,7 @@
 	(_wfindfirst64): Likewise.
 	(_wfindnext64): Likewise.
 	(_wutime64): Likewise.
-	(_wstat64): Likwise.
+	(_wstat64): Likewise.
 	* include/malloc.h (_aligned_free): Add prototype for
 	__MSVCRT_VERSION__ >= 0x0700.
 	(_aligned_malloc): Likewise.
