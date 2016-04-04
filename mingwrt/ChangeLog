@@ -1,3 +1,14 @@
+2016-04-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Enable selective retrieval of intptr typedefs from <stdint.h>.
+
+	* include/stdint.h: Assert copyright; tidy layout.
+	[__need_intptr_t || __need_uintptr_t] (_STDINT_H): Do not define it;
+	conceal all normally defined data types, except either or both of...
+	[__need_intptr_t] (intptr_t): ...this, and/or...
+	[__need_uintptr_t] (uintptr_t): ...this.
+	(pragma GCC system_header): Declare it.
+
 2016-03-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor out <wchar.h> vs. <sys/stat.h> duplicate declarations.
@@ -3560,7 +3571,7 @@
 
 2004-01-16  Danny Smith  <dannysmith@users.sourceforge.net>
 
-	* include/stdint.h Fix __STDC_CONSTANT_MACROS for 8 and 16 bit
+	* include/stdint.h [__STDC_CONSTANT_MACROS]: Fix for 8 and 16 bit
 	types. (Thanks to John Maddock for report.)
 
 2004-01-14  Greg Chicares  <chicares@users.sourceforge.net>
@@ -4541,8 +4552,7 @@
 
 2002-05-21  Danny Smith  <dannysmith@users.sourceforge.net>
 
-	* include/stdint.h: Include stddef.h to get
-	wchar_t and wint_t.
+	* include/stdint.h: Include <stddef.h> to get wchar_t and wint_t.
 	(WINT_MAX): Define to ((wint_t)-1).
 
 2002-05-21  Danny Smith  <dannysmith@users.sourceforge.net>
