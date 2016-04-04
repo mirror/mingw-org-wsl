@@ -63,6 +63,7 @@
   * which MSDN identifies as being provided here.
   */
 # include <sys/types.h>
+
 #endif	/* !__STRICT_ANSI__ */
 
 #define WCHAR_MIN	0
@@ -187,7 +188,7 @@
  *  int _wrmdir (const wchar_t *);
  *
  *
- * from...
+ * From...
  */
 #include <sys/stat.h>
 /* ...we obtain function prototypes, and all associated data type
@@ -212,7 +213,7 @@
  *  int _wstat64i32 (const wchar_t *, struct _stat64i32 *);
  *
  *
- * and again, in similar fashion, from...
+ * and from...
  */
 #include <time.h>
 /* ...we obtain an opaque forward declaration of:
@@ -254,6 +255,40 @@
 /* ...we obtain the declaration for:
  *
  *   wchar_t *_wsetlocale (int, const wchar_t *);
+ *
+ *
+ * and from...
+ */
+#include <process.h>
+/* ...we obtain function prototypes for:
+ *
+ *  intptr_t _wexecl (const wchar_t *, const wchar_t *, ...);
+ *  intptr_t _wexecle (const wchar_t *, const wchar_t *, ...);
+ *  intptr_t _wexeclp (const wchar_t *, const wchar_t *, ...);
+ *  intptr_t _wexeclpe (const wchar_t *, const wchar_t *, ...);
+ *
+ *  intptr_t _wexecv (const wchar_t *, const wchar_t * const *);
+ *  intptr_t _wexecve (
+ *    const wchar_t *, const wchar_t * const *, const wchar_t * const *
+ *   );
+ *  intptr_t _wexecvp (const wchar_t *, const wchar_t * const *);
+ *  intptr_t _wexecvpe (
+ *    const wchar_t *, const wchar_t * const *, const wchar_t * const *
+ *   );
+ *
+ *  intptr_t _wspawnl (int, const wchar_t *, const wchar_t *, ...);
+ *  intptr_t _wspawnle (int, const wchar_t *, const wchar_t *, ...);
+ *  intptr_t _wspawnlp (int, const wchar_t *, const wchar_t *, ...);
+ *  intptr_t _wspawnlpe (int, const wchar_t *, const wchar_t *, ...);
+ *
+ *  intptr_t _wspawnv (int, const wchar_t *, const wchar_t * const *);
+ *  intptr_t _wspawnve (
+ *    int, const wchar_t *, const wchar_t * const *, const wchar_t * const *
+ *   );
+ *  intptr_t _wspawnvp (int, const wchar_t *, const wchar_t * const *);
+ *  intptr_t _wspawnvpe (
+ *    int, const wchar_t *, const wchar_t * const *, const wchar_t * const *
+ *   );
  *
  */
 _BEGIN_C_DECLS
@@ -525,30 +560,6 @@ _CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddat
 #define _WIO_DEFINED
 #endif /* _WIO_DEFINED */
 
-#ifndef _WPROCESS_DEFINED
-/* Also declared in process.h; FIXME: to be factored out.
- */
-#include <stdint.h>  /* For intptr_t.  */
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecl	(const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecle	(const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexeclp	(const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexeclpe	(const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecv	(const wchar_t*, const wchar_t* const*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecve	(const wchar_t*, const wchar_t* const*, const wchar_t* const*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecvp	(const wchar_t*, const wchar_t* const*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wexecvpe	(const wchar_t*, const wchar_t* const*, const wchar_t* const*);
-
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnl	(int, const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnle	(int, const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnlp	(int, const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnlpe	(int, const wchar_t*, const wchar_t*, ...);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnv	(int, const wchar_t*, const wchar_t* const*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnve	(int, const wchar_t*, const wchar_t* const*, const wchar_t* const*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnvp	(int, const wchar_t*, const wchar_t* const*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wspawnvpe	(int, const wchar_t*, const wchar_t* const*, const wchar_t* const*);
-
-#define _WPROCESS_DEFINED
-#endif
 #endif	/* ! __STRICT_ANSI__ */
 
 _END_C_DECLS

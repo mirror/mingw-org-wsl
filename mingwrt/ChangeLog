@@ -1,5 +1,28 @@
 2016-04-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Factor out <wchar.h> vs. <process.h> duplicate declarations.
+
+	* include/process.h: Assert copyright; tidy layout.
+	(_PROCESS_H_): Rename this multiple inclusion guard macro...
+	(_PROCESS_H): ...to this preferred form; do not define it when...
+	[__WCHAR_H_SOURCED__]: ...this is defined, in which case declare...
+	(_wexecl, _wexecle, _wexeclp, _wexeclpe, _wexecv, _wexecve, _wexecvp)
+	(_wexecvpe, _wspawnl, _wspawnle, _wspawnlp, _wspawnlpe, _wspawnv)
+	(_wspawnve, _wspawnvp, _wspawnvpe): ...only these functions.
+	[!__WCHAR_H_SOURCED__] (_PROCESS_H): Define it; declare all functions
+	normally specified herein, including those listed above, as required.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use to wrap extern "C" declarations.
+	(__need_intptr_t): Define it prior to including <stdint.h>.
+	(pragma GCC system_header): Declare it.
+
+	* include/wchar.h (_WPROCESS_DEFINED): Delete it; filter out...
+	(_wexecl, _wexecle, _wexeclp, _wexeclpe, _wexecv, _wexecve, _wexecvp)
+	(_wexecvpe, _wspawnl, _wspawnle, _wspawnlp, _wspawnlpe, _wspawnv)
+	(_wspawnve, _wspawnvp, _wspawnvpe): ...these function prototypes;
+	reproduce them, by selective inclusion of <process.h>.
+
+2016-04-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Enable selective retrieval of intptr typedefs from <stdint.h>.
 
 	* include/stdint.h: Assert copyright; tidy layout.
