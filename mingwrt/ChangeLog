@@ -1,3 +1,47 @@
+2016-04-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor out <wchar.h> vs. <io.h> duplicate declarations.
+
+	* include/io.h: Assert copyright; tidy layout.
+	(_IO_H_): Rename this multiple inclusion guard macro...
+	(_IO_H): ...to this preferred form; do not define it when...
+	[__WCHAR_H_SOURCED__]: ...this is defined, in which case declare...
+	(_waccess, _wchmod, _wcreat, _wopen, _wsopen, _wunlink, _wmktemp)
+	(_wfindfirst, _wfindnext, _wfindfirst64, _wfindnext64, _wfindfirsti64)
+	(_wfindnexti64, _wfindfirst32i64, _wfindnext32i64, _wfindfirst64i32)
+	(_wfindnext64i32, _wfindfirst32, _wfindnext32, _findclose): ...only
+	these function prototypes, common to <wchar.h>, together with...
+	(_fsize_t, struct _wfinddata_t, struct _wfinddatai64_t)
+	(struct __wfinddata64_t, struct _wfinddata64i32_t)
+	(struct _wfinddata32i64_t, struct __wfinddata32_t): ...these
+	requisite data type definitions.
+	(pragma GCC system_header): Declare it.
+	(__need_intptr_t): Define, and include <stdint.h> to get...
+	(intptr_t): ...this typedef; neither define it locally, nor define...
+	(_INTPTR_T_DEFINED): ...this; delete all references.
+	(_FSIZE_T_DEFINED): Do not define it; delete all references; rather...
+	[!(defined _IO_H && defined _WCHAR)] (_fsize_t): Define it.
+	(FILENAME_MAX): Define it unconditionally.
+	(__struct_finddata_t): New temporary macro; define and use it to...
+	(struct _finddata_t, struct _wfinddata_t, struct _finddatai64_t)
+	(struct _wfinddatai64_t, struct __finddata64_t, struct __wfinddata64_t)
+	(struct _finddata64i32_t, struct _wfinddata64i32_t)
+	(struct _finddata32i64_t, struct _wfinddata32i64_t)
+	(struct __finddata32_t, struct __wfinddata32_t): ...define these.
+
+	* include/wchar.h (_WFINDDATA_T_DEFINED): Do not define it; delete all
+	references; filter out associated data type definitions, namely...
+	(struct _wfinddata_t, struct _wfinddatai64_t): ...these, and also...
+	(struct __wfinddata64_t, struct _wfinddata64i32_t): ...these, and...
+	(struct _wfinddata32i64_t, struct __wfinddata32_t): ...these.
+	(_WIO_DEFINED): Likewise, do not define it; delete all references;
+	filter out associated function prototype declarations for all of...
+	(_waccess, _wchmod, _wcreat, _wopen, _wsopen, _wunlink, _wmktemp)
+	(_wfindfirst, _wfindnext, _wfindfirst64, _wfindnext64, _wfindfirsti64)
+	(_wfindnexti64, _wfindfirst32i64, _wfindnext32i64, _wfindfirst64i32)
+	(_wfindnext64i32, _wfindfirst32, _wfindnext32): ...these; reproduce
+	them by selective inclusion of <io.h>.
+
 2016-04-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor out <wchar.h> vs. <process.h> duplicate declarations.

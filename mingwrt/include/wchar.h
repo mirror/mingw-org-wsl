@@ -213,6 +213,58 @@
  *  int _wstat64i32 (const wchar_t *, struct _stat64i32 *);
  *
  *
+ * while from...
+ */
+#include <io.h>
+/* ...we obtain function prototypes for each of the following, which
+ * are available in all versions of MSVCRT.DLL, (and all its non-free
+ * derivatives), but are not supported by CRTDLL.DLL:
+ *
+ *  int _waccess (const wchar_t *, int);
+ *  int _wchmod (const wchar_t *, int);
+ *  int _wcreat (const wchar_t *, int);
+ *  int _wopen (const wchar_t *, int, ...);
+ *  int _wsopen (const wchar_t *, int, int, ...);
+ *  int _wunlink (const wchar_t *);
+ *  wchar_t *_wmktemp (wchar_t *);
+ *
+ * ...and also function prototypes and definitions of all associated
+ * data types and manifest constants for the following, each of which
+ * is physically implemented in all versions of MSVCRT.DLL, and in each
+ * of its non-free variants prior to MSVCR80.DLL, or emulated by inline
+ * replacement functions for MSVCR80.DLL and later:
+ *
+ *  intptr_t _wfindfirst (wchar_t *, struct _wfinddata_t *);
+ *  int _wfindnext (intptr_t, struct _wfinddata_t *);
+ *
+ *  intptr_t _wfindfirsti64 (wchar_t *, struct _wfinddatai64_t *);
+ *  int _wfindnexti64 (intptr_t, struct _wfinddatai64_t *);
+ *
+ * ...this additional pair of functions, available in all versions of
+ * MSVCRT.DLL from Win2K, and non-free variants from MSVCR61.DLL:
+ *
+ *  intptr_t _wfindfirst64 (wchar_t *, struct __wfinddata64_t *);
+ *  int _wfindnext64 (intptr_t, struct __wfinddata64_t *);
+ *
+ * ...and these, which are only available in the non-free run-times
+ * from MSVCR80.DLL onwards:
+ *
+ *  intptr_t _wfindfirst32 (wchar_t *, struct __wfinddata32_t *);
+ *  int _wfindnext32 (intptr_t, struct __wfinddata32_t *);
+ *
+ *  intptr_t _wfindfirst32i64 (wchar_t *, struct _wfinddata32i64_t *);
+ *  int _wfindnext32i64 (intptr_t, struct _wfinddata32i64_t *);
+ *
+ *  intptr_t _wfindfirst64i32 (wchar_t *, struct _wfinddata64i32_t *);
+ *  int _wfindnext64i32 (intptr_t, struct _wfinddata64i32_t *);
+ *
+ * Additionally, although Microsoft's <wchar.h> may not declare it,
+ * this is required to complement all variants of the _wfindfirst()
+ * and _wfindnext() API, so we also declare the prototype for:
+ *
+ *  int _findclose (intptr_t);
+ *
+ *
  * and from...
  */
 #include <time.h>
@@ -395,172 +447,71 @@ _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsupr (wchar_t *);
 #endif	/* !(RC_INVOKED || (_WCHAR_H && _STRING_H)) */
 #if defined _WCHAR_H && ! defined RC_INVOKED
 
-/* These are resolved by -lmingwex. Alternatively, they can be resolved by
-   adding -lmsvcp60 to your command line, which will give you the VC++
-   versions of these functions. If you want the latter and don't have
-   msvcp60.dll in your windows system directory, you can easily obtain
-   it with a search from your favorite search engine.  */
 #ifndef __STRICT_ANSI__
-typedef wchar_t _Wint_t;
+typedef wchar_t  _Wint_t;
 #endif
 
 typedef int mbstate_t;
 
-wint_t __cdecl __MINGW_NOTHROW btowc(int);
-size_t __cdecl __MINGW_NOTHROW mbrlen(const char * __restrict__, size_t,
-		      mbstate_t * __restrict__);
-size_t __cdecl __MINGW_NOTHROW mbrtowc(wchar_t * __restrict__, const char * __restrict__,
-		       size_t, mbstate_t * __restrict__);
-size_t __cdecl __MINGW_NOTHROW mbsrtowcs(wchar_t * __restrict__, const char ** __restrict__,
-			 size_t, mbstate_t * __restrict__);
-size_t __cdecl __MINGW_NOTHROW wcrtomb(char * __restrict__, wchar_t,
-		       mbstate_t * __restrict__);
-size_t __cdecl __MINGW_NOTHROW wcsrtombs(char * __restrict__, const wchar_t ** __restrict__,
-			 size_t, mbstate_t * __restrict__);
-int __cdecl __MINGW_NOTHROW wctob(wint_t);
-
-#ifndef __NO_ISOCEXT /* these need static lib libmingwex.a */
-int __cdecl __MINGW_NOTHROW fwide(FILE*, int);
-int __cdecl __MINGW_NOTHROW mbsinit(const mbstate_t*);
-#ifndef __NO_INLINE__
-__CRT_INLINE int __cdecl __MINGW_NOTHROW fwide(FILE* __UNUSED_PARAM(stream),
-					       int mode)
-  {return mode;} /* Nothing to do  */
-__CRT_INLINE int __cdecl __MINGW_NOTHROW mbsinit(const mbstate_t* __UNUSED_PARAM(ps))
-  {return 1;}
-#endif
-wchar_t* __cdecl __MINGW_NOTHROW wmemset(wchar_t *, wchar_t, size_t);
-wchar_t* __cdecl __MINGW_NOTHROW wmemchr(const wchar_t*, wchar_t, size_t);
-int wmemcmp(const wchar_t*, const wchar_t *, size_t);
-wchar_t* __cdecl __MINGW_NOTHROW wmemcpy(wchar_t* __restrict__,
-		         const wchar_t* __restrict__,
-			 size_t);
-wchar_t* __cdecl __MINGW_NOTHROW wmemmove(wchar_t* s1, const wchar_t *, size_t);
-long long __cdecl __MINGW_NOTHROW wcstoll(const wchar_t * __restrict__,
-			  wchar_t** __restrict__, int);
-unsigned long long __cdecl __MINGW_NOTHROW wcstoull(const wchar_t * __restrict__,
-			    wchar_t ** __restrict__, int);
-#endif /* __NO_ISOCEXT */
-
-#ifndef __STRICT_ANSI__
-/* non-ANSI wide char functions from io.h, direct.h, sys/stat.h and locale.h
- * FIXME: these should be factored out, to avoid duplication.
+/* The following multi-byte character conversion functions are
+ * implemented in libmingwex.a, (and maybe also in some non-free
+ * Microsoft libraries, such as MSVCP60.DLL and later).
  */
-#ifndef _FSIZE_T_DEFINED
-typedef unsigned long  _fsize_t;
-#define _FSIZE_T_DEFINED
+__cdecl __MINGW_NOTHROW  wint_t btowc (int);
+__cdecl __MINGW_NOTHROW  int wctob (wint_t);
+
+__cdecl __MINGW_NOTHROW
+size_t mbrlen (const char *__restrict__, size_t, mbstate_t *__restrict__);
+
+__cdecl __MINGW_NOTHROW  size_t mbrtowc
+(wchar_t *__restrict__, const char *__restrict__, size_t, mbstate_t *__restrict__);
+
+__cdecl __MINGW_NOTHROW  size_t mbsrtowcs
+(wchar_t *__restrict__, const char **__restrict__, size_t, mbstate_t *__restrict__);
+
+__cdecl __MINGW_NOTHROW
+size_t wcrtomb (char * __restrict__, wchar_t, mbstate_t *__restrict__);
+
+__cdecl __MINGW_NOTHROW  size_t wcsrtombs
+(char *__restrict__, const wchar_t **__restrict__, size_t, mbstate_t *__restrict__);
+
+#ifdef _ISOC99_SOURCE
+/* These ISO-C99 functions are implemented in libmingwex.a,
+ * or, in some cases, by inline stubs.
+ */
+__cdecl __MINGW_NOTHROW  int fwide (FILE *, int);
+__cdecl __MINGW_NOTHROW  int mbsinit (const mbstate_t *);
+
+#ifndef __NO_INLINE__
+__CRT_INLINE __cdecl __MINGW_NOTHROW
+int fwide (FILE *__UNUSED_PARAM(stream), int mode)
+  { return mode; } /* Nothing to do  */
+
+__CRT_INLINE __cdecl __MINGW_NOTHROW
+int mbsinit (const mbstate_t *__UNUSED_PARAM(ps))
+  { return 1; }
 #endif
 
-#ifndef _WFINDDATA_T_DEFINED
-struct _wfinddata_t {
-	unsigned	attrib;
-	time_t		time_create;	/* -1 for FAT file systems */
-	time_t		time_access;	/* -1 for FAT file systems */
-	time_t		time_write;
-	_fsize_t	size;
-	wchar_t		name[260];	/* may include spaces. */
-};
-struct _wfinddatai64_t {
-	unsigned    attrib;
-	time_t      time_create;
-	time_t      time_access;
-	time_t      time_write;
-	__int64     size;
-	wchar_t     name[260];
-};
-#if __MSVCRT_VERSION__ >= 0x0601
-struct __wfinddata64_t {
-        unsigned    attrib;
-        __time64_t  time_create;
-        __time64_t  time_access;
-        __time64_t  time_write;
-/* 8 bytes are returned so it can't be _fsize_t */
-        __int64    size;
-        wchar_t     name[260];
-};
-#endif
-#if __MSVCRT_VERSION__ >= 0x0800
-struct __wfinddata32_t {
-	unsigned	attrib;
-	__time32_t	time_create;
-	__time32_t	time_access;
-	__time32_t	time_write;
-	__int32		size;
-	wchar_t		name[FILENAME_MAX];
-};
+__cdecl __MINGW_NOTHROW  wchar_t *wmemset (wchar_t *, wchar_t, size_t);
+__cdecl __MINGW_NOTHROW  wchar_t *wmemchr (const wchar_t *, wchar_t, size_t);
 
-struct _wfinddata32i64_t {
-	unsigned	attrib;
-	__time32_t	time_create;
-	__time32_t	time_access;
-	__time32_t	time_write;
-	__int64		size;
-	wchar_t		name[FILENAME_MAX];
-};
+/* FIXME: what makes this so different from every other function
+ * in this group?  Why is it not qualified with the __cdecl, and
+ * __MINGW_NOTHROW attributes?
+ */
+int wmemcmp (const wchar_t *, const wchar_t *, size_t);
 
-struct _wfinddata64i32_t {
-	unsigned	attrib;
-	__time64_t	time_create;
-	__time64_t	time_access;
-	__time64_t	time_write;
-	__int32		size;
-	wchar_t		name[FILENAME_MAX];
-};
-#endif /* __MSVCRT_VERSION__ >= 0x0800 */
-#define _WFINDDATA_T_DEFINED
-#endif
+__cdecl __MINGW_NOTHROW
+wchar_t *wmemcpy (wchar_t *__restrict__, const wchar_t *__restrict__, size_t);
 
-/* Wide character versions. Also defined in io.h. */
-/* CHECK: I believe these only exist in MSVCRT, and not in CRTDLL. Also
-   applies to other wide character versions? */
-#if !defined (_WIO_DEFINED)
-#if defined (__MSVCRT__)
-#include <stdint.h>  /* For intptr_t.  */
-_CRTIMP int __cdecl __MINGW_NOTHROW	_waccess (const wchar_t*, int);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wchmod (const wchar_t*, int);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wcreat (const wchar_t*, int);
-#if __MSVCRT_VERSION__ < 0x0800
-_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t*, struct _wfinddata_t *);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wfindnext (long, struct _wfinddata_t *);
-#endif
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wunlink (const wchar_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wopen (const wchar_t*, int, ...);
-_CRTIMP int __cdecl __MINGW_NOTHROW	_wsopen (const wchar_t*, int, int, ...);
-_CRTIMP wchar_t* __cdecl __MINGW_NOTHROW _wmktemp (wchar_t*);
-#if __MSVCRT_VERSION__ < 0x0800
-_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t*, struct _wfinddatai64_t*);
-_CRTIMP int __cdecl __MINGW_NOTHROW 	_wfindnexti64 (long, struct _wfinddatai64_t*);
-#else
-_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst32i64 (const wchar_t*, struct _wfinddata32i64_t*);
-_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst64i32 (const wchar_t*, struct _wfinddata64i32_t*);
-_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32i64 (long, struct _wfinddata32i64_t*);
-_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext64i32 (long, struct _wfinddata64i32_t*);
-#endif /* __MSVCRT_VERSION__ < 0x0800 */
-#if __MSVCRT_VERSION__ >= 0x0601
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindfirst64(const wchar_t*, struct __wfinddata64_t*);
-_CRTIMP intptr_t __cdecl __MINGW_NOTHROW _wfindnext64(intptr_t, struct __wfinddata64_t*);
-#endif /* __MSVCRT_VERSION__ >= 0x0601 */
-#if __MSVCRT_VERSION__ >= 0x0800
-_CRTIMP long __cdecl __MINGW_NOTHROW	_wfindfirst32 (const wchar_t*, struct __wfinddata32_t*);
-_CRTIMP int  __cdecl __MINGW_NOTHROW	_wfindnext32 (long, struct __wfinddata32_t*);
-#ifndef _USE_32BIT_TIME_T
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)	 { return(_wfindfirst64i32 (_v1,(struct _wfinddata64i32_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext (long _v1, struct _wfinddata_t* _v2)			 { return(_wfindnext64i32  (_v1,(struct _wfinddata64i32_t*)_v2)); }
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2) { return(_wfindfirst64 (_v1,(struct __wfinddata64_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)		 { return(_wfindnext64  (_v1,(struct __wfinddata64_t*)_v2)); }
-#else
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirst (const wchar_t* _v1, struct _wfinddata_t* _v2)	 { return(_wfindfirst32 (_v1,(struct __wfinddata32_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnext (long _v1, struct _wfinddata_t* _v2)			 { return(_wfindnext32  (_v1,(struct __wfinddata32_t*)_v2)); }
-_CRTALIAS long __cdecl __MINGW_NOTHROW	_wfindfirsti64 (const wchar_t* _v1, struct _wfinddatai64_t* _v2) { return(_wfindfirst32i64 (_v1,(struct _wfinddata32i64_t*)_v2)); }
-_CRTALIAS int  __cdecl __MINGW_NOTHROW	_wfindnexti64 (long _v1, struct _wfinddatai64_t* _v2)		 { return(_wfindnext32i64  (_v1,(struct _wfinddata32i64_t*)_v2)); }
-#endif /* !_USE_32BIT_TIME_T*/
-#endif /* __MSVCRT_VERSION__ >= 0x0800 */
+__cdecl __MINGW_NOTHROW  wchar_t *wmemmove (wchar_t *, const wchar_t *, size_t);
 
-#endif /* defined (__MSVCRT__) */
-#define _WIO_DEFINED
-#endif /* _WIO_DEFINED */
+__cdecl __MINGW_NOTHROW
+long long wcstoll (const wchar_t *__restrict__, wchar_t **__restrict__, int);
 
-#endif	/* ! __STRICT_ANSI__ */
+__cdecl __MINGW_NOTHROW  unsigned long long wcstoull
+(const wchar_t *__restrict__, wchar_t **__restrict__, int);
+#endif /* _ISOC99_SOURCE */
 
 _END_C_DECLS
 
