@@ -1,5 +1,14 @@
 2016-04-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Declare <dir.h> as formally deprecated.
+
+	* include/dir.h: Assert copyright.
+	(pragma GCC system_header): Declare it.
+	(_DIR_H): Define as multiple inclusion macro.
+	[!_DIR_H]: Emit "obsolete header" warning message.
+
+2016-04-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Factor out <wchar.h> vs. <io.h> duplicate declarations.
 
 	* include/io.h: Assert copyright; tidy layout.
