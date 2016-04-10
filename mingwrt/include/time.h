@@ -29,14 +29,26 @@
  * DEALINGS IN THE SOFTWARE.
  *
  */
-#ifndef _TIME_H
+#if ! defined _TIME_H || defined __need_time_t
 #pragma GCC system_header
 
+/* Irrespective of whether this is normal or selective inclusion of
+ * <time.h>, we ALWAYS require the definition for time_t; get it by
+ * selective inclusion from its primary source, in <sys/types.h>;
+ * note that we must ALWAYS delegate this, when __need_time_t is
+ * defined, even when _TIME_H had been defined previously, to ensure
+ * that __need_time_t is properly reset, and thus cannot compromise
+ * a later inclusion of <sys/types.h>
+ */
+#undef __need_time_h
+#define __need_time_t  1
+#include <sys/types.h>
+
+#ifndef _TIME_H
 /* To support selective partial inclusion, we do not immediately define
  * the normal _TIME_H guard macro; initially, we also clear all of those
  * declaraction subset selection macros which are applicable herein.
  */
-#undef __need_time_t
 #undef __need_struct_timespec
 #undef __need_wchar_decls
 
@@ -74,13 +86,6 @@ struct tm;
 #endif
 
 #ifndef RC_INVOKED
-/* Irrespective of whether this is normal or selective inclusion of
- * <time.h>, we ALWAYS require the definition for time_t; get it by
- * selective inclusion from its primary source, in <sys/types.h>
- */
-#define __need_time_t  1
-#include <sys/types.h>
-
 #if defined __need_struct_timespec && ! __struct_timespec_defined
 /* Structure timespec is mandated by POSIX, for specification of
  * intervals with the greatest precision supported by the OS kernel.
@@ -488,4 +493,5 @@ _END_C_DECLS
 #undef __need_wchar_decls
 
 #endif /* ! RC_INVOKED */
-#endif /* ! _TIME_H: $RCSfile$: end of file */
+#endif /* !_TIME_H after __need_time_t processing */
+#endif /* !_TIME_H: $RCSfile$: end of file */

@@ -78,8 +78,8 @@
    */
 #  define __have_typedef_off_t
 # endif
-# undef __need_off_t
 #endif
+#undef __need_off_t
 
 #if ! defined __have_typedef___off64_t \
  && ( defined _SYS_TYPES_H || defined __need___off64_t )
@@ -102,8 +102,8 @@
    */
 #  define __have_typedef___off64_t
 # endif
-# undef __need___off64_t
 #endif
+#undef __need___off64_t
 
 #if ! defined __have_typedef_ssize_t \
  && ( defined _SYS_TYPES_H || defined __need_ssize_t )
@@ -124,8 +124,8 @@
    */
 #  define __have_typedef_ssize_t
 # endif
-# undef __need_ssize_t
 #endif
+#undef __need_ssize_t
 
 #if ! defined __have_typedef_time_t \
  && ( defined _SYS_TYPES_H || defined __need_time_t )
@@ -155,8 +155,8 @@
    */
 #  define __have_typedef_time_t  1
 # endif
-# undef __need_time_t
 #endif
+#undef __need_time_t
 
 #ifdef _SYS_TYPES_H
 /* This is normal <sys/types.h> inclusion, i.e. for its own sake.

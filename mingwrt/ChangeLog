@@ -1,5 +1,18 @@
 2016-04-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Make resetting of __need_typedef requests more robust.
+
+	* include/sys/types.h [__need_off_t, __need___off64_t]
+	[__need_ssize_t, __need_time_t]: Move corresponding #undef out of, and
+	after the respective conditional blocks, which provide each associated
+	typedef, so ensuring that any repeat request is properly reset.
+	
+	* include/time.h [__need_time_t]: Always delegate to <sys/types.h> for
+	typedef, and reset of request, even in cases where...
+	[_TIME_H]: ...this is already defined.
+
+2016-04-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Add a missing comment terminator.
 
 	* include/io.h [!(defined _IO_H && defined _WCHAR_H)]: Properly
