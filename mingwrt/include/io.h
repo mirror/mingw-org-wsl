@@ -75,7 +75,7 @@
 #define _A_SYSTEM	0x00000004
 #define _A_VOLID	0x00000008
 #define _A_SUBDIR	0x00000010
-#define _A_ARCH		0x00000020
+#define _A_ARCH 	0x00000020
 
 #ifndef RC_INVOKED
 
@@ -99,7 +99,7 @@
   * _WCHAR_H is ALSO defined).
   */
 typedef	unsigned long	_fsize_t;
-#endif	/* ! (_IO_H && _WCHAR_H)
+#endif	/* ! (_IO_H && _WCHAR_H) */
 
 /* Functions for searching for files: _findfirst() sets errno to ENOENT,
  * and returns -1 if no match is found; otherwise it returns a handle to

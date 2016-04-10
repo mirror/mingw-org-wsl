@@ -1,3 +1,10 @@
+2016-04-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add a missing comment terminator.
+
+	* include/io.h [!(defined _IO_H && defined _WCHAR_H)]: Properly
+	terminate the comment annotating the closing #endif statement.
+
 2016-04-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Declare <dir.h> as formally deprecated.
