@@ -1,3 +1,17 @@
+2016-04-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Eliminate all references to non-standard __NO_ISOCEXT macro.
+
+	* include/math.h: Tidy layout.
+	[!defined __NO_ISOCEXT]: Do not use this ugly double negative; in any
+	case, we do not want to encourage users to define such implementation
+	private macros; instead, prefer to make use of...
+	[defined _ISOC99_SOURCE]: ...this glibc compatible feature test.
+	[__STDC_VERSION__ >= 199901L]: Do not require this; it is implied, by
+	definition, in _ISOC99_SOURCE.
+	* include/stdio.h [!defined __NO_ISOCEXT]: Likewise; replace with...
+	[defined _ISOC99_SOURCE]: ...this, throughout.
+
 2016-04-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make resetting of __need_typedef requests more robust.

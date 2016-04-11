@@ -432,13 +432,12 @@ _CRTIMP __cdecl __MINGW_NOTHROW  int _snprintf (char *, size_t, const char *, ..
 _CRTIMP __cdecl __MINGW_NOTHROW  int _vsnprintf (char *, size_t, const char *, __VALIST);
 _CRTIMP __cdecl __MINGW_NOTHROW  int _vscprintf (const char *, __VALIST);
 
-#ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
-/*
- * Microsoft does not provide implementations for the following,
- * which are required by C99.  Note in particular that the corresponding
- * Microsoft implementations of _snprintf() and _vsnprintf() are *not*
- * compatible with C99, but the following are; if you want the MSVCRT
- * behaviour, you *must* use the Microsoft uglified names.
+#ifdef _ISOC99_SOURCE
+/* Microsoft does not provide implementations for the following,
+ * which are required by C99.  Note in particular that Microsoft's
+ * corresponding implementations of _snprintf() and _vsnprintf() are
+ * NOT compatible with C99, but the following are; if you want the
+ * MSVCRT behaviour, you MUST use the Microsoft "uglified" names.
  */
 __cdecl __MINGW_NOTHROW  int snprintf (char *, size_t, const char *, ...);
 __cdecl __MINGW_NOTHROW  int vsnprintf (char *, size_t, const char *, __VALIST);
@@ -451,7 +450,7 @@ int vfscanf (FILE * __restrict__, const char * __restrict__, __VALIST);
 __cdecl __MINGW_NOTHROW
 int vsscanf (const char * __restrict__, const char * __restrict__, __VALIST);
 
-#endif  /* !__NO_ISOCEXT */
+#endif  /* _ISOC99_SOURCE */
 #if __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
 /*
  * In MSVCR80.DLL, (and its descendants), Microsoft introduced variants
@@ -890,9 +889,9 @@ _CRTIMP __cdecl __MINGW_NOTHROW  FILE    * _wpopen (const wchar_t *, const wchar
 #endif  /* !__STRICT_ANSI__ */
 #endif	/* __MSVCRT__ */
 
-#ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
-__cdecl __MINGW_NOTHROW  int  snwprintf (wchar_t *, size_t, const wchar_t *, ...);
-__cdecl __MINGW_NOTHROW  int  vsnwprintf (wchar_t *, size_t, const wchar_t *, __VALIST);
+#ifdef _ISOC99_SOURCE
+__cdecl __MINGW_NOTHROW  int snwprintf (wchar_t *, size_t, const wchar_t *, ...);
+__cdecl __MINGW_NOTHROW  int vsnwprintf (wchar_t *, size_t, const wchar_t *, __VALIST);
 
 #ifndef __NO_INLINE__
 __CRT_INLINE __cdecl __MINGW_NOTHROW
@@ -907,7 +906,7 @@ int  vfwscanf (FILE *__restrict__, const wchar_t *__restrict__, __VALIST);
 __cdecl __MINGW_NOTHROW
 int  vswscanf (const wchar_t *__restrict__, const wchar_t * __restrict__, __VALIST);
 
-#endif  /* !__NO__ISOCEXT */
+#endif  /* _ISOC99_SOURCE */
 #endif  /* ! (_STDIO_H && _WCHAR_H) */
 
 #if defined _STDIO_H && ! defined __STRICT_ANSI__
