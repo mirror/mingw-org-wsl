@@ -6,7 +6,8 @@
  *
  * $Id$
  *
- * Written by Rob Savoye <rob@cygnus.com>
+ * Unattributed original source.
+ * Adapted by Rob Savoye <rob@cygnus.com>
  * Copyright (C) 1997, 1999-2009, 2011, 2015, 2016, MinGW.org Project.
  *
  *

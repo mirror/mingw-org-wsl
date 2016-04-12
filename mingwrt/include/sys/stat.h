@@ -6,7 +6,7 @@
  *
  * $Id$
  *
- * Written by Rob Savoye <rob@cygnus.com>
+ * Written by Colin Peters <colin@bird.fu.is.saga-u.ac.jp>
  * Copyright (C) 1997-2001, 2003-2005, 2007, 2016, MinGW.org Project.
  *
  *

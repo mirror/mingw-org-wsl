@@ -1,3 +1,16 @@
+2016-04-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update several incorrectly attributed header files.
+
+	* include/direct.h include/io.h include/locale.h include/math.h
+	* include/process.h include/stdio.h include/stdlib.h include/string.h
+	* include/sys/stat.h include/sys/types.h include/time.h: Identify the
+	original author as Colin Peters; Rob Savoye merely imported them into
+	the original CVS repository, when he created it.
+
+	* include/wchar.h: Likewise, imported by Rob Savoye, but the original
+	source file is unattributed.
+
 2016-04-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Eliminate all references to non-standard __NO_ISOCEXT macro.
