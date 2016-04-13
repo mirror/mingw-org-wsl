@@ -1,9 +1,10 @@
-.\" t
-.TH DIRNAME 3 04-Jan-2007 MinGW "Programmer's Reference Manual"
+'\" t
+.\" vim: ft=nroff
+.TH %PAGEREF% MinGW "Programmer's Reference Manual"
 .
 .SH NAME
 .
-.BR dirname ,\0 basename
+.BR \%dirname ,\0 \%basename
 \- parse path name components
 .
 .
@@ -24,9 +25,9 @@
 .SH DESCRIPTION
 .
 The
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 functions parse a null\-terminated path name string,
 and split it into its
 .B directory name
@@ -37,7 +38,7 @@ Splitting is performed on the basis of the location of the
 .B directory separator
 characters,
 which,
-for this MS\-Windows(\(tm) implementation,
+for this MS\-Windows implementation,
 are the characters
 .RB \(dq / \(dq
 and
@@ -52,7 +53,7 @@ is a colon
 .RB (\(dq : \(dq),
 the first two characters of
 .I path
-are interpreted as an MS\-Windows(\(tm) drive designator,
+are interpreted as an MS\-Windows drive designator,
 which will be included in the
 .B directory name
 component of
@@ -63,48 +64,48 @@ component.
 .
 .PP
 In normal usage,
-.B dirname
+.BR \%dirname ()
 returns a pointer to a string representing the path name component of
 .IR path ,
 up to but not including the rightmost directory separator,
 while
-.B basename
+.BR \%basename ()
 returns a pointer to the component following this separator.
 Any trailing directory separators present in
 .I path
 are disregarded,
 when determining the rightmost separator,
 and, in the case of the return value from
-.BR dirname ,
+.BR \%dirname (),
 any internal sequences of recurring separator characters
 are each reduced to a single such character.
 .
 .PP
 If
 .I path
-contains no MS\-Windows(\(tm) drive designator,
+contains no MS\-Windows drive designator,
 and no directory separator character,
 then
-.B dirname
+.BR \%dirname ()
 returns the string
 .RB \(dq . \(dq,
 and
-.B basename
+.BR \%basename ()
 returns a copy of
 .IR path.
 If
 .I path
-does commence with an MS\-Windows(\(tm) drive designator,
+does commence with an MS\-Windows drive designator,
 but contains no directory separators,
 then
-.B dirname
+.BR \%dirname ()
 returns the string
 .RB \(dq d:. \(dq,
 where
 .RB \(dq d: \(dq
 represents the drive designator,
 while
-.B basename
+.BR \%basename ()
 returns a copy of
 .IR path ,
 with its initial two characters,
@@ -117,9 +118,9 @@ If
 is a NULL pointer,
 or is a pointer to an empty string,
 then both
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 return the string
 .RB \(dq . \(dq.
 .
@@ -131,9 +132,9 @@ is the string
 or the string
 .RB \(dq \e \(dq,
 both
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 return the string
 .RB \(dq / \(dq,
 or the string
@@ -148,15 +149,15 @@ commences with
 two directory separator characters,
 which must be similar,
 then
-.B dirname
+.BR \%dirname ()
 will preserve these two characters in the returned path name.
 This construct does not affect the string returned by
-.BR basename ,
+.BR \%basename (),
 neither is this behaviour replicated by
-.BR dirname ,
+.BR \%dirname (),
 if
 .I path
-includes an MS\-Windows(\(tm) drive designator.
+includes an MS\-Windows drive designator.
 .
 .PP
 In the special case,
@@ -165,13 +166,13 @@ where
 is specified as
 .I exactly
 two identical directory separator characters,
-with no MS\-Windows(\(tm) drive designator,
+with no MS\-Windows drive designator,
 and no following path name,
-.B dirname
+.BR \%dirname ()
 returns
 .I path
 unchanged;
-.B basename
+.BR \%basename ()
 normalises the return string to only a single character,
 either
 .RB \(dq / \(dq
@@ -182,27 +183,27 @@ matching the characters used to specify
 .
 .PP
 Concatenating the string returned by
-.BR dirname ,
+.BR \%dirname (),
 a
 .RB \(dq / \(dq
 or a
 .RB \(dq \e \(dq,
 and the string returned by
-.B basename
+.BR \%basename ()
 yields a complete path name.
 .
 .PP
 The
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 functions conform generally to SUSv3,
 extended to accommodate the handling of
 .RB \(dq / \(dq
 and
 .RB \(dq \e \(dq
 as alternative directory separator characters,
-and also to accommodate the likelihood of MS\-Windows(\(tm)
+and also to accommodate the likelihood of MS\-Windows
 drive designators appearing in any path name specification.
 The example,
 which follows,
@@ -213,9 +214,9 @@ and also the effects of the extended behaviour.
 .SH EXAMPLE
 .
 To verify the behaviour of the
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 functions,
 the test program defines the following function:\(em
 .
@@ -241,16 +242,16 @@ void result( char *path )
 .RE
 .PP
 This illustrates the correct use of the
-.B dirname
+.BR \%dirname ()
 and the
-.B basename
+.BR \%basename ()
 functions,
 with copies of the original
 .I path
 string being passed in the function calls.
 Note that the return values from each function are used immediately,
 in the
-.B printf
+.BR printf ()
 call,
 and the temporary copies of
 .I path
@@ -260,9 +261,9 @@ before these go out of scope.
 .
 .PP
 Calling this example function illustrates the effect of each of the
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 functions,
 for various values of
 .IR path .
@@ -290,7 +291,7 @@ lw(15n) lw(10n) lw(10n).
 .
 .PP
 Similarly,
-for the case where path names are expressed using the MS\-Windows(\(tm)
+for the case where path names are expressed using the MS\-Windows
 .RB \(dq \e \(dq
 directory separator notation,
 calling the example function displays:\(em
@@ -315,7 +316,7 @@ lw(15n) lw(10n) lw(10n).
 .
 .PP
 and,
-when an MS\-Windows(\(tm) drive designator is also specified,
+when an MS\-Windows drive designator is also specified,
 this becomes:\(em
 .RS
 .TS
@@ -344,7 +345,7 @@ the special handling of path names which begin with
 two directory separator characters,
 and also that this special handling is suppressed
 when these two characters are dissimilar,
-or when an MS\-Windows(\(tm) drive designator is specified:\(em
+or when an MS\-Windows drive designator is specified:\(em
 .RS
 .TS
 tab(!);
@@ -369,7 +370,7 @@ lw(15n) lw(10n) lw(10n).
 .SH RETURN VALUE
 .
 The
-.B dirname
+.BR \%dirname ()
 function returns a pointer to a null terminated string,
 which represents the directory path component of the passed
 .I path
@@ -380,7 +381,7 @@ normalised to a single separator at each level of directory nesting.
 .
 .PP
 The
-.B basename
+.BR \%basename ()
 function
 returns a pointer to a null terminated string,
 which represents the rightmost element of the passed
@@ -389,14 +390,14 @@ string,
 with all trailing directory separator characters removed.
 .
 .PP
-If any MS\-Windows(\(tm) drive designator is specified in the input
+If any MS\-Windows drive designator is specified in the input
 .I path
 string,
 it is included in the return value of the
-.B dirname
+.BR \%dirname ()
 function,
 but not in that of the
-.B basename
+.BR \%basename ()
 function.
 .
 .
@@ -408,9 +409,9 @@ None.
 .SH CAVEATS AND BUGS
 .
 The
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 functions may modify the
 .I path
 string passed to them.
@@ -425,9 +426,9 @@ Also note that,
 since the
 .I path
 argument may be modified by the
-.B dirname
+.BR \%dirname ()
 or the
-.B basename
+.BR \%basename ()
 function call,
 if you wish to preserve the original content of
 .IR path ,
@@ -437,14 +438,14 @@ either function may return its result in a statically allocated buffer,
 which may be overwritten on a subsequent function call.
 .PP
 Although the
-.B dirname
+.BR \%dirname ()
 and
-.B basename
+.BR \%basename ()
 functions parse path name strings,
 they are basically just
 .I string
 functions.
-The presence of an MS\-Windows(\(tm) drive designator is determined
+The presence of an MS\-Windows drive designator is determined
 by the appearance of a colon
 .RB (\(dq : \(dq)
 as the second character of the
@@ -459,13 +460,13 @@ represents a valid path name.
 .
 .SH AUTHOR
 .
-This manpage was written for the MinGW implementation of the
-.B dirname
+This manpage was written by \%Keith\ Marshall,
+\%<keithmarshall@users.sourceforge.net>, to document the
+.BR \%basename ()
 and
-.B basename
-functions by Keith\ Marshall,
-<keithmarshall@users.sourceforge.net>.
-It may copied, modified and redistributed,
+.BR \%dirname ()
+functions as they have been implemented for the MinGW.org Project.
+It may be copied, modified and redistributed,
 without restriction of copyright,
 provided this acknowledgement of contribution by
 the original author remains unchanged.

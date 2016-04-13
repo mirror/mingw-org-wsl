@@ -1,3 +1,21 @@
+2016-04-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Generalize procedure for installing manpages.
+
+	* man/dirname.man: Rename it as...
+	* man/dirname.3.man: ...this, with inherent MANSECT specification.
+	(TH): Use %PAGEREF% substitution for NAME, MANSECT, and DATE.
+	(MS-Windows): Do not append \[tm]; it doesn't render well in Windows
+	console. Further, correct typos; some syntactic adjustments.
+
+	* Makefile.in (%:%.man): New rule; define it.
+	(%.mancopy, %.mancopy-recursive): New rules; define and use with...
+	(reference_manpage): ...this new macro, defining it to map...
+	(dirname.3.man): ...this as the reference source file for both of...
+	(basename.3, dirname.3): ...these installed manpages.
+	(format_manpage): Add MANSECT and DATE to expansion of...
+	(%PAGEREF%): ...this sed substitution pattern.
+
 2016-04-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update several incorrectly attributed header files.

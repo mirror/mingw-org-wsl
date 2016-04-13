@@ -733,20 +733,30 @@ install-%-dll-files:
 
 # Install manpages.
 #
-install-man install-manpages: install-mingwrt-manpages
-format_manpage = sed "s/%PAGEREF%/`echo $1 | tr a-z A-Z` $2/"
-
 vpath %.man ${mingwrt_srcdir}/man
-basename.$(man3ext) dirname.$(man3ext): %.$(man3ext): dirname.man
-	$(call format_manpage,$*,$(man3ext)) $< > $@
-
-mingwrt-man$(man3ext): basename.$(man3ext) dirname.$(man3ext)
-
+install-man install-manpages: install-mingwrt-manpages
+mingwrt-man$(man3ext): $(addsuffix .$(man3ext),basename dirname)
 install-mingwrt-manpages: mandir mingwrt-man3
+
 mingwrt-man%:
 	$(call mkinstalldirs,,${man$*dir})
 	$(call INSTALL_DATA,$^,${man$*dir})
 	$(RM) $^
+
+%: %.man
+	$(call format_manpage,$(basename $*),$(suffix $*),$<) $< > $@
+
+format_manpage = sed \
+  -e "s/%PAGEREF%/`echo $1 | tr a-z A-Z` $(2:.%=%) `date -r $3 +%d-%b-%Y`/"
+
+basename.$(man3ext): export reference_manpage = dirname.$(man3ext).man
+basename.$(man3ext): %: %.mancopy-recursive
+
+%.mancopy-recursive:
+	$(MAKE) --no-print-directory $*.mancopy
+
+%.mancopy: $(reference_manpage)
+	$(call format_manpage,$(basename $*),$(suffix $*),$<) $< > $*
 
 
 # Undo Installation
