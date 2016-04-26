@@ -53,7 +53,7 @@
  * it, while also allowing <direct.h> to delegate responsibility for the
  * inclusion of both <_mingw.h> and <io.h> to us.
  */
-#include <io.h>
+#include "io.h"
 
 #ifndef RC_INVOKED
 

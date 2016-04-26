@@ -83,10 +83,12 @@
 
 /* All Microsoft implementations of the exec() and spawn() functions
  * are declared with intptr_t as their return type; get its definition
- * by selective inclusion from <stdint.h>.
+ * by selective inclusion from "stdint.h"; (note: use #include "..."
+ * here, to avoid side effects from any alternative <stdint.h>, which
+ * is not in the same directory as this <process.h>).
  */
 #define __need_intptr_t
-#include <stdint.h>
+#include "stdint.h"
 
 _BEGIN_C_DECLS
 
@@ -288,4 +290,4 @@ _CRTIMP __cdecl __MINGW_NOTHROW intptr_t _wspawnvpe
 _END_C_DECLS
 
 #endif	/* ! RC_INVOKED */
-#endif	/* !_PROCESS_H: $RCSfile$: endof file */
+#endif	/* !_PROCESS_H: $RCSfile$: end of file */

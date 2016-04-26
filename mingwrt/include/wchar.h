@@ -80,7 +80,7 @@
  * retrieve the overlapping content, without requiring duplication of
  * that content here; thus, from...
  */
-#include <stdio.h>
+#include "stdio.h"
 /* ...we obtain (possibly indirect) definitions and declarations for:
  *
  *  macros  NULL, FILENAME_MAX
@@ -144,7 +144,7 @@
  *
  * In similar fashion, from...
  */
-#include <stdlib.h>
+#include "stdlib.h"
 /* ...we obtain prototypes for universally supported functions:
  *
  *  long wcstol (const wchar_t *, wchar_t **, int);
@@ -178,7 +178,7 @@
  *
  * while from...
  */
-#include <direct.h>
+#include "direct.h"
 /* ...we obtain prototypes for each of the following functions,
  * (none of which are available when using CRTDLL.DLL):
  *
@@ -191,7 +191,7 @@
  *
  * From...
  */
-#include <sys/stat.h>
+#include "sys/stat.h"
 /* ...we obtain function prototypes, and all associated data type
  * definitions for this pair of actual functions, in all versions of
  * MSVCRT.DLL, and its non-free derivatives preceding MSVCR80.DLL, (or
@@ -216,7 +216,7 @@
  *
  * while from...
  */
-#include <io.h>
+#include "io.h"
 /* ...we obtain function prototypes for each of the following, which
  * are available in all versions of MSVCRT.DLL, (and all its non-free
  * derivatives), but are not supported by CRTDLL.DLL:
@@ -268,7 +268,7 @@
  *
  * and from...
  */
-#include <time.h>
+#include "time.h"
 /* ...we obtain an opaque forward declaration of:
  *
  *  struct tm
@@ -304,7 +304,7 @@
  *
  * Also, from...
  */
-#include <locale.h>
+#include "locale.h"
 /* ...we obtain the declaration for:
  *
  *   wchar_t *_wsetlocale (int, const wchar_t *);
@@ -312,7 +312,7 @@
  *
  * and from...
  */
-#include <process.h>
+#include "process.h"
 /* ...we obtain function prototypes for:
  *
  *  intptr_t _wexecl (const wchar_t *, const wchar_t *, ...);

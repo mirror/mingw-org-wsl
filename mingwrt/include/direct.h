@@ -50,7 +50,7 @@
  * from <dos.h>; thus, we may simply include <dos.h> here, and let
  * it take care of including both <mingw.h> and <io.h> for us.
  */
-#include <dos.h>
+#include "dos.h"
 
 #undef __DIRECT_H_SOURCED__
 #endif	/* !__WCHAR_H_SOURCED__ */

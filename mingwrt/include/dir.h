@@ -35,6 +35,6 @@
 #define _DIR_H
 
 #warning "<dir.h> is obsolete; please use <io.h> instead."
-#include <io.h>
+#include "io.h"
 
 #endif	/* !_DIR_H: $RCSfile$: end of file */

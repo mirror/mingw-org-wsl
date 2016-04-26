@@ -86,17 +86,20 @@
  * preceding groups...
  */
 #if defined __need_off_t || defined __need___off64_t
- /* ...to identify a requirement for selective inclusion from...
+ /* ...to identify a requirement for selective inclusion of one or more
+  * of these type definitions from "sys/types.h"; (note that we use the
+  * #include "..." form here, to ensure that we get the correct header
+  * file, relative to the location of this <stdio.h>).
   */
-# include <sys/types.h>
+# include "sys/types.h"
 #endif
 
 #ifndef __VALIST
- /* Also similarly, for the va_list type, defined in <stdarg.h>
+ /* Also similarly, for the va_list type, defined in "stdarg.h"
   */
 # if defined __GNUC__ && __GNUC__ >= 3
 #  define __need___va_list
-#  include <stdarg.h>
+#  include "stdarg.h"
 #  define __VALIST __builtin_va_list
 # else
 #  define __VALIST char *

@@ -1,3 +1,15 @@
+2016-04-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Use correct paths for partially included header files.
+
+	* include/io.h include/process.h: Use 'iquote' #include "stdint.h", to
+	ensure that we get stdint.h from the same include directory.
+	* include/stdio.h: Likewise for #include "stdarg.h", and "sys/types.h"
+	* include/wchar.h: Likewise for all of #include "stdio.h", "stdlib.h",
+	"direct.h", "sys/stat.h", "io.h", "time.h", "locale.h", and "process.h"
+	* include/dir.h include/dos.h: Likewise for #include "io.h"
+	* include/direct.h: Likewise for #include "dos.h"
+
 2016-04-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Generalize procedure for installing manpages.

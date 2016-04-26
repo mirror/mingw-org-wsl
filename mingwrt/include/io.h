@@ -58,10 +58,13 @@
 #endif	/* !__WCHAR_H_SOURCED__ */
 
 /* This will give us intptr_t, which we need in ALL cases, whether
- * including <io.h> directly, or selectively via <wchar.h>.
+ * including <io.h> directly, or selectively via <wchar.h>; (note: we
+ * use the #include "..." form here, to ensure that we read the type
+ * definition directly from the stdint.h header located in the same
+ * directory as this <io.h> file).
  */
 #define __need_intptr_t
-#include <stdint.h>
+#include "stdint.h"
 
 /* Attributes of files as returned by _findfirst() et al.  MSDN is not
  * explicit about whether or not these should be defined when including
