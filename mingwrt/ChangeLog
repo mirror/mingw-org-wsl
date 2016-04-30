@@ -1,3 +1,22 @@
+2016-04-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make strnlen() available for all MSVCRT.DLL versions.
+
+	* msvcrt-xref/msvcrt.def.in (strnlen): Mark it as...
+	(__MINGW_DLSYM): ...this, excluding its exposure in libmsvcrt.dll, and
+	thus requiring a dlsym() lookup for versions which provide it.
+
+	* include/string.h [__MSVCRT_VERSION__>=__MSVCR80_DLL] (strnlen):
+	Declare prototype, for use from these non-free DLLs, otherwise...
+	[_POSIX_C_SOURCE >= 200809L] (strnlen): Define it as an alias for...
+	(__mingw_strnlen): ...this new libmingwex.a function.
+
+	* mingwex/strnlen.s: New file; it implements...
+	(__mingw_strnlen, __mingw_strnlen_s): ...these new functions.
+
+	* Makefile.in (libmingwex.a): Add requirement for...
+	(strnlen.$OBJEXT): ...this; add vpath specification for its source.
+
 2016-04-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Use correct paths for partially included header files.

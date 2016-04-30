@@ -462,8 +462,9 @@ libmingwex.a: $(addsuffix .$(OBJEXT), tdelete tfind tsearch twalk)
 libmingwex.a: gettimeofday.$(OBJEXT)
 libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn)
 
-libmingwex.a: $(addsuffix .$(OBJEXT), fwide mbrtowc mbsinit wcrtomb wcstof \
-  wcstold wctob wmemchr wmemcmp wmemcpy wmemmove wmemset)
+vpath %.s ${mingwrt_srcdir}/mingwex
+libmingwex.a: $(addsuffix .$(OBJEXT), fwide mbrtowc mbsinit strnlen wcrtomb \
+  wcstof wcstold wctob wmemchr wmemcmp wmemcpy wmemmove wmemset)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), wctrans wctype)
 

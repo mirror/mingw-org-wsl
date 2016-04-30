@@ -152,6 +152,33 @@ _CRTIMP __cdecl __MINGW_NOTHROW  void swab (const char *, char *, size_t);
 #include <wchar.h>
 
 #endif /* ! __STRICT_ANSI__ */
+
+#if __MSVCRT_VERSION__ >= __MSVCR80_DLL
+/* MSVCR80.DLL adds a (mostly) POSIX.1-2008 conforming strnlen(); (it's
+ * also available in MSVCRT.DLL from _WIN32_WINNT_VISTA onwards, but we
+ * pretend otherwise, since recent GCC will try to use the function when
+ * it can be found in libmsvcrt.a, so breaking it for use on WinXP and
+ * earlier).
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strnlen (const char *, size_t);
+
+#elif _POSIX_C_SOURCE >= 200809L
+/* Emulation, to support recent POSIX.1; we prefer this for ALL versions
+ * of MSVCRT.DLL, (even those which already provide strnlen()); to avoid
+ * the GCC breakage noted above.  (Note that we implement strnlen() with
+ * the alternative external name, __mingw_strnlen() in libmingwex.a, to
+ * avoid possible link time collision with MSVCR80.DLL's implementation,
+ * then map this to strnlen() via a preprocessor define, so that users
+ * may use it conventionally, (including taking its address); this may
+ * interfere with C++ namespace qualification, but since strnlen() is
+ * not a standard C++ function, we do not anticipate any consequent
+ * usage issues).
+ */
+#define strnlen  __mingw_strnlen
+extern size_t __mingw_strnlen (const char *, size_t);
+
+#endif	/* _POSIX_C_SOURCE >= 200809L */
+
 #undef __STRING_H_SOURCED__
 
 _END_C_DECLS

@@ -3417,7 +3417,7 @@ strncpy
 #if __MSVCRT_VERSION__ >= 0x0600UL
 # if __MSVCRT_VERSION__ < 0x07000000UL || __MSVCRT_VERSION__ >= 0x08000000UL
 strncpy_s
-strnlen
+__MINGW_DLSYM(strnlen); exposure in libmsvcrt.a may break GCC builds.
 # endif
 #endif
 strpbrk
