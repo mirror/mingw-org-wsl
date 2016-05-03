@@ -7,7 +7,7 @@ PACKAGE_TARNAME := @PACKAGE_TARNAME@
 PACKAGE_VERSION := @PACKAGE_VERSION@
 
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2014, 2015, MinGW.org Project
+# Copyright (C) 2014-2016, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -113,6 +113,27 @@ vpath configure.ac ${top_srcdir}
 configure: configure.ac aclocal.m4
 	cd ${top_srcdir}; autoconf
 
+# Propagate package version, as configured, consistently throughout
+# the package build.
+#
+vpath w32api.h.in ${top_srcdir}/include
+vpath _mingw.h.in ${mingwrt_srcdir}/include
+
+w32api.h _mingw.h: configure.ac
+
+PACKAGE_VERSION_SCRIPT = sed \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,LONG,%d,$$3+1000*($$2+1000*$$1))`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,MAJOR,%7d,$$1)`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,MINOR,%7d,$$2)`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,PATCH,%7d,$$3)`"
+
+PACKAGE_VERSION_FORMAT = echo $(PACKAGE_VERSION).0.0 | awk -F. '{ \
+  printf ",%%PACKAGE_VERSION_$1%%,$2,", $3; \
+}'
+
+w32api.h _mingw.h: %.h: %.h.in
+	$(PACKAGE_VERSION_SCRIPT) $< > $@
+
 # Capture dependencies conveyed within source files, ensuring that
 # header files are taken from our working source tree, and not from
 # the build-time compiler's installation path.  (Note: we use -MD,
@@ -136,6 +157,7 @@ deffiles = $(eval vpath %.def $1)$(notdir $(wildcard $1/*.def))
 implibfiles = $(addprefix lib,$(subst .def,.a,$(call deffiles,$1)))
 
 all: all-w32api-libs
+all-w32api-libs: w32api.h _mingw.h
 all-w32api-libs install-w32api-libs: $(call implibfiles,${srcdir}/lib)
 all-w32api-libs install-w32api-libs: $(call implibfiles,${srcdir}/lib/directx)
 all-w32api-libs install-w32api-libs: $(call implibfiles,${srcdir}/lib/ddk)
@@ -238,8 +260,8 @@ w32api-include-dirs: includedir
 w32api-lib-dirs: libdir
 
 install-headers: install-w32api-headers
-install-w32api-headers: w32api-include-dirs
-	$(call INSTALL_DATA,${srcdir}/include/*.h,${includedir})
+install-w32api-headers: w32api.h w32api-include-dirs
+	$(call INSTALL_DATA,w32api.h ${srcdir}/include/*.h,${includedir})
 	for dir in $(w32api_extra_include_dirs); do \
 	  $(call INSTALL_DATA,${srcdir}/include/$$dir/*.h,${includedir}); \
 	  done

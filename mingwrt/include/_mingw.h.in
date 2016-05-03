@@ -41,11 +41,15 @@
  * which encodes the version as a long integer value, expressing:
  *
  *   __MINGW32_VERSION = 1,000,000 * major + 1,000 * minor + patch
+ *
+ * DO NOT EDIT these package version assignments manually; they are
+ * derived from the package version specification within configure.ac,
+ * whence they are propagated automatically, at package build time.
  */
-#define __MINGW32_VERSION           3021001L
-#define __MINGW32_MAJOR_VERSION           3
-#define __MINGW32_MINOR_VERSION          21
-#define __MINGW32_PATCHLEVEL              1
+#define __MINGW32_VERSION           %PACKAGE_VERSION_LONG%L
+#define __MINGW32_MAJOR_VERSION     %PACKAGE_VERSION_MAJOR%
+#define __MINGW32_MINOR_VERSION     %PACKAGE_VERSION_MINOR%
+#define __MINGW32_PATCHLEVEL        %PACKAGE_VERSION_PATCH%
 
 #if __GNUC__ >= 3 && ! defined __PCC__
 #pragma GCC system_header

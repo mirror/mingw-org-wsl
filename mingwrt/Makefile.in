@@ -7,7 +7,7 @@ PACKAGE_TARNAME := @PACKAGE_TARNAME@
 PACKAGE_VERSION := @PACKAGE_VERSION@
 
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2014, 2015, MinGW.org Project
+# Copyright (C) 2014-2016, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -70,6 +70,7 @@ STRIP = @STRIP@
 NM = @NM@
 
 all: @DEFAULT_MAKECMDGOALS@
+all-mingwrt-stage-1-only: _mingw.h w32api.h
 all-mingwrt-stage-1-only: all-mingwrt-objects all-mingwrt-libs
 all-mingwrt-stage-1-and-2: all-mingwrt-stage-1-only all-mingwrt-dll
 all-mingwrt: all-mingwrt-stage-1-and-2
@@ -139,6 +140,27 @@ vpath %.m4 ${top_srcdir}
 vpath configure.ac ${top_srcdir}
 configure: configure.ac aclocal.m4
 	cd ${top_srcdir}; autoconf
+
+# Propagate package version, as configured, consistently throughout
+# the package build.
+#
+vpath _mingw.h.in ${top_srcdir}/include
+vpath w32api.h.in ${w32api_srcdir}/include
+
+_mingw.h w32api.h: configure.ac
+
+PACKAGE_VERSION_SCRIPT = sed \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,LONG,%d,$$3+1000*($$2+1000*$$1))`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,MAJOR,%7d,$$1)`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,MINOR,%7d,$$2)`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,PATCH,%7d,$$3)`"
+
+PACKAGE_VERSION_FORMAT = echo $(PACKAGE_VERSION).0.0 | awk -F. '{ \
+  printf ",%%PACKAGE_VERSION_$1%%,$2,", $3; \
+}'
+
+_mingw.h w32api.h: %.h: %.h.in
+	$(PACKAGE_VERSION_SCRIPT) $< > $@
 
 # Capture dependencies conveyed within source files, ensuring that
 # header files are taken from our working source tree, and not from
@@ -698,7 +720,8 @@ mingwrt-includedirs: includedir $(eval mingwrt_include_subdirs=sys parts)
 SUB_HEADERS_PRESENT = echo $1/include/$2/*.h | grep -v '[*]' > /dev/null
 INSTALL_SUB_HEADERS = $(call INSTALL_DATA,$1/include/$2/*.h,${includedir}/$2)
 
-install-mingwrt-headers: mingwrt-includedirs
+install-mingwrt-headers: _mingw.h mingwrt-includedirs
+	$(call INSTALL_DATA,_mingw.h,${includedir})
 	$(call INSTALL_DATA,${mingwrt_srcdir}/include/*.h,${includedir})
 	for dir in $(mingwrt_include_subdirs); do \
 	  if $(call SUB_HEADERS_PRESENT,${mingwrt_srcdir},$$dir); then \

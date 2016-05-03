@@ -6,7 +6,7 @@
 # $Id$
 #
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2015, MinGW.org Project
+# Copyright (C) 2015, 2016, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -29,11 +29,11 @@
 # DEALINGS IN THE SOFTWARE.
 #
   AC_PREREQ([2.64])
-  AC_INIT([Win32 API],[3.18],[http://mingw.org/Reporting_Bugs],[w32api])
+  AC_INIT([MinGW Win32 API],[3.18],[http://mingw.org/Reporting_Bugs],[w32api])
 
   AC_PREFIX_DEFAULT([/mingw])
-  AC_CONFIG_SRCDIR([include/w32api.h])
-  MINGW_AC_CONFIG_EXTRA_SRCDIR([mingwrt],[include/_mingw.h])
+  AC_CONFIG_SRCDIR([include/w32api.h.in])
+  MINGW_AC_CONFIG_EXTRA_SRCDIR([mingwrt],[include/_mingw.h.in])
 
   MINGW_AC_PROG_CC_COMPILE_ONLY
 

@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Earnie Boyd  <earnie@users.sourceforge.net>
- * Copyright (C) 2001-2011, 2015, MinGW.org Project
+ * Copyright (C) 2001-2011, 2015, 2016, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -43,11 +43,15 @@
  * expressing:
  *
  *   __W32API_VERSION = 1,000,000 * major + 1,000 * minor + patch
+ *
+ * DO NOT EDIT these package version assignments manually; they are
+ * derived from the package version specification within configure.ac,
+ * whence they are propagated automatically, at package build time.
  */
-#define __W32API_VERSION		3017000L
-#define __W32API_MAJOR_VERSION		      3
-#define __W32API_MINOR_VERSION		     17
-#define __W32API_PATCH_LEVEL		      0
+#define __W32API_VERSION           %PACKAGE_VERSION_LONG%L
+#define __W32API_MAJOR_VERSION     %PACKAGE_VERSION_MAJOR%
+#define __W32API_MINOR_VERSION     %PACKAGE_VERSION_MINOR%
+#define __W32API_PATCHLEVEL        %PACKAGE_VERSION_PATCH%
 
 /* The underlying operating system platform version, and its
  * identifying macros for application support, are established by:

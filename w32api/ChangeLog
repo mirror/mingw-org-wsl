@@ -1,3 +1,26 @@
+2016-05-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Enforce consistent specification of package version.
+
+	* include/w32api.h: Rename as...
+	* include/w32api.h.in: ...this build-time template file.
+	(__W32API_VERSION): Redefine it, in terms of...
+	(%PACKAGE_VERSION_LONG%): ...this substitution template.
+	(__W32API_MAJOR_VERSION, __W32API_MINOR_VERSION)
+	(__W32API_PATCHLEVEL): Likewise, redefine them in terms of...
+	(%PACKAGE_VERSION_MAJOR%, %PACKAGE_VERSION_MINOR%)
+	(%PACKAGE_VERSION_PATCH%): ...these.
+
+	* configure.ac (AC_CONFIG_SRCDIR): Adjust for renamed file.
+	(MINGW_AC_CONFIG_EXTRA_SRCDIR): Likewise, for similarly renamed
+	mingwrt/include/_mingw.h.in file.
+
+	* Makefile.in (all-w32api-libs): Add dependency on...
+	(w32api.h, _mingw.h): ...these; add rule to generate them, using...
+	(PACKAGE_VERSION_SCRIPT, PACKAGE_VERSION_FORMAT): ...these new macros;
+	they apply appropriate substitutions to the renamed template files.
+	(install-w32api-headers): Explicitly add w32api.h
+
 2015-11-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor for Windows DDK synchronization; fix MinGW-Bug [#1954].

@@ -1,3 +1,26 @@
+2016-05-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Enforce consistent specification of package version.
+
+	* include/_mingw.h: Rename as...
+	* include/_mingw.h.in: ...this build-time template file.
+	(__MINGW32_VERSION): Redefine it, in terms of...
+	(%PACKAGE_VERSION_LONG%): ...this substitution template.
+	(__MINGW32_MAJOR_VERSION, __MINGW32_MINOR_VERSION)
+	(__MINGW32_PATCHLEVEL): Likewise, redefine them in terms of...
+	(%PACKAGE_VERSION_MAJOR%, %PACKAGE_VERSION_MINOR%)
+	(%PACKAGE_VERSION_PATCH%): ...these.
+
+	* configure.ac (AC_CONFIG_SRCDIR): Adjust for renamed file.
+	(MINGW_AC_CONFIG_EXTRA_SRCDIR): Likewise, for similarly renamed
+	w32api/include/w32api.h.in file.
+
+	* Makefile.in (all-mingwrt-stage-1-only): Add dependency on...
+	(_mingw.h, w32api.h): ...these; add rule to generate them, using...
+	(PACKAGE_VERSION_SCRIPT, PACKAGE_VERSION_FORMAT): ...these new macros;
+	they apply appropriate substitutions to the renamed template files.
+	(install-mingwrt-headers): Explicitly add _mingwrt.h
+
 2016-04-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make strnlen() available for all MSVCRT.DLL versions.
