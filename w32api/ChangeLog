@@ -1,3 +1,18 @@
+2016-05-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Eliminate redundant <parts/winioctl.h> header.
+
+	* include/parts/winioctl.h: Delete it; distribute its content...
+	* include/ddk/winddk.h include/ddk/ntddstor.h include/ddk/ntdddisk.h:
+	...among these, separating it into discrete sections based on...
+	[__need_ddk_winddk_includes, __need_ddk_ntddstor_includes]
+	[__need_ddk_ntdddisk_includes]: ...these selectors, respectively.
+	[__WINIOCTL_H_SOURCED__]: Expose only those sections; do not define...
+	(_DDK_WINDDK_H, _DDK_NTDDSTOR_H, _DDK_NTDDDISK_H): ...these.
+
+	* include/winioctl.h (__WINIOCTL_H_SOURCED__): Define it; include each
+	of <ddk/winddk.h>, <ddk/ntddstor.h>, and <ddk/ntdddisk.h>
+
 2016-05-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Enforce consistent specification of package version.

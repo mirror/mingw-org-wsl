@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Casper S. Hornstrup  <chorns@users.sourceforge.net>
- * Copyright (C) 2002, 2004, 2015, MinGW.org Project.
+ * Copyright (C) 2002, 2004, 2015, 2016, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -30,18 +30,79 @@
  *
  */
 #ifndef _DDK_NTDDSTOR_H
-#define _DDK_NTDDSTOR_H
 #pragma GCC system_header
 
-#include "ntddk.h"
+/* This file supports partial inclusion by <winioctl.h>; defer definition
+ * of its normal repeat inclusion guard macro...
+ */
+#ifndef __WINIOCTL_H_SOURCED__
+/* ...until we've ascertained that this is NOT such partial inclusion.
+ */
+#define _DDK_NTDDSTOR_H
 
+/* In case of full inclusion, we must also include the full content of:
+ */
+#include "ntddk.h"
+#endif
+
+#if ! (defined _DDK_NTDDSTOR_H && defined _WINIOCTL_H)
 /* The majority of the IOCTL_STORAGE control code generator macros,
  * structural type STORAGE_BUS_TYPE, and its associated pointer type,
- * are also required to be defined by <winioctl.h>; for convenience
- * of maintenance, share these definitions via <parts/winioctl.h>
+ * are required to be defined by both <ddk/ntddstor.h> and <winioctl.h>,
+ * but if both repeat inclusion guards are already defined, then we've
+ * already seen this; ther is no need to process it again.
  */
-#include <parts/winioctl.h>
+#define __IOCTL_STORAGE_(FN,M,A)	    CTL_CODE(IOCTL_STORAGE_BASE,(FN),(M),(A))
 
+#define IOCTL_STORAGE_BASE		    FILE_DEVICE_MASS_STORAGE
+#define IOCTL_STORAGE_CHECK_VERIFY	  __IOCTL_STORAGE_(0x0200,__FILE_RD_BUFFERED)
+#define IOCTL_STORAGE_CHECK_VERIFY2	  __IOCTL_STORAGE_(0x0200,__FILE_AM_BUFFERED)
+#define IOCTL_STORAGE_MEDIA_REMOVAL	  __IOCTL_STORAGE_(0x0201,__FILE_RD_BUFFERED)
+#define IOCTL_STORAGE_EJECT_MEDIA	  __IOCTL_STORAGE_(0x0202,__FILE_RD_BUFFERED)
+#define IOCTL_STORAGE_LOAD_MEDIA	  __IOCTL_STORAGE_(0x0203,__FILE_RD_BUFFERED)
+#define IOCTL_STORAGE_LOAD_MEDIA2	  __IOCTL_STORAGE_(0x0203,__FILE_AM_BUFFERED)
+#define IOCTL_STORAGE_RESERVE		  __IOCTL_STORAGE_(0x0204,__FILE_RD_BUFFERED)
+#define IOCTL_STORAGE_RELEASE		  __IOCTL_STORAGE_(0x0205,__FILE_RD_BUFFERED)
+#define IOCTL_STORAGE_FIND_NEW_DEVICES	  __IOCTL_STORAGE_(0x0206,__FILE_RD_BUFFERED)
+#define IOCTL_STORAGE_EJECTION_CONTROL	  __IOCTL_STORAGE_(0x0250,__FILE_AM_BUFFERED)
+#define IOCTL_STORAGE_MCN_CONTROL	  __IOCTL_STORAGE_(0x0251,__FILE_AM_BUFFERED)
+#define IOCTL_STORAGE_GET_MEDIA_TYPES	  __IOCTL_STORAGE_(0x0300,__FILE_AM_BUFFERED)
+#define IOCTL_STORAGE_GET_MEDIA_TYPES_EX  __IOCTL_STORAGE_(0x0301,__FILE_AM_BUFFERED)
+#define IOCTL_STORAGE_RESET_BUS		  __IOCTL_STORAGE_(0x0400,__FILE_RW_BUFFERED)
+#define IOCTL_STORAGE_RESET_DEVICE	  __IOCTL_STORAGE_(0x0401,__FILE_RW_BUFFERED)
+#define IOCTL_STORAGE_GET_DEVICE_NUMBER   __IOCTL_STORAGE_(0x0420,__FILE_AM_BUFFERED)
+#define IOCTL_STORAGE_PREDICT_FAILURE	  __IOCTL_STORAGE_(0x0440,__FILE_AM_BUFFERED)
+
+typedef
+enum _STORAGE_BUS_TYPE
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff566356(v=vs.85).aspx */
+{ BusTypeUnknown		= 0x00,
+  BusTypeScsi			= 0x01,
+  BusTypeAtapi			= 0x02,
+  BusTypeAta			= 0x03,
+  BusType1394			= 0x04,
+  BusTypeSsa			= 0x05,
+  BusTypeFibre			= 0x06,
+  BusTypeUsb			= 0x07,
+  BusTypeRAID			= 0x08,
+  BusTypeiScsi			= 0x09,
+  BusTypeSas			= 0x0A,
+  BusTypeSata			= 0x0B,
+  BusTypeSd			= 0x0C,
+  BusTypeMmc			= 0x0D,
+  BusTypeVirtual		= 0x0E,
+  BusTypeFileBackedVirtual	= 0x0F,
+  BusTypeSpaces 		= 0x10,
+  BusTypeMax			/* variant; number of bus types */,
+  BusTypeMaxReserved		= 0x7F
+} STORAGE_BUS_TYPE, *PSTORAGE_BUS_TYPE;
+
+/* End of _DDK_NTDDSTOR_H and _WINIOCTL_H common declarations.
+ */
+#endif
+#ifdef _DDK_NTDDSTOR_H
+/* Declarations specific to _DDK_NTDDSTOR_H alone.
+ */
 _BEGIN_C_DECLS
 
 #define IOCTL_STORAGE_GET_MEDIA_SERIAL_NUMBER  __IOCTL_STORAGE_(0x0304,__FILE_AM_BUFFERED)
@@ -283,4 +344,5 @@ struct _STORAGE_PROPERTY_QUERY
 
 _END_C_DECLS
 
-#endif  /* _DDK_NTDDSTOR_H: $RCSfile$: end of file */
+#endif	/* _DDK_NTDDSTOR_H */
+#endif  /* !_DDK_NTDDSTOR_H: $RCSfile$: end of file */

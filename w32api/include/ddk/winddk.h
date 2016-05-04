@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Casper S. Hornstrup  <chorns@users.sourceforge.net>
- * Copyright (C) 2002-2004, 2006, 2008-2011, 2015, MinGW.org Project.
+ * Copyright (C) 2002-2004, 2006, 2008-2011, 2015, 2016, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -30,24 +30,179 @@
  *
  */
 #ifndef _DDK_WINDDK_H
-#define _DDK_WINDDK_H
 #pragma GCC system_header
 
-#ifndef _DDK_NTDDK_H
-/* ddk/winddk.h is subsidiary to ddk/ntddk.h, and cannot stand alone.
+#if ! (defined _DDK_NTDDK_H || defined __WINIOCTL_H_SOURCED__)
+/* Unless sourced by <winioctl.h>, (which represents only partial inclusion),
+ * <ddk/winddk.h> is subsidiary to <ddk/ntddk.h>, and cannot stand alone.
  */
 # error "Never include <ddk/winddk.h> directly; use <ddk/ntddk.h> instead."
-#else  /* defined _DDK_NTDDK_H */
-
-/* Some entities which are nominally defined here are also expected to
- * be defined by <winioctl.h>; share those via <parts/winioctl.h>
+#else
+/* We've reached here by a legitimate sequence of header inclusion...
  */
-#include <parts/winioctl.h>
+# ifndef __WINIOCTL_H_SOURCED__
+ /* ...but it is NOT sourced by <winioctl.h>, so this is full inclusion:
+  * set the repeat inclusion guard, so we will not include it again.
+  */
+#  define _DDK_WINDDK_H
+# endif
+
+#if ! (defined _DDK_WINDDK_H && defined _WINIOCTL_H)
+/* The declarations within this section are common to <ddk/winddk.h> and
+ * to <winioctl.h>, but if BOTH repeat inclusion guards are now defined,
+ * then we've already seen this; there is no need to process it again.
+ */
+#define CTL_CODE(DT,FN,M,A)		(((DT)<<16)|((FN)<<2)|((A)<<14)|(M))
+#define DEVICE_TYPE_FROM_CTL_CODE(C)	(((ULONG)((C) & (0xFFFF0000)) >> 16)
+
+typedef ULONG DEVICE_TYPE;
+enum
+{ FILE_DEVICE_BEEP			= 0x00000001UL,
+  FILE_DEVICE_CD_ROM			= 0x00000002UL,
+  FILE_DEVICE_CD_ROM_FILE_SYSTEM	= 0x00000003UL,
+  FILE_DEVICE_CONTROLLER		= 0x00000004UL,
+  FILE_DEVICE_DATALINK			= 0x00000005UL,
+  FILE_DEVICE_DFS			= 0x00000006UL,
+  FILE_DEVICE_DISK			= 0x00000007UL,
+  FILE_DEVICE_DISK_FILE_SYSTEM		= 0x00000008UL,
+  FILE_DEVICE_FILE_SYSTEM		= 0x00000009UL,
+  FILE_DEVICE_INPORT_PORT		= 0x0000000AUL,
+  FILE_DEVICE_KEYBOARD			= 0x0000000BUL,
+  FILE_DEVICE_MAILSLOT			= 0x0000000CUL,
+  FILE_DEVICE_MIDI_IN			= 0x0000000DUL,
+  FILE_DEVICE_MIDI_OUT			= 0x0000000EUL,
+  FILE_DEVICE_MOUSE			= 0x0000000FUL,
+  FILE_DEVICE_MULTI_UNC_PROVIDER	= 0x00000010UL,
+  FILE_DEVICE_NAMED_PIPE		= 0x00000011UL,
+  FILE_DEVICE_NETWORK			= 0x00000012UL,
+  FILE_DEVICE_NETWORK_BROWSER		= 0x00000013UL,
+  FILE_DEVICE_NETWORK_FILE_SYSTEM	= 0x00000014UL,
+  FILE_DEVICE_NULL			= 0x00000015UL,
+  FILE_DEVICE_PARALLEL_PORT		= 0x00000016UL,
+  FILE_DEVICE_PHYSICAL_NETCARD		= 0x00000017UL,
+  FILE_DEVICE_PRINTER			= 0x00000018UL,
+  FILE_DEVICE_SCANNER			= 0x00000019UL,
+  FILE_DEVICE_SERIAL_MOUSE_PORT 	= 0x0000001AUL,
+  FILE_DEVICE_SERIAL_PORT		= 0x0000001BUL,
+  FILE_DEVICE_SCREEN			= 0x0000001CUL,
+  FILE_DEVICE_SOUND			= 0x0000001DUL,
+  FILE_DEVICE_STREAMS			= 0x0000001EUL,
+  FILE_DEVICE_TAPE			= 0x0000001FUL,
+  FILE_DEVICE_TAPE_FILE_SYSTEM		= 0x00000020UL,
+  FILE_DEVICE_TRANSPORT 		= 0x00000021UL,
+  FILE_DEVICE_UNKNOWN			= 0x00000022UL,
+  FILE_DEVICE_VIDEO			= 0x00000023UL,
+  FILE_DEVICE_VIRTUAL_DISK		= 0x00000024UL,
+  FILE_DEVICE_WAVE_IN			= 0x00000025UL,
+  FILE_DEVICE_WAVE_OUT			= 0x00000026UL,
+  FILE_DEVICE_8042_PORT			= 0x00000027UL,
+  FILE_DEVICE_NETWORK_REDIRECTOR	= 0x00000028UL,
+  FILE_DEVICE_BATTERY			= 0x00000029UL,
+  FILE_DEVICE_BUS_EXTENDER		= 0x0000002AUL,
+  FILE_DEVICE_MODEM			= 0x0000002BUL,
+  FILE_DEVICE_VDM			= 0x0000002CUL,
+  FILE_DEVICE_MASS_STORAGE		= 0x0000002DUL,
+  FILE_DEVICE_SMB			= 0x0000002EUL,
+  FILE_DEVICE_KS			= 0x0000002FUL,
+  FILE_DEVICE_CHANGER			= 0x00000030UL,
+  FILE_DEVICE_SMARTCARD 		= 0x00000031UL,
+  FILE_DEVICE_ACPI			= 0x00000032UL,
+  FILE_DEVICE_DVD			= 0x00000033UL,
+  FILE_DEVICE_FULLSCREEN_VIDEO		= 0x00000034UL,
+  FILE_DEVICE_DFS_FILE_SYSTEM		= 0x00000035UL,
+  FILE_DEVICE_DFS_VOLUME		= 0x00000036UL,
+  FILE_DEVICE_SERENUM			= 0x00000037UL,
+  FILE_DEVICE_TERMSRV			= 0x00000038UL,
+  FILE_DEVICE_KSEC			= 0x00000039UL,
+  FILE_DEVICE_FIPS			= 0x0000003AUL
+};
+
+enum
+{ FILE_ANY_ACCESS			= 0x00000000UL,
+  FILE_SPECIAL_ACCESS			= FILE_ANY_ACCESS,
+  FILE_READ_ACCESS			= 0x00000001UL,
+  FILE_WRITE_ACCESS			= 0x00000002UL
+};
+
+enum
+{ METHOD_BUFFERED			= 0,
+  METHOD_IN_DIRECT			= 1,
+  METHOD_OUT_DIRECT			= 2,
+  METHOD_NEITHER			= 3
+};
+
+/* Some derived convenience macros; Microsoft do not specify these,
+ * but they help to keep the CTL_CODE specifications tidy.
+ */
+#define __FILE_RW_ACCESS	(FILE_READ_ACCESS | FILE_WRITE_ACCESS)
+#define __FILE_AM_BUFFERED	 METHOD_BUFFERED, FILE_ANY_ACCESS
+#define __FILE_RD_BUFFERED	 METHOD_BUFFERED, FILE_READ_ACCESS
+#define __FILE_RW_BUFFERED	 METHOD_BUFFERED, __FILE_RW_ACCESS
+
+typedef
+struct _DRIVE_LAYOUT_INFORMATION_MBR
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552668(v=vs.85).aspx */
+{ ULONG 	 Signature;
+} DRIVE_LAYOUT_INFORMATION_MBR, *PDRIVE_LAYOUT_INFORMATION_MBR;
+
+typedef
+struct _DRIVE_LAYOUT_INFORMATION_GPT
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552664(v=vs.85).aspx */
+{ GUID		 DiskId;
+  LARGE_INTEGER  StartingUsableOffset;
+  LARGE_INTEGER  UsableLength;
+  ULONG		 MaxPartitionCount;
+} DRIVE_LAYOUT_INFORMATION_GPT, *PDRIVE_LAYOUT_INFORMATION_GPT;
+
+typedef
+struct _PARTITION_INFORMATION_MBR
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff563767(v=vs.85).aspx */
+{ UCHAR 	PartitionType;
+  BOOLEAN	BootIndicator;
+  BOOLEAN	RecognizedPartition;
+  ULONG 	HiddenSectors;
+} PARTITION_INFORMATION_MBR, *PPARTITION_INFORMATION_MBR;
+
+typedef
+enum _PARTITION_STYLE
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff563773(v=vs.85).aspx */
+{ PARTITION_STYLE_MBR		= 0,
+  PARTITION_STYLE_GPT		= 1,
+  PARTITION_STYLE_RAW		= 2
+} PARTITION_STYLE;
+
+typedef
+struct _CREATE_DISK_MBR
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552490(v=vs.85).aspx */
+{ ULONG 	Signature;
+} CREATE_DISK_MBR, *PCREATE_DISK_MBR;
+
+typedef
+struct _CREATE_DISK_GPT
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552486(v=vs.85).aspx */
+{ GUID		DiskId;
+  ULONG 	MaxPartitionCount;
+} CREATE_DISK_GPT, *PCREATE_DISK_GPT;
+
+typedef
+struct _CREATE_DISK
+/* https://msdn.microsoft.com/en-us/library/windows/hardware/ff552490(v=vs.85).aspx */
+{ PARTITION_STYLE	  PartitionStyle;
+  _ANONYMOUS_UNION union
+  { CREATE_DISK_MBR	  Mbr;
+    CREATE_DISK_GPT	  Gpt;
+  } DUMMYUNIONNAME;
+} CREATE_DISK, *PCREATE_DISK;
+
+/* End of _DDK_WINDDK_H and _WINIOCTL_H common declarations.
+ */
+#endif
+#ifdef _DDK_WINDDK_H
+/* Definitions specific to _DDK_WINDDK_H
+ */
 
 _BEGIN_C_DECLS
 
-/* Definitions specific to this Device Driver Kit
- */
 #define DDKAPI	     __stdcall
 #define DDKFASTAPI   __fastcall
 #define DDKCDECLAPI  __cdecl
@@ -8187,5 +8342,6 @@ extern NTOSAPI PBOOLEAN KdDebuggerEnabled;
 
 _END_C_DECLS
 
-#endif  /* defined _DDK_NTDDK_H */
-#endif  /* _DDK_WINDDK_H: $RCSfile$: end of file */
+#endif  /* _DDK_WINDDK_H */
+#endif  /* _DDK_NTDDK_H || __WINIOCTL_H_SOURCED__ */
+#endif  /* !_DDK_WINDDK_H: $RCSfile$: end of file */

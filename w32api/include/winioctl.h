@@ -34,21 +34,25 @@
 #define _WINIOCTL_H
 #pragma GCC system_header
 
+#define __WINIOCTL_H_SOURCED__
+
 #ifndef _WINDOWS_H
 /* FIXME: MSDN says that including <windows.h> should suffice to expose
  * the content of this header, but this implementation does not satisfy
  * that requirement.  Furthermore, this implementation cannot itself be
  * included, unless <windows.h>, (or at least the content from those of
  * its subsidiary headers which define Microsoft's peculiar, obfuscated
- * data types), has been included first.
+ * data types), has been included first; enforce this requirement.
  */
+#include <windows.h>
 #endif
 
 /* This file is required to provide a number of definitions which are
- * duplicated in the Windows DDK headers; retrieve them from the common
- * header file...
+ * duplicated in the Windows DDK headers; retrieve these definitions by
+ * selective inclusion from the appropriate DDK header files...
  */
-#include <parts/winioctl.h>
+#include <ddk/winddk.h>
+#include <ddk/ntdddisk.h>
 
 _BEGIN_C_DECLS
 
@@ -270,4 +274,5 @@ typedef struct
 
 _END_C_DECLS
 
+#undef __WINIOCTL_H_SOURCED__
 #endif  /* _WINIOCTL_H: $RCSfile$: end of file */
