@@ -1,3 +1,22 @@
+2016-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Synchronize package version management with MinGW Runtime.
+
+	* VERSION.m4: New file; link it to keep in sync with identically named
+	file in top level composite package source directory; it defines...
+	(__VERSION__): ...this new composite package version macro.
+
+	* aclocal.m4: Link it, to keep in sync with identically named files in
+	top level composite source and sibling mingwrt sub-package directories.
+	(__VERSION__): New macro; include VERSION.m4 to define it.
+	(__BUG_REPORT_URL__): New macro; define it.
+
+	* configure.ac (AC_INIT): Assign package version and bug report URL...
+	(__VERSION__, __BUG_REPORT_URL__): ...from these, as defined through
+	automatic inclusion of aclocal.m4
+
+	* Makefile.in (configure): Add dependency on VERSION.m4
+
 2016-05-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Eliminate redundant <parts/winioctl.h> header.

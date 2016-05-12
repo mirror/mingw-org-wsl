@@ -1,3 +1,19 @@
+2016-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Integrate mingwrt and w32api build; synchronize versions.
+
+	* configure.ac Makefile.in: New files.
+
+	* VERSION.m4: New file; link it, to create and maintain an identical
+	copy of it, in each of the mingwrt and w32api sub-package directories.
+	(__VERSION__): New macro; define and initialize it, in preparation
+	for forthcoming integrated version 5.0 release.
+
+	* aclocal.m4: New file; link it, to make it an identical copy of
+	each identically named file, in each of the sub-package directories.
+	(__VERSION__): New macro; include VERSION.m4 to define it.
+	(__BUG_REPORT_URL__): New macro; define it.
+
 2014-10-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Merge .hgignore from "master" branch to "legacy".

@@ -5,7 +5,11 @@
 ## $Id$
 ##
 ## Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-## Copyright (C) 2014, MinGW.org Project
+## Copyright (C) 2014, 2016, MinGW.org Project
+##
+##
+m4_include([VERSION.m4])
+m4_define([__BUG_REPORT_URL__],[http://mingw.org/Reporting_Bugs])
 ##
 ##
 ## Permission is hereby granted, free of charge, to any person obtaining a
@@ -14,11 +18,11 @@
 ## the rights to use, copy, modify, merge, publish, distribute, sublicense,
 ## and/or sell copies of the Software, and to permit persons to whom the
 ## Software is furnished to do so, subject to the following conditions:
-## 
+##
 ## The above copyright notice and this permission notice (including the next
 ## paragraph) shall be included in all copies or substantial portions of the
 ## Software.
-## 
+##
 ## THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 ## OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 ## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -115,7 +119,7 @@ AC_DEFUN_ONCE([MINGW_AC_DISABLE_STAGE_2],
 # default prefer to build, if possible.  Propagate the resolved
 # choice as a default make command goal, by assignment to the
 # AC_SUBST variable, DEFAULT_MAKECMDGOALS.
-# 
+#
 AC_DEFUN_ONCE([MINGW_AC_MAKE_COMMAND_GOALS],
 [AC_REQUIRE([MINGW_AC_DISABLE_STAGE_2])dnl
  AC_REQUIRE([MINGW_AC_PROG_CC_COMPILE_ONLY])dnl

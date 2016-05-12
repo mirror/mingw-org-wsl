@@ -29,7 +29,7 @@
 # DEALINGS IN THE SOFTWARE.
 #
   AC_PREREQ([2.64])
-  AC_INIT([MinGW C Runtime],[3.21.2],[http://mingw.org/Reporting_Bugs],[mingwrt])
+  AC_INIT([MinGW C Runtime],[__VERSION__],[__BUG_REPORT_URL__],[mingwrt])
 
   AC_PREFIX_DEFAULT([/mingw])
   AC_CONFIG_SRCDIR([include/_mingw.h.in])

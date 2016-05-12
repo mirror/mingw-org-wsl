@@ -1,0 +1,114 @@
+# @configure_input@
+# $Id$
+#
+# Makefile template for MinGW.org composite System Libraries Packages
+
+PACKAGE_TARNAME := @PACKAGE_TARNAME@
+PACKAGE_VERSION := @PACKAGE_VERSION@
+
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2016, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+
+# The default target is "all"; declare it early, to avoid any possible
+# inadvertent override from any included file.
+#
+all:
+
+# Configuration
+# -------------
+#
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+
+# Keep the configuration in a consistent state.  Note that we assume
+# that configure has been run initially, (otherwise we wouldn't have
+# a Makefile to begin with); since this also creates config.status,
+# we may normally assume that it is already available ...
+#
+vpath configure ${top_srcdir}
+config.status: configure
+	$(SHELL) config.status --recheck
+
+# ... in which case, updating Makefile should be a simple matter of
+# running config.status ...
+#
+vpath Makefile.in ${top_srcdir}
+requires_existing = $(if $(wildcard $1),$1,$1.missing)
+Makefile: Makefile.in configure $(call requires_existing,config.status)
+	$(SHELL) config.status
+
+.PHONY: config.status.missing
+# ... but, in the event that this may be missing, (e.g. because it
+# has been manually removed, or removed by "make distclean"), suggest
+# running configure, and bail out.
+#
+config.status.missing:
+	$(warning *** cannot execute config.status)
+	$(error please run ${top_srcdir}/configure to regenerate it.)
+
+# If configure itself needs to be updated, we must run autoconf in the
+# top level source directory.
+#
+vpath %.m4 ${top_srcdir}
+vpath configure.ac ${top_srcdir}
+configure: configure.ac aclocal.m4 VERSION.m4
+	cd ${top_srcdir}; autoconf
+
+
+# Rules to Build and Install Both Sub-Packages
+# --------------------------------------------
+#
+all install install-headers uninstall: %: %-subdirs
+
+subdirs = @subdirs@
+%-subdirs:; $(foreach dir,${subdirs},$(MAKE) -C ${dir} $*;)
+
+
+# Distribution
+# ------------
+#
+MKDIR_P = @MKDIR_P@
+LN = @LN@
+
+dist: dist-subdirs
+	$(RM) -r $@; $(MKDIR_P) $@
+	for file in $(addsuffix /$@/*,${subdirs}); do \
+	  test -f $$file && $(LN) $$file $@; done
+
+
+# Clean-up Rules
+# --------------
+#
+clean mostlyclean distclean: %: %-subdirs
+maintainer-clean: maintainer-clean-warning maintainer-clean-local
+
+maintainer-clean-warning:
+	$(warning $(MAKE) $(@:%-warning=%))
+	$(warning This command should be used by package maintainers only;)
+	$(warning it deletes files which may require special tools to rebuild.)
+
+maintainer-clean-local: %: %-subdirs
+	$(RM) -r ${srcdir}/autom4te.cache
+
+# $RCSfile$: end of file

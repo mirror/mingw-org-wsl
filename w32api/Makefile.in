@@ -110,7 +110,7 @@ config.status.missing:
 #
 vpath %.m4 ${top_srcdir}
 vpath configure.ac ${top_srcdir}
-configure: configure.ac aclocal.m4
+configure: configure.ac aclocal.m4 VERSION.m4
 	cd ${top_srcdir}; autoconf
 
 # Propagate package version, as configured, consistently throughout
