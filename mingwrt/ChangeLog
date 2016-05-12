@@ -1,3 +1,22 @@
+2016-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Resolve some strnlen() implementation issues.
+
+	* mingwex/strnlen.s (__mingw_strnlen) [!NUL]: Correct termination
+	logic; should have used jnz, not jz, to skip endpoint adjustment on
+	scanning past a terminal NUL character code.
+
+	* include/string.h [_POSIX_C_SOURCE >= 200809L] (strnlen): Do not
+	#define it, as this breaks GCC compilation; use __CRT_ALIAS instead,
+	with __JMPSTUB__ referencing via "oldname" libraries.
+
+	* Makefile.in (jmpstub_awk_script, libimpl_awk_script): Adapt to
+	facilitate assignment of __JMPSTUB__ and __LIBIMPL__ references to
+	libraries other than libmingwex.a
+	(strnlen.jmpstub.$OBJEXT): Assign it to all "moldname" libraries prior
+	to libmoldname80.a, in addition to libcoldname.a, as specified by the
+	__JMPSTUB__ assignment within <string.h>
+
 2016-05-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Enforce consistent specification of package version.

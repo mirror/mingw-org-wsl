@@ -80,8 +80,8 @@ ___mingw_strnlen:
 	movl	%edx, %edi	/* using this as the scan pointer ... */
 	repne	scasb		/* as required by this CPU scan */
 	mov	%edi, %eax	/* note where we stopped ... */
-	jz	.L3		/* but if we found NUL, we've overrun ... */
-	decl	%eax		/* so we need to adjust one byte backward */
+	jnz	.L3		/* no NUL found; count is complete ... */
+	decl	%eax		/* NUL found and counted; discount it */
 .L3:
 	sub	%edx, %eax	/* compute effective count to return */
 .L4:

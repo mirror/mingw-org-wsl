@@ -168,14 +168,14 @@ _CRTIMP __cdecl __MINGW_NOTHROW  char *strnlen (const char *, size_t);
  * the GCC breakage noted above.  (Note that we implement strnlen() with
  * the alternative external name, __mingw_strnlen() in libmingwex.a, to
  * avoid possible link time collision with MSVCR80.DLL's implementation,
- * then map this to strnlen() via a preprocessor define, so that users
- * may use it conventionally, (including taking its address); this may
- * interfere with C++ namespace qualification, but since strnlen() is
- * not a standard C++ function, we do not anticipate any consequent
- * usage issues).
+ * then map this to strnlen() via a __CRT_ALIAS, with stubs designated
+ * for linking from within the appropriate oldname libraries.
  */
-#define strnlen  __mingw_strnlen
 extern size_t __mingw_strnlen (const char *, size_t);
+
+__JMPSTUB__(( LIB=coldname; FUNCTION=strnlen ))
+__CRT_ALIAS size_t strnlen (const char *__text, size_t __maxlen)
+{ return __mingw_strnlen (__text, __maxlen); }
 
 #endif	/* _POSIX_C_SOURCE >= 200809L */
 

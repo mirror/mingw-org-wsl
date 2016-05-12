@@ -376,6 +376,15 @@ $(foreach name,coldname $(all_moldname),lib$(name).a): lib%.a: %.def
 $(foreach name,coldname $(all_moldname),lib$(name).a): $(addsuffix .$(OBJEXT), \
   isascii iscsym iscsymf toascii)
 
+# Selected versions of the oldname libraries also provide a
+# convenient vehicle for delivery of stubs, emulating functions
+# which appear in later MSVCRT versions, and which we also wish
+# to support in conjunction with earlier versions.
+#
+$(foreach name,moldname $(addprefix moldname,70 71),lib$(name).a) \
+$(foreach name,moldname $(addprefix moldname,70 71),lib$(name)d.a): \
+  strnlen.jmpstub.$(OBJEXT)
+
 coldname.def: %.def: ${mingwrt_srcdir}/moldname.def.in
 	$(CC) -C -E -P -D__FILENAME__=$@ -D__CRTDLL__ -xc-header $< > $@
 
@@ -545,8 +554,8 @@ jmpstub_awk_script = test -z "$1" || awk '\
     fmt = "\nlib%s.a: %s\n%s: jmpstub.sx\n\t$$(COMPILE.sx) %s -o $$@ $$^\n"; \
   } \
   /__JMPSTUB(__)? *[(].*FUNCTION/ { \
-    LIB = "mingwex"; \
     FUNCTION = gensub( ".*[ ,(:]FUNCTION *= *"symbol".*", "\\1", 1 ); \
+    LIB = match( $$0, ".*[ ,(:]LIB *= *"symbol, altlib ) ? altlib[1] : "mingwex"; \
     OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".jmpstub.$$(OBJEXT)"; \
     OBJNAME_CFLAGS = "-D FUNCTION="FUNCTION; \
     if( match( $$0, ".*[ ,(:]REMAPPED *= *"symbol, alias ) ) \
@@ -566,8 +575,8 @@ libimpl_awk_script = test -z "$1" || awk '\
     fmt = "\nlib%s.a: %s\n%s.libimpl: %s\n"; \
   } \
   /__LIBIMPL(__)? *[(].*FUNCTION/ { \
-    LIB = "mingwex"; \
     FUNCTION = gensub( ".*[ ,(:]FUNCTION *= *"symbol".*", "\\1", 1 ); \
+    LIB = match( $$0, ".*[ ,(:]LIB *= *"symbol, altlib ) ? altlib[1] : "mingwex"; \
     OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".libimpl.$$(OBJEXT)"; \
     printf fmt, LIB, OBJNAME, FUNCTION, FILENAME; \
   } \
