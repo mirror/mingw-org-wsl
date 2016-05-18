@@ -288,7 +288,7 @@ __CRT_ALIAS __cdecl __MINGW_NOTHROW  int _stati64 (const char *__v1, struct _sta
 __CRT_ALIAS __cdecl __MINGW_NOTHROW  int fstat (int __v1, struct _stat *__v2)
   { return _fstat (__v1, __v2); }
 
-__CRT_ALIAS __cdecl __MINGW_NOTHROW  int stat (int __v1, struct _stat *__v2)
+__CRT_ALIAS __cdecl __MINGW_NOTHROW  int stat (const char *__v1, struct _stat *__v2)
   { return _stat (__v1, __v2); }
 
 #endif	/* !_NO_OLDNAMES */

@@ -1,3 +1,11 @@
+2016-05-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix a typo in a <sys/stat.h> inline function definition.
+
+	* include/sys/stat.h [__MSVCRT_VERSION__ >= __MSVCR80_DLL]
+	(stat): First argument declared as 'int'; should be 'const char *';
+	correct it.
+
 2016-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Resolve some strnlen() implementation issues.
