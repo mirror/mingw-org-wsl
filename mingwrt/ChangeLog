@@ -1,3 +1,15 @@
+2016-05-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Occlude unsupported _S_IFBLK feature; resolve issue [#1146].
+
+	* include/sys/stat.h (_MINGW_S_IFBLK_KLUDGE): New feature test macro;
+	do not define it, and strongly recommend that it remains undefined.
+	[!_MINGW_S_IFBLK_KLUDGE] (_S_IFBLK, S_IFBLK): Do not define them.
+	[!_MINGW_S_IFBLK_KLUDGE] (_S_ISBLK, S_ISBLK): Poison them.
+	[_MINGW_S_IFBLK_KLUDGE] (_S_IFBLK, S_IFBLK): Adjust definitions; use a
+	modified value, which is guaranteed to be impossible to match in...
+	[_S_ISBLK, S_ISBLK]: ...these, thus enforcing false test results.
+
 2016-05-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix a typo in a <sys/stat.h> inline function definition.

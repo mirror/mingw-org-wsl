@@ -59,9 +59,23 @@
  */
 #define _S_IFIFO 	0x1000	/* FIFO */
 #define _S_IFCHR 	0x2000	/* Character */
-#define _S_IFBLK 	0x3000	/* Block: Is this ever set under w32? */
 #define _S_IFDIR 	0x4000	/* Directory */
 #define _S_IFREG 	0x8000	/* Regular */
+
+#ifdef _MINGW_S_IFBLK_KLUDGE
+/* For preference, this kludge should NOT be enabled; for rationale,
+ * see: https://sourceforge.net/p/mingw/bugs/1146
+ *
+ * MS-Windows doesn't support testing for block special devices via the
+ * st_mode flags; ideally, client code to be ported to Windows should not
+ * blindly assume that S_IFBLK (or _S_IFBLK) is defined, but should rather
+ * check for it, and compile dependent code conditionally.  Notwithstanding,
+ * this kludge allows the user to force a definition, which we arbitrarily
+ * choose to ensure that S_ISBLK (or _S_ISBLK) always returns FALSE, (i.e.
+ * choose a value such that _S_IFBLK & _S_IFMT can NEVER equal _S_IFBLK).
+ */
+#define _S_IFBLK 	0x3001	/* Block: unsupported on Win32 */
+#endif
 
 #define _S_IFMT  	0xF000	/* File type mask */
 
@@ -84,7 +98,9 @@
 
 #define S_IFIFO 	_S_IFIFO
 #define S_IFCHR 	_S_IFCHR
+#ifdef _S_IFBLK
 #define S_IFBLK 	_S_IFBLK
+#endif
 #define S_IFDIR 	_S_IFDIR
 #define S_IFREG 	_S_IFREG
 #define S_IFMT  	_S_IFMT
@@ -103,6 +119,15 @@
 #define S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)
 
 #endif	/* !_NO_OLDNAMES */
+
+#ifndef _S_IFBLK
+/* When the _S_IFBLK kludge is NOT enabled, (as it ideally should not be),
+ * ensure that any attempt to use its dependent macros is firmly denied.
+ */
+# pragma GCC poison _S_ISBLK
+# pragma GCC poison S_ISBLK
+
+#endif	/* !_S_IFBLK */
 #endif	/* !__WCHAR_H_SOURCED__ */
 
 #ifndef RC_INVOKED
