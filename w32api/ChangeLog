@@ -1,3 +1,26 @@
+2016-05-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge W32API updates, from Cygwin CVS, into legacy branch.
+	Incorporate changes since release of w32api-3.17, until 2012-07-06.
+
+	* include/shobjidl.h lib/shobjidl-uuid.c: New files, added per LRN's
+	2012-04-28 commit to Cygwin CVS.
+
+	* include/gdiplus/gdiplustypes.h include/imagehlp.h
+	* include/routprot.h include/shlwapi.h include/userenv.h
+	* include/winbase.h include/wincon.h include/windef.h
+	* include/winerror.h include/wingdi.h include/winnt.h
+	* include/winsock.h include/winsock2.h include/winuser.h: Updated to
+	match Cygwin CVS state, as of 2012-07-06.
+
+	* include/wincrypt.h: Updated to remove duplicate manifest constant
+	definitions, as identified per Chris Sutcliffe's 2012-01-03 commit to
+	Cygwin CVS; merge with my 2015-09-29 commit; additionally, remove...
+	(szOID_RSA_emailAddr, szOID_RSA_unstructAddr, szOID_RSA_unstructName)
+	(CRYPT_ARCHIVABLE, CRYPT_NOHASHOID, CRYPT_VERIFYCONTEXT): ...extra
+	copies of these further duplicated definitions, identified during
+	the merging operation.
+
 2016-05-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Eliminate redundant <parts/winioctl.h> header.
@@ -385,6 +408,164 @@
 
 	* configure: Delete from SCM; maintainer must regenerate it, when
 	required, as SCM will now ignore it.
+
+2012-07-06  Corinna Vinschen  <corinna@vinschen.de>
+
+	Extend visibility of winsock definitions when building Cygwin.
+
+	* include/winsock.h [__INSIDE_CYGWIN__]: Expose definitions of...
+	(IP_OPTIONS, SO_DEBUG, SO_ACCEPTCONN, SO_REUSEADDR, SO_KEEPALIVE)
+	(SO_DONTROUTE, SO_BROADCAST, SO_USELOOPBACK, SO_LINGER, SO_OOBINLINE)
+	(SO_DONTLINGER, SO_SNDBUF, SO_RCVBUF, SO_SNDLOWAT, SO_RCVLOWAT)
+	(SO_SNDTIMEO, SO_RCVTIMEO, SO_ERROR, SO_TYPE): ...these; however...
+	[__INSIDE_MSYS__]: ...keep them hidden.
+
+	* include/winsock2.h [__INSIDE_CYGWIN__]: Likewise, expose...
+	(AF_MAX, _SS_MAXSIZE, _SS_ALIGNSIZE, _SS_PAD1SIZE, _SS_PAD2SIZE)
+	(struct sockaddr, struct sockaddr_storage): ...these, whereas...
+	[__INSIDE_MSYS__]: ...also keep them hidden.
+
+2012-04-29  Jan Ringos  <tringi@users.sf.net>
+
+	Correct version guard for WinXP minimum requirement.
+
+	* include/winbase.h (GetModuleHandleEx): Function unsupported for...
+	[_WIN32_WINNT >= 0x500]: ...this; it isn't in Win2K, so should be...
+	[_WIN32_WINNT >= 0x501]: ...this; correct it accordingly.
+	(GetModuleHandleExA, GetModuleHandleExW): Likewise.
+
+2012-04-28  LRN  <l_r_nightmare@users.sf.net>
+
+	Add missing <shobjidl.h> and associated UUID implementation.
+
+	* include/shobjidl.h lib/shobjidl-uuid.c: New files.
+	* lib/Makefile.in (UUID_SOURCES, UUID_OBJS): Add references.
+
+2012-03-19  Ben Greear  <greear@users.sf.net>
+
+	Adjust header file definition order, to fix issue [#1570].
+
+	* include/routprot.h (IP_LOCAL_BINDING): Must be defined before...
+	(IP_ADAPTER_BINDING_INFO): ...this; adjust order of definition.
+
+2012-01-03  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	Add missing return value, flagged by 'make test'.
+
+	* include/gdiplus/gdiplustypes.h (Gdiplus::GdiplusAbort::Abort):
+	Return NO_ERROR in virtual definition.
+
+2012-01-03  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	Remove duplicate definitions, identified by 'make test'.
+
+	* include/wincrypt.h (CRYPT_NEWKEYSET, CRYPT_DELETEKEYSET)
+	(CRYPT_MACHINE_KEYSET, CRYPT_EXPORTABLE, CRYPT_USER_PROTECTED)
+	(CRYPT_SILENT, CRYPT_CREATE_SALT, CRYPT_UPDATE_KEY, CRYPT_NO_SALT)
+	(CRYPT_PREGEN, CRYPT_RECIPIENT, CRYPT_INITIATOR, CRYPT_ONLINE)
+	(CRYPT_SF, CRYPT_CREATE_IV, CRYPT_KEK, CRYPT_DATA_KEY)
+	(CRYPT_VOLATILE, CRYPT_SGCKEY): Delete second instance of each.
+
+	* include/winerror.h (CRYPT_E_REVOKED): Delete; it is already
+	correctly defined (per MSDN) in <wincrypt.h>
+
+2012-01-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct misuse of #ifdef, identified by 'make test'.
+
+	* include/shlwapi.h (enum ASSOCSTR, enum ASSOCDATA): Fix typos;
+	/#ifdef _WIN32_IE >= 0x0600/s/#ifdef/#if/
+
+2011-12-22  Corinna Vinschen  <corinna@vinschen.de>
+
+	Replace more incorrectly named manifest constants.
+
+	* include/winnt.h (JOB_OBJECT_LIMIT_BREAKAWAY_OK)
+	(JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK): Define; make aliases for...
+	(JOB_OBJECT_BREAKAWAY_OK, JOB_OBJECT_SILENT_BREAKAWAY): ...these old
+	definitions respectively; retain for backward compatibility only.
+
+2011-12-22  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add missing PROCESS_QUERY_LIMITED_INFORMATION.
+
+	* include/winnt.h (PROCESS_QUERY_LIMITED_INFORMATION): Define it.
+
+2011-08-19  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add missing MAPVK manifest constant definitions.
+
+	* include/winuser.h (MAPVK_VK_TO_VSC, MAPVK_VSC_TO_VK): Define them.
+	(MAPVK_VK_TO_CHAR, MAPVK_VSC_TO_VK_EX, MAPVK_VK_TO_VSC_EX): Likewise.
+
+2011-08-05  Corinna Vinschen  <corinna@vinschen.de>
+
+	Correct some misspelled manifest constant names.
+
+	* include/winnt.h (IMAGE_DLL_CHARACTERISTICS_NX_COMPAT): Should be...
+	(IMAGE_DLLCHARACTERISTICS_NX_COMPAT): ...this; define correctly; also
+	alias to original misspelling, to maintain backward compatibility.
+	(IMAGE_DLL_CHARACTERISTICS_FORCE_INTEGRITY): Likewise; should be...
+	(IMAGE_DLLCHARACTERISTICS_FORCE_INTEGRITY): ...this; define and alias.
+	(IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE): Likewise; should be...
+	(IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE): ...this; define and alias.
+
+2011-07-29  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add a missing Win2K sockets IOCTL feature.
+
+	* include/winsock2.h (SIO_UDP_CONNRESET): Define.
+
+2011-05-22  Albrecht Schlosser  <vms-news@go4more.de>
+
+	Fix an incorrectly typed structure member.
+
+	* include/wingdi.h (GCP_RESULTSW): lpClass field defined as LPWSTR;
+	should be LPSTR; correct it.
+
+2011-05-15  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add another missing manifest constant definition.
+
+	* include/winbase.h (STACK_SIZE_PARAM_IS_A_RESERVATION): Define.
+
+2011-04-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid pollution of user namespace; fix MinGW-Bug [#1531].
+
+	* include/windef.h (PACKED): Delete macro definition; its name is not
+	reserved, and may thus conflict with a user defined name; replace it...
+	* include/wincon.h (KEY_EVENT_RECORD): ...at this sole point of use;
+	use __attribute__((packed)) directly instead.
+
+2011-04-21  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
+
+	Fix bad typedef, per MinGW-Bug [#1529].
+
+	* include/imagehlp.h (PREAD_PROCESS_MEMORY_ROUTINE): Corrected, to
+	conform with MSDN reference, as identified by Safety0ff.
+
+2011-04-04  Corinna Vinschen  <corinna@vinschen.de>
+
+	Add a missing manifest constant definition.
+
+	* include/winnt.h (DOMAIN_ALIAS_RID_REMOTE_DESKTOP_USERS): Define.
+
+2011-03-29  Corinna Vinschen  <corinna@vinschen.de>
+
+	Win2K and Vista userenv updates.
+
+	* include/userenv.h [_WIN32_WINNT >= 0x0500] (DeleteProfile)
+	(GetAllUsersProfileDirectory, GetDefaultUserProfileDirectory)
+	(ExpandEnvironmentStringsForUser): Define function aliases.
+	[_WIN32_WINNT >= 0x0500] (DeleteProfileA, DeleteProfileW)
+	(GetAllUsersProfileDirectoryA, GetAllUsersProfileDirectoryW)
+	(GetDefaultUserProfileDirectoryA, GetDefaultUserProfileDirectoryW
+	(ExpandEnvironmentStringsForUserA, ExpandEnvironmentStringsForUserW)
+	(GetProfileType): Declare function prototypes.
+	[_WIN32_WINNT >= 0x0600] (CreateProfile): Declare function prototype.
+	[_WIN32_WINNT >= 0x0500] (PT_TEMPORARY, PT_ROAMING, PT_MANDATORY):
+	New manifest constants; define them.
 
 2011-03-25  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
