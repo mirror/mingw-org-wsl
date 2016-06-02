@@ -1,3 +1,31 @@
+2016-06-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update mapping of GCC to MSVC host identification macros.
+
+	* include/windows.h: Assert copyright; tidy layout.
+	(_M_IX86, _ALPHA_, _PPC_, _MIPS_, _68K_): Delete duplicate defines.
+	[!_WINUSER_H, !_WINNLS_H, !_WINVER_H, !_WINNETWK_H, !_WINREG_H]
+	[!_WINSVC_H]: Do not explicitly test these here; they are properly
+	managed implicitly, by GCC, when including the associated headers.
+
+	* include/winnt.h: Assert copyright; tidy layout.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these, as appropriate.
+	(__aligned__, __always_inline__, __selectany__): Prefer these...
+	(aligned, always_inline, selectany): ...to these attribute forms.
+	(CONTEXT) [_ALPHA_, _PPC_, MIPS, ARM]: Change selector macros to...
+	[_M_ALPHA, _M_PPC, _M_MRX000, _M_ARM]: ...these, respectively.
+	(GetCurrentFiber, GetFiberData, NtCurrentTeb): Redefine in terms of...
+	(__tib_fiber_data__, __tib_self_refptr__): ...these adaptive macros...
+	[!_WIN64]: ...to accommodate 32-bit, or otherwise 64-bit Windows.
+	(_ALPHA_, _PPC_, _MIPS_, _68K_): Delete these redundant macros...
+	(_M_IX86): ...also removing this, but relocate it to...
+	* include/sdkddkver.h (_M_IX86): ...here; augment it with...
+	(_M_IX86_FP, _M_X64, _M_AMD64, _M_IA64): ...these; define them as
+	appropriate.
+
+	* include/ddk/ntifs.h [!_ALPHA_]: Augment test; rather consider...
+	[!_ALPHA_ && !_M_ALPHA]: ...this, for structure alignment control.
+
 2016-05-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Merge W32API updates, from Cygwin CVS, into legacy branch.

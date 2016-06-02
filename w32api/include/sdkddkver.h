@@ -200,4 +200,93 @@
 # define NTDDI_VERSION NTDDI_VERSION_FROM_WIN32_WINNT(_WIN32_WINNT)
 #endif
 
+/* Map GCC architecture identification macros to their MSVC equivalents.
+ * This mapping was previously specified in <winnt.h>, and duplicated in
+ * <windows.h>; it is now only defined here, because both <windows.h> and
+ * <winnt.h> must include this file anyway, and the potentially error prone
+ * burden of maintaining duplicates is as unnecessary as it is undesirable.
+ */
+#ifndef _M_IX86
+ /* Note that we must process the _M_IX86 equivalent macros in diminishing
+  * order of processor version, since GCC defines __i386__ as identification
+  * for the X86 processor family, in addition to any one of the other three
+  * macros, which may be used to identify a particular processor version.
+  */
+# if defined(__i686__)
+#  define _M_IX86		600
+
+# elif defined(__i586__)
+#  define _M_IX86		500
+
+# elif defined(__i486__)
+#  define _M_IX86		400
+
+# elif defined(__i386__)
+#  define _M_IX86		300
+# endif
+#endif
+
+/* The preceding logic may have established the host type as X86, or it
+ * may have done nothing at all; we must check further.
+ */
+#ifdef _M_IX86
+ /* We've established that we ARE compiling for an X86 host; any MinGW32
+  * compiler SHOULD have set this for us already...
+  */
+# ifndef _X86_
+  /* ...but cross-check it anyway, in case the user may have some unusual
+   * compiler configuration in place.
+   */
+#  define _X86_ 		1
+# endif
+
+# ifndef _M_IX86_FP
+  /* MSVC defines this, to provide additional information about particular
+   * capabilties of the X86 host environment; specifically...
+   */
+#  ifdef __SSE2__
+   /* ...this indicates that the SSE2 instruction set (or better) may be
+    * assumed to be supported...
+    */
+#   define _M_IX86_FP		2
+
+#  elif defined(__SSE__)
+   /* ...whereas, this promises only basic SSE instruction set support...
+    */
+#   define _M_IX86_FP		1
+
+#  else
+   /* ...and this disallows its use, entirely.
+    */
+#   define _M_IX86_FP		0
+#  endif
+# endif
+
+/* When not compiling for an X86 host; check mapping from other possible
+ * GCC architecture identifiers, to their MSVC equivalents.
+ */
+#elif defined(__x86_64__) || defined(__amd64__)
+ /* This represents an Intel X86-64, or (compatible) AMD-64 processor;
+  * MSVC defines...
+  */
+# ifndef _M_X64
+  /* ...this to represent the former, together with...
+   */
+#  define _M_X64		1
+# endif
+# ifndef _M_AMD64
+  /* ...this alias, to represent the latter.
+   */
+#  define _M_AMD64		1
+# endif
+
+#elif defined(__ia64__)
+ /* This represents an Intel Itanium processor, which MSVC designates
+  * by defining this feature test macro.
+  */
+# ifndef _M_IA64
+#  define _M_IA64		1
+# endif
+#endif	/* !_M_IX86 */
+
 #endif /* _SDKDDKVER_H: $RCSfile$: end of file */
