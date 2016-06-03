@@ -1,3 +1,11 @@
+2016-06-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge further W32API updates from Cygwin CVS.
+	Incorporated selected changes from 2012-08-01 to 2012-08-04.
+
+	* include/setupapi.h include/winuser.h include/winver.h
+	* include/wtsapi32.h lib/wtsapi32.def: Merged and updated.
+
 2016-06-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update mapping of GCC to MSVC host identification macros.
@@ -436,6 +444,46 @@
 
 	* configure: Delete from SCM; maintainer must regenerate it, when
 	required, as SCM will now ignore it.
+
+2012-08-04  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Cosmetic adjustment to match MSDN documentation.
+
+	* include/winver.h (VerQueryValueA, VerQueryValueW): Declare type
+	of parameter #1 to be LPCVOID, in preference to formerly specified,
+	and functionally equivalent, 'const LPVOID'.
+
+2012-08-01  Stephan Jorek  <sjorek@users.sourceforge.net>
+
+	Correct typos, as identified by issue [#1534].
+
+	* include/setupapi.h (SetupCancelTemporary): Should be...
+	(SetupCancelTemporarySourceList): ...this; complete truncated name.
+	(SetupFreeA, SetupFreeW): Likewise, complete these respectively to...
+	(SetupFreeSourceListA, SetupFreeSourceListW): ...these, and...
+	(SetupQueryA, SetupQueryW): ...these respectively to...
+	(SetupQuerySourceListA, SetupQuerySourceListW): ...these.
+	(SetupDiGetWizardage): Misspelled; correct it to...
+	(SetupDiGetWizardPage): ...this.
+
+2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Declare WTSVirtualChannel API functions per issue [#1342].
+
+	* include/wtsapi32.h [_WIN32_WINNT >= 0x500]
+	(WTSVirtualChannelOpen, WTSVirtualChannelQuery, WTSVirtualChannelRead)
+	(WTSVirtualChannelPurgeInput, WTSVirtualChannelPurgeOutput)
+	(WTSVirtualChannelWrite, WTSVirtualChannelClose): Declare them.
+	[_WIN32_WINNT >= 0x600] (WTSVirtualchannelOpenEx): Likewise.
+
+	* lib/wtsapi32.def (WTSVirtualChannelOpenEx@12): Add reference.
+
+2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct MENUITEMINFO structure definition per issue [#1659].
+
+	* include/winuser.h (tagMENUITEMINFOA, tagMENUITEMINFOW): dwItemData
+	field was defined as type DWORD; correct it to type ULONG_PTR.
 
 2012-07-06  Corinna Vinschen  <corinna@vinschen.de>
 
