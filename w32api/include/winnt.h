@@ -4226,6 +4226,98 @@ struct _TEB *NtCurrentTeb (void);
 #endif	/* _M_IX86 */
 #endif	/* !__GNUC__ */
 
+/* MemoryBarrier() Implementation
+ * ------------------------------
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/ms684208%28v=vs.85%29.aspx
+ *
+ * MSDN says that this requires one of Vista, or Windows Server-2003,
+ * or later; I don't see why that should be, since neither Microsoft's
+ * implementation, nor the following, actually exhibits any dependency
+ * on any OS feature specific to these, or later versions.
+ *
+ * For this MinGW.org MemoryBarrier() implementation, we aim to rely,
+ * to the maximum practicable extent, on the intrinsic implementations
+ * provided by the GCC compiler itself; thus, for those recent versions
+ * of GCC, (those which implement the sequentially consistent model for
+ * atomic memory access)...
+ */
+#if defined(__ATOMIC_SEQ_CST)
+ /* ...we implement barriers using the __atomic_thread_fence() intrinsic
+  * function, in sequentially consistent mode.
+  */
+# define __mingw_fence_type__	__ATOMIC_SEQ_CST
+# define __mingw_thread_fence	__atomic_thread_fence
+
+ /* For earlier compiler versions, which lack __atomic_thread_fence(),
+  * we fall back on legacy mechanisms; thus, from GCC-4.4 onward...
+  */
+#elif ((__GNUC__ << 8) + __GNUC_MINOR__) >= 0x404
+ /* ...we fall back to the __sync_synchronize() intrinsic function; (this
+  * was first mentioned in the documentation for GCC-4.1, but comments in
+  * the GCC source code suggest that it did not achieve a robust state of
+  * implementation, until GCC-4.4).
+  */
+# define __mingw_thread_fence	__sync_synchronize
+# define __mingw_fence_type__
+
+#else
+ /* Finally, when there is no viable intrinsic implementation, we fall
+  * back on inline assembly code.  This is CPU architecture dependent:
+  * we choose the instructions, for each architecture, as best we can
+  * to match the code emitted by __atomic_thread_fence(), in versions
+  * of GCC which support it; thus...
+  */
+# define __mingw_thread_fence	__asm__ __volatile__
+# define __mingw_fence_type__	__mingw_fence_insn__:::"memory"
+
+# if defined(_M_X64) || defined(_M_AMD64) || (_M_IX86_FP >= 2)
+  /* ...for X86-64, AMD-64, and 32-bit X86 processors with support for
+   * SSE2 instructions, we may issue an "mfence" instruction directly...
+   */
+#  define __mingw_fence_insn__	"mfence"
+
+# elif defined(_M_IA64)
+  /* ...while for IA-64 (Itanium), the equivalent is "mf"...
+   */
+#  define __mingw_fence_insn__	"mf"
+
+# elif defined(_M_IX86)
+  /* ...and, for 32-bit X86 processors without support for the SSE2
+   * instruction set, (nominally, our default supported architecture),
+   * we perform a bus-locked memory fetch and store, (OR with zero).
+   */
+#  define __mingw_fence_insn__	"lock or{l}\t{$0, (%%esp)|DWORD PTR [esp], 0}"
+
+  /* FIXME: To support other CPU architectures, any appropriate fall
+   * back instructions must be identified here, (with an appropriate
+   * "#elif defined(_M_ARCH)" clause for each)...
+   */
+# else
+  /* ...and, as a last resort, we arrange to inject NOTHING into the
+   * code stream; (notwthstanding, this may still suffice as a light
+   * weight barrier, insofar as it should prevent reordering of code,
+   * which might otherwise result from compiler optimizations, about
+   * the barrier placement point).
+   */
+#  define __mingw_fence_insn__	""
+# endif
+#endif
+
+/* Finally, the preceding implementation choices are encapsulated
+ * into the actual MemoryBarrier() implementation; this is provided
+ * in the form of a function, with static scope, and defined such
+ * that it must always be expanded in-line...
+ */
+static FORCEINLINE void MemoryBarrier (void)
+{ __mingw_thread_fence(__mingw_fence_type__); }
+
+/* ...before purging the implementation choice macros, (which are
+ * no longer needed), from the pre-processor namespace.
+ */
+#undef __mingw_fence_type__
+#undef __mingw_thread_fence
+#undef __mingw_fence_insn__
+
 _END_C_DECLS
 
 #endif	/* ! RC_INVOKED */

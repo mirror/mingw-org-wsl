@@ -1,3 +1,20 @@
+2016-06-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Backport MemoryBarrier() implementation from 4.0-dev branch.
+
+	* include/winnt.h (MemoryBarrier): Implement it; this is a rework of
+	Earnie's original inline implementation, but declared 'static' to fix
+	issue [#1661]; it is further modified, to avoid the broken pre-Vista
+	fallback identified by issue [#2131], and to remove references to...
+	(__faststorefence, __mf): ...these MSVC intrinsics, replaced by...
+	[defined __ATOMIC_SEQ_CST] (__atomic_thread_fence): ...this, or...
+	[GCC >= 4.4] (__sync_synchronize): ...this, as appropriate, falling
+	back to inline assembly code when necessary.
+
+	* include/ddk/winddk.h (KeMemoryBarrier): Delegate it to...
+	(MemoryBarrier): ...this, so avoiding the potential to emit invalid
+	code, for hosts which do not support the SSE2 'mfence' instruction.
+
 2016-06-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Merge further W32API updates from Cygwin CVS.
