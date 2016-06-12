@@ -33,12 +33,42 @@
 #ifndef	_LOCALE_H
 #pragma GCC system_header
 
-/* Content from <locale.h> is selectively shared with <wchar.h>;
+/* Some headers will include this file, just to acquire a globally
+ * consistent definition for the opaque locale_t data object type; it
+ * is only useful on Vista, or for users of non-free MSVCR80.DLL, (or
+ * its later derivatives), so, when either of these is applicable,
+ * ensure that we define it, (if we haven't done so already).
+ */
+#if ! defined __have_typedef_locale_t \
+&& (__MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA)
+/*
+ * FIXME: Do these actually have any value for Vista?  Although the Vista
+ * release of MSVCRT.DLL exports several functions which require locale_t
+ * parameters, it appears to lack any mechanism whereby an object of that
+ * type might be created, or otherwise, a reference to such an object may
+ * be acquired.
+ */
+typedef struct __mingw_opaque_locale_t  *_locale_t;
+typedef struct __mingw_opaque_locale_t  * locale_t;
+
+/* Set a (private) pre-processor flag, to indicate that these data types
+ * have been defined; although GCC versions from 4.x onwards may accept
+ * repeated (consistent) definitions, this flag gives us the facility to
+ * avoid the overhead of repeatedly parsing this file, just to satisfy a
+ * __need_locale_t request which has been satisfied already.
+ */
+#define __have_typedef_locale_t  1
+#endif	/* !__have_typedef_locale_t */
+
+/* When we are interested in more than just locale_t...
+ */
+#ifndef __need_locale_t
+/* ...content from <locale.h> is selectively shared with <wchar.h>;
  * defer definition of the normal repeat inclusion guard, until...
  */
 #ifndef __WCHAR_H_SOURCED__
  /* ...we have confirmed that this inclusion is NOT the <wchar.h>
-  * selective request.
+  * selective request, or just a __need_locale_t request.
   */
 #define	_LOCALE_H
 
@@ -120,7 +150,40 @@ _CRTIMP __cdecl __MINGW_NOTHROW  struct lconv *localeconv (void);
   */
 _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wsetlocale (int, const wchar_t *);
 
+#if __MSVCRT_VERSION__ >= __MSVCR80_DLL
+/* The following are available to users of non-free MSVCR80.DLL, and
+ * its later derivatives.  They are REQUIRED to create, or otherwise
+ * acquire a reference to, a locale_t object; they SHOULD also have
+ * been made available in MSVCRT.DLL, from Vista onwards, to support
+ * the use of functions added in that release which require locale_t
+ * parameters, but it seems that Microsoft, exhibiting their usual
+ * ineptitude, have neglected that requirement.
+ */
+#ifdef _LOCALE_H
+/* This triplet of functions are to be declared only when <locale.h>
+ * is included directly, and so is parsed in full...
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  _locale_t _create_locale (int, const char *);
+_CRTIMP __cdecl __MINGW_NOTHROW  _locale_t _get_current_locale (void);
+_CRTIMP __cdecl __MINGW_NOTHROW   void     _free_locale (locale_t);
+
+#endif
+/* ...whereas, this is required both when included directly, and also
+ * when indirectly included by <wchar.h>
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  _locale_t _wcreate_locale (int, const wchar_t *);
+
+#endif	/* __MSVCRT_VERSION__ >= __MSVCR80_DLL */
+
 _END_C_DECLS
 
 #endif	/* ! RC_INVOKED */
+#endif	/* !__need_locale_t */
+
+/* We've already handled any pending __need_locale_t request; ensure
+ * that we cancel it, so that any more comprehensive further request,
+ * before _LOCALE_H is defined, will be handled appropriately.
+ */
+#undef	__need_locale_t
+
 #endif  /* !_LOCALE_H: $RCSfile$: end of file */

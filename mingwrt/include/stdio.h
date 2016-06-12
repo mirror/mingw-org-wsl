@@ -489,6 +489,19 @@ int _vfprintf_p (FILE *, const char *, __VALIST);
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _vsprintf_p (char *, size_t, const char *, __VALIST);
 
+#ifndef __have_typedef_locale_t
+/* The following require the opaque locale_t data type, which we
+ * may obtain, by selective inclusion, from <locale.h>
+ *
+ * CAVEAT: unless you are linking with non-free MSVCR80.DLL, or one
+ * of its later derivatives, good luck trying to use these; see the
+ * explanation in <locale.t>, as to why you may be unable to create,
+ * or otherwise acquire a reference to, a locale_t object.
+ */
+#define __need_locale_t
+#include <locale.h>
+#endif
+
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _printf_p_l (const char *, locale_t, ...);
 
@@ -507,10 +520,10 @@ int _vfprintf_p_l (FILE *, const char *, locale_t, __VALIST);
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _vsprintf_p_l (char *, size_t, const char *, locale_t, __VALIST);
 
-#endif  /* MSVCR80.DLL and descendants, or MSVCRT.DLL since Vista */
+#endif	/* MSVCR80.DLL and descendants, or MSVCRT.DLL since Vista */
 #endif	/* <stdio.h> included in its own right */
-#if ! (defined _STDIO_H && defined _WCHAR_H) \
- && __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
+#if ! (defined _STDIO_H && defined _WCHAR_H)
+#if __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
 /*
  * Wide character variants of the foregoing "positional parameter" printf()
  * functions; MSDN says that these should be declared when either <stdio.h>, or
@@ -535,6 +548,17 @@ int _vfwprintf_p (FILE *, const wchar_t *, __VALIST);
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _vswprintf_p (wchar_t *, size_t, const wchar_t *, __VALIST);
 
+#ifndef __have_typedef_locale_t
+/* The following also require the locale_t data type, which we may
+ * obtain if necessary, by selective inclusion, from <locale.h>
+ *
+ * CAVEAT: use of these is subject to the same limitations as are
+ * applicable to their "char *" counterparts; (see above).
+ */
+#define __need_locale_t
+#include <locale.h>
+#endif
+
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _wprintf_p_l (const wchar_t *, locale_t, ...);
 
@@ -553,12 +577,13 @@ int _vfwprintf_p_l (FILE *, const wchar_t *, locale_t, __VALIST);
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _vswprintf_p_l (wchar_t *, size_t, const wchar_t *, locale_t, __VALIST);
 
+#endif	/* MSVCR80.DLL and descendants, or MSVCRT.DLL since Vista */
 #endif	/* ! (defined _STDIO_H && defined _WCHAR_H) */
 #ifdef _STDIO_H
 /* Once again, back to <stdio.h> specific declarations.
- */
-
-/* Formatted Input
+ *
+ *
+ * Formatted Input
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int    fscanf (FILE *, const char *, ...);
 _CRTIMP __cdecl __MINGW_NOTHROW  int    scanf (const char *, ...);

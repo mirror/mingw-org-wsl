@@ -1,3 +1,22 @@
+2016-06-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add typedef and access support for opaque locale_t objects.
+
+	* include/locale.h (locale_t, _locale_t): Define opaque types.
+	[__need_locale_t]: Make them selectively accessible; define...
+	(__have_typedef_locale_t): ...this, when they are available.
+	[_LOCALE_H] (_create_locale, _get_current_locale, _free_locale):
+	Declare function prototypes, on direct <locale.h> inclusion only.
+	[_LOCALE_H || _WCHAR_H] (_wcreate_locale): Likewise; this is to be
+	visible on direct inclusion, or when including <wchar.h>
+
+	* include/stdio.h [!(_STDIO_H && _WCHAR_T)]: Correct expression of...
+	[__MSVCR80_DLL || _WIN32_WINNT_VISTA]: ...this subsidiary condition;
+	for all cases when this is true, (including when [_STDIO_H] alone)...
+	[!__have_typedef_locale_t] (__need_locale_t): ...define this, and
+	include <locale.h>, for selective definition of...
+	(locale_t): ...this.
+
 2016-05-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Occlude unsupported _S_IFBLK feature; resolve issue [#1146].
