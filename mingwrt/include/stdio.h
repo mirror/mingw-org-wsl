@@ -277,6 +277,14 @@ _CRTIMP __cdecl __MINGW_NOTHROW  char *_tempnam (const char *, const char *);
 _CRTIMP __cdecl __MINGW_NOTHROW  int   _rmtmp (void);
 _CRTIMP __cdecl __MINGW_NOTHROW  int   _unlink (const char *);
 
+#if __MSVCRT_VERSION__>=__MSVCR80_DLL
+/* The following pair of non-ANSI functions require a non-free version of
+ * the Microsoft runtime; neither is provided by any MSVCRT.DLL variant.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  void  _lock_file(FILE *);
+_CRTIMP __cdecl __MINGW_NOTHROW  void  _unlock_file(FILE *);
+#endif
+
 #ifndef NO_OLDNAMES
 _CRTIMP __cdecl __MINGW_NOTHROW  char * tempnam (const char *, const char *);
 _CRTIMP __cdecl __MINGW_NOTHROW  int    rmtmp (void);
@@ -454,6 +462,8 @@ __cdecl __MINGW_NOTHROW
 int vsscanf (const char * __restrict__, const char * __restrict__, __VALIST);
 
 #endif  /* _ISOC99_SOURCE */
+#endif	/* <stdio.h> included in its own right */
+
 #if __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
 /*
  * In MSVCR80.DLL, (and its descendants), Microsoft introduced variants
@@ -470,6 +480,18 @@ int vsscanf (const char * __restrict__, const char * __restrict__, __VALIST);
  * system header is included, then use POSIX standard printf() functions
  * instead; this is both portable to many non-Windows platforms, and it
  * offers better compatibility with earlier Windows versions.
+ */
+#ifndef __have_typedef_locale_t
+/* Note that some of the following require the opaque locale_t data type,
+ * which we may obtain, by selective inclusion, from <locale.h>
+ */
+#define __need_locale_t
+#include <locale.h>
+#endif
+
+#ifdef _STDIO_H
+/* The following are to be declared only when <stdio.h> is explicitly
+ * included; the first six are NOT dependent on locale_t...
  */
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _printf_p (const char *, ...);
@@ -489,19 +511,13 @@ int _vfprintf_p (FILE *, const char *, __VALIST);
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _vsprintf_p (char *, size_t, const char *, __VALIST);
 
-#ifndef __have_typedef_locale_t
-/* The following require the opaque locale_t data type, which we
- * may obtain, by selective inclusion, from <locale.h>
+/* ...whereas the following six DO depend on locale_t.
  *
  * CAVEAT: unless you are linking with non-free MSVCR80.DLL, or one
  * of its later derivatives, good luck trying to use these; see the
  * explanation in <locale.t>, as to why you may be unable to create,
  * or otherwise acquire a reference to, a locale_t object.
  */
-#define __need_locale_t
-#include <locale.h>
-#endif
-
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _printf_p_l (const char *, locale_t, ...);
 
@@ -520,8 +536,9 @@ int _vfprintf_p_l (FILE *, const char *, locale_t, __VALIST);
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _vsprintf_p_l (char *, size_t, const char *, locale_t, __VALIST);
 
-#endif	/* MSVCR80.DLL and descendants, or MSVCRT.DLL since Vista */
 #endif	/* <stdio.h> included in its own right */
+#endif	/* MSVCR80.DLL and descendants, or MSVCRT.DLL since Vista */
+
 #if ! (defined _STDIO_H && defined _WCHAR_H)
 #if __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
 /*
@@ -547,17 +564,6 @@ int _vfwprintf_p (FILE *, const wchar_t *, __VALIST);
 
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _vswprintf_p (wchar_t *, size_t, const wchar_t *, __VALIST);
-
-#ifndef __have_typedef_locale_t
-/* The following also require the locale_t data type, which we may
- * obtain if necessary, by selective inclusion, from <locale.h>
- *
- * CAVEAT: use of these is subject to the same limitations as are
- * applicable to their "char *" counterparts; (see above).
- */
-#define __need_locale_t
-#include <locale.h>
-#endif
 
 _CRTIMP __cdecl __MINGW_NOTHROW
 int _wprintf_p_l (const wchar_t *, locale_t, ...);
@@ -611,6 +617,7 @@ _CRTIMP __cdecl __MINGW_NOTHROW  int   _flsbuf (int, FILE *);
 
 #if !defined _MT
 
+__CRT_INLINE __cdecl __MINGW_NOTHROW  int getc (FILE *);
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int getc (FILE * __F)
 {
   return (--__F->_cnt >= 0)
@@ -618,6 +625,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW  int getc (FILE * __F)
     : _filbuf (__F);
 }
 
+__CRT_INLINE __cdecl __MINGW_NOTHROW  int putc (int, FILE *);
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int putc (int __c, FILE * __F)
 {
   return (--__F->_cnt >= 0)
@@ -625,6 +633,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW  int putc (int __c, FILE * __F)
     :  _flsbuf (__c, __F);
 }
 
+__CRT_INLINE __cdecl __MINGW_NOTHROW  int getchar (void);
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int getchar (void)
 {
   return (--stdin->_cnt >= 0)
@@ -632,6 +641,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW  int getchar (void)
     : _filbuf (stdin);
 }
 
+__CRT_INLINE __cdecl __MINGW_NOTHROW  int putchar(int);
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int putchar(int __c)
 {
   return (--stdout->_cnt >= 0)
@@ -845,7 +855,8 @@ _CRTIMP __cdecl __MINGW_NOTHROW  int    fileno (FILE *);
 #endif
 
 #if defined (__MSVCRT__) && ! defined (__NO_MINGW_LFS)
-__CRT_INLINE __JMPSTUB__(( FUNCTION = fopen64, REMAPPED = fopen ))
+__CRT_ALIAS FILE * __cdecl __MINGW_NOTHROW  fopen64 (const char *, const char *);
+__CRT_ALIAS __JMPSTUB__(( FUNCTION = fopen64, REMAPPED = fopen ))
 FILE * __cdecl __MINGW_NOTHROW  fopen64 (const char * filename, const char * mode)
 { return fopen (filename, mode); }
 
@@ -856,7 +867,8 @@ int __cdecl __MINGW_NOTHROW __mingw_fseeko64 (FILE *, __off64_t, int);
 #define fseeko64(fp, offset, whence)  __mingw_fseeko64(fp, offset, whence)
 #endif
 
-__CRT_INLINE __LIBIMPL__(( FUNCTION = ftello64 ))
+__CRT_ALIAS __off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE *);
+__CRT_ALIAS __LIBIMPL__(( FUNCTION = ftello64 ))
 __off64_t __cdecl __MINGW_NOTHROW ftello64 (FILE * stream)
 { fpos_t __pos; return (fgetpos(stream, &__pos)) ? -1LL : (__off64_t)(__pos); }
 

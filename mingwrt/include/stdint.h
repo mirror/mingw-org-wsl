@@ -40,6 +40,11 @@
 #if ! defined __need_intptr_t && ! defined __need_uintptr_t
 #define _STDINT_H
 
+/* All MinGW system headers are expected to include <_mingw.h>;
+ * ensure that we have done so.
+ */
+#include <_mingw.h>
+
 /* We need to duplicate the definitions of wint_t and wchar_t, as
  * they are defined in <stddef.h>; get them, by selective inclusion
  * from that header itself.
