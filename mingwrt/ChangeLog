@@ -1,3 +1,22 @@
+2016-06-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rework __try1/__except1 to resolve issue [#1328].
+
+	* include/excpt.h: Assert copyright; tidy layout.
+	(_EXCPT_H_): Multiple inclusion guard macro renamed to...
+	(_EXCPT_H): ...this; update all references as appropriate.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+	(__typecast_alloca): New macro; define it, casting return type of...
+	(__builtin_alloca): ...this to a specified data type; use it in...
+	(__try1_setup, __except1_teardown): ...these new macros; define them
+	as parameterized templates, providing both -masm-att and -masm-intel
+	syntax implementations, with host specific word size and register
+	assignment parameter substitutions; use them to redefine...
+	(__try1, __except1): ...each of these, using __builtin_alloca to avoid
+	direct stack pushes when registering exception handlers; assign the
+	template parameters as appropriate to support implementation for...
+	[_WIN64, _WIN32]: ...either of these, as the host requires.
+
 2016-06-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Merge Cygwin CVS updates to legacy branch.
