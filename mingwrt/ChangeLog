@@ -1,3 +1,40 @@
+2016-07-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rework tsearch and friends; resolve issues [#1512] and [#1576].
+
+	* include/search.h: Assert copyright; tidy layout.
+	(_SEARCH_H_): Rename this multiple inclusion guard macro...
+	(_SEARCH_H): ...to conform to this preferred standard convention.
+	(__search_comparator): New function prototype typedef; it provides a
+	convenient shorthand notation for argument declarations in functions
+	which require a comparator function pointer; use it where appropriate.
+	(tsearch, tfind, tdelete) [__MINGW_ATTRIB_NONNULL]: Apply to arguments
+	#2 and #3; was previously incorrectly applied to arguments #1 and #3.
+	(twalk) [__MINGW_ATTRIB_NONNULL]: Apply to both arguments #1 and #2.
+	[_SEARCH_PRIVATE] (__MINGW_ATTRIB_NONNULL): Suppress its effect, to
+	ensure that GCC does not optimize away checks within implementation.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+
+	* mingwex/tdelete.c: Tidy layout.
+	(tdelete): Reimplement it as a thin wrapper around...
+	(__tdelete): ...this; it encapsulates the original implementation as a
+	__CRT_ALIAS (inline) function, to simplify void ** --> node_t ** casts.
+	Remove unnecessary non-null assertions for arguments #1 and #3; prefer
+	to validate arguments #2 and #3 internally, and simply return NULL if
+	necessary; hence, do not include <assert.h>
+
+	* mingwex/tfind.c: Tidy layout.
+	(tfind): Similarly reimplement it as a thin wrapper around...
+	(__tfind): ...this __CRT_ALIAS (inline) encapsulation of the original.
+	Add non-null validation for argument #3; do not include <assert.h>
+
+	* mingwex/tsearch.c: Tidy layout.
+	(tsearch): Once again, reimplement it as a thin wrapper around...
+	(__tsearch): ...this __CRT_ALIAS variant.  Add non-null validation for
+	argument #3; do not include <assert.h>
+
+	* mingwex/twalk.c: Tidy layout; do not include <assert.h>
+
 2016-06-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Rework __try1/__except1 to resolve issue [#1328].
