@@ -1,3 +1,10 @@
+2016-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Do not pass MAKEFLAGS explicitly, when invoking recursive make.
+
+	* Makefile.in (install-strip, uninstall): Delete explicit $(MAKEFLAGS)
+	references from $(MAKE) command lines; make passes them implicitly.
+
 2016-07-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Rework tsearch and friends; resolve issues [#1512] and [#1576].

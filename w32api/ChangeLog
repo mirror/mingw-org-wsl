@@ -1,3 +1,10 @@
+2016-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Do not pass MAKEFLAGS explicitly, when invoking recursive make.
+
+	* Makefile.in (install-strip, uninstall): Delete explicit $(MAKEFLAGS)
+	references from $(MAKE) command lines; make passes them implicitly.
+
 2016-06-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Backport MemoryBarrier() implementation from 4.0-dev branch.

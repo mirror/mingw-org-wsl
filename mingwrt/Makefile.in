@@ -695,7 +695,7 @@ install-gcc: install-stage-1-only
 
 install-strip: install-strip-mingwrt
 install-strip-%:
-	$(MAKE) --no-print-directory $(MAKEFLAGS) \
+	$(MAKE) --no-print-directory \
 	  STRIP_DATA='cd ${libdir}; $(STRIP) --strip-unneeded $$1' \
 	  STRIP_DLL='cd ${bindir}; $(STRIP) $$1' install-$*
 
@@ -812,7 +812,7 @@ uninstall-mingwrt-headers:
 
 uninstall-mingwrt-dll \
 uninstall-mingwrt-libdir-objects uninstall-mingwrt-libdir-libs: un%:
-	$(MAKE) --no-print-directory $(MAKEFLAGS) mkinstalldirs= \
+	$(MAKE) --no-print-directory mkinstalldirs= \
 	  INSTALL_DATA='cd $$2 && $(RM) $$1' $*
 
 
