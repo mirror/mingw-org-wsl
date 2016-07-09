@@ -1,3 +1,42 @@
+2016-07-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor out <ctype.h> vs. <wctype.h> duplicate elements.
+
+	* include/ctype.h: Assert copyright; tidy layout.
+	[!_CTYPE_H_]: Do not evaluate; rename macro to be tested, as...
+	[!_CTYPE_H]: ...this preferred multiple inclusion guard macro name.
+	(__CTYPE_H_SOURCED__): New macro; define it, and include <wctype.h>,
+	so requesting partial inclusion, to retrieve definitions for...
+	(_ALPHA, _BLANK, _CONTROL, _DIGIT, _HEX, _LOWER, _PUNCT, _SPACE)
+	(_UPPER, WEOF): ...these macros; hence, do not define them locally.
+	(wint_t, wchar_t, wctype_t): Likewise these type definitions...
+	(iswalnum, iswalpha, iswascii, iswblank, iswcntrl, iswctype)
+	(iswdigit, iswgraph, iswlower, iswprint, iswpunct, iswspace)
+	(iswupper, iswxdigit, towlower, towupper, is_wctype): ...these function
+	prototypes, and corresponding inline alternative implementations.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these as appropriate.
+	[__MSVCRT_VERSION__<=__MSVCR70_DLL]: Likewise.
+
+	* include/wctype.h: Assert copyright; tidy layout.
+	[!_WCTYPE_H_]: Do not evaluate; rename macro to be tested, as...
+	[!_WCTYPE_H]: ...this preferred multiple inclusion guard macro name;
+	do not define it when partial inclusion only is selected, by...
+	[__CTYPE_H_SOURCED__]: ...this; thence define only...
+	(_ALPHA, _BLANK, _CONTROL, _DIGIT, _HEX, _LOWER, _PUNCT, _SPACE)
+	(_UPPER): ...these character characterisation macros...
+	(wint_t, wchar_t, wctype_t): ...these type definitions...
+	(iswalnum, iswalpha, iswascii, iswblank, iswcntrl, iswctype)
+	(iswdigit, iswgraph, iswlower, iswprint, iswpunct, iswspace)
+	(iswupper, iswxdigit, towlower, towupper): ...these function
+	prototypes, with corresponding inline alternative implementations...
+	(is_wctype): ...this further prototype, qualified as deprecated...
+	(WEOF): ...and this status reporting macro.
+	(_ctype, _pctype, _pctype_dll, _imp___ctype, _imp___pctype): Delete
+	declarations, and associated definitions; they do not belong here.
+	(isleadbyte): Likewise, this Microsoft specific function prototype...
+	(_LEADBYTE): ...and this associated character classification macro.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these as appropriate.
+
 2016-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Do not pass MAKEFLAGS explicitly, when invoking recursive make.
