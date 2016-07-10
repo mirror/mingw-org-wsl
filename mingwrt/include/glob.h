@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2011, 2012, 2014, MinGW.org Project.
+ * Copyright (C) 2011, 2012, 2014, 2016, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -132,15 +132,17 @@ _BEGIN_C_DECLS
  * However, our actual function implementations are provided via this
  * pair of reserved function names...
  */
-int __mingw_glob (const char *, int, int (*)( const char *, int ), glob_t *);
+int __mingw_glob (const char *, int, int (*)(const char *, int), glob_t *);
 void __mingw_globfree (glob_t *);
 
 /* ...to which the standard names are then mapped as aliases,
  * via __CRT_ALIAS inline function expansion.
  */
 __CRT_ALIAS __JMPSTUB__(( FUNCTION = glob ))
-int glob (const char *__pattern, int __flags, int (*__errfunc)(), glob_t *__data)
+# define __ERRFUNC_P  (*__errfunc) (const char *, int)
+int glob (const char *__pattern, int __flags, int __ERRFUNC_P, glob_t *__data)
 { return __mingw_glob (__pattern, __flags, __errfunc, __data); }
+# undef __ERRFUNC_P
 
 __CRT_ALIAS __JMPSTUB__(( FUNCTION = globfree ))
 void globfree (glob_t *__data){ return __mingw_globfree (__data); }

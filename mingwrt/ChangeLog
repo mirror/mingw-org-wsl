@@ -1,3 +1,12 @@
+2016-07-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix C++ strict type checking inconsistency in <glob.h>
+
+	* include/glob.h (__ERRFUNC_P): New private macro; define it to match
+	the type signature of the error function pointer, to be passed to...
+	(glob): ...this function; use it to correctly represent error function
+	pointer argument in inline implementation.
+
 2016-07-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor out <ctype.h> vs. <wctype.h> duplicate elements.
