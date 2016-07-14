@@ -1,5 +1,11 @@
 2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Prepare and tag all files for release of mingwrt-3.22.
+
+	* configure.ac (AC_INIT): Adjust package version number.
+
+2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Preserve kludge to evade GCC build failure on S_ISBLK misuse.
 
 	* include/sys/stat.h (_NO_UNSUPPORTED): New feature test macro; it
