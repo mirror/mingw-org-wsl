@@ -1,3 +1,7 @@
+2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag all files for release of w32api-3.18.
+
 2016-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Do not pass MAKEFLAGS explicitly, when invoking recursive make.
