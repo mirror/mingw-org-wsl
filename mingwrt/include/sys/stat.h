@@ -122,11 +122,23 @@
 
 #ifndef _S_IFBLK
 /* When the _S_IFBLK kludge is NOT enabled, (as it ideally should not be),
- * ensure that any attempt to use its dependent macros is firmly denied.
+ * ensure that any attempt to use its dependent macros is denied...
  */
 # pragma GCC poison _S_ISBLK
-# pragma GCC poison S_ISBLK
 
+# if defined _NO_UNSUPPORTED || defined _NO_OLDNAMES
+  /* ...including that for the standard POSIX macro, when unsupported
+   * features, or Microsoft's old names, are explicitly forbidden...
+   */
+#  pragma GCC poison S_ISBLK
+
+# else /* !(_NO_UNSUPPORTED || _NO_OLDNAMES) */
+  /* ...otherwise assume that the kludge is automatically enabled with
+   * respect to S_ISBLK, (because GCC gratuitously misuses it).
+   */
+#  define S_IFBLK 	0x3001	/* Block: unsupported on Win32 */
+
+# endif /* !(_NO_UNSUPPORTED || _NO_OLDNAMES) */
 #endif	/* !_S_IFBLK */
 #endif	/* !__WCHAR_H_SOURCED__ */
 

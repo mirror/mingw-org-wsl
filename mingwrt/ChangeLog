@@ -1,3 +1,12 @@
+2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Preserve kludge to evade GCC build failure on S_ISBLK misuse.
+
+	* include/sys/stat.h (_NO_UNSUPPORTED): New feature test macro; it
+	should be user defined, if desired, before inclusion; leave undefined.
+	[!_S_IFBLK && !_NO_UNSUPPORTED && !_NO_OLDNAMES] (S_ISBLK): Define it,
+	as appropriate for POSIX conforming usage; do not poison it.
+
 2016-07-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix C++ strict type checking inconsistency in <glob.h>
