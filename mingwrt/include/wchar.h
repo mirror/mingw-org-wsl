@@ -167,6 +167,20 @@
  *        );
  *  wchar_t *_wfullpath (wchar_t *, const wchar_t *, size_t);
  *
+ * ...with this pair requiring either WinXP (or later), or one of
+ * the non-free MSVC runtimes from MSVCR70.DLL onwards:
+ *
+ *  __int64 _wcstoi64 (const wchar_t *, wchar_t **, int);
+ *  unsigned __int64 _wcstoui64 (const wchar_t *, wchar_t **, int);
+ *
+ *  ...and this pair requiring Win-Vista (or later), or a non-free
+ *  MSVC runtime from MSVCR80.DLL onwards:
+ *
+ *  __int64 _wcstoi64_l (const wchar_t *, wchar_t **, int, _locale_t);
+ *  unsigned __int64 _wcstoui64_l (const wchar_t *, wchar_t **,
+ *          int, _locale_t);
+ *        );
+ *
  * ...while this pair are ISO-C99 standards, which are available
  * in libmingwex.a, but not in any version of MSVCRT.DLL, (nor in
  * any of its non-free derivatives prior to MSVCR120.DLL), nor in

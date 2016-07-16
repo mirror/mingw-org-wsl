@@ -411,6 +411,43 @@ long double wcstold (const wchar_t *__restrict__, wchar_t **__restrict__);
 #endif  /* _ISOC99_SOURCE */
 
 #ifdef __MSVCRT__
+#if __MSVCRT_VERSION__ >= __MSVCR70_DLL || _WIN32_WINNT >= _WIN32_WINNT_WINXP
+/* This pair of wide character equivalents for ISO-C99's strtoll() and
+ * strtoull() require either WinXP (or later), or a non-free MSVC runtime
+ * from MSVCR70.DLL onwards...
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW
+__int64 _wcstoi64(const wchar_t *, wchar_t **, int);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+unsigned __int64 _wcstoui64(const wchar_t *, wchar_t **, int);
+
+#endif	/* WinXP || MSVCR70.DLL || later */
+
+#if __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
+/* ...while the following pair require Win-Vista (or later), or non-free
+ * MSVCRT runtime from MSVCR80.DLL onwards; they also require...
+ */
+#ifndef __have_typedef_locale_t
+/* ...this opaque data type, which we may obtain by selective inclusion
+ * from <locale.h>.  (Note that this may render them unusable for users of
+ * MSVCRT.DLL; see the explanation in <locale.h>, regarding the difficulty
+ * in creating, or otherwise acquiring a reference to, a _locale_t object,
+ * notwithstanding the availability of the functions in MSVCRT.DLL, from
+ * the release of Win-Vista onwards).
+ */
+#define __need_locale_t
+#include <locale.h>
+#endif	/* !__have_typedef_locale_t */
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+__int64 _wcstoi64_l(const wchar_t *, wchar_t **, int, _locale_t);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+unsigned __int64 _wcstoui64_l(const wchar_t *, wchar_t **, int, _locale_t);
+
+#endif	/* Win-Vista || MSVCR80.DLL || later */
+
 _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_wgetenv (const wchar_t *);
 _CRTIMP __cdecl __MINGW_NOTHROW  int _wputenv (const wchar_t *);
 
@@ -638,6 +675,31 @@ __cdecl __MINGW_NOTHROW  long long atoll (const char * _c){ return _atoi64 (_c);
 #endif  /* _ISOC99_SOURCE */
 
 #if defined __MSVCRT__ && ! defined __STRICT_ANSI__
+#if __MSVCRT_VERSION__ >= __MSVCR70_DLL || _WIN32_WINNT >= _WIN32_WINNT_WINXP
+/* Microsoft specific alternatives to ISO-C99 strtoll() and strtoull(); the
+ * first pair require WinXP (or later) or non-free MSVCR70.DLL onwards...
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW
+__int64 _strtoi64(const char*, char **, int);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+unsigned __int64 _strtoui64(const char*, char **, int);
+
+#endif	/* WinXP || MSVCR70.DLL || later */
+#if __MSVCRT_VERSION__ >= __MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
+/* ...while the following pair require Win-Vista (or later), or non-free
+ * MSVCR80.DLL onwards; (note that, like their wide character counterparts,
+ * they may actually be unusable without MSVCR80.DLL onwards, because of
+ * the difficulty in acquiring a reference to a _locale_t object).
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW
+__int64 _strtoi64_l(const char *, char **, int, _locale_t);
+
+_CRTIMP __cdecl __MINGW_NOTHROW
+unsigned __int64 _strtoui64_l(const char *, char **, int, _locale_t);
+
+#endif	/* Win-Vista || MSVCR80.DLL || later */
+
 /* Type long long analogues for MSVCRT.DLL specific type long functions;
  * none are actually provided by any version of MSVCRT.DLL, with names as
  * specified here, but rather as called by the inline functions used to

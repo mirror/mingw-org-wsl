@@ -276,7 +276,7 @@ install-w32api-libs: w32api-lib-reqs
 	$(if $(STRIP_LIBS),$(call STRIP_LIBS,$(filter-out w32api-lib-reqs,$^)))
 
 install-strip-w32api-libs:
-	$(MAKE) --no-print-directory $(MAKEFLAGS) \
+	$(MAKE) --no-print-directory \
 	  STRIP_LIBS='cd ${libdir}; $(STRIP) --strip-unneeded $$1' \
 	  install-w32api-libs
 
@@ -294,7 +294,7 @@ uninstall-w32api-headers:
 	  done
 
 uninstall-w32api-libs: un%:
-	$(MAKE) --no-print-directory $(MAKEFLAGS) mkinstalldirs= \
+	$(MAKE) --no-print-directory mkinstalldirs= \
 	  INSTALL_DATA='cd $$2 && rm -f $$1' $*
 
 # Distribution

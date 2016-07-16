@@ -1,3 +1,198 @@
+2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge recent legacy branch updates to 5.0-active branch.
+
+	* Makefile.in include/ctype.h include/excpt.h include/stdint.h
+	* include/glob.h include/limits.h include/locale.h include/search.h
+	* include/stdio.h include/stdlib.h include/wchar.h include/wctype.h
+	* include/sys/param.h include/sys/stat.h mingwex/tdelete.c
+	* mingwex/tfind.c mingwex/tsearch.c mingwex/twalk.c: Updated.
+
+2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag all files for release of mingwrt-3.22.
+
+	* configure.ac (AC_INIT): Adjust package version number.
+
+2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Preserve kludge to evade GCC build failure on S_ISBLK misuse.
+
+	* include/sys/stat.h (_NO_UNSUPPORTED): New feature test macro; it
+	should be user defined, if desired, before inclusion; leave undefined.
+	[!_S_IFBLK && !_NO_UNSUPPORTED && !_NO_OLDNAMES] (S_ISBLK): Define it,
+	as appropriate for POSIX conforming usage; do not poison it.
+
+2016-07-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix C++ strict type checking inconsistency in <glob.h>
+
+	* include/glob.h (__ERRFUNC_P): New private macro; define it to match
+	the type signature of the error function pointer, to be passed to...
+	(glob): ...this function; use it to correctly represent error function
+	pointer argument in inline implementation.
+
+2016-07-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor out <ctype.h> vs. <wctype.h> duplicate elements.
+
+	* include/ctype.h: Assert copyright; tidy layout.
+	[!_CTYPE_H_]: Do not evaluate; rename macro to be tested, as...
+	[!_CTYPE_H]: ...this preferred multiple inclusion guard macro name.
+	(__CTYPE_H_SOURCED__): New macro; define it, and include <wctype.h>,
+	so requesting partial inclusion, to retrieve definitions for...
+	(_ALPHA, _BLANK, _CONTROL, _DIGIT, _HEX, _LOWER, _PUNCT, _SPACE)
+	(_UPPER, WEOF): ...these macros; hence, do not define them locally.
+	(wint_t, wchar_t, wctype_t): Likewise these type definitions...
+	(iswalnum, iswalpha, iswascii, iswblank, iswcntrl, iswctype)
+	(iswdigit, iswgraph, iswlower, iswprint, iswpunct, iswspace)
+	(iswupper, iswxdigit, towlower, towupper, is_wctype): ...these function
+	prototypes, and corresponding inline alternative implementations.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these as appropriate.
+	[__MSVCRT_VERSION__<=__MSVCR70_DLL]: Likewise.
+
+	* include/wctype.h: Assert copyright; tidy layout.
+	[!_WCTYPE_H_]: Do not evaluate; rename macro to be tested, as...
+	[!_WCTYPE_H]: ...this preferred multiple inclusion guard macro name;
+	do not define it when partial inclusion only is selected, by...
+	[__CTYPE_H_SOURCED__]: ...this; thence define only...
+	(_ALPHA, _BLANK, _CONTROL, _DIGIT, _HEX, _LOWER, _PUNCT, _SPACE)
+	(_UPPER): ...these character characterisation macros...
+	(wint_t, wchar_t, wctype_t): ...these type definitions...
+	(iswalnum, iswalpha, iswascii, iswblank, iswcntrl, iswctype)
+	(iswdigit, iswgraph, iswlower, iswprint, iswpunct, iswspace)
+	(iswupper, iswxdigit, towlower, towupper): ...these function
+	prototypes, with corresponding inline alternative implementations...
+	(is_wctype): ...this further prototype, qualified as deprecated...
+	(WEOF): ...and this status reporting macro.
+	(_ctype, _pctype, _pctype_dll, _imp___ctype, _imp___pctype): Delete
+	declarations, and associated definitions; they do not belong here.
+	(isleadbyte): Likewise, this Microsoft specific function prototype...
+	(_LEADBYTE): ...and this associated character classification macro.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these as appropriate.
+
+2016-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Do not pass MAKEFLAGS explicitly, when invoking recursive make.
+
+	* Makefile.in (install-strip, uninstall): Delete explicit $(MAKEFLAGS)
+	references from $(MAKE) command lines; make passes them implicitly.
+
+2016-07-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rework tsearch and friends; resolve issues [#1512] and [#1576].
+
+	* include/search.h: Assert copyright; tidy layout.
+	(_SEARCH_H_): Rename this multiple inclusion guard macro...
+	(_SEARCH_H): ...to conform to this preferred standard convention.
+	(__search_comparator): New function prototype typedef; it provides a
+	convenient shorthand notation for argument declarations in functions
+	which require a comparator function pointer; use it where appropriate.
+	(tsearch, tfind, tdelete) [__MINGW_ATTRIB_NONNULL]: Apply to arguments
+	#2 and #3; was previously incorrectly applied to arguments #1 and #3.
+	(twalk) [__MINGW_ATTRIB_NONNULL]: Apply to both arguments #1 and #2.
+	[_SEARCH_PRIVATE] (__MINGW_ATTRIB_NONNULL): Suppress its effect, to
+	ensure that GCC does not optimize away checks within implementation.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+
+	* mingwex/tdelete.c: Tidy layout.
+	(tdelete): Reimplement it as a thin wrapper around...
+	(__tdelete): ...this; it encapsulates the original implementation as a
+	__CRT_ALIAS (inline) function, to simplify void ** --> node_t ** casts.
+	Remove unnecessary non-null assertions for arguments #1 and #3; prefer
+	to validate arguments #2 and #3 internally, and simply return NULL if
+	necessary; hence, do not include <assert.h>
+
+	* mingwex/tfind.c: Tidy layout.
+	(tfind): Similarly reimplement it as a thin wrapper around...
+	(__tfind): ...this __CRT_ALIAS (inline) encapsulation of the original.
+	Add non-null validation for argument #3; do not include <assert.h>
+
+	* mingwex/tsearch.c: Tidy layout.
+	(tsearch): Once again, reimplement it as a thin wrapper around...
+	(__tsearch): ...this __CRT_ALIAS variant.  Add non-null validation for
+	argument #3; do not include <assert.h>
+
+	* mingwex/twalk.c: Tidy layout; do not include <assert.h>
+
+2016-06-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rework __try1/__except1 to resolve issue [#1328].
+
+	* include/excpt.h: Assert copyright; tidy layout.
+	(_EXCPT_H_): Multiple inclusion guard macro renamed to...
+	(_EXCPT_H): ...this; update all references as appropriate.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use these.
+	(__typecast_alloca): New macro; define it, casting return type of...
+	(__builtin_alloca): ...this to a specified data type; use it in...
+	(__try1_setup, __except1_teardown): ...these new macros; define them
+	as parameterized templates, providing both -masm-att and -masm-intel
+	syntax implementations, with host specific word size and register
+	assignment parameter substitutions; use them to redefine...
+	(__try1, __except1): ...each of these, using __builtin_alloca to avoid
+	direct stack pushes when registering exception handlers; assign the
+	template parameters as appropriate to support implementation for...
+	[_WIN64, _WIN32]: ...either of these, as the host requires.
+
+2016-06-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge Cygwin CVS updates to legacy branch.
+
+	* include/stdio.h: Merge 2011-11-30 and 2012-08-02 commits.
+	(getc, getchar, putc, putchar): Declare function prototypes.
+	(fopen64, ftello64): Likewise; change implementation classification
+	from __CRT_INLINE to __CRT_ALIAS, to avoid C++ emitted code bloat.
+	(_lock_file, _unlock_file): Add prototypes; modify merge to...
+	[__MSVCRT_VERSION__>=__MSVCR80_DLL]: ...require this.
+
+	* include/stdint.h: Merge 2012-07-30 commit; include <_mingw.h>
+
+	* include/excpt.h: Merge 2012-08-01 commit.
+	(__try1, __except1) [_WIN64]: Add alternative implementations.
+
+	* include/stdlib.h: Merge 2012-08-02 commit.
+	[__MSVCRT__VERSION__>=__MSVCR70_DLL || _WIN32_WINNT >= _WINXP]
+	(_strtoi64, _strtoui64, _wcstoi64, _wcstoui64): Declare prototypes.
+	[__MSVCRT__VERSION__>=__MSVCR80_DLL || _WIN32_WINNT >= _VISTA]
+	(_strtoi64_l, _strtoui64_l, _wcstoi64_l, _wcstoui64_l): Likewise...
+	[!__have_typedef_locale_t] (__need_locale_t): ...and define to get...
+	(locale_t): ...this, by selective inclusion of <locale.h>
+	[__WCHAR_H_SOURCED] (_wcstoi64, _wcstoui64, _wcstoi64_l)
+	(_wcstoui64_l): Make these function prototypes available for selective
+	inclusion by...
+	* include/wchar.h: ...this; merge 2012-08-02 commit.
+	[__MSVCRT__VERSION__>=__MSVCR70_DLL || _WIN32_WINNT >= _WINXP]
+	(_wcstoi64, _wcstoui64): Note availability of function prototypes via
+	selective inclusion of their actual declarations from <stdlib.h>
+	[__MSVCRT__VERSION__>=__MSVCR80_DLL || _WIN32_WINNT >= _VISTA]
+	(_wcstoi64_l, _wcstoui64_l): Likewise.
+
+	* include/limits.h: Merge 2012-08-02 commit.
+	[__STRICT_ANSI__] (PATH_MAX): Suppress definition.
+
+	* include/sys/param.h: Merge 2012-08-02 commit.
+	[PATH_MAX not defined] (MAXPATHLEN): Define it explicitly.
+	[PATH_MAX defined] (MAXPATHLEN): Define it as an alias.
+
+2016-06-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add typedef and access support for opaque locale_t objects.
+
+	* include/locale.h (locale_t, _locale_t): Define opaque types.
+	[__need_locale_t]: Make them selectively accessible; define...
+	(__have_typedef_locale_t): ...this, when they are available.
+	[_LOCALE_H] (_create_locale, _get_current_locale, _free_locale):
+	Declare function prototypes, on direct <locale.h> inclusion only.
+	[_LOCALE_H || _WCHAR_H] (_wcreate_locale): Likewise; this is to be
+	visible on direct inclusion, or when including <wchar.h>
+
+	* include/stdio.h [!(_STDIO_H && _WCHAR_T)]: Correct expression of...
+	[__MSVCR80_DLL || _WIN32_WINNT_VISTA]: ...this subsidiary condition;
+	for all cases when this is true, (including when [_STDIO_H] alone)...
+	[!__have_typedef_locale_t] (__need_locale_t): ...define this, and
+	include <locale.h>, for selective definition of...
+	(locale_t): ...this.
+
 2016-05-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Occlude unsupported _S_IFBLK feature; resolve issue [#1146].
@@ -1438,6 +1633,78 @@
 
 	* jamfile: Delete it; it hasn't been updated in ages, is likely no
 	longer relevant, and I have no desire to maintain it.
+
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Add another more rigorous __STRICT_ANSI__ filter.
+
+	* include/limits.h [__STRICT_ANSI__] (PATH_MAX): Suppress definition.
+	* include/sys/param.h [PATH_MAX defined] (MAXPATHLEN): Alias it.
+	[PATH_MAX not defined] (MAXPATHLEN): Define it directly.
+
+2012-08-02  Ivan Maidanski  <ivmai@users.sourceforge.net>
+
+	Add missing function prototypes per issue [#1305].
+
+	* include/process.h [#ifndef _WPROCESS_DEFINED]
+	(_wexecl, _wexecle, _wexeclp, _wexeclpe, _wexecv, _wexecve)
+	(_wexecvp, _wexecvpe, _wspawnl, _wspawnle, _wspawnlp, _wspawnlpe)
+	(_wspawnv, _wspawnve, _wspawnvp, _wspawnvpe): Declare them.
+
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Add function prototype declarations per issue [#1293].
+
+	* include/stdio.h (_lock_file, _unlock_file): Declare them.
+
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Apply some more rigorous __STRICT_ANSI__ filtering.
+
+	* include/stdio.h (_getws, _putws, _wfdopen, _wfopen)
+	(_wfreopen, _wfsopen, _wtmpnam, _wtempnam, _wrename, _wremove)
+	(_wperror, _wpopen): Do not declare these functions unless...
+	[#ifndef __STRICT_ANSI__]: ...this is satisfied.
+
+2012-08-02  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Add string to 64-bit integer conversion function prototypes.
+
+	* include/stdlib.h (_strtoi64, _strtoi64_l, _strtoui64, _strtoui64_l)
+	(_wcstoi64, _wcstoi64_l, _wcstoui64, _wcstoui64_l): Declare them.
+	* include/wchar.h (_wcstoi64, _wcstoi64_l, _wcstoui64, _wcstoui64_l):
+	Likewise; these are duplicates of the <stdlib.h> declarations.
+
+2012-08-01  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Update for _WIN64 exception handler readiness.
+
+	* include/excpt.h [_WIN64] (__try1, __except1): Add alternative inline
+	assembly code implementation, based on X86-64 architecture.
+
+2012-07-30  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Correct missing inclusion of <_mingw.h>.
+
+	* include/stdint.h: Add omitted #include; all mingwrt headers are
+	expected to include this; it is required to define __int64.
+
+2011-11-30  Ozkan Sezer  <sezero@users.sourceforge.net>
+
+	Correct prototypes for _wfindfirst()/_wfindnext() function family.
+
+	* include/io.h (_wfindfirst, _wfindfirst32, _wfindfirsti64)
+	(_wfindfirst32i64, _wfindfirst64i32): Return type changed to intptr_t.
+	(_wfindnext, _wfindnext32, _wfindnexti64, _wfindnext32i64)
+	(_wfindnext64i32, _wfindnext64): Type of parameter #1 must match.
+
+2011-11-30  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	Avoid potential GCC "missing function prototype" warnings.
+
+	* include/stdio.h (getc, putc, getchar, putchar, fopen64)
+	(ftello64): Provide a function prototype declaration for each of
+	these, prior to the corresponding inline implementation.
 
 2011-08-23  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 

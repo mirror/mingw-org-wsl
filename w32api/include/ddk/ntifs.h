@@ -762,7 +762,7 @@ typedef struct _EPROCESS_QUOTA_BLOCK {
  * When needing these parameters cast your PIO_STACK_LOCATION to
  * PEXTENDED_IO_STACK_LOCATION
  */
-#if !defined(_ALPHA_)
+#if !defined(_ALPHA_) && !defined(_M_ALPHA)
 #include <pshpack4.h>
 #endif
 typedef struct _EXTENDED_IO_STACK_LOCATION {
@@ -850,7 +850,7 @@ typedef struct _EXTENDED_IO_STACK_LOCATION {
     PVOID  Context;
 
 } EXTENDED_IO_STACK_LOCATION, *PEXTENDED_IO_STACK_LOCATION;
-#if !defined(_ALPHA_)
+#if !defined(_ALPHA_) && !defined(_M_ALPHA)
 #include <poppack.h>
 #endif
 

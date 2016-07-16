@@ -6818,7 +6818,8 @@ KeInsertQueueDpc(
 NTOSAPI VOID DDKAPI
 KeLeaveCriticalRegion( VOID );
 
-#define KeMemoryBarrier() asm("mfence;")
+static FORCEINLINE
+void KeMemoryBarrier (void) { MemoryBarrier(); }
 
 NTOSAPI NTSTATUS DDKAPI
 KePulseEvent(
