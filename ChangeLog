@@ -1,3 +1,10 @@
+2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Support 'install-strip' as a universal make goal.
+
+	* Makefile.in (install-strip): New goal; it is a dependency of...
+	(subdirs): ...this subsidiary package directory collection.
+
 2016-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Integrate mingwrt and w32api build; synchronize versions.

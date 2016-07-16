@@ -79,7 +79,7 @@ configure: configure.ac aclocal.m4 VERSION.m4
 # Rules to Build and Install Both Sub-Packages
 # --------------------------------------------
 #
-all install install-headers uninstall: %: %-subdirs
+all install install-headers install-strip uninstall: %: %-subdirs
 
 subdirs = @subdirs@
 %-subdirs:; $(foreach dir,${subdirs},$(MAKE) -C ${dir} $*;)
