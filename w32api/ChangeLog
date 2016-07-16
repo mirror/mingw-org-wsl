@@ -1,5 +1,12 @@
 2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Discard redundant config.guess and config.sub files.
+
+	* config.guess config.sub: Delete them; they are no longer required.
+	* Makefile.in (SRCDIST_ADD): Remove related references.
+
+2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Merge recent legacy branch updates to 5.0-active branch.
 
 	* Makefile.in include/ddk/ntifs.h include/ddk/winddk.h
@@ -275,7 +282,7 @@
 	(struct _PARTITION_INFORMATION_GPT, struct _DISK_PARTITION_INFO)
 	(PARTITION_INFORMATION_GPT, *PPARTITION_INFORMATION_GPT)
 	(DISK_PARTITION_INFO, *PDISK_PARTITION_INFO): Factor out.
-	(struct _GET_LENGTH_INFORMATION) 
+	(struct _GET_LENGTH_INFORMATION)
 	(GET_LENGTH_INFORMATION, PGET_LENGTH_INFORMATION)
 	(struct _DISK_PERFORMANCE, DISK_PERFORMANCE, PDISK_PERFORMANCE)
 	(struct _DISK_PERFORMANCE_EX, DISK_PERFORMANCE_EX, PDISK_PERFORMANCE_EX)

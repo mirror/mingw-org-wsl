@@ -341,8 +341,7 @@ SRCDIST_ADD = $1-srcdist-files: $(addprefix ${$1_srcdir}/,$2)
 
 $(call SRCDIST_ADD,w32api,ChangeLog CONTRIBUTIONS README.w32api TODO)
 $(call SRCDIST_ADD,w32api,configure configure.ac aclocal.m4 Makefile.in)
-$(call SRCDIST_ADD,w32api,config.guess config.sub install-sh)
-$(call SRCDIST_ADD,w32api,include lib)
+$(call SRCDIST_ADD,w32api,install-sh include lib)
 
 
 # Clean-up Rules

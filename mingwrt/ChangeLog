@@ -1,5 +1,11 @@
 2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Discard redundant config.guess and config.sub files.
+
+	* config.guess config.sub: Delete them; they are no longer required.
+
+2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Merge recent legacy branch updates to 5.0-active branch.
 
 	* Makefile.in include/ctype.h include/excpt.h include/stdint.h
@@ -358,7 +364,7 @@
 	[__need_ssize_t, __need_time_t]: Move corresponding #undef out of, and
 	after the respective conditional blocks, which provide each associated
 	typedef, so ensuring that any repeat request is properly reset.
-	
+
 	* include/time.h [__need_time_t]: Always delegate to <sys/types.h> for
 	typedef, and reset of request, even in cases where...
 	[_TIME_H]: ...this is already defined.
