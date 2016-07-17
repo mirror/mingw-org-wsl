@@ -78,6 +78,7 @@ mkinstalldirs = @MKDIR_P@ $(addprefix $1,$2)
 
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@ $1 $2
+LN_S = @LN_S@
 
 # Keep the configuration in a consistent state.  Note that we assume
 # that configure has been run initially, (otherwise we wouldn't have
@@ -112,6 +113,9 @@ vpath %.m4 ${top_srcdir}
 vpath configure.ac ${top_srcdir}
 configure: configure.ac aclocal.m4 VERSION.m4
 	cd ${top_srcdir}; autoconf
+
+${top_srcdir}/%: ${top_srcdir}/../%
+	cd $(dir $@) && $(LN_S) -f ../$* .
 
 # Propagate package version, as configured, consistently throughout
 # the package build.
@@ -340,9 +344,8 @@ mingwrt-devdist w32api-devdist: %-devdist: %-dist-staged
 SRCDIST_ADD = $1-srcdist-files: $(addprefix ${$1_srcdir}/,$2)
 
 $(call SRCDIST_ADD,w32api,ChangeLog CONTRIBUTIONS README.w32api TODO)
-$(call SRCDIST_ADD,w32api,configure configure.ac aclocal.m4 Makefile.in)
-$(call SRCDIST_ADD,w32api,install-sh include lib)
-
+$(call SRCDIST_ADD,w32api,configure configure.ac aclocal.m4 VERSION.m4)
+$(call SRCDIST_ADD,w32api,Makefile.in install-sh include lib)
 
 # Clean-up Rules
 # --------------

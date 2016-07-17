@@ -1,3 +1,12 @@
+2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Eliminate redundant configuration files.
+
+	* aclocal.m4 VERSION.m4: Delete them; restore them on demand, via...
+	* Makefile.in ($top_srcdir/../%): ...this symlink dependency rule.
+
+	* configure.ac (AC_PROG_LN_S): Add configuration check.
+
 2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Discard redundant config.guess and config.sub files.

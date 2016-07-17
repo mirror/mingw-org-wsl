@@ -105,6 +105,7 @@ INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@ $1 $2
 
 mkinstalldirs = @MKDIR_P@ $(addprefix $1,$2)
+LN_S = @LN_S@
 
 # Keep the configuration in a consistent state.  Note that we assume
 # that configure has been run initially, (otherwise we wouldn't have
@@ -140,6 +141,9 @@ vpath %.m4 ${top_srcdir}
 vpath configure.ac ${top_srcdir}
 configure: configure.ac aclocal.m4 VERSION.m4
 	cd ${top_srcdir}; autoconf
+
+${top_srcdir}/%: ${top_srcdir}/../%
+	cd $(dir $@) && $(LN_S) -f ../$* .
 
 # Propagate package version, as configured, consistently throughout
 # the package build.
@@ -871,8 +875,8 @@ mingwrt-srcdist-files:
 mingwrt-srcdist-files: $(wildcard ${mingwrt_srcdir}/*.[chs]) \
   $(addprefix ${mingwrt_srcdir}/,ChangeLog CONTRIBUTORS DISCLAIMER README) \
   $(wildcard ${mingwrt_srcdir}/*.def.in) $(wildcard ${mingwrt_srcdir}/config*) \
-  $(addprefix ${mingwrt_srcdir}/,aclocal.m4 install-sh Makefile.in TODO) \
-  $(addprefix ${mingwrt_srcdir}/,include man mingwex profile) \
+  $(addprefix ${mingwrt_srcdir}/,aclocal.m4 VERSION.m4 install-sh Makefile.in) \
+  $(addprefix ${mingwrt_srcdir}/,TODO include man mingwex profile) \
   $(addprefix ${mingwrt_srcdir}/,msvcrt-xref crtdll.def) \
   $(wildcard ${mingwrt_srcdir}/*.txt)
 

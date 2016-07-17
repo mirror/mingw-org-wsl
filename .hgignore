@@ -3,6 +3,7 @@ build/
 Makefile
 configure
 autom4te.cache/
+{mingwrt,w32api}/{aclocal,VERSION}.m4
 config.status
 **.swp
 **.log

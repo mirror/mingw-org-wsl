@@ -1,3 +1,10 @@
+2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Eliminate redundant configuration files.
+
+	* .gitignore .hgignore (mingwrt/aclocal.m4, mingwrt/VERSION.m4)
+	(w32api/aclocal.m4, w32api/VERSION.m4): Remove from SCM control.
+
 2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Support 'install-strip' as a universal make goal.
