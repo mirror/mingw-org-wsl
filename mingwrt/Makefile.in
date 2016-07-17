@@ -873,7 +873,7 @@ mingwrt-srcdist-files: $(wildcard ${mingwrt_srcdir}/*.[chs]) \
   $(wildcard ${mingwrt_srcdir}/*.def.in) $(wildcard ${mingwrt_srcdir}/config*) \
   $(addprefix ${mingwrt_srcdir}/,aclocal.m4 install-sh Makefile.in TODO) \
   $(addprefix ${mingwrt_srcdir}/,include man mingwex profile) \
-  $(addprefix ${mingwrt_srcdir}/,crtdll.def) \
+  $(addprefix ${mingwrt_srcdir}/,msvcrt-xref crtdll.def) \
   $(wildcard ${mingwrt_srcdir}/*.txt)
 
 install-html install-pdf: install-%: %dir mingwrt-man$(man3ext)

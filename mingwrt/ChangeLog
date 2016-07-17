@@ -1,3 +1,13 @@
+2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge mingwrt-3.22 packaging correction to 5.0-active branch.
+
+2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct mingwrt-3.22 source package subdirectory omission.
+
+	* Makefile.in (mingwrt-srcdist-files): Add msvcrt-xref.
+
 2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Discard redundant config.guess and config.sub files.
