@@ -1,3 +1,9 @@
+2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct source package omission of msvcrt-xref subdirectory.
+
+	* Makefile.in (mingwrt-srcdist-files): Add msvcrt-xref.
+
 2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag all files for release of mingwrt-3.22.
