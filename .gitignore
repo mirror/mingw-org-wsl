@@ -4,8 +4,10 @@ configure
 autom4te.cache
 mingwrt/aclocal.m4
 mingwrt/VERSION.m4
+mingwrt/install-sh
 w32api/aclocal.m4
 w32api/VERSION.m4
+w32api/install-sh
 config.status
 missing
 depcomp

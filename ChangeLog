@@ -1,3 +1,10 @@
+2016-07-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update install-sh to match mingw.org/build-aux package.
+
+	* install-sh: New file; copied from build-aux package, it replaces...
+	* mingwrt/install-sh w32api/install-sh: ...both of these.
+
 2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Eliminate redundant configuration files.

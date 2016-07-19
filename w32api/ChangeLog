@@ -1,3 +1,10 @@
+2016-07-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update install-sh to match mingw.org/build-aux package.
+
+	* install-sh: Delete it; use version in parent directory instead,
+	recreating local copy, (as symlink, if supported), on demand.
+
 2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Eliminate redundant configuration files.
