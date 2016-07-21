@@ -1,5 +1,11 @@
 2016-07-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Prepare and tag all files for release of w32api-3.18.1
+
+	* configure.ac (AC_INIT): Increment patch level to 3.18.1
+
+2016-07-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Resolve improper macro expansion issue [#2307].
 
 	* include/ddk/winddk.h (__FILE_AM_BUFFERED, __FILE_RD_BUFFERED)
