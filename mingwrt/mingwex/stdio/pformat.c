@@ -1752,10 +1752,13 @@ void __pformat_xldouble( long double x, __pformat_t *stream )
 static __pformat_inline__
 /* Inline helper to accumulate a running total of successive
  * decimal digits, optimized to use bitwise shifts to multiply
- * the total of more significant digits by ten.
+ * the total of more significant digits by ten; (note that we
+ * coerce negative totals to zero, since this implementation
+ * never needs to accumulate negative values, but it must be
+ * able to override an initial PFORMAT_IGNORE (-1) setting).
  */
 int __pformat_imul10plus( int total, int units )
-{ return units + ((total == 0) ? 0 : ((total + (total << 2)) << 1)); }
+{ return units + ((total >= 0) ? ((total + (total << 2)) << 1) : 0); }
 
 static
 int __pformat_read_arg_index( const char **fmt )
@@ -3110,21 +3113,18 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list args )
 	    if( (state < PFORMAT_END) && isdigit( c ) )
 	    {
 	      if( state == PFORMAT_INIT )
-		/*
-		 * Initial digits explicitly relate to field width...
+		/* Initial digits explicitly relate to field width...
 		 */
 		state = PFORMAT_SET_WIDTH;
 
 	      else if( state == PFORMAT_GET_PRECISION )
-		/*
-		 * while those following a precision indicator
+		/* while those following a precision indicator
 		 * explicitly relate to precision.
 		 */
 		state = PFORMAT_SET_PRECISION;
 
 	      if( width_spec )
-	      {
-		/* We are accepting a width or precision specification;
+	      { /* We are accepting a width or precision specification;
 		 * add the units value represented by the current digit,
 		 * to ten times the value accumulated so far.
 		 */
@@ -3149,7 +3149,6 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list args )
        */
       __pformat_putc( c, &stream );
   }
-
   /* Clean up the resource pool, which was allocated for local processing of
    * the passed-in argument vector in either sequential or random order.
    */

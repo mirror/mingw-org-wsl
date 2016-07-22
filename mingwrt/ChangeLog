@@ -1,3 +1,12 @@
+2016-07-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix printf() field width parsing regression issue [#2309].
+
+	* mingwex/stdio/pformat.c (__imul10plus): Coerce any accumulated
+	negative total to zero; the only negative value to be handled is...
+	(PFORMAT_IGNORE): ...this; it ceases to be applicable, on first call
+	to __imul10plus(), to accumulate field width or precision.
+
 2016-07-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct source package omission of msvcrt-xref subdirectory.
