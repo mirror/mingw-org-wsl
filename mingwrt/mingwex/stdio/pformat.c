@@ -1758,7 +1758,7 @@ static __pformat_inline__
  * able to override an initial PFORMAT_IGNORE (-1) setting).
  */
 int __pformat_imul10plus( int total, int units )
-{ return units + ((total >= 0) ? ((total + (total << 2)) << 1) : 0); }
+{ return units + ((total > 0) ? ((total + (total << 2)) << 1) : 0); }
 
 static
 int __pformat_read_arg_index( const char **fmt )

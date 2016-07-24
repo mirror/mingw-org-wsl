@@ -1,3 +1,11 @@
+2016-07-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Optimize printf() field width accumulation function.
+
+	* mingwex/stdio/pformat.c (__imul10plus): Omit multiply by ten on
+	already accumulated zero total; it is unnecessary, since ten times
+	zero is still zero.
+
 2016-07-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix printf() field width parsing regression issue [#2309].
