@@ -1,3 +1,13 @@
+2016-07-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Interim workaround for issue [#2306].
+
+	* mingwex/math/powl.c: Tidy layout; correct indentation.
+	(powl, reducl): Use ISO-C declaration syntax; K&R is obsolescent.
+	(powl) [OVERFLOW]: Correct representation of return value, using...
+	(INFINITYL): ...this manifest constant value, instead of...
+	(MAXNUML): ...this.
+
 2016-07-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Optimize printf() field width accumulation function.
