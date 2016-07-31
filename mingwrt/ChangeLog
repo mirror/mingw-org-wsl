@@ -1,5 +1,12 @@
 2016-07-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Prepare and tag all files for release of mingwrt-3.22.1.
+
+	* configure.ac (AC_INIT): Adjust package version number; append
+	patch level identification.
+
+2016-07-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Interim workaround for issue [#2306].
 
 	* mingwex/math/powl.c: Tidy layout; correct indentation.
