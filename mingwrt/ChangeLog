@@ -1,5 +1,23 @@
 2016-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Implement POSIX conforming getline() and getdelim() functions.
+
+	* mingwrt/mingwex/stdio/getdelim.c: New file.
+	* mingwrt/man/getline.3.man: Likewise.
+
+	* mingwrt/include/stdio.h [_POSIX_C_SOURCE >= 200809L]
+	(getdelim): New function, implemented externally; declare prototype.
+	(getline): New function; declare prototype; implement as __CRT_ALIAS
+	inline, with __LIBIMPL__ external representation.
+
+	* mingwrt/Makefile.in (libmingwex.a): Add getdelim.$OBJEXT
+	(mingwrt-man$man3ext): Add manpage dependency references to create...
+	(getline.$man3ext, getdelim.$man3ext): ...these; declare them as
+	distributable duplicates, to be generated from...
+	(getline.$man3ext.man): ...this common source.
+
+2016-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Merge mingwrt-3.22.1 legacy updates to 5.0-active branch.
 
 	* mingwex/math/powl.c: Update per issue [#2036] workaround.

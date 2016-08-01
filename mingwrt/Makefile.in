@@ -487,14 +487,13 @@ $(addsuffix fmt.$(OBJEXT),varo crto geto seto crtn getn setn): %.$(OBJEXT): ofmt
 
 # Some additional miscellaneous functions, in libmingwex.a
 #
-#libmingwex.a: $(addsuffix .$(OBJEXT), glob membarrier)
 libmingwex.a: $(addsuffix .$(OBJEXT), mingw-aligned-malloc mingw-fseek)
 libmingwex.a: $(addsuffix .$(OBJEXT), glob getopt basename dirname nsleep)
 libmingwex.a: $(addsuffix .$(OBJEXT), mkstemp mkdtemp cryptnam)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), tdelete tfind tsearch twalk)
 
-libmingwex.a: gettimeofday.$(OBJEXT)
+libmingwex.a: $(addsuffix .$(OBJEXT), getdelim gettimeofday)
 libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn)
 
 vpath %.s ${mingwrt_srcdir}/mingwex
@@ -772,7 +771,7 @@ install-%-dll-files:
 #
 vpath %.man ${mingwrt_srcdir}/man
 install-man install-manpages: install-mingwrt-manpages
-mingwrt-man$(man3ext): $(addsuffix .$(man3ext),basename dirname)
+mingwrt-man$(man3ext): $(addsuffix .$(man3ext),basename dirname getline getdelim)
 install-mingwrt-manpages: mandir mingwrt-man3
 
 mingwrt-man%:
@@ -788,6 +787,9 @@ format_manpage = sed \
 
 basename.$(man3ext): export reference_manpage = dirname.$(man3ext).man
 basename.$(man3ext): %: %.mancopy-recursive
+
+getdelim.$(man3ext): export reference_manpage = getline.$(man3ext).man
+getdelim.$(man3ext): %: %.mancopy-recursive
 
 %.mancopy-recursive:
 	$(MAKE) --no-print-directory $*.mancopy

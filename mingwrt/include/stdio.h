@@ -587,9 +587,29 @@ int _vswprintf_p_l (wchar_t *, size_t, const wchar_t *, locale_t, __VALIST);
 #endif	/* ! (defined _STDIO_H && defined _WCHAR_H) */
 #ifdef _STDIO_H
 /* Once again, back to <stdio.h> specific declarations.
- *
- *
- * Formatted Input
+ */
+#if _POSIX_C_SOURCE >= 200809L
+/* POSIX standard IEEE 1003.1-2008 added getdelim() and getline()
+ */
+__cdecl __MINGW_NOTHROW ssize_t
+getdelim (char ** __restrict__, size_t * __restrict__, int, FILE * __restrict__);
+
+__cdecl __MINGW_NOTHROW ssize_t
+getline (char ** __restrict__, size_t * __restrict__, FILE * __restrict__);
+
+#ifndef __NO_INLINE__
+/* getline() is a trivial specialization of getdelim(), which may
+ * be readily expressed by inline expansion.
+ */
+__CRT_ALIAS __LIBIMPL__(( FUNCTION = getline ))
+__cdecl __MINGW_NOTHROW ssize_t getline
+( char **__restrict__ __l, size_t *__restrict__ __n, FILE *__restrict__ __s )
+{ return getdelim( __l, __n, '\n', __s ); }
+
+#endif  /* !__NO_INLINE__ */
+#endif  /* POSIX.1-2008 */
+
+/* Formatted Input
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int    fscanf (FILE *, const char *, ...);
 _CRTIMP __cdecl __MINGW_NOTHROW  int    scanf (const char *, ...);
