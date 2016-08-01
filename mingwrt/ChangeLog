@@ -1,3 +1,45 @@
+2016-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge mingwrt-3.22.1 legacy updates to 5.0-active branch.
+
+	* mingwex/math/powl.c: Update per issue [#2036] workaround.
+	* mingwex/stdio/pformat.c: Likewise, per issue [#2309] resolution,
+	and subsequent 2016-07-24 optimization.
+
+2016-07-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag all files for release of mingwrt-3.22.1.
+
+	* configure.ac (AC_INIT): Adjust package version number; append
+	patch level identification.
+
+2016-07-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Interim workaround for issue [#2306].
+
+	* mingwex/math/powl.c: Tidy layout; correct indentation.
+	(powl, reducl): Use ISO-C declaration syntax; K&R is obsolescent.
+	(powl) [OVERFLOW]: Correct representation of return value, using...
+	(INFINITYL): ...this manifest constant value, instead of...
+	(MAXNUML): ...this.
+
+2016-07-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Optimize printf() field width accumulation function.
+
+	* mingwex/stdio/pformat.c (__imul10plus): Omit multiply by ten on
+	already accumulated zero total; it is unnecessary, since ten times
+	zero is still zero.
+
+2016-07-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix printf() field width parsing regression issue [#2309].
+
+	* mingwex/stdio/pformat.c (__imul10plus): Coerce any accumulated
+	negative total to zero; the only negative value to be handled is...
+	(PFORMAT_IGNORE): ...this; it ceases to be applicable, on first call
+	to __imul10plus(), to accumulate field width or precision.
+
 2016-07-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update install-sh to match mingw.org/build-aux package.

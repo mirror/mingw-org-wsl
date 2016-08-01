@@ -1,6 +1,7 @@
-/*							powl.c
+/*
+ * powl.c
  *
- *	Power function, long double precision
+ * Power function, long double precision
  *
  *
  *
@@ -445,334 +446,333 @@ __fast_ldexpl (long double x, int expn)
 #endif
 
 
-long double powl( x, y )
-long double x, y;
+long double powl( long double x, long double y )
 {
-/* double F, Fa, Fb, G, Ga, Gb, H, Ha, Hb */
-int i, nflg, iyflg, yoddint;
-long e;
+  /* double F, Fa, Fb, G, Ga, Gb, H, Ha, Hb */
+  int i, nflg, iyflg, yoddint;
+  long e;
 
-if( y == 0.0L )
-	return( 1.0L );
+  if( y == 0.0L )
+    return( 1.0L );
 
 #ifdef NANS
-if( isnanl(x) )
-	{
-	_SET_ERRNO (EDOM);
-	return( x );
-	}
-if( isnanl(y) )
-	{
-	_SET_ERRNO (EDOM);
-	return( y );
-	}
+  if( isnanl(x) )
+  {
+    _SET_ERRNO (EDOM);
+    return( x );
+  }
+  if( isnanl(y) )
+  {
+    _SET_ERRNO (EDOM);
+    return( y );
+  }
 #endif
 
-if( y == 1.0L )
-	return( x );
+  if( y == 1.0L )
+    return( x );
 
-if( isinfl(y) && (x == -1.0L || x == 1.0L) )
-	return( y );
+  if( isinfl(y) && (x == -1.0L || x == 1.0L) )
+    return( y );
 
-if( x == 1.0L )
-	return( 1.0L );
+  if( x == 1.0L )
+    return( 1.0L );
 
-if( y >= MAXNUML )
-	{
-	_SET_ERRNO (ERANGE);
+  if( y >= MAXNUML )
+  {
+    _SET_ERRNO (ERANGE);
 #ifdef INFINITIES
-	if( x > 1.0L )
-		return( INFINITYL );
+    if( x > 1.0L )
+      return( INFINITYL );
 #else
-	if( x > 1.0L )
-		return( MAXNUML );
+    if( x > 1.0L )
+      return( MAXNUML );
 #endif
-	if( x > 0.0L && x < 1.0L )
-		return( 0.0L );
+    if( x > 0.0L && x < 1.0L )
+      return( 0.0L );
 #ifdef INFINITIES
-	if( x < -1.0L )
-		return( INFINITYL );
+    if( x < -1.0L )
+      return( INFINITYL );
 #else
-	if( x < -1.0L )
-		return( MAXNUML );
+    if( x < -1.0L )
+      return( MAXNUML );
 #endif
-	if( x > -1.0L && x < 0.0L )
-		return( 0.0L );
-	}
-if( y <= -MAXNUML )
-	{
-	_SET_ERRNO (ERANGE);
-	if( x > 1.0L )
-		return( 0.0L );
+    if( x > -1.0L && x < 0.0L )
+      return( 0.0L );
+  }
+  if( y <= -MAXNUML )
+  {
+    _SET_ERRNO (ERANGE);
+    if( x > 1.0L )
+      return( 0.0L );
 #ifdef INFINITIES
-	if( x > 0.0L && x < 1.0L )
-		return( INFINITYL );
+    if( x > 0.0L && x < 1.0L )
+      return( INFINITYL );
 #else
-	if( x > 0.0L && x < 1.0L )
-		return( MAXNUML );
+    if( x > 0.0L && x < 1.0L )
+      return( MAXNUML );
 #endif
-	if( x < -1.0L )
-		return( 0.0L );
+    if( x < -1.0L )
+      return( 0.0L );
 #ifdef INFINITIES
-	if( x > -1.0L && x < 0.0L )
-		return( INFINITYL );
+    if( x > -1.0L && x < 0.0L )
+      return( INFINITYL );
 #else
-	if( x > -1.0L && x < 0.0L )
-		return( MAXNUML );
+    if( x > -1.0L && x < 0.0L )
+      return( MAXNUML );
 #endif
-	}
-if( x >= MAXNUML )
-	{
+  }
+  if( x >= MAXNUML )
+  {
 #if INFINITIES
-	if( y > 0.0L )
-		return( INFINITYL );
+    if( y > 0.0L )
+      return( INFINITYL );
 #else
-	if( y > 0.0L )
-		return( MAXNUML );
+    if( y > 0.0L )
+      return( MAXNUML );
 #endif
-	return( 0.0L );
-	}
+    return( 0.0L );
+  }
 
-w = floorl(y);
-/* Set iyflg to 1 if y is an integer.  */
-iyflg = 0;
-if( w == y )
-	iyflg = 1;
+  w = floorl(y);
+  /* Set iyflg to 1 if y is an integer.  */
+  iyflg = 0;
+  if( w == y )
+    iyflg = 1;
 
-/* Test for odd integer y.  */
-yoddint = 0;
-if( iyflg )
-	{
-	ya = fabsl(y);
-	ya = floorl(0.5L * ya);
-	yb = 0.5L * fabsl(w);
-	if( ya != yb )
-		yoddint = 1;
-	}
+  /* Test for odd integer y.  */
+  yoddint = 0;
+  if( iyflg )
+  {
+    ya = fabsl(y);
+    ya = floorl(0.5L * ya);
+    yb = 0.5L * fabsl(w);
+    if( ya != yb )
+      yoddint = 1;
+  }
 
-if( x <= -MAXNUML )
-	{
-	if( y > 0.0L )
-		{
+  if( x <= -MAXNUML )
+  {
+    if( y > 0.0L )
+    {
 #ifdef INFINITIES
-		if( yoddint )
-			return( -INFINITYL );
-		return( INFINITYL );
+      if( yoddint )
+	return( -INFINITYL );
+      return( INFINITYL );
 #else
-		if( yoddint )
-			return( -MAXNUML );
-		return( MAXNUML );
+      if( yoddint )
+	return( -MAXNUML );
+      return( MAXNUML );
 #endif
-		}
-	if( y < 0.0L )
-		{
+    }
+    if( y < 0.0L )
+    {
 #ifdef MINUSZERO
-		if( yoddint )
-			return( NEGZEROL );
+      if( yoddint )
+	return( NEGZEROL );
 #endif
-		return( 0.0 );
-		}
- 	}
+      return( 0.0 );
+    }
+  }
 
 
-nflg = 0;	/* flag = 1 if x<0 raised to integer power */
-if( x <= 0.0L )
-	{
-	if( x == 0.0L )
-		{
-		if( y < 0.0 )
-			{
+  nflg = 0;	/* flag = 1 if x<0 raised to integer power */
+  if( x <= 0.0L )
+  {
+    if( x == 0.0L )
+    {
+      if( y < 0.0 )
+      {
 #ifdef MINUSZERO
-			if( signbitl(x) && yoddint )
-				return( -INFINITYL );
+	if( signbitl(x) && yoddint )
+	  return( -INFINITYL );
 #endif
 #ifdef INFINITIES
-			return( INFINITYL );
+	return( INFINITYL );
 #else
-			return( MAXNUML );
-#endif
-			}
-		if( y > 0.0 )
-			{
-#ifdef MINUSZERO
-			if( signbitl(x) && yoddint )
-				return( NEGZEROL );
-#endif
-			return( 0.0 );
-			}
-		if( y == 0.0L )
-			return( 1.0L );  /*   0**0   */
-		else
-			return( 0.0L );  /*   0**y   */
-		}
-	else
-		{
-		if( iyflg == 0 )
-			{ /* noninteger power of negative number */
-			mtherr( fname, DOMAIN );
-			_SET_ERRNO (EDOM);
-#ifdef NANS
-			return(NANL);
-#else
-			return(0.0L);
-#endif
-			}
-		nflg = 1;
-		}
-	}
-
-/* Integer power of an integer.  */
-
-if( iyflg )
-	{
-	i = w;
-	w = floorl(x);
-	if( (w == x) && (fabsl(y) < 32768.0) )
-		{
-		w = __powil( x, (int) y );
-		return( w );
-		}
-	}
-
-
-if( nflg )
-	x = fabsl(x);
-
-/* separate significand from exponent */
-x = frexpl( x, &i );
-e = i;
-
-/* find significand in antilog table A[] */
-i = 1;
-if( x <= douba(17) )
-	i = 17;
-if( x <= douba(i+8) )
-	i += 8;
-if( x <= douba(i+4) )
-	i += 4;
-if( x <= douba(i+2) )
-	i += 2;
-if( x >= douba(1) )
-	i = -1;
-i += 1;
-
-
-/* Find (x - A[i])/A[i]
- * in order to compute log(x/A[i]):
- *
- * log(x) = log( a x/a ) = log(a) + log(x/a)
- *
- * log(x/a) = log(1+v),  v = x/a - 1 = (x-a)/a
- */
-x -= douba(i);
-x -= doubb(i/2);
-x /= douba(i);
-
-
-/* rational approximation for log(1+v):
- *
- * log(1+v)  =  v  -  v**2/2  +  v**3 P(v) / Q(v)
- */
-z = x*x;
-w = x * ( z * polevll( x, P, 3 ) / p1evll( x, Q, 3 ) );
-w = w - ldexpl( z, -1 );   /*  w - 0.5 * z  */
-
-/* Convert to base 2 logarithm:
- * multiply by log2(e) = 1 + LOG2EA
- */
-z = LOG2EA * w;
-z += w;
-z += LOG2EA * x;
-z += x;
-
-/* Compute exponent term of the base 2 logarithm. */
-w = -i;
-w = ldexpl( w, -LNXT );	/* divide by NXT */
-w += e;
-/* Now base 2 log of x is w + z. */
-
-/* Multiply base 2 log by y, in extended precision. */
-
-/* separate y into large part ya
- * and small part yb less than 1/NXT
- */
-ya = reducl(y);
-yb = y - ya;
-
-/* (w+z)(ya+yb)
- * = w*ya + w*yb + z*y
- */
-F = z * y  +  w * yb;
-Fa = reducl(F);
-Fb = F - Fa;
-
-G = Fa + w * ya;
-Ga = reducl(G);
-Gb = G - Ga;
-
-H = Fb + Gb;
-Ha = reducl(H);
-w = ldexpl( Ga + Ha, LNXT );
-
-/* Test the power of 2 for overflow */
-if( w > MEXP )
-	{
-	_SET_ERRNO (ERANGE);
-	mtherr( fname, OVERFLOW );
 	return( MAXNUML );
-	}
+#endif
+      }
+      if( y > 0.0 )
+      {
+#ifdef MINUSZERO
+	if( signbitl(x) && yoddint )
+	  return( NEGZEROL );
+#endif
+	return( 0.0 );
+      }
+      if( y == 0.0L )
+	return( 1.0L );  /*   0**0   */
+      else
+	return( 0.0L );  /*   0**y   */
+    }
+    else
+    {
+      if( iyflg == 0 )
+      { /* noninteger power of negative number */
+	mtherr( fname, DOMAIN );
+	_SET_ERRNO (EDOM);
+#ifdef NANS
+	return(NANL);
+#else
+	return(0.0L);
+#endif
+      }
+      nflg = 1;
+    }
+  }
 
-if( w < MNEXP )
-	{
-	_SET_ERRNO (ERANGE);
-	mtherr( fname, UNDERFLOW );
-	return( 0.0L );
-	}
+  /* Integer power of an integer.  */
 
-e = w;
-Hb = H - Ha;
+  if( iyflg )
+  {
+    i = w;
+    w = floorl(x);
+    if( (w == x) && (fabsl(y) < 32768.0) )
+    {
+      w = __powil( x, (int) y );
+      return( w );
+    }
+  }
 
-if( Hb > 0.0L )
-	{
-	e += 1;
-	Hb -= (1.0L/NXT);  /*0.0625L;*/
-	}
 
-/* Now the product y * log2(x)  =  Hb + e/NXT.
- *
- * Compute base 2 exponential of Hb,
- * where -0.0625 <= Hb <= 0.
- */
-z = Hb * polevll( Hb, R, 6 );  /*    z  =  2**Hb - 1    */
+  if( nflg )
+    x = fabsl(x);
 
-/* Express e/NXT as an integer plus a negative number of (1/NXT)ths.
- * Find lookup table entry for the fractional power of 2.
- */
-if( e < 0 )
-	i = 0;
-else
-	i = 1;
-i = e/NXT + i;
-e = NXT*i - e;
-w = douba( e );
-z = w * z;      /*    2**-e * ( 1 + (2**Hb-1) )    */
-z = z + w;
-z = ldexpl( z, i );  /* multiply by integer power of 2 */
+  /* separate significand from exponent */
+  x = frexpl( x, &i );
+  e = i;
 
-if( nflg )
-	{
-/* For negative x,
- * find out if the integer exponent
- * is odd or even.
- */
-	w = ldexpl( y, -1 );
-	w = floorl(w);
-	w = ldexpl( w, 1 );
-	if( w != y )
-		z = -z; /* odd exponent */
-	}
+  /* find significand in antilog table A[] */
+  i = 1;
+  if( x <= douba(17) )
+    i = 17;
+  if( x <= douba(i+8) )
+    i += 8;
+  if( x <= douba(i+4) )
+    i += 4;
+  if( x <= douba(i+2) )
+    i += 2;
+  if( x >= douba(1) )
+    i = -1;
+  i += 1;
 
-return( z );
+
+  /* Find (x - A[i])/A[i]
+   * in order to compute log(x/A[i]):
+   *
+   * log(x) = log( a x/a ) = log(a) + log(x/a)
+   *
+   * log(x/a) = log(1+v),  v = x/a - 1 = (x-a)/a
+   */
+  x -= douba(i);
+  x -= doubb(i/2);
+  x /= douba(i);
+
+
+  /* rational approximation for log(1+v):
+   *
+   * log(1+v)  =  v  -  v**2/2  +  v**3 P(v) / Q(v)
+   */
+  z = x*x;
+  w = x * ( z * polevll( x, P, 3 ) / p1evll( x, Q, 3 ) );
+  w = w - ldexpl( z, -1 );   /*  w - 0.5 * z  */
+
+  /* Convert to base 2 logarithm:
+   * multiply by log2(e) = 1 + LOG2EA
+   */
+  z = LOG2EA * w;
+  z += w;
+  z += LOG2EA * x;
+  z += x;
+
+  /* Compute exponent term of the base 2 logarithm. */
+  w = -i;
+  w = ldexpl( w, -LNXT );	/* divide by NXT */
+  w += e;
+  /* Now base 2 log of x is w + z. */
+
+  /* Multiply base 2 log by y, in extended precision. */
+
+  /* separate y into large part ya
+   * and small part yb less than 1/NXT
+   */
+  ya = reducl(y);
+  yb = y - ya;
+
+  /* (w+z)(ya+yb)
+   * = w*ya + w*yb + z*y
+   */
+  F = z * y  +  w * yb;
+  Fa = reducl(F);
+  Fb = F - Fa;
+
+  G = Fa + w * ya;
+  Ga = reducl(G);
+  Gb = G - Ga;
+
+  H = Fb + Gb;
+  Ha = reducl(H);
+  w = ldexpl( Ga + Ha, LNXT );
+
+  /* Test the power of 2 for overflow */
+  if( w > MEXP )
+  {
+    _SET_ERRNO (ERANGE);
+    mtherr( fname, OVERFLOW );
+    return( INFINITYL );
+  }
+
+  if( w < MNEXP )
+  {
+    _SET_ERRNO (ERANGE);
+    mtherr( fname, UNDERFLOW );
+    return( 0.0L );
+  }
+
+  e = w;
+  Hb = H - Ha;
+
+  if( Hb > 0.0L )
+  {
+    e += 1;
+    Hb -= (1.0L/NXT);  /*0.0625L;*/
+  }
+
+  /* Now the product y * log2(x)  =  Hb + e/NXT.
+   *
+   * Compute base 2 exponential of Hb,
+   * where -0.0625 <= Hb <= 0.
+   */
+  z = Hb * polevll( Hb, R, 6 );  /*    z  =  2**Hb - 1    */
+
+  /* Express e/NXT as an integer plus a negative number of (1/NXT)ths.
+   * Find lookup table entry for the fractional power of 2.
+   */
+  if( e < 0 )
+    i = 0;
+  else
+    i = 1;
+  i = e/NXT + i;
+  e = NXT*i - e;
+  w = douba( e );
+  z = w * z;      /*    2**-e * ( 1 + (2**Hb-1) )    */
+  z = z + w;
+  z = ldexpl( z, i );  /* multiply by integer power of 2 */
+
+  if( nflg )
+  {
+    /* For negative x,
+     * find out if the integer exponent
+     * is odd or even.
+     */
+    w = ldexpl( y, -1 );
+    w = floorl(w);
+    w = ldexpl( w, 1 );
+    if( w != y )
+      z = -z; /* odd exponent */
+  }
+
+  return( z );
 }
 
 static __inline__ long double
@@ -786,18 +786,18 @@ __convert_inf_to_maxnum(long double x)
 
 
 /* Find a multiple of 1/NXT that is within 1/NXT of x. */
-static __inline__ long double reducl(x)
-long double x;
+static __inline__ long double reducl( long double x )
 {
-long double t;
+  long double t;
 
-/* If the call to ldexpl overflows, set it to MAXNUML.
-   This avoids Inf - Inf = Nan result when calculating the 'small'
-   part of a reduction.  Instead, the small part becomes Inf,
-   causing under/overflow when adding it to the 'large' part.
-   There must be a cleaner way of doing this. */
-t =  __convert_inf_to_maxnum (ldexpl( x, LNXT ));
-t = floorl( t );
-t = ldexpl( t, -LNXT );
-return(t);
+  /* If the call to ldexpl overflows, set it to MAXNUML.
+   * This avoids Inf - Inf = Nan result when calculating the 'small'
+   * part of a reduction.  Instead, the small part becomes Inf,
+   * causing under/overflow when adding it to the 'large' part.
+   * There must be a cleaner way of doing this.
+   */
+  t =  __convert_inf_to_maxnum (ldexpl( x, LNXT ));
+  t = floorl( t );
+  t = ldexpl( t, -LNXT );
+  return(t);
 }
