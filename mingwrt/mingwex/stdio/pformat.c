@@ -1,8 +1,3 @@
-/* FIXME: to be removed one day; for now we explicitly are not
- * prepared to support the POSIX-XSI additions to the C99 standard.
- */
-#undef  WITH_XSI_FEATURES
-
 /* pformat.c
  *
  * $Id$
@@ -134,6 +129,7 @@
 #define PFORMAT_XCASE       0x0020
 
 #define PFORMAT_LDOUBLE     0x0004
+#define PFORMAT_GROUPED     0x0001
 
 /* `%o' format digit extraction mask, and shift count...
  * (These are constant, and do not propagate through the flags).
@@ -279,6 +275,9 @@ typedef struct
   int            count;
   int            quota;
   int            expmin;
+  int            tslen;
+  wchar_t        tschr;
+  char *         grouping;
 } __pformat_t;
 
 static
@@ -465,6 +464,56 @@ void __pformat_wcputs( const wchar_t *s, __pformat_t *stream )
   __pformat_wputchars( s, wcslen( s ), stream );
 }
 
+static
+int __pformat_enable_thousands_grouping( __pformat_t *stream )
+{
+  /* Helper to activate the thousands digits grouping feature,
+   * for any numeric conversion specification which includes the
+   * apostrophe flag, subject to an appropriate grouping strategy
+   * being defined within the current locale.
+   */
+  int enabled = stream->flags & PFORMAT_GROUPED;
+  if( (enabled == PFORMAT_GROUPED) && (stream->tslen == PFORMAT_RPINIT) )
+  {
+    /* Grouping has been requested, but we don't yet know if it
+     * is supported for the current locale; (it normally isn't in
+     * the default C/POSIX locale).  Link a copy of the locale's
+     * grouping strategy, if any, into the stream control block...
+     */
+    stream->grouping = strdup( localeconv()->grouping );
+    if( (stream->grouping != NULL) && (*stream->grouping != '\0') )
+    {
+      /* ...and when at least one non-zero group size is specified,
+       * applying to the least significant digit group, (provided it
+       * isn't CHAR_MAX, which subsequently terminates grouping for
+       * more significant digits), also store a copy of the group
+       * separator character, (encoded as a UTF-16LE character,
+       * with its corresponding MBCS byte count).
+       */
+      int len = 0; wchar_t ts; mbstate_t state;
+      memset( &state, 0, sizeof( state ) );
+      if(  (*stream->grouping < CHAR_MAX)
+      &&  ((len = mbrtowc( &ts, localeconv()->thousands_sep, 16, &state )) > 0)  )
+	stream->tschr = ts;
+      stream->tslen = len;
+    }
+    /* Check that we've established a usable grouping strategy, (but
+     * note that an apparently viable grouping sequence also requires
+     * a serviceable separator character...
+     */
+    if( stream->tschr == (wchar_t)(0) )
+    {
+      /* ...otherwise it becomes non-viable, so we disable it).
+       */
+      free( stream->grouping ); stream->grouping = NULL;
+      enabled = (stream->flags &= ~PFORMAT_GROUPED);
+    }
+  }
+  /* Finally, return the enabled status for a viable grouping strategy.
+   */
+  return enabled == PFORMAT_GROUPED;
+}
+
 static __inline__
 int __pformat_int_bufsiz( int bias, int size, __pformat_t *stream )
 {
@@ -474,7 +523,128 @@ int __pformat_int_bufsiz( int bias, int size, __pformat_t *stream )
    */
   size = ((size - 1 + LLONGBITS) / size) + bias;
   size += (stream->precision > 0) ? stream->precision : 0;
+
+  /* If thousands digits grouping is requested, and viable, we
+   * must reserve additional buffer space, to store the internal
+   * representation of the group separator characters...
+   */
+  if( __pformat_enable_thousands_grouping( stream ) )
+    /*
+     * ...by simply doubling the requested buffer size; (while
+     * this may be excessive, it should certainly be safe).
+     */
+    size <<= 1;
+
+  /* Finally, return the greater of the computed minimum buffer
+   * size, and the originally requested field width.
+   */
   return (size > stream->width) ? size : stream->width;
+}
+
+static
+int __pformat_emit_punct( wchar_t code, int len, __pformat_t *stream )
+{
+  /* Helper to place the external representation of either the radix
+   * point character, or the thousands digits group separator character,
+   * which is applicable in the current locale, into the output stream.
+   */
+  if( code != (wchar_t)(0) )
+  {
+    /* We have a localised radix point or thousands separator mark;
+     * establish a converter to make it a multibyte character...
+     */
+    char buf[len]; mbstate_t state;
+
+    /* Initialise the conversion state...
+     */
+    memset( &state, 0, sizeof( state ) );
+
+    /* Convert the `wchar_t' representation to multibyte...
+     */
+    if( (len = wcrtomb( buf, code, &state )) > 0 )
+    {
+      /* ...and copy to the output destination, when valid.
+       */
+      char *p = buf;
+      while( len-- > 0 )
+	__pformat_putc( *p++, stream );
+
+      /* The requested output has been completed; inform the caller
+       * that no further fall back output is required.
+       */
+      return 0;
+    }
+  }
+  /* If we get to here, there was no appropriate localisation for the
+   * requested output; inform the caller that it may wish to provide
+   * fall back output, by returning a non-zero value.
+   */
+  return ~0;
+}
+
+static
+void __pformat_emit_digit( int c, __pformat_t *stream )
+{
+  /* Helper to transfer the individual digits of any decimal numeric
+   * value representation to the output stream; (note that the radix
+   * point and thousands digits group separator are considered to be
+   * special cases of "digits", internally represented by ASCII '.'
+   * and ASCII comma, respectively).
+   */
+  switch( c )
+  {
+    case '.':
+      /* Helper to place a localised representation of the radix point
+       * character at the ultimate destination, when formatting fixed or
+       * floating point numbers.
+       */
+      if( stream->rplen == PFORMAT_RPINIT )
+      {
+	/* Radix point initialisation not yet completed;
+	 * establish a multibyte to `wchar_t' converter...
+	 */
+	int len; wchar_t rpchr; mbstate_t state;
+
+	/* Initialise the conversion state...
+	 */
+	memset( &state, 0, sizeof( state ) );
+
+	/* Fetch and convert the localised radix point representation...
+	 */
+	if( (len = mbrtowc( &rpchr, localeconv()->decimal_point, 16, &state )) > 0 )
+	  /*
+	   * and store it, if valid.
+	   */
+	  stream->rpchr = rpchr;
+
+	/* In any case, store the reported effective multibyte length,
+	 * (or the error flag), marking initialisation as `done'.
+	 */
+	stream->rplen = len;
+      }
+
+      /* Emit the localised radix point character code, if available...
+       */
+      if( __pformat_emit_punct( stream->rpchr, stream->rplen, stream ) )
+	/*
+	 * ...otherwise fall back to use of ASCII '.'
+	 */
+	__pformat_putc( '.', stream );
+      break;
+
+    case ',':
+      /* Helper to emit the localised representation of the thousands
+       * digit separator character, if available; in this case, although
+       * we never expect it to arise, the fall back is to emit nothing.
+       */
+      (void)(__pformat_emit_punct( stream->tschr, stream->tslen, stream ));
+      break;
+
+    default:
+      /* Helper to emit any regular digit character.
+       */
+      __pformat_putc( c, stream );
+  }
 }
 
 static
@@ -487,7 +657,20 @@ void __pformat_int( __pformat_intarg_t value, __pformat_t *stream )
    * output will be truncated, if any specified quota is exceeded.
    */
   char buf[__pformat_int_bufsiz(1, PFORMAT_OSHIFT, stream)];
-  char *p = buf; int precision;
+  char *p = buf, *grouping = NULL; int precision, groupsize = 0;
+
+  /* First check if thousands grouping can be supported, and has been
+   * requested, for the digits of this integer valued field; (note that
+   * supportability has already been verified, as a side effect of the
+   * computation of the necessary transfer buffer size)...
+   */
+  if(  (stream->grouping != NULL)
+  &&  ((stream->flags & PFORMAT_GROUPED) == PFORMAT_GROUPED)
+  /*
+   * ...and initialise the grouping counter controls accordingly.
+   */
+  &&  ((groupsize = *stream->grouping) > 0) && (groupsize != CHAR_MAX)  )
+    grouping = stream->grouping;
 
   if( stream->flags & PFORMAT_NEGATIVE )
   {
@@ -511,8 +694,25 @@ void __pformat_int( __pformat_intarg_t value, __pformat_t *stream )
    */
   while( value.__pformat_ullong_t )
   {
-    /* decomposing it into its constituent decimal digits,
-     * in order from least significant to most significant, using
+    /* decomposing it into its constituent decimal digits...
+     */
+    if( (grouping != NULL) && (groupsize-- == 0) )
+    {
+      /* noting that, when thousands grouping is in effect, and
+       * we are currently at a group boundary, we must reset the
+       * grouping counter...
+       */
+      groupsize = (grouping[1] != '\0') ? *++grouping : *grouping;
+      if( groupsize-- == CHAR_MAX )
+	grouping = NULL;
+
+      /* and store a group separator mark, using a simple ASCII
+       * comma to represent it internally...
+       */
+      *p++ = ',';
+    }
+    /* before recording each digit from the decomposition, in
+     * order from least significant to most significant, using
      * the local buffer as a LIFO queue in which to store them.
      */
     *p++ = '0' + (unsigned char)(value.__pformat_ullong_t % 10LL);
@@ -588,17 +788,28 @@ void __pformat_int( __pformat_intarg_t value, __pformat_t *stream )
      * Emit the accumulated constituent digits,
      * in order from most significant to least significant...
      */
-    __pformat_putc( *--p, stream );
+    __pformat_emit_digit( *--p, stream );
 
   while( stream->width-- > 0 )
-    /*
-     * The specified output field has not yet been completely filled;
+    /* The specified output field has not yet been completely filled;
      * the `-' flag must be in effect, resulting in a displayed value which
      * appears left justified within the output field; we must pad the field
      * to the right of the displayed value, by emitting additional spaces,
      * until we reach the rightmost field boundary.
      */
     __pformat_putc( '\x20', stream );
+}
+
+static __pformat_inline__
+int __pformat_xint_bufsiz( int bias, int size, __pformat_t *stream )
+{
+  /* The xint formats do not support thousands grouping; (POSIX specifies
+   * only that the behaviour is undefined, if such grouping is requested).
+   * We will ensure that any such request is simply ignored, before using
+   * our int format determination of required buffer size.
+   */
+  stream->flags &= ~PFORMAT_GROUPED;
+  return __pformat_int_bufsiz( bias, size, stream );
 }
 
 static
@@ -614,7 +825,7 @@ void __pformat_xint( int fmt, __pformat_intarg_t value, __pformat_t *stream )
   int width;
   int mask = (fmt == 'o') ? PFORMAT_OMASK : PFORMAT_XMASK;
   int shift = (fmt == 'o') ? PFORMAT_OSHIFT : PFORMAT_XSHIFT;
-  char buf[__pformat_int_bufsiz(2, shift, stream)];
+  char buf[__pformat_xint_bufsiz(2, shift, stream)];
   char *p = buf;
 
   while( value.__pformat_ullong_t )
@@ -828,8 +1039,7 @@ char *__pformat_fcvt( long double x, int precision, int *dp, int *sign )
 #define __pformat_fcvt_release( value ) __freedtoa( value )
 
 #else
-/*
- * TODO: remove this before final release; it is included here as a
+/* TODO: remove this before final release; it is included here as a
  * convenience for testing, without requiring a working `__gdtoa()'.
  */
 static __inline__
@@ -882,90 +1092,6 @@ char *__pformat_fcvt( long double x, int precision, int *dp, int *sign )
 /* TODO: end of conditional to be removed. */
 #endif
 
-static __inline__
-void __pformat_emit_radix_point( __pformat_t *stream )
-{
-  /* Helper to place a localised representation of the radix point
-   * character at the ultimate destination, when formatting fixed or
-   * floating point numbers.
-   */
-  if( stream->rplen == PFORMAT_RPINIT )
-  {
-    /* Radix point initialisation not yet completed;
-     * establish a multibyte to `wchar_t' converter...
-     */
-    int len; wchar_t rpchr; mbstate_t state;
-
-    /* Initialise the conversion state...
-     */
-    memset( &state, 0, sizeof( state ) );
-
-    /* Fetch and convert the localised radix point representation...
-     */
-    if( (len = mbrtowc( &rpchr, localeconv()->decimal_point, 16, &state )) > 0 )
-      /*
-       * and store it, if valid.
-       */
-      stream->rpchr = rpchr;
-
-    /* In any case, store the reported effective multibyte length,
-     * (or the error flag), marking initialisation as `done'.
-     */
-    stream->rplen = len;
-  }
-
-  if( stream->rpchr != (wchar_t)(0) )
-  {
-    /* We have a localised radix point mark;
-     * establish a converter to make it a multibyte character...
-     */
-    int len; char buf[len = stream->rplen]; mbstate_t state;
-
-    /* Initialise the conversion state...
-     */
-    memset( &state, 0, sizeof( state ) );
-
-    /* Convert the `wchar_t' representation to multibyte...
-     */
-    if( (len = wcrtomb( buf, stream->rpchr, &state )) > 0 )
-    {
-      /* and copy to the output destination, when valid...
-       */
-      char *p = buf;
-      while( len-- > 0 )
-	__pformat_putc( *p++, stream );
-    }
-
-    else
-      /* otherwise fall back to plain ASCII '.'...
-       */
-      __pformat_putc( '.', stream );
-  }
-
-  else
-    /* No localisation: just use ASCII '.'...
-     */
-    __pformat_putc( '.', stream );
-}
-
-static __pformat_inline__
-void __pformat_emit_numeric_value( int c, __pformat_t *stream )
-{
-  /* Convenience helper to transfer numeric data from an internal
-   * formatting buffer to the ultimate destination...
-   */
-  if( c == '.' )
-    /* converting this internal representation of the the radix
-     * point to the appropriately localised representation...
-     */
-    __pformat_emit_radix_point( stream );
-
-  else
-    /* and passing all other characters through, unmodified.
-     */
-    __pformat_putc( c, stream );
-}
-
 static
 void __pformat_emit_inf_or_nan( int sign, char *value, __pformat_t *stream )
 {
@@ -1015,19 +1141,68 @@ void __pformat_emit_inf_or_nan( int sign, char *value, __pformat_t *stream )
 }
 
 static
+int __pformat_adjust_for_grouping( int *len, __pformat_t *stream )
+{
+  /* Helper to compute the field width adjustment needed to
+   * accommodate thousands digits group separator characters,
+   * when these are requested for %f, %F, %g, and %G formats.
+   */
+  if( (*len > 0) && __pformat_enable_thousands_grouping( stream ) )
+  {
+    /* Only significant digits to the left of the radix point
+     * are grouped; when "len" indicates that such digits are
+     * present, and when grouping is enabled, then we evaluate
+     * the grouping strategy, to determine how many separators
+     * should be inserted, and adjust "len" to represent the
+     * number of ungrouped digits will be left preceding the
+     * leftmost separator.
+     */
+    char *grouping = stream->grouping;
+    int groupsize = *grouping, groupcount = 0;
+    while( (grouping != NULL) && (*len > groupsize) )
+    {
+      /* Account for possible variant group sizes...
+       */
+      ++groupcount; *len -= groupsize;
+      groupsize = (grouping[1] != '\0') ? *++grouping : *grouping;
+
+      /* ...noting that a group size of CHAR_MAX means that
+       * all more significant digits should remain ungrouped.
+       */
+      if( groupsize == CHAR_MAX )
+	grouping = NULL;
+    }
+    /* Return value is the number of group separators which
+     * are to be inserted into the output field.
+     */
+    return groupcount;
+  }
+  /* If we get to here, there are no significant digits to be
+   * placed to the left of the radix, or grouping has not been
+   * enabled for this conversion; in either case, no adjustment
+   * is required.
+   */
+  return 0;
+}
+
+static
 void __pformat_emit_float( int sign, char *value, int len, __pformat_t *stream )
 {
   /* Helper to emit a fixed point representation of numeric data,
    * as encoded by a prior call to `ecvt()' or `fcvt()'; (this does
    * NOT include the exponent, for floating point format).
    */
-  if( len > 0 )
+  int prefix, gc = 0;
+  if( (prefix = len) > 0 )
   {
     /* The magnitude of `x' is greater than or equal to 1.0...
      * reserve space in the output field, for the required number of
-     * decimal digits to be placed before the decimal point...
+     * decimal digits to be placed before the decimal point, including
+     * any adjustment required to accommodate thousands digits group
+     * separator characters...
      */
-    if( stream->width > len )
+    gc = __pformat_adjust_for_grouping( &prefix, stream );
+    if( stream->width > (len += gc) )
       /*
        * adjusting as appropriate, when width is sufficient...
        */
@@ -1118,12 +1293,22 @@ void __pformat_emit_float( int sign, char *value, int len, __pformat_t *stream )
   /* Emit the digits of the encoded numeric value...
    */
   if( len > 0 )
-    /*
-     * ...beginning with those which precede the radix point,
+    /* ...beginning with those which precede the radix point,
      * and appending any necessary significant trailing zeros.
      */
-    do __pformat_putc( *value ? *value++ : '0', stream );
-       while( --len > 0 );
+    do { __pformat_putc( *value ? *value++ : '0', stream );
+         if( (--prefix == 0) && (gc > 0) )
+	 {
+	   /* When thousands digits grouping has been enabled,
+	    * emit group separators as directed by the grouping
+	    * strategy for the current locale.
+	    */
+	   char *gp = stream->grouping; int c = gc--;
+	   do prefix = *gp++;
+	      while( (*gp != '\0') && (*gp != CHAR_MAX) && (--c > 0) );
+	   __pformat_emit_digit( ',', stream ); --len;
+	 }
+       } while( --len > 0 );
 
   else
     /* The magnitude of the encoded value is less than 1.0, so no
@@ -1137,7 +1322,11 @@ void __pformat_emit_float( int sign, char *value, int len, __pformat_t *stream )
    * the appropriately localised radix point mark here...
    */
   if( (stream->precision > 0) || (stream->flags & PFORMAT_HASHED) )
-    __pformat_emit_radix_point( stream );
+    /*
+     * ...treating it as a special case of digit emission, with
+     * an internal representation equivalent to ASCII period.
+     */
+    __pformat_emit_digit( '.', stream );
 
   /* When the radix point offset, `len', is negative, this implies
    * that additional zeros must appear, following the radix point,
@@ -1170,6 +1359,12 @@ void __pformat_emit_efloat( int sign, char *value, int e, __pformat_t *stream )
    */
   int exp_width = 1;
   __pformat_intarg_t exponent; exponent.__pformat_llong_t = e -= 1;
+
+  /* POSIX explicitly specifies that behaviour is undefined, if the
+   * user requests thousands digits grouping for any efloat format;
+   * we simply overrule any such request.
+   */
+  stream->flags &= ~PFORMAT_GROUPED;
 
   /* Determine how many digit positions are required for the exponent.
    */
@@ -1656,7 +1851,7 @@ void __pformat_emit_xfloat( __pformat_fpreg_t value, __pformat_t *stream )
   /* Next, we emit the encoded value, without its exponent...
    */
   while( p > buf )
-    __pformat_emit_numeric_value( *--p, stream );
+    __pformat_emit_digit( *--p, stream );
 
   /* followed by any additional zeros needed to satisfy the
    * precision specification...
@@ -2445,7 +2640,10 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list args )
     (wchar_t)(0),				/* leave it unspecified       */
     0,						/* zero output char count     */
     max,					/* establish output limit     */
-    PFORMAT_MINEXP				/* exponent chars preferred   */
+    PFORMAT_MINEXP,				/* exponent chars preferred   */
+    PFORMAT_RPINIT,				/* thou' sep uninitialised    */
+    (wchar_t)(0),				/* leave it unspecified ...   */
+    NULL					/* with no grouping counts    */
   };
 
   /* Establish a variant argument resource pool, to support processing of
@@ -3067,17 +3265,16 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list args )
 	      stream.flags |= PFORMAT_LJUSTIFY;
 	    break;
 
-#	  ifdef WITH_XSI_FEATURES
-
-	    case '\'':
-	      /* This is an XSI extension to the POSIX standard,
-	       * which we do not support, at present.
-	       */
-	      if( state == PFORMAT_INIT )
-		stream.flags |= PFORMAT_GROUPED;
-	      break;
-
-#	  endif
+	  case '\'':
+	    /* Formerly an XSI extension to the POSIX standard,
+	     * but fully supported as of POSIX.1-2008, this flag
+	     * causes grouping of digits according to the rules
+	     * defined for the LC_NUMERIC category within the
+	     * current locale.
+	     */
+	    if( state == PFORMAT_INIT )
+	      stream.flags |= PFORMAT_GROUPED;
+	    break;
 
 	  case '\x20':
 	    /* Reserve a single space, within the output field,
@@ -3154,6 +3351,11 @@ int __pformat( int flags, void *dest, int max, const char *fmt, va_list args )
    */
   while( argc-- > 0 ) va_end( argv_indexed[argc] );
   va_end( argv );
+
+  /* Release the memory, if any, allocated to manage the grouping strategy
+   * of digits with intervening thousands digits group separators.
+   */
+  free( stream.grouping );
 
   /* When we have fully dispatched the format string, the return value is the
    * total number of bytes we transferred to the output destination.

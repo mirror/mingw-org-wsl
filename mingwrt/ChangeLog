@@ -1,3 +1,33 @@
+2016-08-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement POSIX printf() feature per request [#2310].
+
+	* mingwex/stdio/pformat.c [WITH_XSI_FEATURES]: Delete references.
+	(PFORMAT_GROUPED): New manifest constant; define it.  It previously
+	appeared in an occluded XSI feature reference, but is now required.
+	(__pformat_t.tslen, __pformat_t.tschr, __pformat_t.grouping): New
+	structure member fields; they maintain control state as set up by...
+	(__pformat_enable_thousands_grouping): ...this new internal function.
+	(__pformat_int_bufsiz): Use it; it may request a size increment.
+	(__pformat_emit_digit, __pformat_emit_punct): New functions; they
+	handle output of digits, radix point, and thousands digits separator
+	punctuation for all numeric conversion formats, thus replacing...
+	(__pformat_emit_numeric_value, __pformat_emit_radix_point): ...these;
+	delete them, and update all callers to use appropriate replacements.
+	(__pformat_int) [PFORMAT_GROUPED]: Add and emit group separators.
+	(__pformat_xint_bufsiz): New internal function; it serves in place of
+	__pformat_int_bufsiz(), for those integer data conversion formats
+	which explicitly do not support thousands digits grouping, hence...
+	(__pformat_xint): ...use it, rather than __pformat_int_bufsiz().
+	(__pformat_adjust_for_grouping): New internal function; it adjusts the
+	__gdtoa radix point index for fixed point conversion formats, to allow
+	for the insertion of thousands digits group separators, hence...
+	(__pformat_emit_float): ...use it, and emit separators as appropriate.
+	(__pformat_emit_efloat) [PFORMAT_GROUPED]: Explicitly disable it.
+	(__pformat): Initialise stream references for __pformat_t.grouping,
+	__pformat_t.tslen, and _pformat_t.tschr, on entry; release any memory
+	allocated for __pformat_t.grouping, when done.
+
 2016-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement POSIX conforming getline() and getdelim() functions.
