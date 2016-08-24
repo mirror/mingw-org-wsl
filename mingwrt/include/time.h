@@ -52,7 +52,20 @@
 #undef __need_struct_timespec
 #undef __need_wchar_decls
 
-#if defined __WCHAR_H_SOURCED__
+#if defined __SCHED_H_SOURCED__
+/* This is selective inclusion by <sched.h>; although not a standard
+ * MinGW.org header, we provide this hook to grant access from third
+ * party implementations, (e.g. pthreads-win32), to get a definition
+ * for struct timespec, which POSIX requires it to provide.
+ *
+ * Note that, in common with all selective inclusion strategies, we
+ * do not define the _TIME_H guard macro in this case, and we select
+ * only the minimally required subset of declarations to be exposed
+ * from within <time.h>, as required by <sched.h>
+ */
+# define __need_struct_timespec  1
+
+#elif defined __WCHAR_H_SOURCED__
 /* This is selective inclusion by <wchar.h>; thus, we do not define the
  * _TIME_H guard macro, and we select only the minimally required subset
  * of declarations to be exposed from within <time.h>

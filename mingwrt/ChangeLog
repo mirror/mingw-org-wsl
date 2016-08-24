@@ -1,3 +1,16 @@
+2016-08-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add pthreads-win32 courtesy support hooks.
+
+	* include/errno.h: Assert copyright; tidy layout.
+	(_ERRNO_H_): Rename this repeat inclusion guard macro as...
+	(_ERRNO_H): ...this, conforming to preferred naming convention.
+	[__PTW32_H]: Include "ptw32_errno.h".
+
+	* include/time.h [__SCHED_H_SOURCED__]
+	(struct timespec): Typedef it selectively; do not define...
+	(_TIME_H): ...this.
+
 2016-08-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement POSIX printf() feature per request [#2310].
