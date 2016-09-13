@@ -44,7 +44,15 @@
   * that the user may have included <dos.h> directly.
   */
 #define	_DOS_H
+/* If the user does include <dos.h> directly, we should raise an alert
+ * to advise that <direct.h> is the preferred alternative; however, the
+ * warning will interfere with the testsuite result...
+ */
+#ifndef __IN_MINGWRT_TESTSUITE__
+/* ...so we suppress it in this specific instance.
+ */
 #warning "<dos.h> is obsolete; consider using <direct.h> instead."
+#endif
 #endif	/* !__DIRECT_H_SOURCED__ */
 
 /* All MinGW headers are required to include <_mingw.h>; additionally,

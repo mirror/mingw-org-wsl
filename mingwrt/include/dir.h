@@ -34,7 +34,17 @@
 #pragma GCC system_header
 #define _DIR_H
 
+/* Header <dir.h> is obsolete, and we would like to advise the user to
+ * use <io.h> instead; however...
+ */
+#ifndef __IN_MINGWRT_TESTSUITE__
+/* ...this warning will interfere with the testsuite result, so display
+ * it only in normal use, (i.e. suppress it when running the testsuite)...
+ */
 #warning "<dir.h> is obsolete; please use <io.h> instead."
+#endif
+/* ...always including the appropriate replacement header, regardless.
+ */
 #include "io.h"
 
 #endif	/* !_DIR_H: $RCSfile$: end of file */
