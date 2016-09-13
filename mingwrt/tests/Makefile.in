@@ -1,0 +1,142 @@
+# @configure_input@
+#
+# Makefile template for MinGW.org Runtime Library testsuite
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2016, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+
+# The default rule is "check"; it is a synonym for the "check-recursive"
+# request, from the parent directory's make process, which initiates the
+# installation of the package components to be tested, then prepares the
+# testsuite itself, compiling it if necessary, and finally, runs it.
+#
+check check-recursive: check-install check-pretest check-local
+
+check-local: testsuite
+	$(SHELL) $^ $(TESTSUITEFLAGS)
+
+check-install: testsuite.install
+check-pretest: testsuite.pretest headers.at.pretest
+
+LN_S = @LN_S@
+
+# Favour any copy of the testsuite which already exists in the build
+# directory, but fall back to any which may have been distributed with
+# the source package.
+#
+testsuite.pretest: %.pretest: %.at.pretest
+	test -r $* || if test -r ${srcdir}/$*; then \
+	  $(LN_S) ${srcdir}/$* $*; fi
+
+# The primary testsuite.at source is nominally generated, when the
+# package is configured, but is then distributed within the release
+# tarball; update it as a side effect of running the testsuite, but
+# only if its content differs from any distributed copy, to ensure
+# that users building from a release tarball can do so, without a
+# requirement to install autom4te.
+#
+vpath %.at ${srcdir}
+vpath %.at.in ${srcdir}
+testsuite.at.pretest: %.pretest: %.tmp
+	test -r $* || if test -r ${srcdir}/$*; then \
+	  $(LN_S) ${srcdir}/$* $*; else touch $*; fi
+	sed '1s,tests/$<,$*,' $< > $@
+	cmp -s $@ $* || cp -f $@ $*
+	$(RM) $@ $<
+
+testsuite.at.tmp: %.tmp: ../config.status %.in
+	cd ..; ./config.status tests/$@
+
+# The enumerated list of headers, which are to be tested, is also a
+# candidate for dynamic update; in this case, we prefer to update the
+# list in place, within the testsuite source tree.
+#
+headers.at.pretest: MINGWRT_AT_ENUM := MINGWRT_AT_PACKAGE_HEADERS
+headers.at.pretest: %.pretest:
+	sed '/^m4_define(\[$(MINGWRT_AT_ENUM)],/q' ${srcdir}/$* > $@
+	$(call enum_headers,hdr,${top_srcdir}/include, dnl >> $@;)
+	$(call enum_headers,hdr,${top_srcdir}/include/sys, dnl >> $@;,sys)
+	sed -n '/^])# $(MINGWRT_AT_ENUM)/,$$p' ${srcdir}/$* >> $@
+	cmp -s $@ ${srcdir}/$* || cp -f $@ ${srcdir}/$*
+	$(RM) $@
+
+enum_headers = $(foreach $1,$(notdir $(wildcard $2/*.h)),echo $(4:%=%/)$($1)$3)
+
+# Compile the testsuite, from autotest sources.
+#
+AUTOTEST_COMPILE = $(autotest_@AUTOTEST_COMPILE@)
+autotest_command = autom4te --language autotest --include ${srcdir}
+autotest_missing = $(call missing,autom4te,Unable to compile the testsuite)
+
+testsuite: %: %.at headers.at
+	$(AUTOTEST_COMPILE) -o $* $<
+
+# Display a diagnostic message, explaining that any specified program
+# is required, but has not been installed.
+#
+define missing
+$(warning The program '$1' does not appear to be installed.)
+$(call $1_description)$(error $2)
+endef
+
+# Describe the circumstances under which the autom4te program may be
+# required for building the testsuite, as an adjunct to the diagnostic
+# notification that it may need to be installed.
+#
+define autom4te_description
+$(info )
+$(info This program is used to compile the testsuite driver script, from)
+$(info original autotest source files.  You need it when you are building)
+$(info the testsuite from a checked-out clone of the source code repository;)
+$(info otherwise, you should need it only if you have modified any of those)
+$(info testsuite source files, or you have changed the package content in)
+$(info any way which may cause any of these files to be regenerated.)
+$(info )
+$(info If you do need it, you may obtain it by installing GNU autoconf.)
+$(info )
+endef
+
+# Install a local copy of the package components to be tested; we need
+# the full mingwrt package, and also the w32api headers, to ensure that
+# we are testing what we've built, and not those which were installed
+# with whatever compiler we are using for the build.
+#
+testsuite.install: install-mingwrt install-w32api-headers
+
+install-mingwrt:
+	$(MAKE) -C .. --no-print-directory prefix=${CURDIR} $@
+
+chkconfig = ($1/config.status --version | grep $2) 2>&1 > /dev/null
+install-w32api-headers:
+	@for dir in ../../w32api*; do \
+	  if $(call chkconfig,$$dir,'MinGW Win32 API'); then \
+	     $(MAKE) -C $$dir --no-print-directory prefix=${CURDIR} $@; break; \
+	     fi; \
+	  done
+
+# $RCSfile$: end of file

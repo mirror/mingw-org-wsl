@@ -1,3 +1,23 @@
+2016-09-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Create a preliminary autotest framework.
+
+	* configure.ac (AC_TESTDIR): Initialize tests subdirectory.
+	(AC_PROG_CXX): Identify C++ compiler; the testsuite will use it.
+	(AC_CHECK_PROG): Check availability of autom4te; specify fallback.
+	(AC_CONFIG_FILES): Add instantiation requests for tests/atlocal,
+	tests/Makefile, and tests/testsuite.at.tmp
+
+	* tests/testsuite.at.in tests/atlocal.in tests/headers.at
+	* tests/Makefile.in: New files; implement them.
+
+	* Makefile.in (check, check-recursive, tests): Implement new goals.
+	(mingwrt-srcdist-files): Subdivide package files complement into...
+	(mingwrt-srcdist-package-files): ...this original collection, and...
+	(mingwrt-srcdist-testsuite-files): ...this additional set.
+
+	* test_headers.c: Superseded by autotest; delete it.
+
 2016-08-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add pthreads-win32 courtesy support hooks.

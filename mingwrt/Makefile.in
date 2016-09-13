@@ -870,17 +870,25 @@ mingwrt-srcdist-dir:
 	$(RM) -r dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
 	$(call mkinstalldirs,,dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION))
 
-mingwrt-srcdist-files:
+mingwrt-srcdist-files: mingwrt-srcdist-package-files
+mingwrt-srcdist-files: mingwrt-srcdist-testsuite-files
+
+mingwrt-srcdist-package-files:
 	(cd ${mingwrt_srcdir} && tar chf - --hard-dereference $(notdir $^)) | \
 	  (cd dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION) && tar xf -)
 
-mingwrt-srcdist-files: $(wildcard ${mingwrt_srcdir}/*.[chs]) \
+mingwrt-srcdist-package-files: $(wildcard ${mingwrt_srcdir}/*.[chs]) \
   $(addprefix ${mingwrt_srcdir}/,ChangeLog CONTRIBUTORS DISCLAIMER README) \
   $(wildcard ${mingwrt_srcdir}/*.def.in) $(wildcard ${mingwrt_srcdir}/config*) \
   $(addprefix ${mingwrt_srcdir}/,aclocal.m4 VERSION.m4 install-sh Makefile.in) \
   $(addprefix ${mingwrt_srcdir}/,TODO include man mingwex profile) \
   $(addprefix ${mingwrt_srcdir}/,msvcrt-xref crtdll.def) \
   $(wildcard ${mingwrt_srcdir}/*.txt)
+
+mingwrt-srcdist-testsuite-files: $(wildcard ${mingwrt_srcdir}/tests/*.at)
+mingwrt-srcdist-testsuite-files: $(wildcard ${mingwrt_srcdir}/tests/*.in)
+	(cd ${mingwrt_srcdir} && tar chf - $(addprefix tests/,$(notdir $^))) | \
+	  (cd dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION) && tar xf -)
 
 install-html install-pdf: install-%: %dir mingwrt-man$(man3ext)
 	$(MAKE) --no-print-directory install-$*-files
@@ -926,5 +934,13 @@ maintainer-clean-local: maintainer-clean-warning distclean-local
 	$(RM) -r ${mingwrt_srcdir}/autom4te.cache
 
 clean mostlyclean distclean maintainer-clean: %clean: %clean-local
+
+# Testsuite
+# ---------
+#
+.PHONY: check-recursive
+check tests: check-recursive
+check-recursive:
+	$(MAKE) -C tests $@
 
 # $RCSfile$: end of file

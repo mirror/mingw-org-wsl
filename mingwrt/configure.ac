@@ -15,11 +15,11 @@
 # the rights to use, copy, modify, merge, publish, distribute, sublicense,
 # and/or sell copies of the Software, and to permit persons to whom the
 # Software is furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice (including the next
 # paragraph) shall be included in all copies or substantial portions of the
 # Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -51,6 +51,12 @@
   AC_PROG_INSTALL
   AC_PROG_MKDIR_P
   AC_PROG_LN_S
+
+  AC_CONFIG_TESTDIR([tests])
+  AC_CONFIG_FILES([tests/testsuite.at.tmp:tests/testsuite.at.in])
+  AC_CHECK_PROG([AUTOTEST_COMPILE],[autom4te],[command],[missing])
+  AC_CONFIG_FILES([tests/atlocal tests/Makefile])
+  AC_PROG_CXX
 
   MINGW_AC_MAKE_COMMAND_GOALS
   AC_CONFIG_FILES([Makefile])

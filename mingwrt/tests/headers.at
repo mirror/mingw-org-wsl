@@ -1,0 +1,154 @@
+# headers.at
+#
+# Autotest module for checking integrity of MinGW runtime headers.
+# Each header is first individually compiled, to ensure that it is
+# both valid and self contained; all are then compiled together, to
+# verify mutual consistency.
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2016, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+#
+# MINGWRT_AT_PACKAGE_HEADERS
+# --------------------------
+# Specify the gamut of package headers to be tested.  This list is updated
+# dynamically, when running "make check"; there is no need to edit it.
+#
+m4_define([MINGWRT_AT_PACKAGE_HEADERS],[dnl
+assert.h dnl
+complex.h dnl
+conio.h dnl
+ctype.h dnl
+direct.h dnl
+dirent.h dnl
+dir.h dnl
+dlfcn.h dnl
+dos.h dnl
+errno.h dnl
+excpt.h dnl
+fcntl.h dnl
+fenv.h dnl
+float.h dnl
+getopt.h dnl
+glob.h dnl
+inttypes.h dnl
+io.h dnl
+libgen.h dnl
+limits.h dnl
+locale.h dnl
+malloc.h dnl
+math.h dnl
+mbctype.h dnl
+mbstring.h dnl
+mem.h dnl
+memory.h dnl
+msvcrtver.h dnl
+process.h dnl
+search.h dnl
+setjmp.h dnl
+share.h dnl
+signal.h dnl
+stdint.h dnl
+stdio.h dnl
+stdlib.h dnl
+string.h dnl
+strings.h dnl
+tchar.h dnl
+time.h dnl
+unistd.h dnl
+utime.h dnl
+values.h dnl
+wchar.h dnl
+wctype.h dnl
+sys/fcntl.h dnl
+sys/file.h dnl
+sys/locking.h dnl
+sys/param.h dnl
+sys/stat.h dnl
+sys/timeb.h dnl
+sys/time.h dnl
+sys/types.h dnl
+sys/unistd.h dnl
+sys/utime.h dnl
+])# MINGWRT_AT_PACKAGE_HEADERS
+
+# MINGWRT_AT_HASH_INCLUDE( HEADER )
+# ---------------------------------
+# Emit a single "#include <HEADER>" statement into a generated
+# program language source file.
+#
+m4_define([MINGWRT_AT_HASH_INCLUDE],dnl
+[[#include <$1>
+]])# MINGWRT_AT_HASH_INCLUDE
+
+# MINGWRT_AT_CHECK_HEADERS_STANDALONE( LANG )
+# -------------------------------------------
+# Check compilability and self-containment of all package headers,
+# when each is compiled individually, using the LANG compiler.
+#
+m4_define([MINGWRT_AT_CHECK_HEADERS_STANDALONE],[MINGW_AT_LANG([$1])dnl
+AT_BANNER([Header integrity checks: stand-alone compile; language = $1.])
+m4_foreach_w([HEADER],MINGWRT_AT_PACKAGE_HEADERS,[dnl
+AT_SETUP([#include <]HEADER[>])AT_KEYWORDS([$1 $1-headers])
+AS_VAR_APPEND([CPPFLAGS],[" -Wall -Wextra -Wsystem-headers"])
+m4_if(HEADER,[unistd.h],AS_VAR_APPEND([CPPFLAGS],[" -Wno-deprecated-declarations"]))
+m4_if(HEADER,[sys/stat.h],AS_VAR_APPEND([CPPFLAGS],[" -D_MINGW_S_IFBLK_KLUDGE"]))
+MINGW_AT_CHECK_COMPILE([dnl
+#define __IN_MINGWRT_TESTSUITE__ 1
+m4_if(HEADER,[values.h],MINGWRT_AT_HASH_INCLUDE([_mingw.h]))dnl
+MINGWRT_AT_HASH_INCLUDE(HEADER)dnl
+int main(){ return __MINGW32_MAJOR_VERSION; }])
+AT_CLEANUP
+])])# MINGWRT_AT_CHECK_HEADERS_STANDALONE
+#
+# Run it, for each of LANG = C and LANG = C++
+#
+m4_foreach([LANG],[C,C++],[MINGWRT_AT_CHECK_HEADERS_STANDALONE(LANG)])
+
+# MINGWRT_AT_CHECK_HEADERS_COMBINED( LANG )
+# -----------------------------------------
+# Check compilability of package headers, when all are included within
+# a single translation unit, and compiled using the LANG compiler.
+#
+m4_define([MINGWRT_AT_CHECK_HEADERS_COMBINED],[MINGW_AT_LANG([$1])dnl
+AT_SETUP([#include all; language = $1])AT_KEYWORDS([$1 $1-headers])
+AS_VAR_APPEND([CPPFLAGS],[" -Wall -Wextra -Wsystem-headers"])
+m4_if([$1],[C],AS_VAR_APPEND([CPPFLAGS],[" -Wno-deprecated-declarations"]))
+MINGW_AT_CHECK_COMPILE([dnl
+#define _MINGW_S_IFBLK_KLUDGE 1
+#define __IN_MINGWRT_TESTSUITE__ 1
+m4_foreach_w([HEADER],MINGWRT_AT_PACKAGE_HEADERS,[dnl
+MINGWRT_AT_HASH_INCLUDE(HEADER)])
+int main(){ return __MINGW32_MAJOR_VERSION; }])
+AT_CLEANUP
+])# MINGWRT_AT_CHECK_HEADERS_COMBINED
+#
+# Run it, for each of LANG = C and LANG = C++
+#
+AT_BANNER([Header consistency checks: composite compile.])
+m4_foreach([LANG],[C,C++],[MINGWRT_AT_CHECK_HEADERS_COMBINED(LANG)])
+
+# vim: filetype=config formatoptions=croql
+# $RCSfile$: end of file
