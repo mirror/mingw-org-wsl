@@ -1,3 +1,13 @@
+2016-09-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Relax strict ISO-C conformity to facilitate C99 support.
+
+	* include/stdlib.h (_atoi64, _exit) [__STRICT_ANSI__]: Convention
+	dictates that the Microsoft specific functions should not be declared;
+	however, C99 provides equivalents in atoll() and _Exit(), for which we
+	gratuituously use them to provide inline implementations; thus...
+	[_ISOC99_SOURCE && !__NO_INLINE__]: ...declare them anyway.
+
 2016-09-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Suppress expected header warnings when running testsuite.
