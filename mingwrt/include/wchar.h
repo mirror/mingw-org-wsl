@@ -499,9 +499,11 @@ size_t wcrtomb (char * __restrict__, wchar_t, mbstate_t *__restrict__);
 __cdecl __MINGW_NOTHROW  size_t wcsrtombs
 (char *__restrict__, const wchar_t **__restrict__, size_t, mbstate_t *__restrict__);
 
-#ifdef _ISOC99_SOURCE
+#if defined _ISOC99_SOURCE || defined __cplusplus
 /* These ISO-C99 functions are implemented in libmingwex.a,
- * or, in some cases, by inline stubs.
+ * or, in some cases, as inline stubs; while provided as MinGW
+ * extensions to support ISO-C99, they are also required by
+ * GNU C++.
  */
 __cdecl __MINGW_NOTHROW  int fwide (FILE *, int);
 __cdecl __MINGW_NOTHROW  int mbsinit (const mbstate_t *);

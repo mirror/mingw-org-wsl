@@ -1,5 +1,14 @@
 2016-09-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Add missing <wchar.h> declarations when compiling C++.
+
+	* include/wchar.h (fwide, mbsinit, wmemset, wmemchr, wmemcpy)
+	(wmemmove, wcstoll, wcstoull): Declare each of these for either of...
+	[_ISOC99_SOURCE || __cplusplus]: ...these conditions, rather than...
+	[_ISOC99_SOURCE]: ...this alone.
+
+2016-09-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Stricter <wchar.h> ISO-C99 conformity filtering.
 
 	* include/wchar.h [__STRICT_ANSI__]: Do not include any part of...
