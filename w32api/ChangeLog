@@ -1,3 +1,11 @@
+2016-09-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix a minor ISO-C++11 conformity issue.
+
+	* include/winnt.h (GetCurrentFiber): Insert spaces, as required
+	by ISO-C++11, between concatenated string literal elements.
+	(GetFiberData, NtCurrentTeb): Likewise.
+
 2016-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Merge w32api-3.18.1 legacy updates to 5.0-active branch.
