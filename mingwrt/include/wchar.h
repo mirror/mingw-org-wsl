@@ -190,7 +190,11 @@
  *  long double wcstold (const wchar_t *restrict, wchar_t **restrict);
  *
  *
- * while from...
+ * while...
+ */
+#ifndef __STRICT_ANSI__
+/* ...when NOT compiling with "__STRICT_ANSI__" conformity checking,
+ * from...
  */
 #include "direct.h"
 /* ...we obtain prototypes for each of the following functions,
@@ -203,7 +207,7 @@
  *  int _wrmdir (const wchar_t *);
  *
  *
- * From...
+ * while from...
  */
 #include "sys/stat.h"
 /* ...we obtain function prototypes, and all associated data type
@@ -228,7 +232,7 @@
  *  int _wstat64i32 (const wchar_t *, struct _stat64i32 *);
  *
  *
- * while from...
+ * and from...
  */
 #include "io.h"
 /* ...we obtain function prototypes for each of the following, which
@@ -278,12 +282,13 @@
  * and _wfindnext() API, so we also declare the prototype for:
  *
  *  int _findclose (intptr_t);
- *
- *
- * and from...
+ */
+#endif	/* !__STRICT_ANSI__ */
+
+/* From...
  */
 #include "time.h"
-/* ...we obtain an opaque forward declaration of:
+/* ...we always obtain an opaque forward declaration of:
  *
  *  struct tm
  *
@@ -315,8 +320,10 @@
  * _wctime() itself, as an in-line alias for its corresponding
  * replacement library function.
  *
- *
- * Also, from...
+ */
+#ifndef __STRICT_ANSI__
+/* Once again, when NOT compiling with "__STRICT_ANSI__" conformity
+ * checking, from...
  */
 #include "locale.h"
 /* ...we obtain the declaration for:
@@ -358,6 +365,8 @@
  *   );
  *
  */
+#endif	/* !__STRICT_ANSI__ */
+
 _BEGIN_C_DECLS
 
 /* Wide character string functions must be specified here, as required

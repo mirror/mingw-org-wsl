@@ -1,3 +1,10 @@
+2016-09-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Stricter <wchar.h> ISO-C99 conformity filtering.
+
+	* include/wchar.h [__STRICT_ANSI__]: Do not include any part of...
+	(direct.h, io.h, sys/stat.h, locale.h, process.h): ...any of these.
+
 2016-09-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Relax strict ISO-C conformity to facilitate C99 support.
