@@ -522,6 +522,22 @@ typedef struct { long quot, rem; } ldiv_t;
 _CRTIMP __cdecl __MINGW_NOTHROW  div_t div (int, int) __MINGW_ATTRIB_CONST;
 _CRTIMP __cdecl __MINGW_NOTHROW  ldiv_t ldiv (long, long) __MINGW_ATTRIB_CONST;
 
+#if !defined __STRICT_ANSI__ || (defined _ISOC99_SOURCE && !defined __NO_INLINE__)
+/* Although not nominally valid in "__STRICT_ANSI__" mode, when compiling C99
+ * source, we use Microsoft's _exit() function to facilitate our provision of
+ * an inline implementation of ISO-C99's _Exit() function.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  void _exit (int) __MINGW_ATTRIB_NORETURN;
+
+#ifdef __MSVCRT__
+/* Similarly, we use Microsoft's MSVCRT.DLL specific _atoi64() function,
+ * to facilitate an inline implementation of ISO-C99's atoll() function.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  __int64 _atoi64 (const char *);
+
+#endif	/* __MSVCRT__ */
+#endif	/* !__STRICT_ANSI__ || (_ISOC99_SOURCE && !__NO_INLINE__) */
+
 #if !defined (__STRICT_ANSI__)
 /* NOTE: Officially the three following functions are obsolete. The Win32 API
  *       functions SetErrorMode, Beep and Sleep are their replacements.
@@ -530,8 +546,6 @@ _CRTIMP __cdecl __MINGW_NOTHROW  void _beep (unsigned int, unsigned int) __MINGW
 /* Not to be confused with  _set_error_mode (int).  */
 _CRTIMP __cdecl __MINGW_NOTHROW  void _seterrormode (int) __MINGW_ATTRIB_DEPRECATED;
 _CRTIMP __cdecl __MINGW_NOTHROW  void _sleep (unsigned long) __MINGW_ATTRIB_DEPRECATED;
-
-_CRTIMP __cdecl __MINGW_NOTHROW  void _exit (int) __MINGW_ATTRIB_NORETURN;
 
 /* _onexit is a Microsoft extension. Use atexit for portability. */
 /* Note: This is in startup code, not imported directly from dll */
@@ -562,7 +576,6 @@ _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_ltow (long, wchar_t *, int);
 _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *_ultow (unsigned long, wchar_t *, int);
 
 #ifdef __MSVCRT__
-_CRTIMP __cdecl __MINGW_NOTHROW  __int64 _atoi64 (const char *);
 _CRTIMP __cdecl __MINGW_NOTHROW  char* _i64toa (__int64, char *, int);
 _CRTIMP __cdecl __MINGW_NOTHROW  char* _ui64toa (unsigned __int64, char *, int);
 _CRTIMP __cdecl __MINGW_NOTHROW  __int64 _wtoi64 (const wchar_t *);
