@@ -4130,7 +4130,7 @@ static __inline__ PVOID GetCurrentFiber (void)
 {
   void *ret;
   __asm__ __volatile__ (
-      "mov{%z0}\t{%%"__tib_fiber_data__", %0|%0, "__tib_fiber_data__"}"
+      "mov{%z0}\t{%%" __tib_fiber_data__ ", %0|%0," __tib_fiber_data__ "}"
       : "=a" (ret) /* resultant pointer will be returned in eax/rax */
     );
   return ret;
@@ -4140,7 +4140,7 @@ static __inline__ PVOID GetFiberData (void)
 {
   void *ret;
   __asm__ __volatile__ (
-      "mov{%z0}\t{%%"__tib_fiber_data__", %0|%0, "__tib_fiber_data__"}\n\t"
+      "mov{%z0}\t{%%" __tib_fiber_data__ ", %0|%0, " __tib_fiber_data__ "}\n\t"
       "mov{%z0}\t{(%0), %0|%0, [%0]}"
       : "=r" (ret) /* likely eax/rax, but must support indexing */
     );
@@ -4151,7 +4151,7 @@ static __inline__ struct _TEB *NtCurrentTeb (void)
 {
   struct _TEB *ret;
   __asm__ __volatile__ (
-      "mov{%z0}\t{%%"__tib_self_refptr__", %0|%0, "__tib_self_refptr__"}"
+      "mov{%z0}\t{%%" __tib_self_refptr__ ", %0|%0, " __tib_self_refptr__ "}"
       : "=a" (ret) /* resultant pointer will be returned in eax/rax */
       : /* no inputs */
     );
@@ -4165,7 +4165,7 @@ static __inline__ PVOID GetCurrentFiber (void)
 {
   void *ret;
   __asm__ __volatile__ (
-      "mov%z0\t%%"__tib_fiber_data__", %0"
+      "mov%z0\t%%" __tib_fiber_data__ ", %0"
       : "=a" (ret) /* resultant pointer will be returned in eax/rax */
     );
   return ret;
@@ -4175,7 +4175,7 @@ static __inline__ PVOID GetFiberData (void)
 {
   void *ret;
   __asm__ __volatile__ (
-      "mov%z0\t%%"__tib_fiber_data__", %0\n\t"
+      "mov%z0\t%%" __tib_fiber_data__ ", %0\n\t"
       "mov%z0\t(%0), %0"
       : "=r" (ret) /* likely eax/rax, but must support indexing */
     );
@@ -4186,7 +4186,7 @@ static __inline__ struct _TEB *NtCurrentTeb (void)
 {
   struct _TEB *ret;
   __asm__ __volatile__ (
-      "mov%z0\t%%"__tib_self_refptr__", %0"
+      "mov%z0\t%%" __tib_self_refptr__ ", %0"
       : "=a" (ret) /* resultant pointer will be returned in eax/rax */
       : /* no inputs */
     );

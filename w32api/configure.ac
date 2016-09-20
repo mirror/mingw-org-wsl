@@ -29,7 +29,7 @@
 # DEALINGS IN THE SOFTWARE.
 #
   AC_PREREQ([2.64])
-  AC_INIT([MinGW Win32 API],[3.18.1],[http://mingw.org/Reporting_Bugs],[w32api])
+  AC_INIT([MinGW Win32 API],[3.18.2],[http://mingw.org/Reporting_Bugs],[w32api])
 
   AC_PREFIX_DEFAULT([/mingw])
   AC_CONFIG_SRCDIR([include/w32api.h.in])

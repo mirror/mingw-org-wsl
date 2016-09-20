@@ -1,3 +1,20 @@
+2016-09-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag w32api-3.18.2 patch release.
+
+	* configure.ac (AC_INIT): Increment patch level.
+	* config.guess config.sub: Delete, per 2016-07-16 commit, and...
+	* Makefile.in (SRCDIST_ADD): ...remove associated references.
+	* include/winnt.h: Backport, per 2016-09-17 commit.
+
+2016-09-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix a minor ISO-C++11 conformity issue.
+
+	* include/winnt.h (GetCurrentFiber): Insert spaces, as required
+	by ISO-C++11, between concatenated string literal elements.
+	(GetFiberData, NtCurrentTeb): Likewise.
+
 2016-07-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag all files for release of w32api-3.18.1
@@ -40,6 +57,13 @@
 	(IOCTL_STORAGE_RESET_BUS, IOCTL_STORAGE_RESET_DEVICE)
 	(IOCTL_STORAGE_EJECT_MEDIA, IOCTL_STORAGE_LOAD_MEDIA)
 	(IOCTL_STORAGE_LOAD_MEDIA2, IOCTL_STORAGE_RESERVE): Likewise.
+
+2016-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Discard redundant config.guess and config.sub files.
+
+	* config.guess config.sub: Delete them; they are no longer required.
+	* Makefile.in (SRCDIST_ADD): Remove related references.
 
 2016-07-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
