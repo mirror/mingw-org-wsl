@@ -1,5 +1,20 @@
 2016-10-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Emulate glibc <string.h> POSIX.1 non-compliance.
+
+	* include/_mingw.h.in (_EMULATE_GLIBC): New feature test macro.
+	[_GNU_SOURCE || _BSD_SOURCE || !__STRICT_ANSI__]: Enable it when...
+	[_XOPEN_SOURCE || _POSIX_C_SOURCE || _POSIX_SOURCE]: ...none of
+	these have been pre-defined by the user.
+
+	* include/string.h [_EMULATE_GLIBC]: Include <strings.h> in full...
+	(strcasecmp, strncasecmp): ...so prototypes for these are declared.
+	[!_EMULATE_GLIBC]: Preserve partial <strings.h> include, guarded by...
+	[__STRING_H_SOURCED__]: ...this context selector, so suppressing the
+	declarations of those function prototypes.
+
+2016-10-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Resolve some non-ANSI typedef omissions.
 
 	* include/sys/types.h (off_t, ssize_t): Always typedef them when...
