@@ -1,5 +1,11 @@
 2016-10-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Prepare and tag mingwrt-3.22.3 patch release.
+
+	* configure.ac (AC_INIT): Increment patch level.
+
+2016-10-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Emulate glibc <string.h> POSIX.1 non-compliance.
 
 	* include/_mingw.h.in (_EMULATE_GLIBC): New feature test macro.
