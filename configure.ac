@@ -30,6 +30,7 @@
 #
   AC_PREREQ([2.64])
   AC_INIT([MinGW System Libraries],[__VERSION__],[__BUG_REPORT_URL__],[wsl])
+  AC_PREFIX_DEFAULT([/mingw])
 
   AC_PROG_MKDIR_P
   AC_PATH_PROG([LN],[ln],[ln])

@@ -1,3 +1,10 @@
+2016-10-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make package installation prefix consistent throughout.
+
+	* configure.ac (AC_PREFIX_DEFAULT): Assign it; match it to...
+	* mingwrt/configure.ac w32api/configure.ac: ...these.
+
 2016-07-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update install-sh to match mingw.org/build-aux package.
