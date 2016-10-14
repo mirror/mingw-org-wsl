@@ -29,6 +29,7 @@
 
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
+top_builddir = @top_builddir@
 
 # The default rule is "check"; it is a synonym for the "check-recursive"
 # request, from the parent directory's make process, which initiates the
@@ -42,6 +43,11 @@ check-local: testsuite
 
 check-install: testsuite.install
 check-pretest: testsuite.pretest headers.at.pretest
+
+vpath Makefile.in ${srcdir}
+vpath config.status ${top_builddir}
+Makefile: %: %.in config.status
+	cd ${top_builddir}; ./config.status $(notdir ${CURDIR})/$@
 
 LN_S = @LN_S@
 

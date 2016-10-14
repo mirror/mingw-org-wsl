@@ -1,5 +1,13 @@
 2016-10-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Add dependency tracking for tests/Makefile.
+
+	* tests/Makefile.in (top_builddir): Define it.
+	(Makefile): Add automatic rebuild rule, tracking both srcdir and
+	top_builddir prerequisite changes.
+
+2016-10-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Correct a minor typographic error.
 
 	* tests/atlocal.in (autoconf_input): Replace invalid AC_SUBST tag...
