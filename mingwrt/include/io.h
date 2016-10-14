@@ -96,10 +96,10 @@
 /* We must define _fsize_t, but some compilers (including GCC prior to
  * version 4.0), may choke if we try to do so more than once...
  */
-#if ! (defined _IO_H && defined _WCHAR_H)
+#if ! (defined _IO_H && defined _WCHAR_H) || defined __STRICT_ANSI__
  /* ...so DO NOT define it during direct <io.h> inclusion, (i.e. _IO_H
   * is defined), if <wchar.h> has already caused it to be defined, (i.e.
-  * _WCHAR_H is ALSO defined).
+  * _WCHAR_H is ALSO defined, but __STRICT_ANSI__ is NOT).
   */
 typedef	unsigned long	_fsize_t;
 #endif	/* ! (_IO_H && _WCHAR_H) */

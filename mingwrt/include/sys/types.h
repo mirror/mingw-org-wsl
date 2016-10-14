@@ -66,15 +66,17 @@
   */
   typedef __off32_t  _off_t;
 
-# if _POSIX_C_SOURCE
+# if _POSIX_C_SOURCE || ! defined _NO_OLDNAMES
   /* ...but note that this form should ALWAYS be preferred when
-   * compiling POSIX compatible source code.
+   * compiling POSIX compatible source code, and should also be
+   * made generally available unless Microsoft's old names have
+   * been suppressed, (by defining _NO_OLDNAMES).
    */
   typedef _off_t  off_t;
 # endif
 # if __GNUC__ < 4
   /* Some compilers, including GCC prior to v4, may get upset
-   * if we try to specifiy these typedefs more than once.
+   * if we try to specify these typedefs more than once.
    */
 #  define __have_typedef_off_t
 # endif
@@ -98,7 +100,7 @@
 
 # if __GNUC__ < 4
   /* Some compilers, including GCC prior to v4, may get upset
-   * if we try to specifiy these typedefs more than once.
+   * if we try to specify these typedefs more than once.
    */
 #  define __have_typedef___off64_t
 # endif
@@ -112,15 +114,17 @@
   */
   typedef int  _ssize_t;
 
-# if _POSIX_C_SOURCE
+# if _POSIX_C_SOURCE || ! defined _NO_OLDNAMES
   /* ...but note that this form should ALWAYS be preferred when
-   * compiling POSIX compatible source code.
+   * compiling POSIX compatible source code, and should also be
+   * made generally available unless Microsoft's old names have
+   * been suppressed, (by defining _NO_OLDNAMES).
    */
   typedef _ssize_t  ssize_t;
 # endif
 # if __GNUC__ < 4
   /* Some compilers, including GCC prior to v4, may get upset
-   * if we try to specifiy these typedefs more than once.
+   * if we try to specify these typedefs more than once.
    */
 #  define __have_typedef_ssize_t
 # endif

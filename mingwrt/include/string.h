@@ -52,6 +52,16 @@
 #endif
 #include <stddef.h>
 
+#if _EMULATE_GLIBC
+/* GNU's glibc declares strcasecmp() and strncasecmp() in <string.h>,
+ * contravening POSIX.1-2008 which requires them to be declared only in
+ * <strings.h>; we may emulate this anomalous glibc behaviour, which is
+ * ostensibly to support BSD usage, (in spite of such usage now being
+ * obsolete in BSD), by simply including our <strings.h> here.
+ */
+#include <strings.h>
+#endif
+
 _BEGIN_C_DECLS
 
 #define __STRING_H_SOURCED__
@@ -101,9 +111,12 @@ _CRTIMP __cdecl __MINGW_NOTHROW  void _swab (const char *, char *, size_t);
 /* MSVC's non-ANSI _stricmp() and _strnicmp() functions must also be
  * prototyped here, but we need to share them with <strings.h>, where
  * we declare their POSIX strcasecmp() and strncasecmp() equivalents;
- * get the requisite prototypes by selective <strings.h> inclusion.
+ * get the requisite prototypes by selective <strings.h> inclusion,
+ * (noting that we've already done so, if emulating glibc).
  */
+#if !_EMULATE_GLIBC
 #include <strings.h>
+#endif
 
 # ifdef __MSVCRT__
  /* These were not present in the CRTDLL prior to the first release of

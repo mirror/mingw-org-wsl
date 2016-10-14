@@ -430,6 +430,14 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
    */
 #  define _POSIX_C_SOURCE  200809L
 
+#  if ! defined _EMULATE_GLIBC && ! defined _POSIX_SOURCE
+   /* For this default case, unless it has already been specified
+    * otherwise, we enable some GNU glibc extensions, which may be
+    * considered as violations of strict POSIX.1 conformance.
+    */
+#   define _EMULATE_GLIBC  1
+#  endif
+
 # elif defined _POSIX_SOURCE
   /* Now formally deprecated by POSIX, some old code may specify this;
    * it will enable a minimal level of POSIX support, in addition to the
