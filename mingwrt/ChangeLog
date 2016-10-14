@@ -1,5 +1,12 @@
 2016-10-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Correct a minor typographic error.
+
+	* tests/atlocal.in (autoconf_input): Replace invalid AC_SUBST tag...
+	(configure_input): ...with this correctly named alternative.
+
+2016-10-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Merge mingwrt-3.22.3 updates into 5.0-active branch.
 
 	* configure.ac: Preserve original 5.0-active state.
