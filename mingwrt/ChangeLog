@@ -1,3 +1,13 @@
+2016-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Resolve an ANSI mode <string.h> vs. <wchar.h> conflict.
+
+	* include/wchar.h [!(_WCHAR_H && _STRING_H)]: Change condition...
+	[!(_WCHAR_H && (_STRING_H && !__STRICT_ANSI__))]: ...to this; the
+	guarded declarations are not exposed by including <string.h> when...
+	[__STRICT_ANSI__]: ...this is defined; hence, we must declare them
+	when including <wchar.h>, even after including <string.h>
+
 2016-10-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag mingwrt-3.22.3 patch release.

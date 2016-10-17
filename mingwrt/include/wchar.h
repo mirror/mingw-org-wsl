@@ -378,10 +378,13 @@ _BEGIN_C_DECLS
  */
 #endif	/* ! RC_INVOKED */
 #endif	/* !__STRING_H_SOURCED__ */
-#if ! (defined RC_INVOKED || (defined _WCHAR_H && defined _STRING_H))
-/* ...such that these declarations are exposed when either _WCHAR_H, or
- * _STRING_H is defined, (but not both, since that would indicate that
- * these declarations have already been processed).
+#if ! defined RC_INVOKED
+#if !(defined _WCHAR_H && (defined _STRING_H && ! defined __STRICT_ANSI__))
+/* ...such that these declarations are exposed when either _WCHAR_H is defined,
+ * or when _STRING_H is defined and __STRICT_ANSI__ is not, but NOT when BOTH of
+ * these apply, since that indicates that this group of declarations has already
+ * been processed, during partial inclusion of <wchar.h> by <string.h>, whereas
+ * we are now including <wchar.h> in its own right.
  *
  *
  * Wide character versions of the ISO-C standard string functions.
@@ -468,9 +471,10 @@ _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsupr (wchar_t *);
  * inclusion of <string.h>; revert the declarative condition, to make it
  * specific to <wchar.h> alone.
  */
-#endif	/* !(RC_INVOKED || (_WCHAR_H && _STRING_H)) */
-#if defined _WCHAR_H && ! defined RC_INVOKED
+#endif	/* !(_WCHAR_H && (_STRING_H && !__STRICT_ANSI__)) */
+#endif	/* ! RC_INVOKED */
 
+#if defined _WCHAR_H && ! defined RC_INVOKED
 #ifndef __STRICT_ANSI__
 typedef wchar_t  _Wint_t;
 #endif
