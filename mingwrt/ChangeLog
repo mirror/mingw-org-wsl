@@ -1,5 +1,11 @@
 2016-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Prepare and tag mingwrt-3.22.4 patch release.
+
+	* configure.ac (AC_INIT): Increment patch level.
+
+2016-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Resolve an ANSI mode <string.h> vs. <wchar.h> conflict.
 
 	* include/wchar.h [!(_WCHAR_H && _STRING_H)]: Change condition...
