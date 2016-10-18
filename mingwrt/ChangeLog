@@ -1,3 +1,26 @@
+2016-10-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Merge mingwrt-3.22.4 updates into 5.0-active branch.
+
+	* configure.ac: Preserve original 5.0-active state.
+	* include/wchar.h: Update per 2016-10-17 commits.
+
+2016-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag mingwrt-3.22.4 patch release.
+
+	* configure.ac (AC_INIT): Increment patch level.
+
+2016-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Resolve an ANSI mode <string.h> vs. <wchar.h> conflict.
+
+	* include/wchar.h [!(_WCHAR_H && _STRING_H)]: Change condition...
+	[!(_WCHAR_H && (_STRING_H && !__STRICT_ANSI__))]: ...to this; the
+	guarded declarations are not exposed by including <string.h> when...
+	[__STRICT_ANSI__]: ...this is defined; hence, we must declare them
+	when including <wchar.h>, even after including <string.h>
+
 2016-10-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add dependency tracking for tests/Makefile.
