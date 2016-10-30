@@ -1629,121 +1629,126 @@ void __pformat_emit_xfloat( __pformat_fpreg_t value, __pformat_t *stream )
    * be placed before the radix point, leaving at most 15 digits
    * to satisfy any requested precision; thus...
    */
-  if( (stream->precision >= 0) && (stream->precision < 15) )
+  if( value.__pformat_fpreg_mantissa )
   {
-    /* When the user specifies a precision within this range,
-     * we want to adjust the mantissa, to retain just the number
-     * of digits required, rounding up when the high bit of the
-     * leftmost discarded digit is set; (mask of 0x08 accounts
-     * for exactly one digit discarded, shifting 4 bits per
-     * digit, with up to 14 additional digits, to consume the
-     * full availability of 15 precision digits).
-     *
-     * However, before we perform the rounding operation, we
-     * normalise the mantissa, shifting it to the left by as many
-     * bit positions may be necessary, until its highest order bit
-     * is set, thus preserving the maximum number of bits in the
-     * rounded result as possible.
+    /* ...provided the mantissa is non-zero...
      */
-    while( value.__pformat_fpreg_mantissa < (LLONG_MAX + 1ULL) )
-      value.__pformat_fpreg_mantissa <<= 1;
-
-    /* We then shift the mantissa one bit position back to the
-     * right, to guard against possible overflow when the rounding
-     * adjustment is added.
-     */
-    value.__pformat_fpreg_mantissa >>= 1;
-
-    /* We now add the rounding adjustment, noting that to keep the
-     * 0x08 mask aligned with the shifted mantissa, we also need to
-     * shift it right by one bit initially, changing its starting
-     * value to 0x04...
-     */
-    value.__pformat_fpreg_mantissa += 0x04LL << (4 * (14 - stream->precision));
-    if( (value.__pformat_fpreg_mantissa & (LLONG_MAX + 1ULL)) == 0ULL )
-      /*
-       * When the rounding adjustment would not have overflowed,
-       * then we shift back to the left again, to fill the vacated
-       * bit we reserved to accommodate the carry.
-       */
-      value.__pformat_fpreg_mantissa <<= 1;
-
-    else
-      /* Otherwise the rounding adjustment would have overflowed,
-       * so the carry has already filled the vacated bit; the effect
-       * of this is equivalent to an increment of the exponent.
-       */
-      value.__pformat_fpreg_exponent++;
-
-    /* We now complete the rounding to the required precision, by
-     * shifting the unwanted digits out, from the right hand end of
-     * the mantissa.
-     */
-    value.__pformat_fpreg_mantissa >>= 4 * (15 - stream->precision);
-  }
-
-  /* Encode the significant digits of the mantissa in hexadecimal
-   * ASCII notation, ready for transfer to the output stream...
-   */
-  while( value.__pformat_fpreg_mantissa )
-  {
-    /* taking the rightmost digit in each pass...
-     */
-    int c = value.__pformat_fpreg_mantissa & 0xF;
-    if( c == value.__pformat_fpreg_mantissa )
+    if( (stream->precision >= 0) && (stream->precision < 15) )
     {
-      /* inserting the radix point, when we reach the last,
-       * (i.e. the most significant digit), unless we found no
-       * less significant digits, with no mandatory radix point
-       * inclusion, and no additional required precision...
+      /* ...when the user specifies a precision within this range,
+       * we want to adjust the mantissa, to retain just the number
+       * of digits required, rounding up when the high bit of the
+       * leftmost discarded digit is set; (mask of 0x08 accounts
+       * for exactly one digit discarded, shifting 4 bits per
+       * digit, with up to 14 additional digits, to consume the
+       * full availability of 15 precision digits).
+       *
+       * However, before we perform the rounding operation, we
+       * normalise the mantissa, shifting it to the left by as many
+       * bit positions may be necessary, until its highest order bit
+       * is set, thus preserving the maximum number of bits in the
+       * rounded result as possible.
        */
-      if( (p > buf)
-      ||  (stream->flags & PFORMAT_HASHED) || (stream->precision > 0)  )
-	/*
-	 * Internally, we represent the radix point as an ASCII '.';
-	 * we will replace it with any locale specific alternative,
-	 * at the time of transfer to the ultimate destination.
-	 */
-	*p++ = '.';
+      while( value.__pformat_fpreg_mantissa < (LLONG_MAX + 1ULL) )
+	value.__pformat_fpreg_mantissa <<= 1;
 
-      /* If the most significant hexadecimal digit of the encoded
-       * output value is greater than one, then the indicated value
-       * will appear too large, by an additional binary exponent
-       * corresponding to the number of higher order bit positions
-       * which it occupies...
+      /* We then shift the mantissa one bit position back to the
+       * right, to guard against possible overflow when the rounding
+       * adjustment is added.
        */
-      while( value.__pformat_fpreg_mantissa > 1 )
-      {
-	/* so reduce the exponent value to compensate...
+      value.__pformat_fpreg_mantissa >>= 1;
+
+      /* We now add the rounding adjustment, noting that to keep the
+       * 0x08 mask aligned with the shifted mantissa, we also need to
+       * shift it right by one bit initially, changing its starting
+       * value to 0x04...
+       */
+      value.__pformat_fpreg_mantissa += 0x04LL << (4 * (14 - stream->precision));
+      if( (value.__pformat_fpreg_mantissa & (LLONG_MAX + 1ULL)) == 0ULL )
+	/*
+	 * When the rounding adjustment would not have overflowed,
+	 * then we shift back to the left again, to fill the vacated
+	 * bit we reserved to accommodate the carry.
 	 */
-	value.__pformat_fpreg_exponent--;
-	value.__pformat_fpreg_mantissa >>= 1;
-      }
+	value.__pformat_fpreg_mantissa <<= 1;
+
+      else
+	/* Otherwise the rounding adjustment would have overflowed,
+	 * so the carry has already filled the vacated bit; the effect
+	 * of this is equivalent to an increment of the exponent.
+	 */
+	value.__pformat_fpreg_exponent++;
+
+      /* We now complete the rounding to the required precision, by
+       * shifting the unwanted digits out, from the right hand end of
+       * the mantissa.
+       */
+      value.__pformat_fpreg_mantissa >>= 4 * (15 - stream->precision);
     }
 
-    else if( stream->precision > 0 )
-      /*
-       * we have not yet fulfilled the desired precision,
-       * and we have not yet found the most significant digit,
-       * so account for the current digit, within the field
-       * width required to meet the specified precision.
-       */
-      stream->precision--;
-
-    if( (c > 0) || (p > buf) || (stream->precision >= 0) )
-      /*
-       * Ignoring insignificant trailing zeros, (unless required to
-       * satisfy specified precision), store the current encoded digit
-       * into the pending output buffer, in LIFO order, and using the
-       * appropriate case for digits in the `A'..`F' range.
-       */
-      *p++ = c > 9 ? (c - 10 + 'A') | (stream->flags & PFORMAT_XCASE) : c + '0';
-
-    /* Shift out the current digit, (4-bit logical shift right),
-     * to align the next more significant digit to be extracted,
-     * and encoded in the next pass.
+    /* Encode the significant digits of the mantissa in hexadecimal
+     * ASCII notation, ready for transfer to the output stream...
      */
-    value.__pformat_fpreg_mantissa >>= 4;
+    while( value.__pformat_fpreg_mantissa )
+    {
+      /* taking the rightmost digit in each pass...
+       */
+      int c = value.__pformat_fpreg_mantissa & 0xF;
+      if( c == value.__pformat_fpreg_mantissa )
+      {
+	/* inserting the radix point, when we reach the last,
+	 * (i.e. the most significant digit), unless we found no
+	 * less significant digits, with no mandatory radix point
+	 * inclusion, and no additional required precision...
+	 */
+	if( (p > buf)
+	||  (stream->flags & PFORMAT_HASHED) || (stream->precision > 0)  )
+	  /*
+	   * Internally, we represent the radix point as an ASCII '.';
+	   * we will replace it with any locale specific alternative,
+	   * at the time of transfer to the ultimate destination.
+	   */
+	  *p++ = '.';
+
+	/* If the most significant hexadecimal digit of the encoded
+	 * output value is greater than one, then the indicated value
+	 * will appear too large, by an additional binary exponent
+	 * corresponding to the number of higher order bit positions
+	 * which it occupies...
+	 */
+	while( value.__pformat_fpreg_mantissa > 1 )
+	{
+	  /* so reduce the exponent value to compensate...
+	   */
+	  value.__pformat_fpreg_exponent--;
+	  value.__pformat_fpreg_mantissa >>= 1;
+	}
+      }
+
+      else if( stream->precision > 0 )
+	/*
+	 * we have not yet fulfilled the desired precision,
+	 * and we have not yet found the most significant digit,
+	 * so account for the current digit, within the field
+	 * width required to meet the specified precision.
+	 */
+	stream->precision--;
+
+      if( (c > 0) || (p > buf) || (stream->precision >= 0) )
+	/*
+	 * Ignoring insignificant trailing zeros, (unless required to
+	 * satisfy specified precision), store the current encoded digit
+	 * into the pending output buffer, in LIFO order, and using the
+	 * appropriate case for digits in the `A'..`F' range.
+	 */
+	*p++ = c > 9 ? (c - 10 + 'A') | (stream->flags & PFORMAT_XCASE) : c + '0';
+
+      /* Shift out the current digit, (4-bit logical shift right),
+       * to align the next more significant digit to be extracted,
+       * and encoded in the next pass.
+       */
+      value.__pformat_fpreg_mantissa >>= 4;
+    }
   }
 
   if( p == buf )

@@ -268,8 +268,8 @@
  * ...and these, which are only available in the non-free run-times
  * from MSVCR80.DLL onwards:
  *
- *  intptr_t _wfindfirst32 (wchar_t *, struct __wfinddata32_t *);
- *  int _wfindnext32 (intptr_t, struct __wfinddata32_t *);
+ *  intptr_t _wfindfirst32 (wchar_t *, struct _wfinddata32_t *);
+ *  int _wfindnext32 (intptr_t, struct _wfinddata32_t *);
  *
  *  intptr_t _wfindfirst32i64 (wchar_t *, struct _wfinddata32i64_t *);
  *  int _wfindnext32i64 (intptr_t, struct _wfinddata32i64_t *);
