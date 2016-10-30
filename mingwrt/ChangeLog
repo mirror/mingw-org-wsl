@@ -1,3 +1,12 @@
+2016-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix a potentially infinite printf() format conversion loop.
+
+	* mingwex/stdio/pformat.c (__pformat_emit_xfloat)
+	[value.__pformat_fpreg_mantissa == 0]: Do not attempt to normalize
+	it; there are no 1-bits to promote, so repeated shifting until one
+	appears in most significant position will never terminate.
+
 2016-10-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag mingwrt-3.22.4 patch release.
