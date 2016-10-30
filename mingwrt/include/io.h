@@ -221,6 +221,12 @@ int _findnexti64 (intptr_t, struct _finddatai64_t *);
  * to the original generic _findfirst()/_findnext() implementation).
  */
 struct __finddata64_t __struct_finddata_t (__time64_t, __int64);
+/*
+ * Some MSDN documents, (particularly more recent documents), may
+ * inconsistently refer to this structural type by the anomalous
+ * name of _finddata64_t; support this anomaly.
+ */
+#define _finddata64_t  __finddata64_t
 
 _CRTIMP __cdecl __MINGW_NOTHROW
 intptr_t _findfirst64 (const char *, struct __finddata64_t *);
@@ -360,6 +366,13 @@ int _wfindnexti64 (intptr_t, struct _wfinddatai64_t *);
  * MSVCRT.DLL, after it originally appeared in MSVCR61.DLL.
  */
 struct __wfinddata64_t __struct_finddata_t (__time64_t, __int64);
+/*
+ * As in the case of the __finddata64_t structure, some MSDN
+ * documents, (particularly more recent documents), may refer
+ * to __wfinddata64_t by the inconsistently anomalous name of
+ * _wfinddata64_t; also support this anomaly.
+ */
+#define _wfinddata64_t  __wfinddata64_t
 
 _CRTIMP __cdecl __MINGW_NOTHROW
 intptr_t _wfindfirst64 (const wchar_t *, struct __wfinddata64_t *);
@@ -372,15 +385,26 @@ int _wfindnext64 (intptr_t, struct __wfinddata64_t *);
  * exclusive to it and its later derivatives; none of these are
  * available in any version of MSVCRT.DLL.
  */
-struct __wfinddata32_t __struct_finddata_t (__time32_t, __int32);
+struct _wfinddata32_t    __struct_finddata_t (__time32_t, __int32);
 struct _wfinddata32i64_t __struct_finddata_t (__time32_t, __int64);
 struct _wfinddata64i32_t __struct_finddata_t (__time64_t, __int32);
+/*
+ * As in the __finddata64_t vs. _finddata64_t, and __wfinddata64_t
+ * vs. _wfinddata64_t anomalous cases, there is at least one historic
+ * MSDN reference to a __wfinddata32_t structural type, in a context
+ * where _wfinddata32_t may be expected.  In this case, it appears
+ * that __wfinddata32_t is the anomaly, and that it may be peculiar
+ * to the VS-2005 documentation; nevertheless, the corresponding
+ * definition is provided here, for the possible convenience of
+ * any user who may depend on it, (but please avoid it).
+ */
+#define __wfinddata32_t  _wfinddata32_t
 
 _CRTIMP __cdecl __MINGW_NOTHROW
-intptr_t _wfindfirst32 (const wchar_t *, struct __wfinddata32_t *);
+intptr_t _wfindfirst32 (const wchar_t *, struct _wfinddata32_t *);
 
 _CRTIMP __cdecl __MINGW_NOTHROW
-int _wfindnext32 (intptr_t, struct __wfinddata32_t *);
+int _wfindnext32 (intptr_t, struct _wfinddata32_t *);
 
 _CRTIMP __cdecl __MINGW_NOTHROW
 intptr_t _wfindfirst32i64 (const wchar_t *, struct _wfinddata32i64_t *);
@@ -406,11 +430,11 @@ int _wfindnext64i32 (intptr_t, struct _wfinddata64i32_t *);
  */
 __CRT_ALIAS __cdecl __MINGW_NOTHROW
 intptr_t _wfindfirst (const wchar_t *__filespec, struct _wfinddata_t *__search)
-{ return _wfindfirst32 (__filespec, (struct __wfinddata32_t *)(__search)); }
+{ return _wfindfirst32 (__filespec, (struct _wfinddata32_t *)(__search)); }
 
 __CRT_ALIAS __cdecl __MINGW_NOTHROW
 int _wfindnext (intptr_t __handle, struct _wfinddata_t *__search)
-{ return _wfindnext32 (__handle, (struct __wfinddata32_t *)(__search)); }
+{ return _wfindnext32 (__handle, (struct _wfinddata32_t *)(__search)); }
 
 __CRT_ALIAS __cdecl __MINGW_NOTHROW
 intptr_t _wfindfirsti64 (const wchar_t *__filespec, struct _wfinddatai64_t *__search)
