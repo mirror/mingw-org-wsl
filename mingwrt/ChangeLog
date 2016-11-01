@@ -1,3 +1,11 @@
+2016-11-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix another printf() hex-float formatting bug.
+
+	* mingwex/stdio/pformat.c (__pformat_emit_xfloat)
+	[stream->flags & PFORMAT_ZEROFILL]: Ignore this; it should be...
+	[(stream->flags & PFORMAT_JUSTIFY) == PFORMAT_ZEROFILL]: ...thus.
+
 2016-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Work around MSDN inconsistencies in _finddata_t naming.

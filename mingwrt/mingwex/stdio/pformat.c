@@ -1654,7 +1654,8 @@ void __pformat_emit_xfloat( __pformat_fpreg_t value, __pformat_t *stream )
   /* If the `0' flag is in effect...
    * Zero padding, to fill out the field, goes here...
    */
-  if( (stream->width > 0) && (stream->flags & PFORMAT_ZEROFILL) )
+  if(  (stream->width > 0)
+  &&  ((stream->flags & PFORMAT_JUSTIFY) == PFORMAT_ZEROFILL)  )
     while( stream->width-- > 0 )
       __pformat_putc( '0', stream );
 
