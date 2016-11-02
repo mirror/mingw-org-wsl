@@ -1,3 +1,11 @@
+2016-11-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement unit tests for ANSI printf() functions.
+
+	* tests/Makefile.in (testsuite): Add dependency for...
+	* tests/ansiprintf.at: ...this new file, and...
+	* tests/testsuite.at.in: ...m4_include it.
+
 2016-11-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix another printf() hex-float formatting bug.

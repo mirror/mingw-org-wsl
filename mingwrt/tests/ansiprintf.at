@@ -1,0 +1,298 @@
+# ansiprintf.at
+#
+# Autotest module to verify correct operation of MinGW.org's suite of
+# ANSI compliant replacements for the printf() family of functions.
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2016, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+#
+# All tests specified herein are written in the C language.
+#
+MINGW_AT_LANG([C])
+
+# MINGW_AT_CHECK_PRINTF( FORMAT, ARGS, EXPOUT )
+# ---------------------------------------------
+# Set up the test case to evaluate the behaviour of printf() when
+# invoked with the specified (unquoted) FORMAT, and the given comma
+# separated list of ARGS; confirm that the resultant output matches
+# EXPOUT, (which is interpreted as CRLF delimited text).
+#
+m4_define([MINGW_AT_CHECK_PRINTF],[dnl
+AT_SETUP([printf ("$1", $2)])_MINGW_AT_CHECK_PRINTF([$1],[$2],[$3])dnl
+])m4_define([_MINGW_AT_CHECK_PRINTF],[dnl
+AT_KEYWORDS([C printf])
+MINGW_AT_DATA_CRLF([expout],[[$3
+]])MINGW_AT_CHECK_RUN([[[
+#define _XOPEN_SOURCE 700
+#include <stdio.h>
+#include <tgmath.h>
+int main()
+{ printf ("::]$1[::\n", ]$2[); return 0;
+}]]],,[expout])dnl
+AT_CLEANUP
+])# MINGW_AT_CHECK_PRINTF
+
+# MINGW_AT_XFAIL_PRINTF( FORMAT, ARGS, EXPOUT )
+# ---------------------------------------------
+# A variation on MINGW_AT_CHECK_PRINTF, used to introduce any test
+# from which the output is likely to differ from that which might be
+# expected for the given format and arguments, (e.g. the display of
+# numeric digits beyond the limit of precision for the data type).
+#
+m4_define([MINGW_AT_XFAIL_PRINTF],[dnl
+AT_SETUP([printf ("$1", $2)])AT_XFAIL_IF([true])dnl
+_MINGW_AT_CHECK_PRINTF([$1],[$2],[$3])dnl
+])# MINGW_AT_XFAIL_PRINTF
+
+
+# Test behaviour of "%d" format conversion, for decimal
+# display of integer values.
+#
+AT_BANNER([[ISO-C99 printf() integer value formatting.]])
+MINGW_AT_CHECK_PRINTF([[%20d]],    [+0],    [::                   0::])
+MINGW_AT_CHECK_PRINTF([[%+20d]],   [-0],    [::                  +0::])
+MINGW_AT_CHECK_PRINTF([[%020d]],   [+0],    [::00000000000000000000::])
+MINGW_AT_CHECK_PRINTF([[%-20d]],   [-0],    [::0                   ::])
+MINGW_AT_CHECK_PRINTF([[%20d]],    [+55],   [::                  55::])
+MINGW_AT_CHECK_PRINTF([[%20d]],    [-55],   [::                 -55::])
+MINGW_AT_CHECK_PRINTF([[%+20d]],   [+55],   [::                 +55::])
+MINGW_AT_CHECK_PRINTF([[%+20d]],   [-55],   [::                 -55::])
+MINGW_AT_CHECK_PRINTF([[%020d]],   [+55],   [::00000000000000000055::])
+MINGW_AT_CHECK_PRINTF([[%-20d]],   [+55],   [::55                  ::])
+
+
+# Test behaviour of "%#x" format conversion, for hexadecimal
+# display of integer values.
+#
+AT_BANNER([[ISO-C99 printf() hexadecimal integer formatting.]])
+MINGW_AT_CHECK_PRINTF([[%#20x]],   [-0],    [::                   0::])
+MINGW_AT_CHECK_PRINTF([[%#+20x]],  [+0],    [::                   0::])
+MINGW_AT_CHECK_PRINTF([[%#020x]],  [-0],    [::00000000000000000000::])
+MINGW_AT_CHECK_PRINTF([[%#-20x]],  [+0],    [::0                   ::])
+MINGW_AT_CHECK_PRINTF([[%#20x]],   [+77],   [::                0x4d::])
+MINGW_AT_CHECK_PRINTF([[%#20x]],   [-77],   [::          0xffffffb3::])
+MINGW_AT_CHECK_PRINTF([[%#+20x]],  [+77],   [::                0x4d::])
+MINGW_AT_CHECK_PRINTF([[%#+20x]],  [-77],   [::          0xffffffb3::])
+MINGW_AT_CHECK_PRINTF([[%#020x]],  [+77],   [::0x00000000000000004d::])
+MINGW_AT_CHECK_PRINTF([[%#-20x]],  [+77],   [::0x4d                ::])
+
+
+# Test effect of alignment and sign flags on "%f" format conversion.
+#
+AT_BANNER([[ISO-C99 printf() fixed point real number formatting.]])
+MINGW_AT_CHECK_PRINTF([[%20f]],    [M_E],   [::            2.718282::])
+MINGW_AT_CHECK_PRINTF([[% 20f]],   [M_E],   [::            2.718282::])
+MINGW_AT_CHECK_PRINTF([[%+20f]],   [M_E],   [::           +2.718282::])
+MINGW_AT_CHECK_PRINTF([[% 020f]],  [M_E],   [:: 000000000002.718282::])
+MINGW_AT_CHECK_PRINTF([[%020f]],   [M_E],   [::0000000000002.718282::])
+MINGW_AT_CHECK_PRINTF([[%+020f]],  [M_E],   [::+000000000002.718282::])
+MINGW_AT_CHECK_PRINTF([[%+ 020f]], [M_E],   [::+000000000002.718282::])
+MINGW_AT_CHECK_PRINTF([[%-20f]],   [M_E],   [::2.718282            ::])
+MINGW_AT_CHECK_PRINTF([[%- 20f]],  [M_E],   [:: 2.718282           ::])
+MINGW_AT_CHECK_PRINTF([[%-+20f]],  [M_E],   [::+2.718282           ::])
+MINGW_AT_CHECK_PRINTF([[%- +20f]], [M_E],   [::+2.718282           ::])
+MINGW_AT_CHECK_PRINTF([[%-020f]],  [M_E],   [::2.718282            ::])
+
+
+# Test the effect of "%f" format conversion, with a value which
+# requires in excess the representable 15-digit maximum precision
+# of the double data type; ideally, a value with an exact binary
+# representation would be displayed exactly, but we expect this
+# to fail, with garbage beyond the 15-digit boundary.
+#
+AT_BANNER([[ISO-C99 printf() fixed point formatting imprecision.]])
+MINGW_AT_XFAIL_PRINTF([[%30.1f]], [1e+26],  [:: 100000000000000000000000000.0::])
+
+
+# Test default behaviour of "%g" format conversion; (this should
+# have no non-significant trailing zeros, nor should it end with
+# a radix point without following non-zero fractional digits).
+#
+AT_BANNER([[ISO-C99 printf() floating point real number formatting.]])
+MINGW_AT_CHECK_PRINTF([[%20g]],  [1.75e+02], [::                 175::])
+MINGW_AT_CHECK_PRINTF([[%20g]],  [1.75e+05], [::              175000::])
+MINGW_AT_CHECK_PRINTF([[%20g]],  [1.75e+15], [::           1.75e+015::])
+MINGW_AT_CHECK_PRINTF([[%20g]],  [1.75e+00], [::                1.75::])
+MINGW_AT_CHECK_PRINTF([[%20g]],  [1.75e-03], [::             0.00175::])
+MINGW_AT_CHECK_PRINTF([[%20g]],  [1.75e-15], [::           1.75e-015::])
+
+
+# Test effect of alignment and sign flags on "%g" format conversion.
+#
+AT_BANNER([[ISO-C99 printf() floating point formatting with flags.]])
+MINGW_AT_CHECK_PRINTF([[%+20g]],   [M_E],    [::            +2.71828::])
+MINGW_AT_CHECK_PRINTF([[%020g]],   [M_E],    [::00000000000002.71828::])
+MINGW_AT_CHECK_PRINTF([[% 020g]],  [M_E],    [:: 0000000000002.71828::])
+MINGW_AT_CHECK_PRINTF([[%+020g]],  [M_E],    [::+0000000000002.71828::])
+MINGW_AT_CHECK_PRINTF([[%+ 020g]], [M_E],    [::+0000000000002.71828::])
+MINGW_AT_CHECK_PRINTF([[%-20g]],   [M_E],    [::2.71828             ::])
+MINGW_AT_CHECK_PRINTF([[%- 20g]],  [M_E],    [:: 2.71828            ::])
+MINGW_AT_CHECK_PRINTF([[%-+20g]],  [M_E],    [::+2.71828            ::])
+MINGW_AT_CHECK_PRINTF([[%- +20g]], [M_E],    [::+2.71828            ::])
+MINGW_AT_CHECK_PRINTF([[%-020g]],  [M_E],    [::2.71828             ::])
+
+
+# Test effect of "#" flag on "%g" format conversion; (this should
+# override suppression of non-significant trailing zeros).
+#
+AT_BANNER([[ISO-C99 printf() alternative floating point formatting.]])
+MINGW_AT_CHECK_PRINTF([[%#20g]], [1.75e+02], [::             175.000::])
+MINGW_AT_CHECK_PRINTF([[%#20g]], [1.75e+05], [::             175000.::])
+MINGW_AT_CHECK_PRINTF([[%#20g]], [1.75e+15], [::        1.75000e+015::])
+MINGW_AT_CHECK_PRINTF([[%#20g]], [1.75e+00], [::             1.75000::])
+MINGW_AT_CHECK_PRINTF([[%#20g]], [1.75e-03], [::          0.00175000::])
+MINGW_AT_CHECK_PRINTF([[%#20g]], [1.75e-15], [::        1.75000e-015::])
+
+
+# Test transition between "%e" and "%f" style representations, for
+# default precision "%g" format conversion.
+#
+AT_BANNER([[ISO-C99 printf() floating point format style transitions.]])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e-6], [::        2.71828e-006::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e-5], [::        2.71828e-005::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e-4], [::         0.000271828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e-3], [::          0.00271828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e-2], [::           0.0271828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e-1], [::            0.271828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+0], [::             2.71828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+1], [::             27.1828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+2], [::             271.828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+3], [::             2718.28::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+4], [::             27182.8::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+5], [::              271828::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+6], [::        2.71828e+006::])
+MINGW_AT_CHECK_PRINTF([[%20g]], [M_E * 1e+7], [::        2.71828e+007::])
+
+
+# Test the effect of varying precision, as specified by the "*" format
+# modifier, on "%g" format conversion; (-ve precision implies default;
+# zero or +ve specifies actual significant digits).
+#
+AT_BANNER([[ISO-C99 printf() variable precision floating point format.]])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [-2, M_E], [::             2.71828::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [-1, M_E], [::             2.71828::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+0, M_E], [::                   3::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+1, M_E], [::                   3::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+2, M_E], [::                 2.7::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+3, M_E], [::                2.72::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+4, M_E], [::               2.718::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+5, M_E], [::              2.7183::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+6, M_E], [::             2.71828::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+7, M_E], [::            2.718282::])
+MINGW_AT_CHECK_PRINTF([[%20.*g]], [+8, M_E], [::           2.7182818::])
+
+
+# Test variations of "%e" format conversion.
+#
+AT_BANNER([[ISO-C99 printf() scientific style floating point format.]])
+MINGW_AT_CHECK_PRINTF([[%20.7e]],  [+M_E * 0.0], [::      0.0000000e+000::])
+MINGW_AT_CHECK_PRINTF([[%20.7e]],  [-M_E * 0.0], [::     -0.0000000e+000::])
+MINGW_AT_CHECK_PRINTF([[%20.7e]],  [+M_E * 1.0], [::      2.7182818e+000::])
+MINGW_AT_CHECK_PRINTF([[%20.7e]],  [-M_E * 1.0], [::     -2.7182818e+000::])
+MINGW_AT_CHECK_PRINTF([[%20.7e]],  [+M_E / 0.0], [::                 inf::])
+MINGW_AT_CHECK_PRINTF([[%20.7e]],  [-M_E / 0.0], [::                -inf::])
+MINGW_AT_CHECK_PRINTF([[%20.7e]],  [-0.0 / 0.0], [::                 nan::])
+MINGW_AT_CHECK_PRINTF([[%-20.7e]], [+M_E * 0.0], [::0.0000000e+000      ::])
+MINGW_AT_CHECK_PRINTF([[%-20.7e]], [-M_E * 0.0], [::-0.0000000e+000     ::])
+MINGW_AT_CHECK_PRINTF([[%-20.7e]], [+M_E * 1.0], [::2.7182818e+000      ::])
+MINGW_AT_CHECK_PRINTF([[%-20.7e]], [-M_E * 1.0], [::-2.7182818e+000     ::])
+MINGW_AT_CHECK_PRINTF([[%-20.7e]], [+M_E / 0.0], [::inf                 ::])
+MINGW_AT_CHECK_PRINTF([[%-20.7e]], [-M_E / 0.0], [::-inf                ::])
+MINGW_AT_CHECK_PRINTF([[%-20.7e]], [-0.0 / 0.0], [::nan                 ::])
+MINGW_AT_CHECK_PRINTF([[%+20.7e]], [+M_E * 0.0], [::     +0.0000000e+000::])
+MINGW_AT_CHECK_PRINTF([[%+20.7e]], [-M_E * 0.0], [::     -0.0000000e+000::])
+MINGW_AT_CHECK_PRINTF([[%+20.7e]], [+M_E * 1.0], [::     +2.7182818e+000::])
+MINGW_AT_CHECK_PRINTF([[%+20.7e]], [-M_E * 1.0], [::     -2.7182818e+000::])
+MINGW_AT_CHECK_PRINTF([[%+20.7e]], [+M_E / 0.0], [::                +inf::])
+MINGW_AT_CHECK_PRINTF([[%+20.7e]], [-M_E / 0.0], [::                -inf::])
+MINGW_AT_CHECK_PRINTF([[%+20.7e]], [-0.0 / 0.0], [::                +nan::])
+
+
+# Test variations of "%a" format conversion; (the following integer
+# value confirms correct size of the floating point entity passed on
+# the printf() argument stack).
+#
+AT_BANNER([[ISO-C99 printf() hexadecimal floating point formatting.]])
+MINGW_AT_CHECK_PRINTF([[%16a%4d]],    [0.000, 77],  [::          0x0p+0  77::])
+MINGW_AT_CHECK_PRINTF([[%16.3a%4d]],  [0.000, 99],  [::      0x0.000p+0  99::])
+MINGW_AT_CHECK_PRINTF([[%16a%4d]],    [1.750, 77],  [::          0xep-3  77::])
+MINGW_AT_CHECK_PRINTF([[%016a%4d]],   [1.750, 77],  [::0x0000000000ep-3  77::])
+MINGW_AT_CHECK_PRINTF([[%-016a%4d]],  [1.750, 77],  [::0xep-3            77::])
+MINGW_AT_CHECK_PRINTF([[%16.0a%4d]],  [1.450, 44],  [::          0xcp-3  44::])
+MINGW_AT_CHECK_PRINTF([[%16.1a%4d]],  [1.999, 99],  [::        0x8.0p-2  99::])
+MINGW_AT_CHECK_PRINTF([[%16La%4d]],   [1.750L, 77], [::          0xep-3  77::])
+MINGW_AT_CHECK_PRINTF([[%016La%4d]],  [1.750L, 77], [::0x0000000000ep-3  77::])
+MINGW_AT_CHECK_PRINTF([[%16.0La%4d]], [1.450L, 44], [::          0xcp-3  44::])
+MINGW_AT_CHECK_PRINTF([[%16.1La%4d]], [1.999L, 99], [::        0x8.0p-2  99::])
+
+
+# MINGW_AT_CHECK_SNPRINTF( FORMAT, MAXCOUNT, INITCOUNT )
+# ------------------------------------------------------
+# Test the behaviour of the snprintf() function, with respect to
+# output truncation at specified MAXCOUNT (no more than 32), when
+# writing string "Sample text; sufficient buffer" subject to the
+# specified.  Also supports testing the effect of "%n" counting
+# on an internal integer variable, initialized to INITCOUNT.
+#
+m4_define([MINGW_AT_CHECK_SNPRINTF],[dnl
+AT_SETUP([snprintf (output, $2, "$1", ...)])
+AT_KEYWORDS([C printf])MINGW_AT_DATA_CRLF([expout],[[$4
+]])MINGW_AT_CHECK_RUN([[[
+#define _XOPEN_SOURCE 700
+#include <stdio.h>
+int main()
+{ char output[32]; int capture = ]$3[;
+  const char *sample = "Sample text; sufficient buffer";
+  int total = snprintf (output, ]$2[, "]$1[", sample, &capture);
+  snprintf (NULL, 0, "]$1[", output, &capture);
+  printf ("%s: %d required; %d captured\n", output, total, capture);
+  return 0;
+}]]],,[expout])dnl
+AT_CLEANUP
+])# MINGW_AT_CHECK_SNPRINTF
+
+
+# Tests for snprintf() with limited length internal buffer.
+#
+AT_BANNER([ISO-C99 snprintf() buffer length control.])
+MINGW_AT_CHECK_SNPRINTF([[%s]],[32],[1024],dnl
+[Sample text; sufficient buffer: 30 required; 1024 captured])
+MINGW_AT_CHECK_SNPRINTF([[%s]],[12],[1024],dnl
+[Sample text: 30 required; 1024 captured])
+
+
+# Tests for effect of "%n" output length counting.
+#
+AT_BANNER([ISO-C99 snprintf() intermediate output counting.])
+MINGW_AT_CHECK_SNPRINTF([[%s%n]],[32],[1024],dnl
+[Sample text; sufficient buffer: 30 required; 30 captured])
+MINGW_AT_CHECK_SNPRINTF([[%s%n]],[12],[1024],dnl
+[Sample text: 30 required; 11 captured])
+MINGW_AT_CHECK_SNPRINTF([[%s%hhn]],[12],[1024],dnl
+[Sample text: 30 required; 1035 captured])
+
+# vim: filetype=config formatoptions=croql
+# $RCSfile$: end of file

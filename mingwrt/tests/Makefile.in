@@ -99,8 +99,10 @@ AUTOTEST_COMPILE = $(autotest_@AUTOTEST_COMPILE@)
 autotest_command = autom4te --language autotest --include ${srcdir}
 autotest_missing = $(call missing,autom4te,Unable to compile the testsuite)
 
-testsuite: %: %.at headers.at
+testsuite: %: %.at
 	$(AUTOTEST_COMPILE) -o $* $<
+
+testsuite: headers.at ansiprintf.at
 
 # Display a diagnostic message, explaining that any specified program
 # is required, but has not been installed.

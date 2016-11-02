@@ -87,6 +87,7 @@ MINGW_AT_LANG([C])
 # collection of autotest M4 include files.
 #
 m4_include([headers.at])
+m4_include([ansiprintf.at])
 
 # vim: filetype=config formatoptions=croql
 # $RCSfile$: end of file
