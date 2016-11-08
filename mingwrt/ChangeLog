@@ -1,3 +1,14 @@
+2016-11-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement unit tests for logarithmic functions.
+
+	* tests/testsuite.at.in: m4_include...
+	* tests/Makefile.in (testsuite): ...and add dependency on...
+	* tests/logarithms.at: ...this new file; it specifies unit tests to
+	check POSIX.1-2008 compliance of results and errno assignment from...
+	(log, logf, logl, log1p, log1pf, log1pl, log10, log10f, log10l, log2)
+	(log2f, log2l): ...each of these functions.
+
 2016-11-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement unit tests for ANSI printf() functions.

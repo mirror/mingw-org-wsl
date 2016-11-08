@@ -1,0 +1,329 @@
+# logarithms.at
+#
+# Autotest module to verify correct operation of the log(), logf(),
+# logl(), log10(), log10f(), log10l(), log1p(), log1pf(), log1pl(),
+# log2(), log2f(), and log2l() functions, with respect to each of
+# the boundary conditions specified by POSIX.1-2008.
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2016, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+#
+# All tests specified herein are written in the C language.
+#
+MINGW_AT_LANG([C])
+
+# MINGW_AT_CHECK_RUN_LOG( FUNCTION, X )
+# -------------------------------------
+# Set up the test case to evaluate FUNCTION, (one of log, logf,
+# logl, log10, log10f, log10l, log1p, log1pf, log1pl, log2, log2f,
+# or log2l), with X as argument; confirm the the resultant output
+# matches that specified by _FUNCTION_expout(X).
+#
+# Note: the M4 macros log_datatype, log_strtod, and log_format
+# MUST have been defined, before this macro is expanded.
+#
+m4_define([MINGW_AT_CHECK_RUN_LOG],[
+AT_SETUP([$1 (x = $2)])AT_KEYWORDS([C logarithms $1])
+MINGW_AT_DATA_CRLF([expout],[_$1_expout([$2])
+])MINGW_AT_CHECK_RUN([[[
+#define _XOPEN_SOURCE 700
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <tgmath.h>
+#include <errno.h>
+
+#define EOK  0
+
+const char *errdesc( void )
+{ /* A minimal replacement for strerror(), so we keep strict
+   * control of the descriptions for those errors which any of
+   * the log() functions may report.
+   */
+  static char desc[8] = "";
+  switch( errno )
+  { case EOK:    return "ok";
+    case EDOM:   return "domain error";
+    case ERANGE: return "range error";
+    default: snprintf( desc, sizeof( desc ), "%d", errno );
+  }
+  return desc;
+}
+
+int main()
+{ /* Convert the specified X argument to the appropriate data type,
+   * invoke the specified FUNCTION, report its result, and any error
+   * which may have occurred.
+   */
+  ]]log_datatype[[ result, x = ]]log_strtod($2)[[; errno = EOK;
+  result = $1(x); printf("]]log_format[[", result, errdesc());
+  return EOK;
+}]]],,[expout])dnl
+AT_CLEANUP
+])
+
+# MINGW_AT_CHECK_LOG_FUNCTION( NAME )
+# -----------------------------------
+# Check the behaviour of function NAME, (one of log, logf, or logl,
+# log1p, log1pf, or log1pl, log10, log10f, or log10l, log2, log2f or
+# log2l), for a selection of values of X.
+#
+m4_define([MINGW_AT_CHECK_LOG_FUNCTION],[dnl
+AT_BANNER([Logarithmic function $1() tests: ]log_datatype[ data.])
+#
+# On successful completion, return log(x) with the appropriate base.
+#
+MINGW_AT_CHECK_RUN_LOG([$1],[-1.30000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[-1.00000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[-0.30000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[-0.29000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[-0.28000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[-0.00001e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.00000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.00001e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.28000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.29000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.30000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.70000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.71000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.72000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+0.99999e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.00000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.00001e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.28000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.29000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.30000e+000])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.28000e+038])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.28000e+308])
+MINGW_AT_CHECK_RUN_LOG([$1],[+1.28000e+999])
+MINGW_AT_CHECK_RUN_LOG([$1],[-inf])
+])
+
+# _log_expout( X )
+# ----------------
+# Define expected outcomes for log(X), logf(X), and logl(X), given
+# a specific input value of X; these represent the Naperian (base-e)
+# logarithms for the specified X values.
+#
+m4_define([_log_expout],[m4_if(dnl
+[$1],[+1.28000e+999],[+inf (ok)],
+[_logl_expout([$1])])])
+m4_define([_logf_expout],[m4_if(dnl
+dnl All of the conventional log(X) algorithms suffer from loss of
+dnl precision in the region where X --> 1.0; this is particularly
+dnl evident in the case of the REAL4 (float) implementations, which
+dnl deviate from the expected value (--> 0.00000) after only three
+dnl significant digits.
+[$1],[+0.99999e+000],[-1.00136e-005 (ok)],dnl expected loss of precision...
+[$1],[+1.00001e+000],[+1.00135e-005 (ok)],dnl for values of X near 1.0
+[$1],[+1.28000e+308],[+inf (ok)],
+[_log_expout([$1])])])
+m4_define([_logl_expout],[m4_if(dnl
+[$1],[+0.00001e+000],[-1.15129e+001 (ok)],
+[$1],[+0.28000e+000],[-1.27297e+000 (ok)],
+[$1],[+0.29000e+000],[-1.23787e+000 (ok)],
+[$1],[+0.30000e+000],[-1.20397e+000 (ok)],
+[$1],[+0.70000e+000],[-3.56675e-001 (ok)],
+[$1],[+0.71000e+000],[-3.42490e-001 (ok)],
+[$1],[+0.72000e+000],[-3.28504e-001 (ok)],
+[$1],[+0.99999e+000],[-1.00001e-005 (ok)],
+[$1],[+1.00001e+000],[+9.99995e-006 (ok)],
+[$1],[+1.28000e+000],[+2.46860e-001 (ok)],
+[$1],[+1.29000e+000],[+2.54642e-001 (ok)],
+[$1],[+1.30000e+000],[+2.62364e-001 (ok)],
+[_logx_expout([$1])])])
+
+# _log10_expout( X )
+# ------------------
+# Define expected outcomes for log10(X), log10f(X), and log10l(X),
+# given any specific input value of X; these represent the base-10
+# logarithms for the specified X values.
+#
+m4_define([_log10_expout],[m4_if(dnl
+[$1],[+1.28000e+999],[+inf (ok)],
+[_log10l_expout([$1])])])
+m4_define([_log10f_expout],[m4_if(dnl
+dnl As in the logf(X) case, log10f(X) shows marked deviation from
+dnl expectation as X --> 1.0; once again, we observe deviation after
+dnl only three significant digits, at |X-1.0| == 1.0e-5, for this
+dnl REAL4 (float) implementation, (with additional deviation in
+dnl the sixth significant digit, around |X-1.0| --> 0.28).
+[$1],[+0.72000e+000],[-1.42667e-001 (ok)],dnl last digit difference
+[$1],[+0.99999e+000],[-4.34886e-006 (ok)],dnl expected loss of precision...
+[$1],[+1.00001e+000],[+4.34882e-006 (ok)],dnl for values of X near 1.0
+[$1],[+1.28000e+308],[+inf (ok)],
+[_log10_expout([$1])])])
+m4_define([_log10l_expout],[m4_if(dnl
+[$1],[+0.00001e+000],[-5.00000e+000 (ok)],
+[$1],[+0.28000e+000],[-5.52842e-001 (ok)],
+[$1],[+0.29000e+000],[-5.37602e-001 (ok)],
+[$1],[+0.30000e+000],[-5.22879e-001 (ok)],
+[$1],[+0.70000e+000],[-1.54902e-001 (ok)],
+[$1],[+0.71000e+000],[-1.48742e-001 (ok)],
+[$1],[+0.72000e+000],[-1.42668e-001 (ok)],
+[$1],[+0.99999e+000],[-4.34297e-006 (ok)],
+[$1],[+1.00001e+000],[+4.34292e-006 (ok)],
+[$1],[+1.28000e+000],[+1.07210e-001 (ok)],
+[$1],[+1.29000e+000],[+1.10590e-001 (ok)],
+[$1],[+1.30000e+000],[+1.13943e-001 (ok)],
+[$1],[+1.28000e+038],[+3.81072e+001 (ok)],
+[$1],[+1.28000e+308],[+3.08107e+002 (ok)],
+[$1],[+1.28000e+999],[+9.99107e+002 (ok)],
+[_logx_expout([$1])])])
+
+# _log1p_expout( X )
+# ------------------
+# Define expected outcomes for log1p(X+1), log1pf(X+1), and log1pl(X+1),
+# given a specific input value of X; these represent the Naperian (base-e)
+# logarithms for the specified X+1 values.
+#
+m4_define([_log1p_expout],[m4_if(dnl
+[$1],[+1.28000e+999],[+inf (ok)],
+[_log1pl_expout([$1])])])
+m4_define([_log1pf_expout],[m4_if(dnl
+dnl While the log1p(X) algorithm yields much better accuracy in the region
+dnl where X --> 0.0, (equivalent to X --> 1.0 for the other algorithms), we
+dnl may still observe some loss of precision (in the sixth significant digit
+dnl here) for the REAL4 implementation; (since the limit of precision for
+dnl REAL4 is no more than seven significant digits anyway, this represents
+dnl no more than a rounding effect from the least significant available
+dnl digit, so this may be considered reasonable accuracy).
+[$1],[-0.00001e+000],[-1.00000e-005 (ok)],
+[$1],[+1.28000e+308],[+inf (ok)],
+[_log1p_expout([$1])])])
+m4_define([_log1pl_expout],[m4_if(dnl
+[$1],[-1.00000e+000],[-inf (range error)],
+[$1],[-0.30000e+000],[-3.56675e-001 (ok)],
+[$1],[-0.29000e+000],[-3.42490e-001 (ok)],
+[$1],[-0.28000e+000],[-3.28504e-001 (ok)],
+[$1],[-0.00001e+000],[-1.00001e-005 (ok)],
+[$1],[+0.00000e+000],[+0.00000e+000 (ok)],
+[$1],[+0.00001e+000],[+9.99995e-006 (ok)],
+[$1],[+0.28000e+000],[+2.46860e-001 (ok)],
+[$1],[+0.29000e+000],[+2.54642e-001 (ok)],
+[$1],[+0.30000e+000],[+2.62364e-001 (ok)],
+[$1],[+0.70000e+000],[+5.30628e-001 (ok)],
+[$1],[+0.71000e+000],[+5.36493e-001 (ok)],
+[$1],[+0.72000e+000],[+5.42324e-001 (ok)],
+[$1],[+0.99999e+000],[+6.93142e-001 (ok)],
+[$1],[+1.00000e+000],[+6.93147e-001 (ok)],
+[$1],[+1.00001e+000],[+6.93152e-001 (ok)],
+[$1],[+1.28000e+000],[+8.24175e-001 (ok)],
+[$1],[+1.29000e+000],[+8.28552e-001 (ok)],
+[$1],[+1.30000e+000],[+8.32909e-001 (ok)],
+[_logx_expout([$1])])])
+
+# _log2_expout( X )
+# -----------------
+# Define expected outcomes for log(X), logf(X), and logl(X), given
+# a specific input value of X; these represent the Naperian (base-e)
+# logarithms for the specified X values.
+#
+m4_define([_log2_expout],[m4_if(dnl
+[$1],[+1.28000e+999],[+inf (ok)],
+[_log2l_expout([$1])])])
+m4_define([_log2f_expout],[m4_if(dnl
+dnl As in the case of other log(X) implementations, the REAL4 (float)
+dnl implementation again exhibits severe loss of precision beyond the
+dnl third significant digit, in the X --> 1.0 region.
+[$1],[+0.99999e+000],[-1.44466e-005 (ok)],dnl bad rounding error here!
+[$1],[+1.00001e+000],[+1.44465e-005 (ok)],dnl and here.
+[$1],[+1.28000e+308],[+inf (ok)],
+[_log2_expout([$1])])])
+m4_define([_log2l_expout],[m4_if(dnl
+[$1],[+0.00001e+000],[-1.66096e+001 (ok)],
+[$1],[+0.28000e+000],[-1.83650e+000 (ok)],
+[$1],[+0.29000e+000],[-1.78588e+000 (ok)],
+[$1],[+0.30000e+000],[-1.73697e+000 (ok)],
+[$1],[+0.70000e+000],[-5.14573e-001 (ok)],
+[$1],[+0.71000e+000],[-4.94109e-001 (ok)],
+[$1],[+0.72000e+000],[-4.73931e-001 (ok)],
+[$1],[+0.99999e+000],[-1.44270e-005 (ok)],
+[$1],[+1.00001e+000],[+1.44269e-005 (ok)],
+[$1],[+1.28000e+000],[+3.56144e-001 (ok)],
+[$1],[+1.29000e+000],[+3.67371e-001 (ok)],
+[$1],[+1.30000e+000],[+3.78512e-001 (ok)],
+[$1],[+1.28000e+038],[+1.26589e+002 (ok)],
+[$1],[+1.28000e+308],[+1.02351e+003 (ok)],
+[$1],[+1.28000e+999],[+3.31896e+003 (ok)],
+[_logx_expout([$1])])])
+
+# _logx_expout( X )
+# -----------------
+# Define expected outcomes, given a specific input value for X,
+# which may be expected to be the same for ALL of the implemented
+# logarithm algorithms, (unless otherwise specified for a specific
+# algorithm; note that this includes the Naperian logarithm values
+# for very large X, which are the same for both log(X) and log1p(X),
+# since the difference between X and X+1.0 becomes insignificant at
+# such large values of X).
+m4_define([_logx_expout],[m4_if(dnl
+[$1],[+0.00000e+000],[-inf (range error)],
+[$1],[+1.00000e+000],[+0.00000e+000 (ok)],
+[$1],[+1.28000e+038],[+8.77451e+001 (ok)],
+[$1],[+1.28000e+308],[+7.09443e+002 (ok)],
+[$1],[+1.28000e+999],[+2.30053e+003 (ok)],
+[+nan (domain error)])])
+
+
+# Set up the test sequence for each of the log(), log10(),
+# log1p(), and log2() functions.
+#
+m4_define([log_datatype],[double])
+m4_define([log_strtod],[[strtod("$1",NULL)]])
+m4_define([log_format],[[%+.5e (%s)\n]])
+#
+MINGW_AT_CHECK_LOG_FUNCTION([log])
+MINGW_AT_CHECK_LOG_FUNCTION([log1p])
+MINGW_AT_CHECK_LOG_FUNCTION([log10])
+MINGW_AT_CHECK_LOG_FUNCTION([log2])
+
+# Repeat for each of the logf(), log10f(), log1pf(),
+# and log2f() functions.
+#
+m4_define([log_datatype],[float])
+m4_define([log_strtod],[[strtof("$1",NULL)]])
+m4_define([log_format],[[%+.5e (%s)\n]])
+#
+MINGW_AT_CHECK_LOG_FUNCTION([logf])
+MINGW_AT_CHECK_LOG_FUNCTION([log1pf])
+MINGW_AT_CHECK_LOG_FUNCTION([log10f])
+MINGW_AT_CHECK_LOG_FUNCTION([log2f])
+
+# And finally, for each of the logl(), log10l(), log1pll(),
+# and log2l() functions.
+#
+m4_define([log_datatype],[long double])
+m4_define([log_strtod],[[strtold("$1",NULL)]])
+m4_define([log_format],[[%+.5Le (%s)\n]])
+#
+MINGW_AT_CHECK_LOG_FUNCTION([logl])
+MINGW_AT_CHECK_LOG_FUNCTION([log1pl])
+MINGW_AT_CHECK_LOG_FUNCTION([log10l])
+MINGW_AT_CHECK_LOG_FUNCTION([log2l])
+
+# vim: filetype=config formatoptions=croql
+# $RCSfile$: end of file
