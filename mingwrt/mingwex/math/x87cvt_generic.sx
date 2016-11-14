@@ -1,0 +1,113 @@
+/*
+ * x87cvt_generic.sx
+ *
+ * Generic helper routine to convert a REAL10 return value, in FPU st(0)
+ * register, to REAL8 or REAL4; also sets errno to ERANGE, if overflow or
+ * underflow occurs during conversion.
+ *
+ * $Id$
+ *
+ * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2016, MinGW.org Project
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ */
+#undef __function
+
+#if defined _x87cvtf_source
+/* This represents the configuration for conversion from REAL10 to REAL4,
+ * (equivalent to C's float type); the function entry point is designated
+ * as __x87cvtf(), and the converting/validating store is performed using
+ * the FSTPS instruction...
+ */
+# define __function  ___x87cvtf
+# define __fstp 	fstps
+# define __fld		flds
+
+#else
+/* ...whereas the anonymous alternative represents conversion from REAL10
+ * to REAL8, (equivalent to C's double type; note that no conversion is
+ * required for C's long double type, since the original REAL10 value is
+ * already equivalent to it).  In this case, the function entry point is
+ * designated as ___x87cvt(), and the store uses the FSTPL instruction.
+ */
+# define __function  ___x87cvt
+# define __fstp 	fstpl
+# define __fld		fldl
+#endif
+
+#ifdef __MINGW64__
+# define esp		rsp
+#endif
+
+.macro	fjnbe	dest
+/* Examine the value currently stored in the FPU st(0) register; jump to
+ * the specified "dest" label, if this value is finite and non-zero.
+ */
+	fxam			/* examine st(0) register */
+	fnstsw	%ax		/* copy FPU status flags... */
+	sahf			/* ...to CPU flags register */
+	jnbe	\dest		/* jump if finite non-zero */
+.endm
+
+#include "errno.sx"
+
+.globl	__function
+.def	__function; .scl 2; .type 32; .endef
+
+.text
+.align	4
+__function:
+/* Fastcall helper function, equivalent to:
+ *
+ *   double ___x87cvt (long double = REAL10 in FPU st(0));
+ *   float ___x87cvtf (long double = REAL10 in FPU st(0));
+ *
+ * Check that the intermediate REAL10 result, passed in FPU register
+ * st(0), is both finite and non-zero, and that it will remain so when
+ * converted to REAL8 (when invoked as ___x87cvt), or to REAL4 (when
+ * invoked as ___x87cvtf); returns converted result, and sets errno
+ * if either overflow or underflow occurs during conversion.
+ */
+	fjnbe	20f		/* proceed if finite non-zero */
+10:	ret			/* else return result as-is */
+
+/* Proceed when the original REAL10 value is both finite and non-zero;
+ * convert to the ultimately designated REAL8 or REAL4 result, by saving
+ * it temporarily to scratch memory immediately below the current stack,
+ * returning immediately when the converted result remains finite and
+ * non-zero.
+ */
+20:	sub	$12, %esp	/* create scratch pad */
+	__fstp	(%esp)		/* convert and store REAL10 value */
+	__fld	(%esp)		/* reload converted result value */
+	add	$12, %esp	/* discard scratch pad */
+	fjnbe	10b		/* return if finite non-zero result */
+
+/* Fall through to here when the conversion either overflows, becoming
+ * infinite, or underflows to zero; set errno prior to returning.
+ */
+	errno	ERANGE		/* else set errno = ERANGE */
+	ret			/* and return augmented value */
+
+/* vim: set autoindent filetype=asm formatoptions=croql: */
+/* $RCSfile$: end of file */

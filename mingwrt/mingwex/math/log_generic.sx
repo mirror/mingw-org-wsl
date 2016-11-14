@@ -1,0 +1,242 @@
+/*
+ * log_generic.sx
+ *
+ * Generic implementation for each of the log(), logl(), logf(), log1p(),
+ * log1pl(), log1pf(), log2(), log2l(), log2f(), log10(), log10l(), and
+ * log10f() functions.
+ *
+ * $Id$
+ *
+ * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2016, MinGW.org Project
+ *
+ * Adapted from original code written by J. T. Conklin <jtc@netbsd.org>,
+ * with modifications by Ulrich Drepper <drepper@cygnus.com>, to improve
+ * accuracy in the computation of log(x) as x --> 1.0.  This adaptation
+ * folds several similar sources into a single generic unit, and adds
+ * assignment of errno on exception, as prescribed by POSIX.1-2008.
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ */
+#ifndef ___function
+
+/* Each of the log(), logf(), and logl() functions returns a natural
+ * logarithm; this may be computed directly, using either the FYL2X, or
+ * the FYL2X1P instruction, by setting the scaling factor (y) to the
+ * natural logarithm of two.
+ */
+#define __fldy  fldln2
+
+/* The first step is to identify the primary entry point name, and associated
+ * back-end names, for each of the twelve supported functions, (each of which
+ * is to be assembled separately, using a GCC command of the form:
+ *
+ *    gcc -c -D_<function>_source log_generic.sx -o <function>.o
+ *
+ */
+#if defined _log_source
+# define ___function     _log		/* log() function entry point name */
+# define ___x87cvt     ___x87cvt	/* return value conversion helper */
+# define __fldx           fldl		/* FLD instruction to load x value */
+
+#elif defined _logl_source
+# define ___function     _logl		/* logl() function entry point name */
+# define __fldx           fldt		/* FLD instruction to load x value */
+
+#elif defined _logf_source
+# define ___function     _logf		/* logf() function entry point name */
+# define ___x87cvt     ___x87cvtf	/* return value conversion helper */
+# define __fldx           flds		/* FLD instruction to load x value */
+
+#endif
+#endif
+#ifdef __MINGW64__
+/* On 64-bit machine architecture...
+ */
+# define __xarg		8(%rsp)		/* x is 8 bytes above return address */
+#else
+/* ...whereas, on 32-bit architecture...
+ */
+# define __xarg		4(%esp)		/* x is 4 bytes above return address */
+#endif
+
+.text
+.align	4
+#ifdef	___function
+/* A function entry point name has been specified; assemble the corresponding
+ * entry point stub function.
+ */
+.globl	___function
+.def	___function; .scl 2; .type 32; .endef
+
+___function:
+/* Primary function entry point (generically named).
+ */
+	__fldy			/* load scaling factor (y) for FYL2X */
+	__fldx	__xarg		/* push x value on top of FPU stack --> x : y */
+
+#ifdef	___x87cvt
+/* A return value conversion routine has been specified, (thus, this is the
+ * entry point stub for one of the float/REAL4 or double/REAL8 functions); we
+ * must call the appropriate back-end, then return to our own caller via the
+ * specified conversion routine.
+ */
+	call	___x87log_chk	/* get REAL10 representation of return value */
+	jmp	___x87cvt	/* convert to REAL8 or REAL4, and return it */
+
+#else
+/* No return value conversion specified, (thus this is a REAL10/long double
+ * function entry point stub); allow the back-end to return directly to our
+ * own caller.
+ */
+	jmp	___x87log_chk	/* compute and return REAL10 result */
+
+#endif
+#else
+/* No specific function entry point identified; implement one of the generic
+ * back-ends, each of which is common to some subset of supported front-end
+ * entry points, and also provides the error reporting API.
+ */
+#include "errno.sx"
+
+/* This constant need not be precise; it serves only as a known safe maximum
+ * absolute value of x - 1, for which the FYL2XP1 instruction provides greater
+ * accuracy than the FYL2X instruction.
+ */
+limit:	.float	0.29
+
+.align	4
+.globl	___x87log_chk
+.def	___x87log_chk; .scl 2; .type 32; .endef
+
+___x87log_chk:
+/* Common back-end entry point for all supported functions; identical in each
+ * of its ___x87log_chk and ___x87log1p_chk incarnations, it provides initial
+ * input value validation, to filter out NaN input values.
+ */
+	fxam			/* classify x */
+	fnstsw	%ax		/* copy FPU condition codes... */
+	sahf			/* ...into CPU flags register */
+	jnc	20f		/* x is neither NaN nor infinite */
+	jp	11f		/* x is infinite: handle accordingly */
+10:	fstp	%st(1)		/* x is NaN; discard scale factor */
+	ret			/* return x as NaN */
+
+/* In the case when the input value of x is infinite, we must handle it
+ * appropriately, depending on whether it is +ve or -ve.
+ */
+11:	testb	$2, %ah		/* examine the sign bit */
+	jnz	20f		/* x is -ve infinity: process it */
+	jmp	10b		/* x is +ve infinity: just return it */
+
+.align	4
+.globl	___x87log
+.def	___x87log; .scl 2; .type 32; .endef
+
+___x87log:
+#ifdef ___x87log
+/* Implementation specific to the ___x87log1p redirection of the back-end; it
+ * computes the REAL10 representation of log(x+1), scaled as appropriate to
+ * the required logarithm base.
+ */
+20:	fld	%st		/* x : x : y */
+	fabs			/* |x| : x : y */
+	fcomps	limit		/* x : y */
+	fnstsw	%ax		/* copy FPU condition codes... */
+	sahf			/* ...into CPU flags register */
+	jb	24f		/* -0.29 < x < +0.29 */
+
+/* The value of x lies outside the -0.29 < x < +0.29 range, within which the
+ * FYL2X1P instruction may be used legitimately, to compute log2(x+1) directly;
+ * instead, we must explicitly add one, and use the FYL2X instruction.
+ */
+	fld1			/* 1 : x : y */
+	faddp	%st, %st(1)	/* x+1 : y */
+	fyl2x			/* y*log(x+1) */
+#else
+/* Implementation specific to the default ___x87log form of the back-end; it
+ * computes the REAL10 representation of log(x), scaled as appropriate to the
+ * required logarithm base.  In this case, we begin by computing x - 1, and
+ * checking if it lies in the -0.29 < x - 1 < +0.29 range, within which we
+ * prefer to use FYL2X1P, rather than FYL2X, (for improved accuracy).
+ */
+20:	fld1			/* 1 : x : y */
+	fld	%st(1)		/* x : 1 : x : y */
+	fsub	%st(1), %st	/* x-1 : 1 : x : y */
+	fst	%st(1)		/* x-1 : x-1 : x : y */
+	fabs			/* |x-1| : x-1 : x : y */
+	fcomps	limit		/* x-1 : x : y */
+	fnstsw	%ax		/* copy FPU condition codes... */
+	sahf			/* ...into CPU flags register */
+	jb	24f		/* +0.71 < x < +1.29 */
+
+/* The value of x lies outside the 0.71 < x < 1.29 range, (within which the
+ * best accuracy is achieved by use of FYL2XP1 with the x - 1 value on the
+ * top of the FPU stack); we must use FYL2X with the original value of x.
+ */
+	fstp	%st(0)		/* drop x-1; keep x : y */
+	fyl2x			/* y*log(x) */
+#endif
+/* Fall through to check for pole errors, or domain errors, which may have
+ * been detected during computation of the logarithm; (this code is common
+ * to both ___x87log and ___x87logp1 back-end implementations).
+ */
+21:	fxam			/* classify computed logarithm */
+	fnstsw	%ax		/* copy FPU condition codes... */
+	sahf			/* ...into CPU flags register */
+	jnc	22f		/* result is finite; go return it */
+	jp	23f		/* result is infinite ==> pole error */
+
+/* Fall through when result is NaN; this implies an attempt to compute the
+ * logarithm of a number which is less than zero, which is a domain error.
+ */
+	errno	EDOM		/* set errno = EDOM */
+22:	ret			/* return computed result */
+
+/* Handle the case of an infinite computed result; (it must be -inf, which
+ * results from attempting to compute the logarithm of zero).  POSIX calls
+ * this a pole error, to be identified thus:
+ */
+23:	errno	ERANGE		/* set errno = ERANGE */
+	ret			/* return computed -inf result */
+
+#ifdef ___x87log
+/* This is the final part of the ___x87log1p back-end implementation; this
+ * is used when -0.29 < x < +0.29, to compute log(x+1) directly, using the
+ * FYL2XP1 instruction.
+ */
+24:	fyl2xp1			/* y * log2(x+1) */
+#else
+/* This is the final part of the default ___x87log back-end implementation;
+ * this is used when +0.71 < x < +1.29, to compute log(x) indirectly, from
+ * the previously computed x - 1 value, using the FYL2XP1 instruction.
+ */
+24:	fstp	%st(1)		/* drop x; keep x-1 : y */
+	fyl2xp1			/* y * log2(x) */
+#endif
+/* For both back-end implementations, we finish off by executing the common
+ * result validation routine, as implemented above.
+ */
+	jmp	21b		/* go validate and return result */
+#endif
+/* vim: set autoindent filetype=asm formatoptions=croql: */
+/* $RCSfile$: end of file */

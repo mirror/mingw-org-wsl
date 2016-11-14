@@ -178,6 +178,7 @@ INCLUDES = -nostdinc -I . -I ${top_srcdir}/include -I ${w32api_srcdir}/include \
   -I ${top_srcdir} -I ${top_srcdir}/profile -iwithprefixbefore include
 
 ALL_CFLAGS = $(CFLAGS) $(DEPFLAGS) $(INCLUDES) $(NTDDI_VERSION_SPEC)
+ALL_CPPFLAGS = $(CPPFLAGS) $(DEPFLAGS) $(INCLUDES) $(NTDDI_VERSION_SPEC)
 
 # The general case, for compiling object files from C source,
 # requires a small adjustment to the default implicit rule.
@@ -460,7 +461,8 @@ libmingwex.a: $(addsuffix .$(OBJEXT), cosf cosl acosf acosl sinf sinl asinf \
   nearbyint nearbyintf nearbyintl nextafterf nextafterl nexttoward nexttowardf \
   powf powl powi powif powil remainder remainderf remainderl remquo remquof \
   remquol rint rintf rintl round roundf roundl scalbn scalbnf scalbnl signbit \
-  signbitf signbitl sqrtf sqrtl tgamma tgammaf tgammal trunc truncf truncl)
+  signbitf signbitl sqrtf sqrtl tgamma tgammaf tgammal trunc truncf truncl \
+  x87cvt x87cvtf x87log x87log1p)
 
 # Replacement I/O functions in libmingwex.a, providing better POSIX
 # compatibility than their Microsoft equivalents.
@@ -520,6 +522,21 @@ $(addsuffix .$(OBJEXT), % %f %l): %_generic.c
 #
 $(addsuffix .$(OBJEXT), llround llroundf llroundl): %.$(OBJEXT): lround_generic.c
 	$(CC) -c -D FUNCTION=$* $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+# Similarly, we may need to compile quux.o, quuxf.o, and quuxl.o
+# variants from a common quux_generic.sx assembly language file.
+#
+vpath %.sx ${mingwrt_srcdir}/mingwex/math
+$(addsuffix .$(OBJEXT), % %f %l): %_generic.sx
+	$(CC) -c -D_$*_source $(ALL_CPPFLAGS) $(ASFLAGS) -o $*.$(OBJEXT) $<
+	$(CC) -c -D_$*f_source $(ALL_CPPFLAGS) $(ASFLAGS) -o $*f.$(OBJEXT) $<
+	$(CC) -c -D_$*l_source $(ALL_CPPFLAGS) $(ASFLAGS) -o $*l.$(OBJEXT) $<
+
+# Several generically implemented functions also require separate
+# assembly of their generic back-end support routines.
+#
+x87%.$(OBJEXT): %_generic.sx
+	$(CC) -c $(ALL_CPPFLAGS) $(ASFLAGS) -o $@ $<
 
 # Historically, MinGW.org's libm.a has been a dummy, delivering
 # nothing of value; FIXME: IMO, this sucks; it should deliver the

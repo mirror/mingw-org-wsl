@@ -1,0 +1,77 @@
+/*
+ * log2_generic.sx
+ *
+ * Generic wrapper for implementation entry stubs for each of the log2(),
+ * log2l(), and log2f() functions.
+ *
+ * $Id$
+ *
+ * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2016, MinGW.org Project
+ *
+ * Adapted from original code written by J. T. Conklin <jtc@netbsd.org>,
+ * with modifications by Ulrich Drepper <drepper@cygnus.com>, to improve
+ * accuracy in the computation of log2(x) as x --> 1.0.  This wrapper
+ * provides only definitions for derivation of the implementations by
+ * inclusion of the log_generic.sx source file.
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ */
+#undef ___function
+
+/* Each of the log2(), log2f(), and log2l() functions returns a base-2
+ * logarithm; this may be computed directly, using either the FYL2X, or
+ * the FYL2X1P instruction, by setting the scaling factor (y) to one.
+ */
+#define __fldy  fld1
+
+/* The first step is to identify the primary entry point name, and associated
+ * back-end names, for each of the three supported functions, (each of which
+ * to be assembled separately, using a GCC command of the form:
+ *
+ *    gcc -c -D_<function>_source log10_generic.sx -o <function>.o
+ *
+ * to create the three entry stubs, with appropriate mappings to the back-end
+ * implementation provided by log_generic.sx
+ */
+#if defined _log2_source
+# define ___function     _log2		/* log2() function entry point name */
+# define ___x87cvt     ___x87cvt	/* return value conversion helper */
+# define __fldx           fldl		/* FLD instruction to load x value */
+
+#elif defined _log2l_source
+# define ___function     _log2l 	/* log2l() function entry point name */
+# define __fldx           fldt		/* FLD instruction to load x value */
+
+#elif defined _log2f_source
+# define ___function     _log2f 	/* log2f() function entry point name */
+# define ___x87cvt     ___x87cvtf	/* return value conversion helper */
+# define __fldx           flds		/* FLD instruction to load x value */
+#endif
+
+/* Actual implementation of the entry point stubs, in terms of the preceding
+ * definitions, is delegated to the log_generic.sx source file.
+ */
+#include "log_generic.sx"
+
+/* vim: set autoindent filetype=asm formatoptions=croql: */
+/* $RCSfile$: end of file */

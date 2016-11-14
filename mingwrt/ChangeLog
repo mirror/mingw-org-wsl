@@ -1,3 +1,44 @@
+2016-11-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add POSIX compliant errno assignments to log functions.
+
+	* include/errno.h: Make it assembly language compatible.
+	[__ASSEMBLER__]: Omit <_mingw.h>; do not declare prototype for...
+	(_errno): ...this accessor function; the declaration is syntactically
+	invalid, in assembly language code.
+
+	* mingwex/math/errno.sx: New file; when included by other assembly
+	language files, it provides bindings for assignement of any constant
+	defined in <errno.h> to the global errno variable, facilitated by...
+	(errno): ...this new GAS macro.
+
+	* mingwex/math/log_generic.sx: New file; it provides a generic back
+	end implementation for multiple logarithmic functions, accessed via...
+	(___x87log, ___x87log_chk): ...this pair of entry points, serving...
+	(log, logf, log): ...each of these primary functions; it replaces...
+	* mingwex/math/logf.s mingwex/math/logl.s: ...these; delete them.
+
+	* mingwex/math/log1p_generic.sx mingwex/math/log10_generic.sx
+	* mingwex/math/log2_generic.sx: New files; each acts as a wrapper for
+	log_generic.sx, providing the front end entry stubs for each of...
+	(log1p, log1pf, log1pl, log10, log10f, log10l, log2, log2f, log2l):
+	...these functions; thus, they provide complete replacements for...
+	* mingwex/math/log1p.s mingwex/math/log1pf.s mingwex/math/log1pl.s
+	* mingwex/math/log10f.s mingwex/math/log10l.s mingwex/math/log2.s
+	* mingwex/math/log2f.s mingwex/math/log2l.s: ...these; delete them.
+
+	* mingwex/math/x87cvt_generic.sx: New file; it implements...
+	(___x87cvt, ___x87cvtf): ...this pair of return value conversion
+	routines, for conversion from the FPU's internal REAL10 data format,
+	to REAL8 and REAL4, for double and float functions respectively.
+
+	* Makefile.in (libmingwex.a): Add dependencies on...
+	(x87cvt.$OBJEXT), x87cvtf.$OBJEXT), x87log.$OBJEXT), x87logf.$OBJEXT):
+	...these object modules; implement pattern rule to build them from...
+	(x87cvt_generic.sx, log_generic.sx): ...these generic sources; also
+	provide for building the respective log function entry stubs from
+	their respective generic sources.
+
 2016-11-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement unit tests for logarithmic functions.

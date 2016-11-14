@@ -32,9 +32,14 @@
 #ifndef _ERRNO_H
 #define _ERRNO_H
 
-/* All MinGW headers are expected to include <_mingw.h>
+/* All MinGW headers are expected to include <_mingw.h>; however...
+ */
+#ifndef __ASSEMBLER__
+/* ...the overhead of doing so is unwarranted, when <errno.h> has been
+ * included directly in preprocessed assembly language code.
  */
 #include <_mingw.h>
+#endif
 
 /* Error code numbers.
  *
@@ -89,7 +94,11 @@
 #define ENOTEMPTY	41	/* Directory not empty (90 in Cyg?) */
 #define EILSEQ		42	/* Illegal byte sequence */
 
-#ifndef	RC_INVOKED
+/* C language function prototype declarations are unnecessary, when
+ * compiling resource files, and they actually represent syntactically
+ * invalid statements, in preprocessed assembly language code.
+ */
+#if ! defined RC_INVOKED && ! defined __ASSEMBLER__
 
 _BEGIN_C_DECLS
 
@@ -106,7 +115,7 @@ _CRTIMP int* __cdecl __MINGW_NOTHROW _errno(void);
 
 _END_C_DECLS
 
-#endif	/* ! RC_INVOKED */
+#endif	/* ! RC_INVOKED && !__ASSEMBLY__ */
 
 #if defined __PTW32_H && ! defined _PTW32_ERRNO_H
 /* As a courtesy to users of pthreads-win32, ensure that the appropriate
