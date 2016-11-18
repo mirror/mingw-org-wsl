@@ -1,3 +1,13 @@
+2016-11-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement unit tests for power functions.
+
+	* tests/testsuite.at.in: m4_include...
+	* tests/Makefile.in (testsuite): ...and add dependency on...
+	* tests/powerfunc.at: ...this new file; it specifies unit tests to
+	check POSIX.1-2008 compliance of results and errno assignment from...
+	(pow, powf, powl): ...each of these functions.
+
 2016-11-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add POSIX compliant errno assignments to log functions.

@@ -102,7 +102,7 @@ autotest_missing = $(call missing,autom4te,Unable to compile the testsuite)
 testsuite: %: %.at
 	$(AUTOTEST_COMPILE) -o $* $<
 
-testsuite: headers.at ansiprintf.at logarithms.at
+testsuite: headers.at ansiprintf.at logarithms.at powerfunc.at
 
 # Display a diagnostic message, explaining that any specified program
 # is required, but has not been installed.

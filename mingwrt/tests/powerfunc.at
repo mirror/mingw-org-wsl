@@ -1,0 +1,274 @@
+# powerfunc.at
+#
+# Autotest module to verify correct operation of the pow(), powf(),
+# and powl() functions; inspired by MinGW-Bug [#2306], and implemented
+# to evaluate each boundary condition specified by POSIX.1-2008.
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2016, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+#
+# All tests specified herein are written in the C language.
+#
+MINGW_AT_LANG([C])
+
+# MINGW_AT_CHECK_RUN_POW( FUNCTION, X, Y, EXPOUT )
+# ------------------------------------------------
+# Set up the test case to evaluate FUNCTION, (one of pow, powf,
+# or powl), with X and Y as arguments; confirm the the resultant
+# output matches EXPOUT.
+#
+# Note: the M4 macros pow_datatype, pow_strtod, and pow_format
+# MUST have been defined, before this macro is expanded.
+#
+m4_define([MINGW_AT_CHECK_RUN_POW],[
+AT_SETUP([$1 (x = $2, y = $3)])
+AT_KEYWORDS([C $1])MINGW_AT_DATA_CRLF([expout],[[$4
+]])MINGW_AT_CHECK_RUN([[[
+#define _XOPEN_SOURCE 700
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <tgmath.h>
+#include <errno.h>
+
+#define EOK  0
+
+const char *errdesc( void )
+{ /* A minimal replacement for strerror(), so we keep strict
+   * control of the descriptions for those errors which any of
+   * the pow() functions may report.
+   */
+  static char desc[8] = "";
+  switch( errno )
+  { case EOK:    return "ok";
+    case EDOM:   return "domain error";
+    case ERANGE: return "range error";
+    default: snprintf( desc, sizeof( desc ), "%d", errno );
+  }
+  return desc;
+}
+
+int main()
+{ /* Convert the specified X and Y arguments to the appropriate
+   * data type, invoke the specified FUNCTION, report its result,
+   * and any error which may have occurred.
+   */
+  ]]pow_datatype[[ result, x = ]]pow_strtod($2)[[, y = ]]pow_strtod($3)[[;
+  errno = EOK; result = $1(x, y); printf("]]pow_format[[", result, errdesc());
+  return EOK;
+}]]],,[expout])dnl
+AT_CLEANUP
+])
+
+# MINGW_AT_CHECK_POW_FUNCTION( NAME )
+# -----------------------------------
+# Check the behaviour of function NAME, (one of pow, powf, or powl),
+# for a selection of values of X and Y; further comments, embedded
+# within this macro, specify POSIX.1-2008 mandatory outcomes.
+#
+m4_define([MINGW_AT_CHECK_POW_FUNCTION],[dnl
+AT_BANNER([Power function tests: ]pow_datatype[ data.])
+#
+# On successful completion, return x to the power y
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+2.0],[+2.5e+0],[+5.656854e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+1.2],[+2.5e+0],[+1.577441e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+0.3],[+2.5e+0],[+4.929503e-002 (ok)])
+#
+# For finite x < 0, and finite non-integral y, report "domain error",
+# and return "NaN"; (note that MinGW's printf(), as used to report the
+# result, always treats NaN as being unsigned, so we will always see
+# it reported as "+nan", irrespective of sign bit).
+#
+MINGW_AT_CHECK_RUN_POW([$1],[-2.0],[+2.5e+0],[+nan (domain error)])
+MINGW_AT_CHECK_RUN_POW([$1],[-2.0],[-2.5e+0],[+nan (domain error)])
+#
+# For finite x < 0, and finite integral y, no "domain error" arises;
+# the result is analytically computable as -1.0^y * 2^(y*log2(|x|)).
+#
+MINGW_AT_CHECK_RUN_POW([$1],[-2.5],[+2.0e+0],[+6.250000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-2.5],[+3.0e+0],[-1.562500e+001 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-1.5],[-2.0e+0],[+4.444444e-001 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-1.5],[-3.0e+0],[-2.962963e-001 (ok)])
+#
+# For non-zero result with no representation which is distinguishable
+# from zero, (i.e. underflow), report "range error" and return zero.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+0.2],[+2.5e+4],[+0.000000e+000 (range error)])
+#
+# When |x| == 0, and y < 0, report "range error", (indicating a pole
+# error), and return infinity with the sign of x if y is an odd valued
+# -ve integer value, or +ve infinity for any other -ve value of y.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+0.0],[-1.0e+0],[+inf (range error)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[-1.0e+0],[-inf (range error)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[-7.0e+0],[-inf (range error)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[-2.0e+0],[+inf (range error)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[-1.1e+0],[+inf (range error)])
+#
+# When x == +1.0, for any value of y (including NaN), return +1.0
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+1.0],[+2.5e+4],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+1.0],[+Inf],   [+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+1.0],[+NaN],   [+1.000000e+000 (ok)])
+#
+# for any value of x, (including infinity or NaN), when |y| is zero,
+# return +1.0
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+2.5],[+0.0e+0],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-2.5],[-0.0e+0],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+Inf],[+0.0e+0],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+Inf],[-0.0e+0],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[+0.0e+0],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[-0.0e+0],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+NaN],[+0.0e+0],[+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+NaN],[-0.0e+0],[+1.000000e+000 (ok)])
+#
+# Other than the preceding special cases, if either x or y is NaN,
+# return "NaN"; (POSIX specifies NO errno assignment).
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+NaN],[+2.5e+0],[+nan (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-NaN],[+2.5e+0],[+nan (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+2.5],[-NaN],   [+nan (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-2.5],[+NaN],   [+nan (ok)])
+#
+# For any odd integer value of y > 0, if |x| == 0, return signed
+# zero, with same sign as x, (i.e. value of x itself).
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+0.0],[+3.0e+0],[+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[+3.0e+0],[-0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+0.0],[+7.0e+0],[+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[+7.0e+0],[-0.000000e+000 (ok)])
+#
+# For any other y > 0, (i.e. +ve but not an odd integer), if |x| == 0,
+# return +0.0
+#
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[+2.5e+0],[+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.0],[+3.5e+4],[+0.000000e+000 (ok)])
+#
+# If x == -1, and y is +ve or -ve infinity, return +1.0
+#
+MINGW_AT_CHECK_RUN_POW([$1],[-1.0],[+Inf],   [+1.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-1.0],[-Inf],   [+1.000000e+000 (ok)])
+#
+# When |x| < 1, and y is infinite, return +ve infinity when y is -ve
+# infinity, or +0.0 when y is +ve infinity.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[-0.3],[-Inf],   [+inf (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+0.7],[-Inf],   [+inf (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+0.3],[+Inf],   [+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-0.7],[+Inf],   [+0.000000e+000 (ok)])
+#
+# When |x| > 1, and y is infinite, return +0.0 when y is -ve infinity,
+# or +ve infinity when y is +ve infinity.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+5.3],[-Inf],   [+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-1.7],[-Inf],   [+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-5.3],[+Inf],   [+inf (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+1.7],[+Inf],   [+inf (ok)])
+#
+# If x is -ve infinity, and y < 0, return -ve zero if y is an odd
+# valued -ve integer, otherwise return +ve zero.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[-3.0e+0],[-0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[-2.0e+0],[+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[-3.5e+0],[+0.000000e+000 (ok)])
+#
+# If x is -ve infinity, and y > 0, return -ve infinity if y is an odd
+# valued +ve integer, otherwise return +ve infinity.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[+3.0e+0],[-inf (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[+2.0e+0],[+inf (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[-Inf],[+3.5e+0],[+inf (ok)])
+#
+# If x is +ve infinity, and y < 0, return +ve zero.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+Inf],[-1.0e-4],[+0.000000e+000 (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+Inf],[-2.5e+4],[+0.000000e+000 (ok)])
+#
+# If x is +ve infinity, and y > 0, return +ve infinity.
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+Inf],[+1.0e-4],[+inf (ok)])
+MINGW_AT_CHECK_RUN_POW([$1],[+Inf],[+2.5e+4],[+inf (ok)])
+#
+# For result of magnitude greater than largest representable value,
+# (i.e. overflow), report "range error", and return infinity; (this
+# occurs at progressively lesser result boundaries, as we choose to
+# evaluate with decreasing precision, i.e. using powl(), pow(), or
+# powf(), respectively.  Only the first in this progression should
+# pass without overflow in all three cases; the last will overflow
+# in all cases, but to keep it in order, we must define it after
+# each of those which behave differently in each case).
+#
+MINGW_AT_CHECK_RUN_POW([$1],[+2.0],[+2.5e+1],[+3.355443e+007 (ok)])
+])
+
+# Set up the test sequence for the pow() function.
+#
+m4_define([pow_datatype],[double])
+m4_define([pow_strtod],[[strtod("$1",NULL)]])
+m4_define([pow_format],[[%+.6e (%s)\n]])
+#
+MINGW_AT_CHECK_POW_FUNCTION([pow])
+#
+# Add the three variants on the final progression, the first two of
+# which differ in each specific pow(), powf(), and powl() case, and
+# the final one, which is consistent, but we wish to keep it last.
+#
+MINGW_AT_CHECK_RUN_POW([pow],[+2.0],[+2.5e+2],[+1.809251e+075 (ok)])
+MINGW_AT_CHECK_RUN_POW([pow],[+2.0],[+2.5e+3],[+inf (range error)])
+MINGW_AT_CHECK_RUN_POW([pow],[+2.0],[+2.5e+4],[+inf (range error)])
+
+# Repeat for the powf() function.
+#
+m4_define([pow_datatype],[float])
+m4_define([pow_strtod],[[strtof("$1",NULL)]])
+m4_define([pow_format],[[%+.6e (%s)\n]])
+#
+MINGW_AT_CHECK_POW_FUNCTION([powf])
+#
+# Once again, complete the progression of the final test case.
+#
+MINGW_AT_CHECK_RUN_POW([powf],[+2.0],[+2.5e+2],[+inf (range error)])
+MINGW_AT_CHECK_RUN_POW([powf],[+2.0],[+2.5e+3],[+inf (range error)])
+MINGW_AT_CHECK_RUN_POW([powf],[+2.0],[+2.5e+4],[+inf (range error)])
+
+# And finally, for the powl() function.
+#
+m4_define([pow_datatype],[long double])
+m4_define([pow_strtod],[[strtold("$1",NULL)]])
+m4_define([pow_format],[[%+.6Le (%s)\n]])
+#
+MINGW_AT_CHECK_POW_FUNCTION([powl])
+#
+# Once again, complete the progression of the final test case.
+#
+MINGW_AT_CHECK_RUN_POW([powl],[+2.0],[+2.5e+2],[+1.809251e+075 (ok)])
+MINGW_AT_CHECK_RUN_POW([powl],[+2.0],[+2.5e+3],[+3.758280e+752 (ok)])
+MINGW_AT_CHECK_RUN_POW([powl],[+2.0],[+2.5e+4],[+inf (range error)])
+
+# vim: filetype=config formatoptions=croql
+# $RCSfile$: end of file
