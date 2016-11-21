@@ -1,3 +1,17 @@
+2016-11-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Replace defective powf() and powl() function implementations.
+
+	* mingwex/math/powf.c mingwex/math/powl.c: Delete; replaced by...
+	* mingwex/math/pow_generic.sx: ...this new file; it implements...
+	(__x87pow): ...this generic power function back-end, serving...
+	(pow, powf, powl): ...each of these front-end entry points.
+
+	* Makefile.in (libmingwex.a): Add x87pow.$OBJEXT
+
+	* include/math.h (powf): Remove inline implementation; it no longer
+	offers any inline advantage.
+
 2016-11-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement unit tests for power functions.

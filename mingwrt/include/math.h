@@ -650,10 +650,6 @@ extern long double __cdecl hypotl (long double, long double);
 
 /* 7.12.7.4 The pow functions. Double in C89 */
 extern float __cdecl powf (float, float);
-#ifndef __NO_INLINE__
-__CRT_INLINE float __cdecl powf (float x, float y)
-  {return (float) pow (x, y);}
-#endif
 extern long double __cdecl powl (long double, long double);
 
 /* 7.12.7.5 The sqrt functions. Double in C89. */

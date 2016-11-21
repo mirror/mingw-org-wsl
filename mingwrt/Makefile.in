@@ -462,7 +462,7 @@ libmingwex.a: $(addsuffix .$(OBJEXT), cosf cosl acosf acosl sinf sinl asinf \
   powf powl powi powif powil remainder remainderf remainderl remquo remquof \
   remquol rint rintf rintl round roundf roundl scalbn scalbnf scalbnl signbit \
   signbitf signbitl sqrtf sqrtl tgamma tgammaf tgammal trunc truncf truncl \
-  x87cvt x87cvtf x87log x87log1p)
+  x87cvt x87cvtf x87log x87log1p x87pow)
 
 # Replacement I/O functions in libmingwex.a, providing better POSIX
 # compatibility than their Microsoft equivalents.

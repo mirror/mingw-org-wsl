@@ -1,0 +1,423 @@
+/*
+ * pow_generic.sx
+ *
+ * Generic implementation for the pow(), powl(), and powf() functions.
+ *
+ * $Id$
+ *
+ * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2016, MinGW.org Project
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ */
+#undef __function
+
+#if defined _powl_source
+# define __function	_powl
+# define __yoffset	__xoffset+12
+# define __fldx	 fldt	__xoffset(%esp)
+# define __fldy	 fldt	__yoffset(%esp)
+
+#elif defined _powf_source
+# define __function	_powf
+# define __yoffset	__xoffset+4
+# define __fldx	 flds	__xoffset(%esp)
+# define __fldy	 flds	__yoffset(%esp)
+# define ___x87cvt   ___x87cvtf
+
+#elif defined _pow_source
+# define __function	_pow
+# define __yoffset	__xoffset+8
+# define __fldx	 fldl	__xoffset(%esp)
+# define __fldy	 fldl	__yoffset(%esp)
+#endif
+
+#ifdef __MINGW64__
+# define __xoffset	8
+# define esp		rsp
+# define eax		rax
+# define edx		rdx
+#else
+# define __xoffset	4
+#endif
+
+.text
+.align	4
+#ifdef	__function
+/* A specific front-end entry point name has been identified; thus,
+ * we are assembling the front-end stub implementation for just one
+ * of the three supported functions, with C language prototypes:
+ *
+ *  double pow (double x, double y);
+ *  long double powl (long double x, long double y);
+ *  float powf (float x, float y);
+ */
+.globl	__function
+.def	__function; .scl 2; .type 32; .endef
+
+__function:
+/* First, load x and y into the FPU, using the appropriate operand
+ * size specification for the specified front-end entry point, then
+ * hand off control to the generic back-end function.
+ */
+	__fldx			/* x */
+	__fldy			/* y ; x */
+
+#ifdef _powl_source
+/* For the long double powl (long double, long double) form of the
+ * primary function, we can simply delegate computation of the REAL10
+ * result to the ___x87pow() handler, with that returning directly
+ * to powl()'s own caller...
+ */
+	jmp	___x87pow
+
+#else
+/* ...whereas for each of double pow (double, double) form, and its
+ * float powf (float, float) sibling, we must call the backend handler
+ * to compute an intermediate REAL10 result...
+ */
+	call	___x87pow
+
+/* ...then return that via the appropriate type conversion/validation
+ * handler, to obtain the ultimately required REAL8 or REAL4 result.
+ */
+	jmp	___x87cvt
+
+#endif
+#else
+/* No specific function entry point identified; implement the generic
+ * back-end, which is common to all supported front-end entry points;
+ * it also provides the error reporting API.
+ */
+#include "errno.sx"
+
+.align	4
+.globl	___x87pow
+.def	___x87pow; .scl 2; .type 32; .endef
+
+___x87pow:
+	fxam			/* classify y input value */
+	fnstsw	%ax		/* copy FPU flags to CPU flags */
+	fld1			/* +1.0 ; y ; x */
+	sahf			/* examine ZF = C3 and PF = C2 */
+	jnz	30f		/* y is non-zero */
+	jp	30f		/* y is non-zero, denormalized */
+
+/* In the case where y is zero, then POSIX says that the value of x is
+ * irrelevant, (even if it is indefinite); the return value is +1.0
+ */
+	fstp	%st(2)		/* y ; x^y = 1.0 */
+	fstp	%st(0)		/* x^y */
+	ret
+
+/* When y is non-zero, proceed to consideration of the x argument value;
+ * (this is necessary, even if the value of y is indeterminate).
+ */
+30:	movb	%ah, %dl	/* save y classification flags */
+	fucomp	%st(2)		/* y ; x */
+	fnstsw	%ax		/* copy FPU flags to CPU flags */
+	fxch			/* x ; y */
+	sahf			/* examine ZF = C3 and PF = C2 */
+	jp	32f		/* return x^y = indeterminate x */
+	jnz	40f		/* x != +1.0 */
+
+/* For this specific case, where x == +1.0, POSIX says that the return
+ * value shall be +1.0, (even if the value of y is indeterminate).
+ */
+	fld1			/* x^y = 1.0 ; y ; x */
+31:	fstp	%st(1)		/* x^y ; x */
+32:	fstp	%st(1)		/* x^y */
+	ret
+
+/* In any other case, if either x or y is NaN, then POSIX requires that
+ * NaN shall be returned; first check for x being NaN, or infinite.
+ */
+40:	fxam			/* classify x input value */
+	fnstsw	%ax		/* copy FPU flags to CPU flags */
+	sahf			/* test for infinity or NaN */
+	jnc	50f		/* x is finite, so pass it on */
+	jnp	32b		/* return x^y = x as NaN */
+
+/* We've identified that x is infinite; how we handle this boundary
+ * condition depends on whether it's a +ve infinity, or a -ve.
+ */
+	testb	$0x02, %ah	/* x ; y */
+	jnz	42f		/* x is -ve infinity */
+
+/* In the case where x is +ve infinity, POSIX stipulates that the return
+ * value should be +ve infinity when y > 0.0, or +0.0 when y < 0.0; first
+ * deal with the y > 0.0 case.
+ */
+	testb	$0x02, %dl	/* check if y is +ve, or -ve? */
+	jz	32b		/* +ve: return x^y = x = +ve infinity */
+
+/* Alternatively, in the case when x is +ve infinity, and y < 0.0, we
+ * substitute 0.0 for x, then return it as the value for x^y.
+ */
+41:	fldz			/* 0.0 ; x ; y */
+	jmp	31b		/* return x^y = 0.0 */
+
+/* Similarly, in the case where x is -ve infinity, we must again return
+ * infinity for y > 0.0, or 0.0 for y < 0.0; however, in this case, the
+ * sign of the returned value must be -ve if y is an odd valued integer,
+ * or +ve for any other value of y.
+ */
+42:	testb	$0x02, %dl	/* check if y is +ve, or -ve? */
+	jz	43f		/* when +ve, return signed infinity */
+
+/* Fall through when x is -ve infinity and y < 0.0; substitute -0.0 for
+ * the infinite value of x, then adjust the sign depending on whether y
+ * is an odd valued integer, or any other value.
+ */
+	fldz			/* 0.0 ; x ; y */
+	fstp	%st(1)		/* 0.0 ; y */
+	fchs			/* -0.0 ; y */
+
+/* Determine if y is non-integral, or an even valued integer, in either
+ * of which cases we force a +ve return value, or an odd valued integer,
+ * in whiich case we leave the sign of the return value as it is; begin
+ * by checking if y/2 is an integer, which asserts that y itself is an
+ * even valued integer.
+ */
+43:	fld1			/* 1.0 ; x ; y */
+	fchs			/* -1.0 ; x ; y */
+	fld	%st(2)		/* y ; -1.0 ; x ; y */
+	fscale			/* y/2 ; -1.0 ; x ; y */
+	fst	%st(1)		/* y/2 ; y/2 ; x ; y */
+	frndint			/* int(y/2) ; y/2 ; x ; y */
+	fucompp			/* x ; y */
+	fnstsw	%ax		/* check if int(y/2) == y/2 ? */
+	sahf			/* hence y is an even valued integer */
+	je	44f		/* so go force +ve x^y return value */
+
+/* When we've established that y is not an even valued integer, we must
+ * still confirm the possibility that it is an odd valued integer; i.e.
+ * if it is an integer, it must be odd valued.
+ */
+	fld	%st(1)		/* y ; x ; y */
+	fld	%st(0)		/* y ; y ; x ; y */
+	frndint			/* int(y) ; y ; x ; y */
+	fucompp			/* x ; y */
+	fnstsw	%ax		/* check if int(y) == y ? */
+	sahf			/* hence y is an odd valued integer */
+	je	32b		/* so return x^y as is */
+
+/* When y is either an even valued integer, or not an integer at all:
+ */
+44:	fabs			/* make x^y value +ve */
+	jmp	32b		/* then return it */
+
+/* When x is finite, we still need to check the possibility that y may
+ * be NaN, or may be infinite.
+ */
+50:	xchgb	%dl, %ah	/* reload y classification flags */
+	movb	%ah, %dh	/* save a copy */
+	sahf			/* check for y finite, infinite, or NaN */
+	jnc	60f		/* y is also finite */
+	jp	52f		/* y is infinite, but not NaN */
+
+/* y is NaN; pop x off FPU stack, and return x^y as NaN value of y.
+ */
+51:	fstp	%st(0)		/* y */
+	ret			/* return x^y = y */
+
+/* We've identified x as finite, but y as infinite; POSIX defines
+ * boundary conditions about the range -1.0 < x < +1.0, which may be
+ * differentiated by comparison between +1.0 and |x|.  We've already
+ * that x != +1.0, so if we now identify that |x| == +1.0, then this
+ * must represent x == -1.0, a boundary condition for which POSIX
+ * prescribes a return value of +1.0
+ */
+52:	fabs			/* |x| ; y */
+	fld1			/* 1.0 ; |x| ; y */
+	fucom	%st(1)		/* check for |x| == 1.0 */
+	fnstsw	%ax		/* copy FPU flags to CPU flags */
+	sahf			/* if ZF == 1 -> |x| == 1.0 */
+	je	31b		/* return x^y = |x| = +1.0 */
+
+/* When |x| != 1.0, we have no further use for the comparative values
+ * of 1.0 and |x|, on the FPU stack; discard them, then check the flag
+ * state to establish whether x lies within the boundary range.
+ */
+	fstp	%st(0)		/* |x| ; y */
+	fstp	%st(0)		/* y */
+	jnb	53f		/* -1.0 < x < +1.0 */
+
+/* This represents the POSIX boundary condition where y is infinite,
+ * and |x| > 1.0; for this condition, POSIX specifies a return value
+ * of x^y = 0.0 if y is -ve infinity, otherwise x^y = y.
+ */
+	test	$0x02, %dh	/* if y is -ve infinity */
+	jnz	41b		/* then go return +0.0 */
+	ret			/* else return -ve infinity */
+
+/* Here, we have -1.0 < x < +1.0, and y is infinite; for this case,
+ * POSIX prescribes a return value of +0.0 when y is +ve infinity, or
+ * +ve infinity when y itself -ve infinity.
+ */
+53:	test	$0x02, %dh	/* if y is +ve infinity */
+	jz	41b		/* then go return +0.0 */
+	fabs			/* else force to +ve infinity */
+	ret			/* and return it */
+
+/* We've now established that both x and y are finite, but we must
+ * still consider the special restrictions which apply when x == 0.0
+ * or x < 0.0
+ */
+60:	movb	%dl, %ah	/* review x value classification */
+	sahf			/* examining ZF = C3 and PF = C2 */
+	jnz	70f		/* x is non-zero */
+	jp	70f		/* x is non-zero, denormalized */
+
+/* When x is zero, the return value is (possibly signed) zero for
+ * all y > 0.0, but infinite, and reported as a pole error, for any
+ * y < 0.0
+ */
+	testb	$0x02, %dh	/* if y is -ve? */
+	jnz	61f		/* then go process the pole error */
+
+/* For the case where y > 0.0, the sign of the original x value is
+ * preserved when y is an odd valued integer, or forced to +0.0 for
+ * any other +ve value of y; (obviously, if x is already +0.0, the
+ * sign preservation condition becomes irrelevant).
+ */
+	testb	$0x02, %ah	/* if x == +0.0 */
+	jz	32b		/* then just go return it */
+	jmp	43b		/* else go ajust sign */
+
+/* For the pole error case, we must substitute an infinity for the
+ * original value of x; a convenient way to achieve this is to take
+ * the logarithm of x, (which is -ve infinity by definition).
+ */
+61:	fld1			/* 1.0 ; 0.0 ; y */
+	fxch	%st(1)		/* 0.0 ; 1.0 ; y */
+	fyl2x			/* 1.0 * log2(0.0) = -inf ; y */
+
+/* To diagnose the pole error, we will set errno = ERANGE, (which
+ * is compliant with POSIX); on Win32, we call __errno() to get a
+ * pointer to errno itself, but note that we haven't done with EDX
+ * yet, so we must guard against possible modification during the
+ * execution of __errno().
+ */
+	pushl	%edx		/* we must save this */
+	errno	ERANGE		/* because this may change it */
+	popl	%edx		/* restore saved value */
+
+/* The returned infinity must preserve the sign of the original x,
+ * when y is an odd valued integer, otherwise it is forced to +inf;
+ * (obviously, if x is +0.0, we may just force +inf anyway).
+ */
+	testb	$0x02, %dl	/* if x is -0.0 */
+	jnz	43b		/* then go do signed return */
+	fabs			/* else force to +inf */
+	jmp	32b		/* and return it */
+
+/* When both x and y are finite and non-zero, then we must check
+ * for a possible domain error condition, which occurs when x < 0
+ * and y has any value which is not an integer.
+ */
+70:	testb	$0x02, %ah	/* if x > 0.0 */
+	jz	80f		/* then result is computable */
+
+/* Here, x < 0.0; the result may still be computable, if (and only
+ * if) the value of y is an integer.
+ */
+	fld	%st(1)		/* y ; x ; y */
+	fld	%st(0)		/* y ; y ; x ; y */
+	frndint			/* int(y) ; y ; x ; y */
+	fucompp			/* x ; y */
+	fnstsw	%ax		/* copy FPU flags to CPU flags */
+	sahf			/* to test if y == int(y) ? */
+	je	71f		/* then result is computable */
+
+/* Fall through when x < 0.0 and y is not an integer; in this case
+ * we must set errno to report a domain error, and return NaN.
+ */
+	fsqrt			/* NaN ; y */
+	errno	EDOM		/* set errno = EDOM */
+	jmp	32b		/* return NaN */
+
+/* When x < 0.0 and y is an integer, we may still compute x^y
+ * according to the relationship x^y = -1^y * 2^(y * log2(|x|))
+ */
+71:	fabs			/* |x| ; y */
+	fld	%st(1)		/* y ; |x| ; y */
+	fxch	%st(1)		/* |x| ; y ; y */
+	call	80f		/* |x|^y ; y */
+	fchs			/* assume y is odd valued */
+	jmp	43b		/* adjust if even valued */
+
+/* When x > 0.0, and y is finite, we may proceed to compute x^y,
+ * according to the relationship: x^y = 2^(y * log2(x)); first we
+ * compute log2(x), preferring the FYL2XP1 method for values of x
+ * close to zero, but falling back on FYL2X for x > 1.29
+ */
+80:	call	___x87log	/* y*log2(x) */
+
+/* Having computed the value of y * log2(x), we may now compute
+ * the final result as 2^(y * log2(x)).  We must compute this in
+ * stages, combining 2^frac(y * log2(x)) * 2^int(y * log2(x)) to
+ * yielding the final result for x^y; first separate y * log2(x)
+ * into fractional and integer parts:
+ */
+	fld	%st		/* y*log2(x) ; y*log2(x) */
+	frndint			/* int(y*log2(x)) ; y*log2(x) */
+	fxch	%st(1)		/* y*log2(x) ; int(y*log2(x)) */
+	fsub	%st(1), %st	/* frac(y*log2(x)) ; int(y*log2(x)) */
+
+/* Now compute the intermediate 2^frac(y * log(x)) - 1.0 result:
+ */
+	f2xm1			/* 2^frac(y*log2(x))-1 ; int(y*log2(x)) */
+
+/* Add the 1.0 deficit, to yield the 2^frac(y * log2(x)) result:
+ */
+	fld1			/* 1 ; 2^frac(y*log2(x))-1 ; int(y*log2(x)) */
+	faddp			/* 2^frac(y*log2(x)) ; int(y*log2(x)) */
+
+/* Finally, multiply by 2^int(y * log2(x)), to yield the x^y result:
+ */
+	fscale			/* x^y ; int(y*log2(x)) */
+	fstp	%st(1)		/* x^y */
+
+/* At this point, the value of x^y should not be zero; if it is, then
+ * the computation has underflowed, in which case POSIX recommends that
+ * errno should be set to ERANGE.  Alternatively, if the result becomes
+ * infinite then the computation has overflowed, in which case POSIX
+ * requires that errno be so set.  Check if either is appropriate.
+ */
+	fxam			/* classify x^y result */
+	fnstsw	%ax		/* copy FPU status flags */
+	sahf			/* to test via CPU flags, hence report */
+	jbe	81f		/* ZF -> underflow; CF -> overflow */
+	ret			/* else return x^y, errno unchanged */
+
+/* Here, we provide an alternative function return, for use when either
+ * overflow or underflow is detected during the computation of x^y; it
+ * returns whatever x^y value has been computed, after having set errno
+ * to indicate the ERANGE condition.
+ */
+81:	errno	ERANGE		/* set errno = ERANGE */
+	ret			/* return x^y, errno = ERANGE */
+#endif
+
+/* vim: set autoindent filetype=asm formatoptions=croql: */
+/* $RCSfile$: end of file */
