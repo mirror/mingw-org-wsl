@@ -61,6 +61,7 @@
  */
 #define _WIN32_WINNT_NT4	0x0400		/* Windows NT4 */
 #define _WIN32_WINNT_NT4E	0x0401		/* Windows NT4E */
+#define _WIN32_WINNT_NT4SP3	0x0403		/* Windows NT4 + ServicePack 3 */
 #define _WIN32_WINDOWS_95	0x0400		/* Windows 95 */
 #define _WIN32_WINDOWS_98	0x0410		/* Windows 98 */
 #define _WIN32_WINDOWS_ME	0x0490		/* Windows Millenium Edition */

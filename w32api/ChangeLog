@@ -1,3 +1,41 @@
+2016-11-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update <winuser.h> and <dbt.h>; fix issue [#2317].
+
+	* include/winuser.h: Tidy layout; add copyright notice.
+	[WINVER, _WIN32_WINDOWS, _WIN32_WINNT]: Compare them symbolically.
+	(__WINUSER_H_SOURCED__): New internal macro; define it, to facilitate
+	selective inclusion of content from other headers; delete when done.
+	(BSM_ALLCOMPONENTS, BSF_ALLOWSFW, BSM_APPLICATIONS, BSM_ALLDESKTOPS)
+	(BSM_INSTALLABLEDRIVERS, BSM_NETDRIVER, BSM_VXDS, BSF_FLUSHDISK)
+	(BSF_FORCEIFHUNG, BSF_IGNORECURRENTTASK, BSF_LUID, BSF_NOHANG)
+	(BSF_NOTIMEOUTIFNOTHUNG, BSF_POSTMESSAGE, BSF_QUERY, BSF_RETURNHDESK)
+	(BSF_SENDNOTIFYMESSAGE): Delete; do not define them locally; retrieve
+	them selectively from <dbt.h>, where they are properly defined.
+	[WINVER >= WIN2K/WIN98] (BlockInput): Add missing declaration.
+	(KillTimer, TIMERPROC): Declare timer event parameters as UINT_PTR;
+	formerly UINT, which doesn't match 64-bit size required for Win64.
+	(SetTimer): Likewise; also declare similar return type.
+	(WINEVENTPROC): Add missing CALLBACK attribute.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them.
+
+	* include/w32api.h (__AW_ALIAS__): New macro; define it.
+	* include/sdkddkver.h (_WIN32_WINNT_NT4SP3): New macro; define it.
+
+	* include/dbt.h: Tidy layout; add copyright notice.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Also prefer them here.
+	[__WINUSER_H_SOURCED__] (_DBT_H): Do not define; expose only...
+	(BSM_ALLCOMPONENTS, BSF_ALLOWSFW, BSM_APPLICATIONS, BSM_ALLDESKTOPS)
+	(BSM_INSTALLABLEDRIVERS, BSM_NETDRIVER, BSM_VXDS, BSF_FLUSHDISK)
+	(BSF_FORCEIFHUNG, BSF_IGNORECURRENTTASK, BSF_LUID, BSF_NOHANG)
+	(BSF_NOTIMEOUTIFNOTHUNG, BSF_POSTMESSAGE, BSF_QUERY, BSF_RETURNHDESK)
+	(BSF_SENDNOTIFYMESSAGE): ...these, to be duplicated in <winuser.h>
+	(__AW_ALIAS__): Use it to define ANSI/UNICODE specific aliases for...
+	(DEV_BROADCAST_PORT, DEV_BROADCAST_DEVICEINTERFACE): ...these generic
+	structure typedef names, and their respectively corresponding...
+	(PDEV_BROADCAST_PORT, PDEV_BROADCAST_DEVICEINTERFACE): ...pointer
+	type names.
+
 2016-09-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix a minor ISO-C++11 conformity issue.
