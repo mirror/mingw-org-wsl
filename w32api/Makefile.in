@@ -120,8 +120,7 @@ ${top_srcdir}/%: ${top_srcdir}/../%
 # Propagate package version, as configured, consistently throughout
 # the package build.
 #
-vpath w32api.h.in ${top_srcdir}/include
-vpath _mingw.h.in ${mingwrt_srcdir}/include
+vpath %.h.in ${top_srcdir}/include ${mingwrt_srcdir}/include
 
 w32api.h _mingw.h: configure.ac
 
@@ -264,8 +263,28 @@ w32api-include-dirs: includedir
 w32api-lib-dirs: libdir
 
 install-headers: install-w32api-headers
-install-w32api-headers: w32api.h w32api-include-dirs
-	$(call INSTALL_DATA,w32api.h ${srcdir}/include/*.h,${includedir})
+
+obsolete_headers := winable.h pbt.h
+winable.h pbt.h: replacement = winuser.h
+
+$(obsolete_headers): %.h: obsolete.h.in
+	$(if $(subst ./,,$(dir $@)),mkdir -p $(@D))
+	$(obsolete_header_script) $< > $@
+
+obsolete_header_script = sed -e 's,%HEADER%,$@,' \
+  -e "s,%PACKAGE%,$(call macro_name,$(PACKAGE_TARNAME))," \
+  -e 's,<REPLACEMENT>,$(call replace_header,$(replacement)),' \
+  -e "s,%GUARD_MACRO%,$(call macro_name,$@)," \
+  -e 's,%REPLACEMENT%,$(replacement),'
+
+replace_header = $(if $(subst ./,,$(dir $1)),<$1>,"$1")
+macro_name = `echo $1 | tr .a-z- _A-Z_`
+
+w32api_generated_headers := w32api.h $(obsolete_headers)
+w32api_dist_headers := $(w32api_generated_headers) ${srcdir}/include/*.h
+
+install-w32api-headers: $(w32api_dist_headers)  w32api-include-dirs
+	$(call INSTALL_DATA,$(w32api_dist_headers),${includedir})
 	for dir in $(w32api_extra_include_dirs); do \
 	  $(call INSTALL_DATA,${srcdir}/include/$$dir/*.h,${includedir}); \
 	  done

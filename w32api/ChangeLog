@@ -1,3 +1,17 @@
+2016-11-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Deprecate obsolete <winable.h> and <pbt.h> headers.
+
+	* Makefile.in (%.h.in): Generalize vpath definition.
+	(obsolete_headers, obsolete_header_script, w32api_dist_headers)
+	(w32api_generated_headers, replace_headers, macro_name): New macros.
+	(install-w32api-headers): Add dependency on w32api_dist_headers.
+	(%.h): New static pattern rule; it generates generic dependants of...
+	* include/obsolete.h.in: ...this new template for obsolete headers.
+
+	* include/winable.h include/pbt.h: Delete them; they are obsolete;
+	replace them by install-time generated generic stubs.
+
 2016-11-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update <winuser.h> and <dbt.h>; fix issue [#2317].
