@@ -1,3 +1,11 @@
+2016-11-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Work around another C++11 compliance issue; fix bug [#2321].
+
+	* include/excpt.h (__try1_setup, __except1_teardown): Add spaces to
+	separate each use of '__wsize' and '__ts' macros from all surrounding
+	string literals, to ensure that C++ parses them as distinct tokens.
+
 2016-11-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Replace defective powf() and powl() function implementations.

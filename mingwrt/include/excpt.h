@@ -135,8 +135,8 @@ typedef PEXCEPTION_REGISTRATION PEXCEPTION_REGISTRATION_RECORD;
   __hook = __typecast_alloca( EXCEPTION_REGISTRATION ); 		\
   __hook->handler = __handler;						\
   __asm__ __volatile__							\
-  ( "mov{%z0}\t{%%|%0, "__wsize" }"__ts":{|[}0x0{, %0|]}\n\t"		\
-    "mov{%z1}\t{%1, %%|"__wsize" }"__ts":{|[}0x0{|], %1}"		\
+  ( "mov{%z0}\t{%%|%0, " __wsize " }" __ts ":{|[}0x0{, %0|]}\n\t"	\
+    "mov{%z1}\t{%1, %%|" __wsize " }" __ts ":{|[}0x0{|], %1}"		\
     :"=r"(__hook->prev):"r"(__hook):"memory"				\
   );									\
 }
@@ -152,9 +152,9 @@ typedef PEXCEPTION_REGISTRATION PEXCEPTION_REGISTRATION_RECORD;
 #define __except1_teardown(__wsize,__ts) 				\
 { register EXCEPTION_REGISTRATION *__hook;				\
   __asm__ __volatile__							\
-  ( "mov{%z0}\t{%%|%0, "__wsize" }"__ts":{|[}0x0{, %0|]}\n\t"		\
-    "mov{%z0}\t{(}%0{)}, {|"__wsize" [}%0{|]}\n\t"			\
-    "mov{%z0}\t{%0, %%|"__wsize" }"__ts":{|[}0x0{|], %0}"		\
+  ( "mov{%z0}\t{%%|%0, " __wsize " }" __ts ":{|[}0x0{, %0|]}\n\t"	\
+    "mov{%z0}\t{(}%0{)}, {|" __wsize " [}%0{|]}\n\t"			\
+    "mov{%z0}\t{%0, %%|" __wsize " }" __ts ":{|[}0x0{|], %0}"		\
     :"+r"(__hook)::"memory"						\
   );									\
 }
