@@ -1,3 +1,17 @@
+2016-11-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement POSIX.1 compatible setenv() and unsetenv() functions.
+
+	* mingwex/setenv.c: New file; it implements...
+	(__mingw_setenv): ...this function, providing common code for...
+	* include/stdlib.h [_POSIX_C_SOURCE >= 200112L] (setenv, unsetenv):
+	...these user visible functions, implemented as __CRT_ALIAS inlines;
+	qualify them as __JMPSTUB__ and __LIBIMPL__ respectively, so ensuring
+	that their corresponding external representations are automatically
+	added to libmingwex.a
+
+	* Makefile.in (libmingwex.a): Add setenv.$OBJEXT
+
 2016-11-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Work around another C++11 compliance issue; fix bug [#2321].

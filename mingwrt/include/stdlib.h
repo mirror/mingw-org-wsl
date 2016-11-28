@@ -824,6 +824,24 @@ __cdecl __MINGW_NOTHROW  char *mkdtemp (char *__dirname_template)
 { return __mingw_mkdtemp( __dirname_template ); }
 
 #endif	/* _POSIX_C_SOURCE >= 200809L (for mkdtemp()) */
+
+#if _POSIX_C_SOURCE >= 200112L
+/* setenv() and unsetenv() are also available, from POSIX.1-2001 onwards.
+ */
+__cdecl __MINGW_NOTHROW  int setenv( const char *, const char *, int );
+__cdecl __MINGW_NOTHROW  int unsetenv( const char * );
+
+__cdecl __MINGW_NOTHROW  int __mingw_setenv( const char *, const char *, int );
+
+__CRT_ALIAS __JMPSTUB__(( FUNCTION = setenv ))
+__cdecl __MINGW_NOTHROW  int setenv( const char *__n, const char *__v, int __f )
+{ return __mingw_setenv( __n, __v, __f ); }
+
+__CRT_ALIAS __LIBIMPL__(( FUNCTION = unsetenv ))
+__cdecl __MINGW_NOTHROW  int unsetenv( const char *__name )
+{ return __mingw_setenv( __name, NULL, 1 ); }
+
+#endif	/* _POSIX_C_SOURCE >= 200112L (for setenv()) */
 #endif	/* _STDLIB_H */
 
 _END_C_DECLS
