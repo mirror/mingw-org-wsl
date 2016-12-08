@@ -1,3 +1,12 @@
+2016-12-08  Jerzy Tarasiuk  <jz_fuw@users.sourceforge.net>
+
+	Correct typo in <ddk/ntdddisk.h>; fix bug [#2323]
+
+	* include/ddk/ntdddisk.h (IOCTL_DISK_BASE): Correct definition;
+	it was previously transcribed incorrectly, as being equivalent to...
+	(FILE_TYPE_DISK): ...this, but it should have been equivalent to...
+	(FILE_DEVICE_DISK): ...this.
+
 2016-12-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Rationalize <winuser.h> ANSI vs. UNICODE definition strategy.
