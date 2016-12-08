@@ -1,3 +1,12 @@
+2016-12-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Rationalize <winuser.h> ANSI vs. UNICODE definition strategy.
+
+	* include/winuser.h [UNICODE, !UNICODE]: Replace individual pairs of
+	alternative generic symbol mapping definitions, and typedefs, with...
+	(__AW_SUFFIXED__): ...one such macro expansion per pair; collate with
+	their respective ANSI and UNICODE specific references.
+
 2016-11-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Deprecate obsolete <winable.h> and <pbt.h> headers.
