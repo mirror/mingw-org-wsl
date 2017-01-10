@@ -1,3 +1,10 @@
+2017-01-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct <strings.h> preprocessor logic; fix bug [#2322]
+
+	* include/strings.h (_stricmp, _strnicmp): Always declare, unless...
+	[__STRICT_ANSI__ && __NO_INLINE__]: ...both of these are defined.
+
 2016-11-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement POSIX.1 compatible setenv() and unsetenv() functions.

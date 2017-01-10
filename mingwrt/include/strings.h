@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2015, 2016, MinGW.org Project.
+ * Copyright (C) 2015-2017, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -66,17 +66,20 @@ int __cdecl __MINGW_NOTHROW strncasecmp( const char *, const char *, size_t );
 #endif	/* ! RC_INVOKED */
 #endif	/* !__STRING_H_SOURCED__ */
 
-#if ! (defined _STRINGS_H && defined __NO_INLINE__)
+#if ! (defined __STRICT_ANSI__ && defined __NO_INLINE__)
 /* These are the MSVCRT.DLL equivalents for POSIX.1's strcasecmp() and
  * strncasecmp() functions, for which we provide in-line implementations
  * in <strings.h> respectively; MSVC expects to find these prototypes in
  * <string.h>, but we also need them here, in <strings.h>, to facilitate
  * the in-line function implementations; we declare them here, and allow
- * <string.h> to include them selectively.
+ * <string.h> to include them selectively.  Note that <string.h> doesn't
+ * need these if __STRICT_ANSI__ is defined, while <strings.h> doesn't
+ * if __NO_INLINE__ is defined; thus we declare them, unless BOTH of
+ * these conditions for not requiring them are satisfied.
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int _stricmp( const char *, const char * );
 _CRTIMP __cdecl __MINGW_NOTHROW  int _strnicmp( const char *, const char *, size_t );
-#endif	/* !(_STRINGS_H && __NO_INLINE__) */
+#endif	/* !(__STRICT_ANSI__ && __NO_INLINE__) */
 
 #if defined _STRINGS_H && ! defined RC_INVOKED
 #ifndef __NO_INLINE__
