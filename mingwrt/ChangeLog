@@ -1,3 +1,10 @@
+2017-01-25  Jason Hood  <jadoxa@yahoo.com.au>
+
+	Correct quoted backslash handling, per bug [#2328].
+
+	* setargv.c (__mingw32_setargv): Within single quotes, backslashes
+	should be interpreted literally; copy them as-is.
+
 2017-01-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Use C99 blanks as default argv separators, per issue [#2329].

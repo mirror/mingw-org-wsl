@@ -123,12 +123,18 @@ void __mingw32_setargv( const char *cmdline )
        * need special handling.
        */
       case '\\':
-	/* We don't (yet) know if this is a literal backslash,
-	 * (directory separator), or an escape for a following
-	 * quote character; just note its presence, until we
-	 * have looked far enough ahead to decide.
-	 */
-	++bslash;
+	if( quoted == '\'' )
+	  /* Backslashes within single quotes are always literal.
+	   */
+	  *argptr++ = '\\';
+
+	else
+	  /* We don't (yet) know if this is a literal backslash,
+	   * (directory separator), or an escape for a following
+	   * quote character; just note its presence, until we
+	   * have looked far enough ahead to decide.
+	   */
+	  ++bslash;
 	break;
 
       case '[':
