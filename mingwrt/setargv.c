@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2014, MinGW.org Project
+ * Copyright (C) 2014, 2017, MinGW.org Project
  *
  * ---------------------------------------------------------------------------
  *
@@ -33,6 +33,8 @@
  * ---------------------------------------------------------------------------
  *
  */
+#define _ISOC99_SOURCE
+
 #include <glob.h>
 #include <string.h>
 #include <ctype.h>
@@ -181,9 +183,9 @@ void __mingw32_setargv( const char *cmdline )
 	 * literally, after flushing out any pending backslashes.
 	 */
 	argptr = backslash( bslash, argptr );
-	if( (quoted == 0) && isspace( c ) )
+	if( (quoted == 0) && isblank( c ) )
 	{
-	  /* The one exception is any white space character,
+	  /* The one exception is any blank or tab character,
 	   * when it is not contained within quotes; this acts
 	   * as an argument separator, (or is simply discarded
 	   * if there is no argument already collected)...
