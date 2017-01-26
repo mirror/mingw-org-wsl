@@ -1,5 +1,16 @@
 2017-01-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Avoid snprintf() overhead in directory stream functions.
+
+	* mingwex/dirent.c (dirent_update): Do not use either snprintf() or
+	snwprintf() functions when updating dd->d_name and dd->d_namlen data;
+	emulate them instead, using a lightweight inline char-by-char counted
+	copy loop, operating on char or wchar_t data as appropriate.
+	(DIRENT_ASSIGN_NAME): Macro no longer required; delete it.
+	(NUL): New manifest constant; define it.
+
+2017-01-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Avoid #include_next misbehaviour; cf. MinGW-Bug [#2330]
 
 	* include/ctype.h (wctype.h): Use "..." form of #include, rather than

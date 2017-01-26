@@ -1,24 +1,46 @@
 /*
  * dirent.c
  *
- * This file has no copyright assigned and is placed in the Public Domain.
+ * $Id$
  *
- * This file is a part of the mingw-runtime package.
- * No warranty is given; refer to the file DISCLAIMER within the package.
+ * Provides emulation of POSIX "directory stream" manipulation functions,
+ * in terms of the MS-Windows FindFile API.
+ *
  *
  * Derived from DIRLIB.C by Matt J. Weinstein
- * This note appears in the DIRLIB.H
+ * This note appears in the associated DIRLIB.H header file:
  * DIRLIB.H by M. J. Weinstein   Released to public domain 1-Jan-89
  *
  * Updated by Jeremy Bettis <jeremy@hksys.com>
  * Significantly revised and rewinddir, seekdir and telldir added
  * by Colin Peters <colin@fu.is.saga-u.ac.jp>
+ *
  * Further significantly revised for improved memory utilisation,
  * efficiency in operation, and better POSIX standards compliance
  * by Keith Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 1997, 2001-2006, 2014, 2017, MinGW.org Project
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice, this permission notice, and the following
+ * disclaimer shall be included in all copies or substantial portions of
+ * the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OF OR OTHER
+ * DEALINGS IN THE SOFTWARE.
  *
  */
-#include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
@@ -27,23 +49,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <tchar.h>
-
-#ifdef _UNICODE
-  /* In a Unicode build, the path name within the _wdirent struct is
-   * represented by a wchar_t string; we use the snwprintf() function
-   * to simultaneously assign the d_name and d_namlen fields, copying
-   * from a temporary WIN32_FIND_DATA struct on the stack...
-   */
-# include <wchar.h>
-# define DIRENT_ASSIGN_NAME  snwprintf
-
-#else
-  /* ...while for a non-Unicode build, the corresponding data within
-   * the dirent structure is represented by a normal char string, and
-   * the assignments are made by the snprintf() function.
-   */
-# define DIRENT_ASSIGN_NAME  snprintf
-#endif
 
 /* This implementation applies a "__mingw_" pseudo-namespace prefix to
  * the standard POSIX function names, for each each function it defines;
@@ -150,16 +155,33 @@ struct __wdirstream_t
  */
 #define DT_VALID_BITS	~(DT_IGNORED | 0x0080)
 
+/* For convenience, we identify the NUL "character" which terminates any
+ * file or directory name, appropriately typed, using this macro:
+ */
+#define NUL		((_TCHAR)(0))
+
 static
 void dirent_update( struct _tdirent *dd, WIN32_FIND_DATA *fd )
 {
   /* Helper function, used by dirent_findfirst() and dirent_findnext(),
    * to transfer all relevant data from their respective WIN32_FIND_DATA
-   * buffers to the specified dirent structure.
+   * buffers to the specified dirent structure; in the case of the d_name
+   * field, we want the effect of a snprintf() string transfer, but to
+   * avoid the (perceptually significant) overhead of format parsing,
+   * we simulate it with an inline character-by-character counted
+   * string copy loop...
    */
-  dd->d_namlen = DIRENT_ASSIGN_NAME( dd->d_name, FILENAME_MAX,
-      _T("%s"), fd->cFileName
-    );
+  _TCHAR *d_name = dd->d_name;
+  for( dd->d_namlen = 0; (*d_name = fd->cFileName[dd->d_namlen]) != NUL; )
+    /*
+     * ...continuing to count input characters, until the terminal NUL,
+     * but declining to store any character beyond the physical end of
+     * the d_name field buffer.
+     */
+    if( ++dd->d_namlen < FILENAME_MAX ) ++d_name;
+
+  /* Store only those file attribute bits which are valid for d_type.
+   */
   if( (dd->d_type = fd->dwFileAttributes & DT_VALID_BITS) > DT_DIR )
     dd->d_type = DT_UNKNOWN;
 }
