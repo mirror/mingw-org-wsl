@@ -1,3 +1,11 @@
+2017-01-26  Jason Hood  <jadoxa@yahoo.com.au>
+
+	Honour GLOB_CASEMATCH for globbing sets; cf. issue [#2327].
+
+	* include/glob.h (GLOB_CASEMATCH): Update comment.
+	* mingwex/glob.c (glob_case_match): Move before, and use it in...
+	(glob_in_set): ...this function, to test characters in the set.
+
 2017-01-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid snprintf() overhead in directory stream functions.

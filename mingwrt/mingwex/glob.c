@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2011-2014, MinGW.org Project.
+ * Copyright (C) 2011-2014, 2017, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -227,6 +227,15 @@ static const char *glob_set_adjusted( const char *pattern, int flags )
   return ++p;
 }
 
+GLOB_INLINE int glob_case_match( int flags, int check, int match )
+{
+  /* Local helper function, used to facilitate the case insensitive
+   * glob character matching appropriate for MS-Windows systems.
+   */
+  return (flags & GLOB_CASEMATCH) ? check - match
+    : tolower( check ) - tolower( match );
+}
+
 static const char *glob_in_set( const char *set, int test, int flags )
 {
   /* Check if the single character "test" is present in the set
@@ -283,7 +292,7 @@ static const char *glob_in_set( const char *set, int test, int flags )
 	/* ...in incremental collating sequence order, to the next
 	 * character following the '-'...
 	 */
-	if( lastc++ == test )
+	if( glob_case_match( flags, lastc++, test ) == 0 )
 	  /*
 	   * ...returning immediately on a successful match...
 	   */
@@ -295,7 +304,7 @@ static const char *glob_in_set( const char *set, int test, int flags )
 	 * range may have been specified in decrementing collating
 	 * sequence order...
 	 */
-	if( lastc-- == test )
+	if( glob_case_match( flags, lastc--, test ) == 0 )
 	  /*
 	   * ...once again, return immediately on a successful match.
 	   */
@@ -316,7 +325,7 @@ static const char *glob_in_set( const char *set, int test, int flags )
        */
       return NULL;
 
-    if( c == test )
+    if( glob_case_match( flags, c, test ) == 0 )
       /*
        * We found the test character within the set; adjust the pattern
        * reference, to resume after the end of the set, and return the
@@ -335,15 +344,6 @@ static const char *glob_in_set( const char *set, int test, int flags )
    * to indicate that the test character was NOT found in the set.
    */
   return NULL;
-}
-
-GLOB_INLINE int glob_case_match( int flags, int check, int match )
-{
-  /* Local helper function, used to facilitate the case insensitive
-   * glob character matching appropriate for MS-Windows systems.
-   */
-  return (flags & GLOB_CASEMATCH) ? check - match
-    : tolower( check ) - tolower( match );
 }
 
 static int glob_strcmp( const char *pattern, const char *text, int flags )

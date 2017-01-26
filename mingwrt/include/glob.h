@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2011, 2012, 2014, 2016, MinGW.org Project.
+ * Copyright (C) 2011, 2012, 2014, 2016, 2017, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -94,10 +94,7 @@ enum {
    *			    but to better support the MS-Windows
    *			    file system, the MinGW implementation
    *			    of glob() performs a CASE INSENSITIVE
-   *			    character match by default, (except
-   *			    when matching within character group
-   *			    patterns, which are ALWAYS assumed to
-   *			    require CASE SENSITIVE matching).
+   *			    character match by default.
    */
   __GLOB_CASEMATCH_OFFSET,
   /*
