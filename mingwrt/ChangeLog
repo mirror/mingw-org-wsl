@@ -1,3 +1,14 @@
+2017-01-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid #include_next misbehaviour; cf. MinGW-Bug [#2330]
+
+	* include/ctype.h (wctype.h): Use "..." form of #include, rather than
+	the <...> form; we must include our own corresponding mingwrt version
+	of this subsidiary header, and avoid any bogus alternative which may
+	have been insinuated earlier in the system header path.
+
+	* include/string.h (wchar.h): Likewise.
+
 2017-01-25  Jason Hood  <jadoxa@yahoo.com.au>
 
 	Correct quoted backslash handling, per bug [#2328].

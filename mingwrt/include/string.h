@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Colin Peters <colin@bird.fu.is.saga-u.ac.jp>
- * Copyright (C) 1997-2000, 2002-2004, 2007, 2009, 2015, 2016,
+ * Copyright (C) 1997-2000, 2002-2004, 2007, 2009, 2015-2017,
  *  MinGW.org Project.
  *
  *
@@ -160,9 +160,13 @@ _CRTIMP __cdecl __MINGW_NOTHROW  void swab (const char *, char *, size_t);
  * scope, will selectively expose the required function prototypes;
  * however, strictly ISO-C conforming applications should include
  * <wchar.h> directly; they should not rely on this MSVC specific
- * anomalous behaviour.
+ * anomalous behaviour.  (We use the quoted form of inclusion here,
+ * to ensure that we get our own "wchar.h", and not any predecessor
+ * which may have been insinuated into the system include path, and
+ * so could interfere with our mechanism for partial inclusion of
+ * shared header content).
  */
-#include <wchar.h>
+#include "wchar.h"
 
 #endif /* ! __STRICT_ANSI__ */
 

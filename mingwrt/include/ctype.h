@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Colin Peters <colin@bird.fu.is.saga-u.ac.jp>
- * Copyright (C) 1997-2008, 2016, MinGW.org Project
+ * Copyright (C) 1997-2008, 2016, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -42,17 +42,21 @@
  * properly declared here, this file should also declare elements of the
  * wide classification API, which is properly declared in <wctype.h>
  *
- * To avoid the burden of maintaining duplicate declarations, in two
+ * To avoid the burden of maintaining duplicate declarations in two
  * locations, we keep the wide character declarations where ISO-C and
  * POSIX say they belong, in <wctype.h>, while accommodating Microsoft
  * compatibility by providing for selective inclusion of the relevant
  * elements of it here.  (Note that we must do this early, because to
  * avoid duplication, we delegate the definition of common character
  * classification macros, with the exception of _LEADBYTE, which is
- * not required in both headers, to <wctype.h>).
+ * not required in both headers, to <wctype.h>; we use the quoted
+ * form of inclusion here, to ensure that we get our own "wctype.h",
+ * and not any predecessor which may have been insinuated into the
+ * system include path, and which may interfere with our mechanism
+ * for partial inclusion of shared header content).
  */
 #define __CTYPE_H_SOURCED__
-#include <wctype.h>
+#include "wctype.h"
 
 /* This is the one character classification macro, for which definition
  * is NOT delegated to <wctype.h>
