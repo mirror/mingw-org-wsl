@@ -1,3 +1,28 @@
+2017-01-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement wcsnlen() API per feature request [#2332].
+
+	* mingwex/strnlen.s: Rename it as...
+	* mingwex/strnlen.sx: ...this; use C preprocessor logic to adapt...
+	(__mingw_strnlen): ...this existing function implementation for use...
+	[_UNICODE] (__mingw_wcsnlen): ...as this.
+
+	* include/wchar.h [_POSIX_C_SOURCE >= 200809L] (wcsnlen): Declare...
+	[__MSVCRT_VERSION__>=__MSVCR80_DLL]: ...using MS DLL implementation...
+	[!__MSVCRT_VERSION__>=__MSVCR80_DLL] (__mingw_wcsnlen): ...otherwise,
+	declare this, with inline __JMPSTUB__ implementation, providing...
+	(wcsnlen): ...this.
+
+	* Makefile.in (wcsnlen.$OBJEXT): New build rule.
+	(libmingwex.a): Add wcsnlen.$OBJEXT as new prerequisite.
+	(libmoldname.a, libmoldnamed.a): Add __JMPSTUB__ wrappers.
+	(libmoldname70.a, libmoldname70d.a): Likewise.
+	(libmoldname71.a, libmoldname71d.a): Likewise.
+
+	for all other MSVC non-free associated oldname import libraries.
+	(vpath): Add $srcdir/mingwex for %.sx; hence mapping for...
+	(jmpstub.sx): ...this becomes redundant; delete it.
+
 2017-01-26  Jason Hood  <jadoxa@yahoo.com.au>
 
 	Honour GLOB_CASEMATCH for globbing sets; cf. issue [#2327].

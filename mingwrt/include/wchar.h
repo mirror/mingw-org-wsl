@@ -467,6 +467,36 @@ _CRTIMP __cdecl __MINGW_NOTHROW  wchar_t *wcsupr (wchar_t *);
 #endif	/* !_NO_OLDNAMES */
 #endif	/* !__STRICT_ANSI__ */
 
+#if _POSIX_C_SOURCE >= 200809L
+#if __MSVCRT_VERSION__ >= __MSVCR80_DLL
+/* MSVCR80.DLL adds a (mostly) POSIX.1-2008 conforming wcsnlen(); (it's
+ * also available in MSVCRT.DLL from _WIN32_WINNT_VISTA onwards, but we
+ * pretend otherwise, since recent GCC will try to use the function when
+ * it can be found in libmsvcrt.a, so breaking it for use on WinXP and
+ * earlier).
+ */
+#ifndef __STRICT_ANSI__   /* N.B.: this is not an ISO-C function */
+_CRTIMP __cdecl __MINGW_NOTHROW  char *wcsnlen (const wchar_t *, size_t);
+#endif
+
+#else	/* MSVCRT.DLL || pre-MSVCR80.DLL */
+/* Emulation, to support recent POSIX.1; we prefer this for ALL versions
+ * of MSVCRT.DLL, (even those which already provide wcsnlen()); to avoid
+ * the GCC breakage noted above.  (Note that we implement wcsnlen() with
+ * the alternative external name, __mingw_wcsnlen() in libmingwex.a, to
+ * avoid possible link time collision with MSVCR80.DLL's implementation,
+ * then map this to wcsnlen() via a __CRT_ALIAS, with stubs designated
+ * for linking from within the appropriate oldname libraries.
+ */
+extern size_t __mingw_wcsnlen (const wchar_t *, size_t);
+
+__JMPSTUB__(( LIB=coldname; FUNCTION=wcsnlen ))
+__CRT_ALIAS size_t wcsnlen (const wchar_t *__text, size_t __maxlen)
+{ return __mingw_wcsnlen (__text, __maxlen); }
+
+#endif	/* MSVCRT.DLL || pre-MSVCR80.DLL */
+#endif	/* _POSIX_C_SOURCE >= 200809L */
+
 /* This completes the set of declarations which are to be duplicated by
  * inclusion of <string.h>; revert the declarative condition, to make it
  * specific to <wchar.h> alone.

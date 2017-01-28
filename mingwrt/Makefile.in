@@ -388,7 +388,7 @@ $(foreach name,coldname $(all_moldname),lib$(name).a): $(addsuffix .$(OBJEXT), \
 #
 $(foreach name,moldname $(addprefix moldname,70 71),lib$(name).a) \
 $(foreach name,moldname $(addprefix moldname,70 71),lib$(name)d.a): \
-  strnlen.jmpstub.$(OBJEXT)
+  strnlen.jmpstub.$(OBJEXT) wcsnlen.jmpstub.$(OBJEXT)
 
 coldname.def: %.def: ${mingwrt_srcdir}/moldname.def.in
 	$(CC) -C -E -P -D__FILENAME__=$@ -D__CRTDLL__ -xc-header $< > $@
@@ -499,10 +499,16 @@ libmingwex.a: $(addsuffix .$(OBJEXT), getdelim gettimeofday)
 libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn)
 
 vpath %.s ${mingwrt_srcdir}/mingwex
+vpath %.sx ${mingwrt_srcdir}/mingwex
 libmingwex.a: $(addsuffix .$(OBJEXT), fwide mbrtowc mbsinit strnlen wcrtomb \
-  wcstof wcstold wctob wmemchr wmemcmp wmemcpy wmemmove wmemset)
+  wcsnlen wcstof wcstold wctob wctrans wctype wmemchr wmemcmp wmemcpy wmemmove \
+  wmemset)
 
-libmingwex.a: $(addsuffix .$(OBJEXT), wctrans wctype)
+# The wcsnlen() function, enumerated above, is an adaptation of strnlen();
+# we need a specific rule to compile it, from shared source.
+#
+wcsnlen.$(OBJEXT): strnlen.sx
+	$(COMPILE.sx) -D_UNICODE $^ -o $@
 
 # For the math sources, we support the convention that a single
 # quux_generic.c source file will produce three objects: quux.o,
@@ -553,7 +559,6 @@ libm_dummy.c: Makefile
 # entry points as stubs in libmingwex.a, via the following rules:
 #
 sinclude Makefile.stub
-vpath jmpstub.sx ${mingwrt_srcdir}/mingwex
 libstub_refnames = grep -lr '__$1.*FUNCTION *=' ${mingwrt_srcdir}
 jmpstub_prerequisites := $(shell $(call libstub_refnames,JMPSTUB)/include)
 libimpl_prerequisites := $(shell $(call libstub_refnames,LIBIMPL)/include)

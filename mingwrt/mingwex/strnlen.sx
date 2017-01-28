@@ -1,5 +1,5 @@
 /*
- * strnlen.s
+ * strnlen.sx
  *
  * Implementation of POSIX.1-2008 conforming strnlen(), and a wrapper
  * extending it to conform with ISO-C11 TR-24731-1 strnlen_s().
@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2016, MinGW.org Project
+ * Copyright (C) 2016, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -52,10 +52,26 @@
  * sharing of common code between two distinct entry points, with subtly
  * differing behaviours, while avoiding the overhead of an extra function
  * call to invoke such shared code; this also allows the code to exploit
- * the CUP's string scanning instructions, (which GCC does not), and so
+ * the CPU's string scanning instructions, (which GCC does not), and so
  * achieves a more compact, (and likely more efficient), implementation.
  *
  */
+#if defined UNICODE || defined _UNICODE
+/* The algorithm defined herein is effectively the same as that required
+ * as a substitute for wcsnlen()/wcsnlen_s(); map entry point names to the
+ * appropriate alternatives for scanning wchar_t *, (rather than char *),
+ * strings, (i.e. Microsoft's so-called UNICODE strings).
+ */
+# define ___mingw_strnlen    ___mingw_wcsnlen
+# define ___mingw_strnlen_s  ___mingw_wcsnlen_s
+
+/* The fundamental change required to scan whcar_t * strings, rather than
+ * char * strings, is that we must use the scasw instruction in place of
+ * the scasb instruction; map it accordingly.
+ */
+# define scasb  scasw
+#endif
+
 .text
 .align	4
 .globl	___mingw_strnlen
@@ -84,8 +100,22 @@ ___mingw_strnlen:
 	decl	%eax		/* NUL found and counted; discount it */
 .L3:
 	sub	%edx, %eax	/* compute effective count to return */
-.L4:
-	popl	%edi		/* restore saved register ... */
+
+#if defined UNICODE || defined _UNICODE
+/* By the time we get to here, the EAX register contains the effective
+ * length of the scanned string in bytes; this is the correct value to be
+ * returned, in the case of char * strings, but it is twice the correct
+ * length for wchar_t * strings, (possibly with one odd residual byte,
+ * left over from a partially discounted NUL wchar_t); we may adjust this,
+ * for the wchar_t * case, by a simple logical right shift, effectively
+ * dividing the even extent of the (unsigned) count by two, extracting
+ * the full wchar_t count, leaving any odd byte residual as remainder
+ * in the carry flag, where we may simply (and safely) ignore it.
+ */
+	shrl	%eax		/* convert byte count to wchar_t count */
+#endif
+
+.L4:	popl	%edi		/* restore saved register ... */
 	ret			/* and we're done */
 
 .align	4
