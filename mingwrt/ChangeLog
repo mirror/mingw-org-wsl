@@ -1,5 +1,12 @@
 2017-01-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Make strnlen() and wcsnlen() declaratively consistent.
+
+	* include/string.h (strnlen): Do not expose its declaration, unless...
+	[_POSIX_C_SOURCE >= 200809L]: ...this feature test is enabled.
+
+2017-01-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Implement wcsnlen() API per feature request [#2332].
 
 	* mingwex/strnlen.s: Rename it as...

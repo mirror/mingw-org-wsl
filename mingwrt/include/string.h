@@ -170,6 +170,7 @@ _CRTIMP __cdecl __MINGW_NOTHROW  void swab (const char *, char *, size_t);
 
 #endif /* ! __STRICT_ANSI__ */
 
+#if _POSIX_C_SOURCE >= 200809L
 #if __MSVCRT_VERSION__ >= __MSVCR80_DLL
 /* MSVCR80.DLL adds a (mostly) POSIX.1-2008 conforming strnlen(); (it's
  * also available in MSVCRT.DLL from _WIN32_WINNT_VISTA onwards, but we
@@ -179,7 +180,7 @@ _CRTIMP __cdecl __MINGW_NOTHROW  void swab (const char *, char *, size_t);
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  char *strnlen (const char *, size_t);
 
-#elif _POSIX_C_SOURCE >= 200809L
+#else	/* MSVCRT.DLL || pre-MSVCR80.DLL */
 /* Emulation, to support recent POSIX.1; we prefer this for ALL versions
  * of MSVCRT.DLL, (even those which already provide strnlen()); to avoid
  * the GCC breakage noted above.  (Note that we implement strnlen() with
@@ -194,6 +195,7 @@ __JMPSTUB__(( LIB=coldname; FUNCTION=strnlen ))
 __CRT_ALIAS size_t strnlen (const char *__text, size_t __maxlen)
 { return __mingw_strnlen (__text, __maxlen); }
 
+#endif	/* MSVCRT.DLL || pre-MSVCR80.DLL */
 #endif	/* _POSIX_C_SOURCE >= 200809L */
 
 #undef __STRING_H_SOURCED__
