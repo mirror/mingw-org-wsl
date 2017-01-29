@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Mumit Khan  <khan@xraylith.wisc.edu>
- * Copyright (C) 1999, 2001-2011, 2014-2016, MinGW.org Project
+ * Copyright (C) 1999, 2001-2011, 2014-2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -451,18 +451,62 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
  /* libmingwex.a provides free-standing implementations for many of the
   * functions which were introduced in C99; MinGW headers do not expose
   * prototypes for these, unless this feature test macro is defined, by
-  * the user, or implied by other standards...
+  * the user, or implied by other standards.  We will use a bit-mapped
+  * representation, comprising the bit-wise sum of:
+  *
+  *   0x08  user declared
+  *   0x04  required by C compiler, supporting ISO-C99
+  *   0x02  required by C++ compiler, supporting ISO-C++11
+  *   0x01  required to support recent POSIX.1 features
+  *
+  * to ensure that we can identify the reason for implicit declaration,
+  * (in the event that we may need to discriminate).
   */
-# if __STDC_VERSION__ >= 199901L || _POSIX_C_SOURCE >= 200112L
-#  define _ISOC99_SOURCE  1
+# if __STDC_VERSION__ >= 199901L
+  /* This represents a compiler supporting ISO-C99; enable all potential
+   * use of ISO-C99 features, (to the maximum extent supportable), which
+   * presumably also covers all C++11 and POSIX.1 usage.
+   */
+#  define _ISOC99_SOURCE  0x07
+
+# elif __cplusplus >= 201103L
+  /* C++11 also incorporates many (if not all) of the ISO-C99 features,
+   * which we have guarded by _ISOC99_SOURCE; enable such features, to
+   * the required extent, (which is likely also sufficient to support
+   * any POSIX.1 dependencies).
+   */
+#  define _ISOC99_SOURCE  0x03
+
+# elif _POSIX_C_SOURCE >= 200112L
+  /* This represents the minimum level of ISO-C99 support, which may be
+   * required by POSIX.1, (and which may be no less than full support).
+   */
+#  define _ISOC99_SOURCE  0x01
 # endif
+
+#else
+ /* The the user has explicitly declared a source level dependency on
+  * ISO-C99 features; regardless of how it was declared, redefine it to
+  * ensure that any plausible dependency is covered.
+  */
+# undef _ISOC99_SOURCE
+# define _ISOC99_SOURCE  0x0F
+
+#endif	/* _ISOC99_SOURCE */
+
+#if _ISOC99_SOURCE && __cplusplus >= 201103L && __GNUC__ < 6
+ /* Due to a configuration defect in GCC versions prior to GCC-6, when
+  * compiling C++11 code, the ISO-C99 functions may not be incorporated
+  * into the appropriate namespace(s); we may be able to mitigate this,
+  * by ensuring that this GCC configuration macro is defined.
+  */
+# define _GLIBCXX_USE_C99  1
 #endif
 
 #if ! defined _MINGW32_SOURCE_EXTENDED && ! defined __STRICT_ANSI__
-/*
- * Enable mingw32 extensions by default, except when __STRICT_ANSI__
- * conformity mode has been enabled.
- */
+ /* Enable mingw32 extensions by default, except when __STRICT_ANSI__
+  * conformity mode has been enabled.
+  */
 # define _MINGW32_SOURCE_EXTENDED  1
 #endif
 

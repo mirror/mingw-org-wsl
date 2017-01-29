@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Mumit Khan <khan@xraylith.wisc.edu>
- * Copyright (C) 1999-2003, 2005-2007, 2016, MinGW.org Project
+ * Copyright (C) 1999-2003, 2005-2007, 2016, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -119,7 +119,7 @@ __MINGW_ATTRIB_DEPRECATED
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int is_wctype (wint_t, wctype_t);
 
-#if __STDC_VERSION__>=199901L || !defined __STRICT_ANSI__ || defined __cplusplus
+#if _ISOC99_SOURCE
 __cdecl __MINGW_NOTHROW  int iswblank (wint_t);
 #endif
 
@@ -173,7 +173,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW  int iswupper (wint_t wc)
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int iswxdigit (wint_t wc)
 { return (iswctype (wc, _HEX)); }
 
-#if __STDC_VERSION__>=199901L || !defined __STRICT_ANSI__ || defined __cplusplus
+#if _ISOC99_SOURCE
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int iswblank (wint_t wc)
 { return (iswctype (wc, _BLANK) || wc == L'\t'); }
 #endif

@@ -80,7 +80,7 @@ _CRTIMP __cdecl __MINGW_NOTHROW  int isspace(int);
 _CRTIMP __cdecl __MINGW_NOTHROW  int isupper(int);
 _CRTIMP __cdecl __MINGW_NOTHROW  int isxdigit(int);
 
-#if __STDC_VERSION__ >= 199901L || !defined __STRICT_ANSI__
+#if _ISOC99_SOURCE
 __cdecl __MINGW_NOTHROW  int isblank (int);
 #endif
 
@@ -217,7 +217,7 @@ __CRT_INLINE __cdecl __MINGW_NOTHROW  int isupper (int c)
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int isxdigit (int c)
 { return __ISCTYPE(c, _HEX); }
 
-#if __STDC_VERSION__ >= 199901L || !defined __STRICT_ANSI__
+#if _ISOC99_SOURCE
 __CRT_INLINE __cdecl __MINGW_NOTHROW  int isblank (int c)
 { return (__ISCTYPE(c, _BLANK) || c == '\t'); }
 #endif

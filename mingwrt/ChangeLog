@@ -1,3 +1,20 @@
+2017-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Expose C99 features required by C++11; fix issue [#2335]
+
+	* include/_mingw.h.in (_ISOC99_SOURCE): Ensure it is defined for...
+	[__cplusplus >= 201103L]: ...this conformance level, in addition to...
+	[__STDC_VERSION__>= 199901L || _POSIX_C_SOURCE >= 200112L]: ...these.
+	[_GLIBCXX_USE_C99]: Force it for -std=c++11, subject to...
+	[__GNUC__ < 6]: ...this.
+
+	* include/ctype.h (isblank): Declare it only if...
+	[_ISOC99_SOURCE]: ...this, thus simplifying declarative condition.
+	* include/wctype.h (iswblank) [_ISOC99_SOURCE]: Likewise.
+	* include/inttypes.h (SCNd8, SCNdLEAST8, SCNdFAST8, SCNi8, SCNiLEAST8)
+	(SCNiFAST8, SCNo8, SCNoLEAST8, SCNoFAST8, SCNx8, SCNxLEAST8, SCNxFAST8)
+	(SCNu8, SCNuLEAST8, SCNuFAST8) [_ISOC99_SOURCE]: Likewise.
+
 2017-01-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make strnlen() and wcsnlen() declaratively consistent.
