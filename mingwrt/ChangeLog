@@ -1,5 +1,16 @@
 2017-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Clean up <limits.h> header file.
+
+	* include/limits.h: Tidy layout; assert copyright.
+	(#pragma GCC system_header): Declare it as being such.
+	(_LIMITS_H_): Rename this multiple inclusion guard macro...
+	(_LIMITS_H): ...to adopt this preferred form.
+	[__STDC_VERSION__ >= 199901L]: Infer it...
+	[_ISOC99_SOURCE]: ...from this.
+
+2017-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Expose C99 features required by C++11; fix issue [#2335]
 
 	* include/_mingw.h.in (_ISOC99_SOURCE): Ensure it is defined for...
