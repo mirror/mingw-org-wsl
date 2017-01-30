@@ -394,6 +394,16 @@ int sprintf (char *__stream, const char *__format, ...)
 }
 
 __mingw_stdio_redirect__
+int snprintf (char *__stream, size_t __len, const char *__format, ...)
+{
+  register int __retval;
+  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
+  __retval = __mingw_vsnprintf( __stream, __len, __format, __local_argv );
+  __builtin_va_end( __local_argv );
+  return __retval;
+}
+
+__mingw_stdio_redirect__
 int vfprintf (FILE *__stream, const char *__format, __VALIST __local_argv)
 {
   return __mingw_vfprintf( __stream, __format, __local_argv );
@@ -409,6 +419,12 @@ __mingw_stdio_redirect__
 int vsprintf (char *__stream, const char *__format, __VALIST __local_argv)
 {
   return __mingw_vsprintf( __stream, __format, __local_argv );
+}
+
+__mingw_stdio_redirect__
+int vsnprintf (char *__stream, size_t __len, const char *__format, __VALIST __local_argv)
+{
+  return __mingw_vsnprintf( __stream, __len, __format, __local_argv );
 }
 
 #else

@@ -1,5 +1,13 @@
 2017-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Avoid -Wformat noise from snprintf() and vsnprintf()
+
+	* include/stdio.h (snprintf, vsnprintf): Add inline implementations;
+	they redirect to "__mingw_" prefixed alternatives, so suppressing the
+	effect of automatic format attribute recognition.
+
+2017-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Remove duplicate libmingwex.a entries.
 
 	* mingwex/jmpstub.sx (DLLENTRY): Interpret it.
