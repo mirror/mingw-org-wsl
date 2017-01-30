@@ -1,5 +1,19 @@
 2017-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Implement strerror_r()/strerror_s() API.
+
+	* mingwex/strerror_r.c: New file; it implements...
+	(strerror_r): ...this new POSIX.1-2001 conforming function.
+
+	* include/string.h (strerror_s): Add function prototype, subject to...
+	[_MSVCR80_DLL || _WIN32_WINNT_VISTA]: ...this DLL version dependency;
+	otherwise implement an inline wrapper function to emulate it, using...
+	[_POSIX_C_SOURCE > 200112L] (strerror_r): ...this; add prototype.
+
+	* Makefile.in (libmingwex.a): Add strerror_r.$OBJEXT
+
+2017-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Avoid -Wformat noise from snprintf() and vsnprintf()
 
 	* include/stdio.h (snprintf, vsnprintf): Add inline implementations;

@@ -198,6 +198,35 @@ __CRT_ALIAS size_t strnlen (const char *__text, size_t __maxlen)
 #endif	/* MSVCRT.DLL || pre-MSVCR80.DLL */
 #endif	/* _POSIX_C_SOURCE >= 200809L */
 
+#if _POSIX_C_SOURCE >= 200112L
+/* POSIX.1-2001 added a re-entrant variant of strerror(), which stores
+ * the message text in a user supplied buffer, rather than in (possibly
+ * volatile) system supplied storage.  Although inherently thread-safe,
+ * Microsoft's strerror() also uses a potentially volatile buffer, (in
+ * the sense that it is overwritten by successive calls within a single
+ * thread); thus, we provide our own implementation of POSIX.1-2001's
+ * strerror_r() function, to facilitate the return of non-volatile
+ * copies of strerror()'s message text.
+ */
+extern int strerror_r (int, char *, size_t);
+#endif
+
+#if __MSVCRT_VERSION__>=__MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
+/* MSVCR80.DLL introduced a safer, (erroneously so called "more secure"),
+ * alternative to strerror(), named strerror_s(); it was later retrofitted
+ * to MSVCRT.DLL, from the release of Windows-Vista onwards.
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  int strerror_s (char *, size_t, int);
+
+#elif _POSIX_C_SOURCE >= 200112L
+/* For the benefit of pre-Vista MSVCRT.DLL users, we provide an approximate
+ * emulation of strerror_s(), in terms of inline referral to POSIX.1-2001's
+ * strerror_r() function.
+ */
+__CRT_ALIAS int strerror_s (char *__buf, size_t __len, int __err)
+{ return strerror_r (__err, __buf, __len); }
+#endif
+
 #undef __STRING_H_SOURCED__
 
 _END_C_DECLS

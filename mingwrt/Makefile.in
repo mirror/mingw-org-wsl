@@ -494,9 +494,8 @@ libmingwex.a: $(addsuffix .$(OBJEXT), glob getopt basename dirname nsleep)
 libmingwex.a: $(addsuffix .$(OBJEXT), mkstemp mkdtemp cryptnam setenv)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), tdelete tfind tsearch twalk)
-
+libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn strerror_r)
 libmingwex.a: $(addsuffix .$(OBJEXT), getdelim gettimeofday)
-libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn)
 
 vpath %.s ${mingwrt_srcdir}/mingwex
 vpath %.sx ${mingwrt_srcdir}/mingwex
