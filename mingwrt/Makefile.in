@@ -469,8 +469,8 @@ libmingwex.a: $(addsuffix .$(OBJEXT), cosf cosl acosf acosl sinf sinl asinf \
 #
 vpath %.c ${mingwrt_srcdir}/mingwex/stdio
 libmingwex.a: $(addsuffix .$(OBJEXT), btowc fprintf fseeko64 ofmtctl pformat \
-  printf snprintf snwprintf sprintf vfprintf vfscanf vfwscanf vprintf vscanf \
-  vsnprintf vsnwprintf vsprintf vsscanf vswscanf vwscanf)
+  printf snprintf sprintf vfprintf vfscanf vfwscanf vprintf vscanf vsnprintf \
+  vsprintf vsscanf vswscanf vwscanf)
 
 # pformat.$(OBJEXT) needs an explicit build rule, since we need to
 # specify an additional header file path.
@@ -583,7 +583,9 @@ jmpstub_awk_script = test -z "$1" || awk '\
     LIB = match( $$0, ".*[ ,(:]LIB *= *"symbol, altlib ) ? altlib[1] : "mingwex"; \
     OBJNAME = gensub( "_*(.*)_*", "\\1", 1, FUNCTION )".jmpstub.$$(OBJEXT)"; \
     OBJNAME_CFLAGS = "-D FUNCTION="FUNCTION; \
-    if( match( $$0, ".*[ ,(:]REMAPPED *= *"symbol, alias ) ) \
+    if( match( $$0, ".*[ ,(:]DLLENTRY *= *"symbol, alias ) ) \
+      OBJNAME_CFLAGS = OBJNAME_CFLAGS" -D DLLENTRY="alias[1]; \
+    else if( match( $$0, ".*[ ,(:]REMAPPED *= *"symbol, alias ) ) \
       OBJNAME_CFLAGS = OBJNAME_CFLAGS" -D REMAPPED="alias[1]; \
     printf fmt, LIB, OBJNAME, OBJNAME, OBJNAME_CFLAGS; \
   } \

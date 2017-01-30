@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2013, 2014, MinGW.org Project
+ * Copyright (C) 2013, 2014, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -46,20 +46,48 @@
  * an additional "-D REMAPPED=entryname" option, resulting in redirection
  * of "funcname()" calls to the "entryname()" function entry point.
  *
+ * Alternatively, calls to "funcname()" may be redirected to a DLL entry point,
+ * via its importable name within the DLL's export table, by specification of
+ * the "-D DLLENTRY=entryname" option, instead of "-D REMAPPED=entryname".
+ *
  */
 #define __entry__(__suffix__)  __label__(_,__suffix__)
 #define __label__(__prefix__,__suffix__)  __prefix__##__suffix__
 
-#ifndef REMAPPED
-# define __mingw__(__suffix__)  __label__(__mingw_,__suffix__)
-# define REMAPPED  __mingw__(FUNCTION)
+#if defined LLENTRY && ! defined DLLENTRY
+/* This is a convenience for users; it allows specification of a DLLENTRY
+ * option as simply "-DLLENTRY=entryname", as an alternative to specifying
+ * it fully, as "-D DLLENTRY=entryname".
+ */
+#define DLLENTRY  LLENTRY
 #endif
 
 .text
+#ifdef DLLENTRY
+ /* This represents the case of redirection to a function implementation
+  * residing within a DLL...
+  */
+# define __dllentry__(__suffix__)  __label__(__imp__,__suffix__)
+# define __redirect__  *__dllentry__(DLLENTRY)
+
+#else
+ /* ...whereas this redirection to an alternative static library function,
+  * or to a DLL implementation accessed via an import library trampoline.
+  */
+# ifndef REMAPPED
+  /* No explicit entry point redirection specified; use the default entry
+   * point name, within the "__mingw_" pseudo-namespace.
+   */
+#  define __mingw__(__suffix__)  __label__(__mingw_,__suffix__)
+#  define REMAPPED  __mingw__(FUNCTION)
+# endif
+# define __redirect__  __entry__(REMAPPED)
+.def	__entry__(REMAPPED); .scl 2; .type 32; .endef
+#endif
+
 .global __entry__(FUNCTION)
 .def	__entry__(FUNCTION); .scl 2; .type 32; .endef
-.def	__entry__(REMAPPED); .scl 2; .type 32; .endef
 
-__entry__(FUNCTION): jmp __entry__(REMAPPED)
+__entry__(FUNCTION): jmp __redirect__
 
 /* $RCSfile$: end of file */

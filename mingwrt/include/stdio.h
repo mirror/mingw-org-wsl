@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Colin Peters <colin@bird.fu.is.saga-u.ac.jp>
- * Copyright (C) 1997-2005, 2007-2010, 2014-2016, MinGW.org Project.
+ * Copyright (C) 1997-2005, 2007-2010, 2014-2017, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -950,12 +950,13 @@ _CRTIMP __cdecl __MINGW_NOTHROW  FILE    * _wpopen (const wchar_t *, const wchar
 #endif	/* __MSVCRT__ */
 
 #ifdef _ISOC99_SOURCE
+__JMPSTUB__(( FUNCTION = snwprintf, DLLENTRY = _snwprintf ))
 __cdecl __MINGW_NOTHROW  int snwprintf (wchar_t *, size_t, const wchar_t *, ...);
 __cdecl __MINGW_NOTHROW  int vsnwprintf (wchar_t *, size_t, const wchar_t *, __VALIST);
 
 #ifndef __NO_INLINE__
 __CRT_INLINE __cdecl __MINGW_NOTHROW
-__JMPSTUB__(( FUNCTION = vsnwprintf, REMAPPED = _vsnwprintf ))
+__JMPSTUB__(( FUNCTION = vsnwprintf, DLLENTRY = _vsnwprintf ))
 int vsnwprintf (wchar_t *__s, size_t __n, const wchar_t *__fmt, __VALIST __arg)
 { return _vsnwprintf ( __s, __n, __fmt, __arg); }
 #endif

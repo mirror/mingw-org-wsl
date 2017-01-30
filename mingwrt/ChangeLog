@@ -1,3 +1,20 @@
+2017-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Remove duplicate libmingwex.a entries.
+
+	* mingwex/jmpstub.sx (DLLENTRY): Interpret it.
+
+	* Makefile.in (jmpstub_awk_script): Handle DLLENTRY.
+	(libmingwex.a): Remove explicit object file references to...
+	(snwprintf, vsnwprintf): ...these.
+
+	* include/stdio.h (snwprintf, vsnwprintf): Map them as __JMPSTUB__
+	references to MSVCRT.DLL entry points, via DLLENTRY references to...
+	(_snwprintf, _vsnwprintf): ...these, respectively.
+
+	* mingwex/snwprintf.c: Redundant file; delete it.
+	* mingwex/vsnwprintf.c: Likewise.
+
 2017-01-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Clean up <limits.h> header file.
