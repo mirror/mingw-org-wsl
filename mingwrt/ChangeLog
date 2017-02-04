@@ -1,3 +1,14 @@
+2017-02-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Resolve a global variable naming inconsistency.
+
+	* mingwex/ofmt.c (__mingw_output_format_flag): Rename it as...
+	(__mingw_output_format_flags): ...this, at point of definition, and
+	update all references, to maintain consistency with usage...
+	* mingwex/ofmtctl.c (__mingw_output_format_flags): ...here.
+
+	* mingwex/stdio/pformat.c: Update references.
+
 2017-01-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement strerror_r()/strerror_s() API.

@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2014, 2015, MinGW.org Project
+ * Copyright (C) 2014, 2015, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -84,25 +84,23 @@
  * declared; users should NEVER access this, other than via our two
  * accessor functions.
  */
-extern unsigned int __mingw_output_format_flag;
+extern unsigned int __mingw_output_format_flags;
 
 static __inline__ __attribute__((__always_inline__))
-unsigned int update_output_format_flag( unsigned int style )
-{ return (__mingw_output_format_flag & ~_EXPONENT_DIGIT_MASK) | style; }
+unsigned int update_output_format_flags( unsigned int style )
+{ return (__mingw_output_format_flags & ~_EXPONENT_DIGIT_MASK) | style; }
 
 #if defined __varofmt__
-/*
- * Here, we actually allocate the storage for recording the preferred
+/* Here, we actually allocate the storage for recording the preferred
  * formatting style; although POSIX might lead us to prefer an initial
  * default of _TWO_DIGIT_EXPONENT, we choose to assign a default which
  * is consistent with Microsoft's preference.
  */
-unsigned int __mingw_output_format_flag = _THREE_DIGIT_EXPONENT;
+unsigned int __mingw_output_format_flags = _THREE_DIGIT_EXPONENT;
 
 #elif defined __crtofmt__
-/*
- * Here we implement the common part of the fallback API, retrieving
- * the value stored in __mingw_output_format_flag.  Note that this is
+/* Here we implement the common part of the fallback API, retrieving
+ * the value stored in __mingw_output_format_flags.  Note that this is
  * sufficient for both _get_output_format() and _set_output_format(),
  * with the set action being completed in the calling wrapper.
  */
@@ -112,7 +110,7 @@ unsigned int __mingw_get_output_format_fallback( void )
   /* Our replacement function simply returns the current setting of
    * the assigned formatting style...
    */
-  return __mingw_output_format_flag & _EXPONENT_DIGIT_MASK;
+  return __mingw_output_format_flags & _EXPONENT_DIGIT_MASK;
 }
 /* ...and, in the case of _set_output_format(), we simply map the
  * requisite name to the common function implementation.
@@ -121,8 +119,7 @@ extern unsigned int __mingw_set_output_format_fallback( unsigned int )
 __attribute__((__alias__("__mingw_get_output_format_fallback")));
 
 #elif defined __crtnfmt__
-/*
- * Here, we implement a generic fallback hook, suitable for use as the
+/* Here, we implement a generic fallback hook, suitable for use as the
  * fallback for _get_printf_count_output()/_set_printf_count_output().
  */
 int __mingw_get_printf_count_output_fallback( void )
@@ -139,8 +136,7 @@ int __mingw_set_printf_count_output_fallback( int mode )
  * _set_output_format() compilation options first.
  */
 #if defined __setnfmt__
-/*
- * Here, we are wrapping the _set_printf_count_output() function...
+/* Here, we are wrapping the _set_printf_count_output() function...
  */
 # define RTNTYPE   int
 # define FUNCTION _set_printf_count_output
@@ -150,8 +146,7 @@ int __mingw_set_printf_count_output_fallback( int mode )
 extern int __mingw_set_printf_count_output_fallback( int );
 
 #elif defined __getnfmt__
-/*
- * ...while here, it is _get_printf_count_output().
+/* ...while here, it is _get_printf_count_output().
  */
 # define RTNTYPE   int
 # define FUNCTION _get_printf_count_output
@@ -161,8 +156,7 @@ extern int __mingw_set_printf_count_output_fallback( int );
 extern int __mingw_get_printf_count_output_fallback( void );
 
 #elif defined __setofmt__
-/*
- * This is our implementation for the _set_output_format() function,
+/* This is our implementation for the _set_output_format() function,
  * which will be called when there is no MSVCRT implementation.
  */
 # define RTNTYPE   unsigned int
@@ -183,7 +177,7 @@ api_invoke( unsigned int (*api_helper)(unsigned int), unsigned int style )
    * to use a handler in common with _get_output_format()...
    */
   unsigned int retval = api_helper( style &= _EXPONENT_DIGIT_MASK );
-  __mingw_output_format_flag = update_output_format_flag( style );
+  __mingw_output_format_flags = update_output_format_flags( style );
   return retval;
 }
 /* ...while declaring its formal prototype as external.
@@ -204,7 +198,7 @@ static __inline__ __attribute__((__always_inline__))
 unsigned int api_invoke( unsigned int (*api_helper)( void ) )
 {
   unsigned int retval = api_helper();
-  __mingw_output_format_flag = update_output_format_flag( retval );
+  __mingw_output_format_flags = update_output_format_flags( retval );
   return retval;
 }
 

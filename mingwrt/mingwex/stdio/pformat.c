@@ -8,7 +8,7 @@
  * to support Microsoft's non-standard format specifications.
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2008, 2009, 2011, 2014-2016, MinGW.org Project
+ * Copyright (C) 2008, 2009, 2011, 2014-2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -187,10 +187,10 @@
  * 2) Emulation of _set_output_format(), through the use of inline
  *    functions defined in stdio.h, and supported regardless of the
  *    availability of the API within MSVCRT.DLL; this emulated API
- *    maintains state in the global `__mingw_output_format_flag'
+ *    maintains state in the global `__mingw_output_format_flags'
  *    variable, (which users should consider to be private).
  */
-extern unsigned int __mingw_output_format_flag;
+extern unsigned int __mingw_output_format_flags;
 
 static __pformat_inline__
 int __pformat_exponent_digits( void )
@@ -200,7 +200,7 @@ int __pformat_exponent_digits( void )
    */
   char *exponent_digits = getenv( "PRINTF_EXPONENT_DIGITS" );
   return ((exponent_digits != NULL) && ((unsigned)(*exponent_digits - '0') < 3))
-    || (__mingw_output_format_flag & _TWO_DIGIT_EXPONENT)
+    || (__mingw_output_format_flags & _TWO_DIGIT_EXPONENT)
     ? 2 : 3 ;
 }
 #else
@@ -2199,7 +2199,7 @@ int __pformat_is_alt_ldouble_modifier( int length )
    * to be treated as equivalent to 'L', as it is in MSVCRT.DLL's
    * implementation of the printf() functions.
    */
-  return (__mingw_output_format_flag & _MSVC_PRINTF_QUIRKS)
+  return (__mingw_output_format_flags & _MSVC_PRINTF_QUIRKS)
     ? (length == PFORMAT_LENGTH_LONG) : 0;
 }
 #else
