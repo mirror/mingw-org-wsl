@@ -1,3 +1,12 @@
+2017-02-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Ensure selective inclusion of the correct <strings.h>
+
+	* include/string.h: Use "..." form for selective inclusion of ...
+	(strings.h): ...this, to ensure that we get our own version, avoiding
+	any inappropriate alternative which may have been insinuated into the
+	system header include path.
+
 2017-02-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Resolve a global variable naming inconsistency.

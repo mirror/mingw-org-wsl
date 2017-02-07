@@ -92,8 +92,7 @@ _CRTIMP __cdecl __MINGW_NOTHROW  char *strtok (char *, const char *);
 _CRTIMP __cdecl __MINGW_NOTHROW  size_t strxfrm (char *, const char *, size_t);
 
 #ifndef __STRICT_ANSI__
-/*
- * Extra non-ANSI functions provided by the CRTDLL library
+/* Extra non-ANSI functions provided by the CRTDLL library
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  char *_strerror (const char *);
 _CRTIMP __cdecl __MINGW_NOTHROW  void *_memccpy (void *, const void *, int, size_t);
@@ -108,14 +107,16 @@ _CRTIMP __cdecl __MINGW_NOTHROW  char *_strset (char *, int);
 _CRTIMP __cdecl __MINGW_NOTHROW  char *_strupr (char *);
 _CRTIMP __cdecl __MINGW_NOTHROW  void _swab (const char *, char *, size_t);
 
+#if !_EMULATE_GLIBC
 /* MSVC's non-ANSI _stricmp() and _strnicmp() functions must also be
  * prototyped here, but we need to share them with <strings.h>, where
  * we declare their POSIX strcasecmp() and strncasecmp() equivalents;
  * get the requisite prototypes by selective <strings.h> inclusion,
- * (noting that we've already done so, if emulating glibc).
+ * (noting that we've already done so, if emulating glibc, but if not,
+ * we use quoted inclusion now, to ensure that we get our "strings.h",
+ * which is equipped to support __STRING_H_SOURCED__ filtering).
  */
-#if !_EMULATE_GLIBC
-#include <strings.h>
+#include "strings.h"
 #endif
 
 # ifdef __MSVCRT__
