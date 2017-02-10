@@ -1,3 +1,17 @@
+2017-02-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid unnecessary duplication of configuration files.
+
+	* Makefile.in (vpath install-sh): Define it; it matches...
+	(vpath %.m4): ...this; add $top_srcdir/..; search it first; delete
+	rule for creating duplicate file reference links in $top_srcdir.
+	(configure): Add '-I ..' option, when running autoconf.
+	(mingwrt-srcdist-package-files): Remove dependencies on...
+	(aclocal.m4 VERSION.m4 install-sh): ...these; reinstate them in...
+	(mingwrt-srcdist-config-files): ...this new distributable files
+	enumeration goal; add it as a new prerequisite of...
+	(mingwrt-srcdist-files): ...this.
+
 2017-02-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Ensure selective inclusion of the correct <strings.h>

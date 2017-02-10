@@ -7,7 +7,7 @@ PACKAGE_TARNAME := @PACKAGE_TARNAME@
 PACKAGE_VERSION := @PACKAGE_VERSION@
 
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2014-2016, MinGW.org Project
+# Copyright (C) 2014-2017, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -137,13 +137,10 @@ config.status.missing:
 # If configure itself needs to be updated, we must run autoconf in the
 # top level source directory.
 #
-vpath %.m4 ${top_srcdir}
 vpath configure.ac ${top_srcdir}
+vpath %.m4 ${top_srcdir}/.. ${top_srcdir}
 configure: configure.ac aclocal.m4 VERSION.m4
-	cd ${top_srcdir}; autoconf
-
-${top_srcdir}/%: ${top_srcdir}/../%
-	cd $(dir $@) && $(LN_S) -f ../$* .
+	cd ${top_srcdir}; autoconf -I ..
 
 # Propagate package version, as configured, consistently throughout
 # the package build.
@@ -893,8 +890,13 @@ mingwrt-srcdist-dir:
 	$(RM) -r dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
 	$(call mkinstalldirs,,dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION))
 
-mingwrt-srcdist-files: mingwrt-srcdist-package-files
+mingwrt-srcdist-files: mingwrt-srcdist-config-files
 mingwrt-srcdist-files: mingwrt-srcdist-testsuite-files
+mingwrt-srcdist-files: mingwrt-srcdist-package-files
+
+vpath install-sh ${top_srcdir}/.. ${top_srcdir}
+mingwrt-srcdist-config-files: aclocal.m4 VERSION.m4 install-sh
+	cp -p $^ dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
 
 mingwrt-srcdist-package-files:
 	(cd ${mingwrt_srcdir} && tar chf - --hard-dereference $(notdir $^)) | \
@@ -903,9 +905,8 @@ mingwrt-srcdist-package-files:
 mingwrt-srcdist-package-files: $(wildcard ${mingwrt_srcdir}/*.[chs]) \
   $(addprefix ${mingwrt_srcdir}/,ChangeLog CONTRIBUTORS DISCLAIMER README) \
   $(wildcard ${mingwrt_srcdir}/*.def.in) $(wildcard ${mingwrt_srcdir}/config*) \
-  $(addprefix ${mingwrt_srcdir}/,aclocal.m4 VERSION.m4 install-sh Makefile.in) \
-  $(addprefix ${mingwrt_srcdir}/,TODO include man mingwex profile) \
-  $(addprefix ${mingwrt_srcdir}/,msvcrt-xref crtdll.def) \
+  $(addprefix ${mingwrt_srcdir}/,include man mingwex msvcrt-xref profile) \
+  $(addprefix ${mingwrt_srcdir}/,TODO Makefile.in crtdll.def) \
   $(wildcard ${mingwrt_srcdir}/*.txt)
 
 mingwrt-srcdist-testsuite-files: $(wildcard ${mingwrt_srcdir}/tests/*.at)

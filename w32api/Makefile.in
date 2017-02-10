@@ -7,7 +7,7 @@ PACKAGE_TARNAME := @PACKAGE_TARNAME@
 PACKAGE_VERSION := @PACKAGE_VERSION@
 
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2014-2016, MinGW.org Project
+# Copyright (C) 2014-2017, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -109,13 +109,10 @@ config.status.missing:
 # If configure itself needs to be updated, we must run autoconf in the
 # top level source directory.
 #
-vpath %.m4 ${top_srcdir}
 vpath configure.ac ${top_srcdir}
+vpath %.m4 ${top_srcdir}/.. ${top_srcdir}
 configure: configure.ac aclocal.m4 VERSION.m4
-	cd ${top_srcdir}; autoconf
-
-${top_srcdir}/%: ${top_srcdir}/../%
-	cd $(dir $@) && $(LN_S) -f ../$* .
+	cd ${top_srcdir}; autoconf -I ..
 
 # Propagate package version, as configured, consistently throughout
 # the package build.
@@ -352,7 +349,14 @@ mingwrt-srcdist-dir w32api-srcdist-dir: %-srcdist-dir:
 	$(RM) -r dist/$*-$(PACKAGE_VERSION)
 	$(call mkinstalldirs,,dist/$*-$(PACKAGE_VERSION))
 
-mingwrt-srcdist-files w32api-srcdist-files: %-srcdist-files:
+w32api-srcdist-files: w32api-srcdist-config-files
+w32api-srcdist-files: w32api-srcdist-package-files
+
+vpath install-sh ${top_srcdir}/.. ${top_srcdir}
+%-srcdist-config-files: aclocal.m4 VERSION.m4 install-sh
+	  cp -p $^ dist/$*-$(PACKAGE_VERSION)
+
+%-srcdist-package-files:
 	(cd ${$*_srcdir} && tar chf - --hard-dereference $(notdir $^)) | \
 	  (cd dist/$*-$(PACKAGE_VERSION) && tar xf -)
 
@@ -360,11 +364,10 @@ mingwrt-devdist w32api-devdist: %-devdist: %-dist-staged
 	cd dist/$* && tar chf - --hard-dereference include lib | \
 	  xz -c > ../$*-$(PACKAGE_RELEASE_TAG)-dev.tar.xz
 
-SRCDIST_ADD = $1-srcdist-files: $(addprefix ${$1_srcdir}/,$2)
+SRCDIST_ADD = $1-srcdist-package-files: $(addprefix ${$1_srcdir}/,$2)
 
 $(call SRCDIST_ADD,w32api,ChangeLog CONTRIBUTIONS README.w32api TODO)
-$(call SRCDIST_ADD,w32api,configure configure.ac aclocal.m4 VERSION.m4)
-$(call SRCDIST_ADD,w32api,Makefile.in install-sh include lib)
+$(call SRCDIST_ADD,w32api,configure configure.ac Makefile.in include lib)
 
 # Clean-up Rules
 # --------------
