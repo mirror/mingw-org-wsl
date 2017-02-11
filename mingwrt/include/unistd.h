@@ -11,7 +11,7 @@
  *   Ramiro Polla <ramiro@lisha.ufsc.br>
  *   Gregory McGarry  <gregorymcgarry@users.sourceforge.net>
  *   Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Copyright (C) 1997, 1999, 2002-2004, 2007-2009, 2014-2016,
+ * Copyright (C) 1997, 1999, 2002-2004, 2007-2009, 2014-2017,
  *   MinGW.org Project.
  *
  *
@@ -50,9 +50,12 @@
  */
 #define __UNISTD_H_SOURCED__ 1
 
-#include <io.h>
-#include <process.h>
-#include <getopt.h>
+/* Use "..." inclusion here, to ensure that we get our own headers, which
+ * are designed to interoperate with the __UNISTD_H_SOURCED__ filter.
+ */
+#include "io.h"
+#include "process.h"
+#include "getopt.h"
 
 /* These are defined in stdio.h.  POSIX also requires that they
  * are to be consistently defined here; don't guard against prior
@@ -125,7 +128,7 @@ unsigned sleep( unsigned period ){ return __mingw_sleep( period, 0 ); }
 int __cdecl ftruncate( int, off_t );
 
 #ifndef __NO_INLINE__
-__CRT_INLINE __JMPSTUB__(( FUNCTION = ftruncate, REMAPPED = _chsize ))
+__CRT_INLINE __JMPSTUB__(( FUNCTION = ftruncate, DLLENTRY = _chsize ))
 int ftruncate( int __fd, off_t __length ){ return _chsize( __fd, __length ); }
 #endif
 
@@ -134,4 +137,4 @@ _END_C_DECLS
 #endif /* _POSIX_C_SOURCE */
 
 #undef __UNISTD_H_SOURCED__
-#endif /* ! _UNISTD_H: $RCSfile$: end of file */
+#endif /* !_UNISTD_H: $RCSfile$: end of file */

@@ -1,3 +1,21 @@
+2017-02-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor <getopt.h> and <unistd.h> shared declarations.
+
+	* include/getopt.h: Assert copyright.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use as appropriate.
+	(__GETOPT_H__, __GETOPT_LONG_H__): Delete them; replace them with...
+	(_GETOPT_H): This new macro; it guards the entire file, except when...
+	[__UNISTD_H_SOURCED__]: ...do not activate it; hence when...
+	[!_GETOPT_H]: ...do not expose API declarations for...
+	(getopt_long, getopt_long_only): ...these functions.
+	[_GETOPT_H && _UNISTD_H]: Skip second pass API declarations for...
+	(getopt): ...this function.
+
+	* include/unistd.h: Use the #include "..." form when including...
+	(io.h, process.h, getopt.h): ...these, to ensure correct association.
+	(ftruncate): Map it directly to MSVCRT.DLL's _chsize() entry point.
+
 2017-02-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid unnecessary duplication of configuration files.
