@@ -1,3 +1,23 @@
+2017-02-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Support brace expansion in globbing patterns.
+
+	* include/glob.h (GLOB_BRACE): New manifest constant; define it...
+	(__GLOB_FLAG__): ...in terms of this macro.
+
+	* mingwex/glob.c (glob_match): Reindent, with preamble invoking...
+	(glob_brace_expand): ...this new static inline function; implement it.
+	(GLOB_INIT, GLOB_FREE): Redefine them, relating them to...
+	(__GLOB_FLAG_OFFSET_HIGH_WATER_MARK): ...this.
+
+	* setargv.c (__mingw32_setargv) [_CRT_glob]: Check if it includes...
+	[GLOB_CASEMATCH | GLOB_BRACE]: either of these; remove check for...
+	[__CRT_GLOB_CASE_SENSITIVE__]: ...this defunct option.
+
+	* include/_mingw.h.in (GLOB_BRACE): Note its use in _CRT_glob.
+	(GLOB_CASEMATCH): Likewise; this replaces all former usage of...
+	(__CRT_GLOB_CASE_SENSITIVE__): ...this; delete definition.
+
 2017-02-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor <getopt.h> and <unistd.h> shared declarations.

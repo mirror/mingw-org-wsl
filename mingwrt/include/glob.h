@@ -32,12 +32,15 @@
  *
  */
 #define _GLOB_H  1
-#include <_mingw.h>
 #pragma GCC system_header
+
+/* All MinGW.org system headers are required to include <_mingw.h>.
+ */
+#include <_mingw.h>
 
 #ifndef RC_INVOKED
 /* POSIX requires glob.h to define the size_t type; we need to
- * get this from GCC, just as sys/types.h does.
+ * get this from GCC's <stddef.h>, just as <sys/types.h> does.
  */
 #define __need_size_t
 #include <stddef.h>
@@ -73,8 +76,8 @@ enum {
    * GNU's implementation of glob() supports a supplementary set of
    * options, none of which are required by POSIX.  We include these
    * for reference, and to reserve the flag identities for a possible
-   * future implementation; the current MinGW implementation does not
-   * support them.
+   * future implementation; of these extensions, the current MinGW
+   * implementation supports only GLOB_BRACE.
    */
   __GLOB_TILDE_OFFSET,
   __GLOB_TILDE_CHECK_OFFSET,
@@ -114,6 +117,11 @@ enum {
 #define GLOB_NOCHECK	  __GLOB_FLAG__(NOCHECK)
 #define GLOB_NOESCAPE	  __GLOB_FLAG__(NOESCAPE)
 #define GLOB_NOSORT	  __GLOB_FLAG__(NOSORT)
+
+/* Flag definitions for those GNU extensions, as listed above, for which
+ * we provide support; (i.e. GLOB_BRACE only, at present).
+ */
+#define GLOB_BRACE	  __GLOB_FLAG__(BRACE)
 
 /* Additional flags definitions, for MinGW specific extensions.
  */
@@ -155,4 +163,4 @@ _END_C_DECLS
 #define GLOB_NOSPACE	(3)
 
 #endif /* ! RC_INVOKED */
-#endif /* ! defined _GLOB_H */
+#endif /* !_GLOB_H: $RCSfile$: end of file */

@@ -132,7 +132,10 @@
  *    					character which is either included
  *    					in, or excluded from the group.
  *
- *    __CRT_GLOB_CASE_SENSITIVE__	enable case sensitive matching for
+ * The following options, which may also be specified within _CRT_glob,
+ * are specified in terms of their glob() flags, as defined in <glob.h>
+ *
+ *    GLOB_CASEMATCH			enable case sensitive matching for
  *    					globbing patterns; this is default
  *    					behaviour for POSIX, but because of
  *    					the case insensitive nature of the
@@ -140,10 +143,13 @@
  *    					appropriate to use case insensitive
  *    					globbing as the MinGW default.
  *
+ *    GLOB_BRACE			enable expansion of GNU style brace
+ *    					delimited expression groups within
+ *    					the globbing pattern.
+ *
  */
 #define __CRT_GLOB_USE_SINGLE_QUOTE__	0x0010
 #define __CRT_GLOB_BRACKET_GROUPS__	0x0020
-#define __CRT_GLOB_CASE_SENSITIVE__	0x0040
 
 /* The MinGW globbing algorithm uses the ASCII DEL control code as a marker
  * for globbing characters which were embedded within quoted arguments; (the

@@ -101,9 +101,7 @@ void __mingw32_setargv( const char *cmdline )
   /* Capture any non-default globbing options, which the user may have
    * specified via a custom setting for _CRT_glob.
    */
-  int gl_opts = GLOB_NOCHECK;
-  if( _CRT_glob & __CRT_GLOB_CASE_SENSITIVE__ )
-    gl_opts |= GLOB_CASEMATCH;
+  int gl_opts = GLOB_NOCHECK | (_CRT_glob & (GLOB_CASEMATCH | GLOB_BRACE));
 
   /* We explicitly DO NOT use the GLOB_DOOFFS capability; ensure that
    * the associated field, in the glob_t structure, is initialized to

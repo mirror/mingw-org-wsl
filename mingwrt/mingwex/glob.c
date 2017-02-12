@@ -728,6 +728,132 @@ accept_glob_nocheck_match( const char *pattern, int flags )
   return (flags & GLOB_NOCHECK) && (is_glob_pattern( pattern, flags ) == 0);
 }
 
+GLOB_INLINE int
+glob_brace_expand( char *dest, const char *src, const char **resume )
+{
+  /* Helper to iteratively expand the first substitution field within
+   * a glob brace expression, while recursively collecting the set of
+   * individual globbing patterns to be processed by glob_match(), when
+   * GLOB_BRACE is specified, and the original pattern includes a brace
+   * expression.  (Notice that this does not guarantee to fully expand
+   * the pattern in a single pass; recursion within glob_match() will
+   * ensure that this is achieved, before attempting to match each
+   * possible expansion of the original pattern).
+   *
+   * Returns zero on a successful (possibly partial) expansion; > zero
+   * indicates unmatched opening braces, (an error condition).
+   */
+  char c; int level = 1;
+  do { /* Copy characters one by one, from the start of the current
+	* substitution field within the original glob pattern, to the
+	* appropriate location in the pattern which will be presented
+	* to glob_match().  The initial part of this copy represents
+	* the substitution for the outermost level of brace bounded
+	* expression, terminating at either the closing brace or at
+	* any intervening comma at this level; however...
+	*/
+       if( (c = *++src) == glob_escape_char )
+       { /* ...any escaped character must be copied verbatim, without
+	  * being considered as a possible substitution terminator...
+	  */
+	 *dest++ = c; *dest++ = c = *++src;
+	 /* ...while taking care not to overrun the ultimate string
+	  * terminator of the original pattern.
+	  */
+	 if( c != '\0' ) c = *++src;
+       }
+       /* Provided it has not been escaped, any closing brace, or a
+	* comma separator at the outer level only, results in closure
+	* of a brace nesting level...
+	*/
+       if( (c == '}') || ((c == ',') && (level == 1)) ) --level;
+       /*
+	* ...while an opening brace creates a new (inner) level.
+	*/
+       else if( c == '{' ) ++level;
+
+       /* Provided we have not closed the outermost brace expression
+	* level, complete the copy of the current character within
+	* the substitution...
+	*/
+       if( level > 0 ) *dest++ = c;
+       /* ...continuing to the next character, until the outermost
+	* level has been reached, or the original pattern string
+	* has been exhausted.
+	*/
+     } while( (level > 0) && (c != '\0') );
+
+  /* Save a reference to the point, within the original pattern,
+   * where the current substitution ended, and thus where the next
+   * iteration (if any) is to begin.
+   */
+  *resume = src;
+
+  /* Complete construction of a candidate pattern, to be passed
+   * to glob_match(), by copying any characters which follow the
+   * closing brace of the initial brace bounded expression within
+   * the original pattern; thus...
+   */
+  if( c != '\0' )
+  { /* ...when any characters are present, beyond the current
+     * resume point...
+     */
+    if( c == ',' )
+    { /* ...and when any of these represent a substitution which
+       * is to be made in a subsequent iteration...
+       */
+      level = 1;
+      do { /* ...we simply skip over all characters, up to and
+	    * including the closing brace at the outermost level
+	    * of expression, (while once again taking care not
+	    * to overrun the string terminator)...
+	    */
+	   if( c != '\0' ) ++src;
+	   /* ...and once again, honouring escapes which may be
+	    * intended to force literal interpretation of '{'...
+	    */
+	   while( (*src == glob_escape_char) && (*++src != '\0') ) ++src;
+	   /*
+	    * ...and simply ignoring any nested (inner) brace
+	    * bounded expression...
+	    */
+	   if( *src == '{' ) ++level; else if( *src == '}' ) --level;
+	   /*
+	    * ...we continue skipping, until we find the closing
+	    * brace at the outermost level of the expression, or
+	    * we have have exhausted the original pattern.
+	    */
+	 } while( ((c = *src) != '\0') && (level > 0) );
+    }
+    /* Finally...
+     */
+    if( level == 0 )
+    { /* ...when we've skipped to the closing brace ... (checking
+       * that we didn't exhaust the original pattern is belt and
+       * braces here, because *src should be '}') ... we now skip
+       * past it...
+       */
+      if( c != '\0' ) ++src;
+      /* ...we simply copy all further characters from the original
+       * pattern, without consideration that there may be any further
+       * possible expansion; (this will be picked up by recursion).
+       */
+      do { *dest++ = *src; } while( *src++ != '\0' );
+    }
+    else
+      /* Alternatively, when the closing brace has not been found,
+       * (which implies exhaustion of the original pattern), we
+       * must ensure that the expanded copy is terminated.
+       */
+      *dest = '\0';
+  }
+  /* Regardless, we return the residual brace expansion level; zero
+   * indicates successful expansion; > zero is an error, indicating
+   * one (or more) unmatched opening braces.
+   */
+  return level;
+}
+
 static int
 glob_match( const char *pattern, int flags, int (*errfn)(), glob_t *gl_buf )
 {
@@ -735,230 +861,339 @@ glob_match( const char *pattern, int flags, int (*errfn)(), glob_t *gl_buf )
    * implementation, recursively decomposing the pattern into separate
    * globbable path components, to collect the union of all possible
    * matches to the pattern, in all possible matching directories.
+   *
+   * At the outset, assume that this will succeed.
    */
-  glob_t local_gl_buf;
   int status = GLOB_SUCCESS;
 
-  /* Begin by separating out any path prefix from the glob pattern.
+  /* To handle the GNU specific GLOB_BRACE option, we need a
+   * recursive preamble to the bare glob_match() strategy; when
+   * GLOB_BRACE expansion is specified...
    */
-  char dirbuf[1 + strlen( pattern )];
-  const char *dir = dirname( memcpy( dirbuf, pattern, sizeof( dirbuf )) );
-  char **dirp, preferred_dirsep = GLOB_DIRSEP;
-
-  /* Initialise a temporary local glob_t structure, to capture the
-   * intermediate results at the current level of recursion...
-   */
-  local_gl_buf.gl_offs = 0;
-  if( (status = glob_initialise( &local_gl_buf )) != GLOB_SUCCESS )
-    /*
-     * ...bailing out if unsuccessful.
-     */
-    return status;
-
-  /* Check if there are any globbing tokens in the path prefix...
-   */
-  if( is_glob_pattern( dir, flags ) )
-    /*
-     * ...and recurse to identify all possible matching prefixes,
-     * as may be necessary...
-     */
-    status = glob_match( dir, flags | GLOB_DIRONLY, errfn, &local_gl_buf );
-
-  else
-    /* ...or simply store the current prefix, if not.
-     */
-    status = glob_store_entry( glob_strdup( dir ), &local_gl_buf );
-
-  /* Check nothing has gone wrong, so far...
-   */
-  if( status != GLOB_SUCCESS )
-    /*
-     * ...and bail out if necessary.
-     */
-    return status;
-
-  /* The original "pattern" argument may have included a path name
-   * prefix, which we used "dirname()" to isolate.  If there was no
-   * such prefix, then "dirname()" would have reported an effective
-   * prefix which is identically equal to "."; however, this would
-   * also be the case if the prefix was "./" (or ".\\" in the case
-   * of a WIN32 host).  Thus, we may deduce that...
-   */
-  if( glob_is_dirsep( pattern[1] ) || (strcmp( dir, "." ) != 0) )
+  int brace_option;
+  if( (brace_option = flags & GLOB_BRACE) == GLOB_BRACE )
   {
-    /* ...when the prefix is not reported as ".", or even if it is
-     * but the original pattern had "./" (or ".\\") as the prefix,
-     * then we must adjust to identify the effective pattern with
-     * its original prefix stripped away...
+    /* ...we recursively parse the original pattern, so as to
+     * decompose it into a series of substitute patterns, each
+     * of which represents one pattern expansion to which glob
+     * matching is applied in turn, such that the aggregate of
+     * matches for the series represents all possible matches
+     * for all possible expansions of the original pattern.
      */
-    const char *tail = pattern + strlen( dir );
-    while( (tail > pattern) && ! glob_is_dirsep( *tail ) )
-      --tail;
-    while( glob_is_dirsep( *tail ) )
-      preferred_dirsep = *tail++;
-    pattern = tail;
+    const char *src = pattern;
+    char c, sub_pattern[1 + strlen( pattern )], *dest = sub_pattern;
+
+    /* We begin by initialising the prefix portion which is
+     * common to all substitute patterns...
+     */
+    do { /* ...by copying characters one at a time, from the
+	  * original pattern to the substitute pattern buffer...
+	  */
+	 while( *src == glob_escape_char )
+	 {
+	   /* ...ensuring that all escaped characters are
+	    * copied verbatim, without consideration as a
+	    * possible brace expression initiator...
+	    */
+	   *dest++ = *src++;
+	   /*
+	    * ...but taking care that we don't overrun the
+	    * original pattern's string terminator...
+	    */
+	   if( *src != '\0') *dest++ = *src++;
+	 }
+	 /* ...copying every character up to but excluding the
+	  * opening brace of the first brace bounded expression
+	  * (if any), or up to and including the NUL terminator
+	  * otherwise...
+	  */
+	 if( (c = *src) != '{' ) *dest++ = *src++;
+	 /*
+	  * ...repeating until we either exhaust the original
+	  * pattern, or we find an opening brace.
+	  */
+       } while( (c != '\0') && (c != '{') );
+
+    /* After copying the prefix, (which may represent the entire
+     * pattern)...
+     */
+    if( c == '{' )
+      /* ...when there is a brace bounded expression to expand...
+       */
+      do { /* ...iterate to construct each of its expansions in
+	    * turn, (together with any common suffix), and...
+	    */
+	   if( glob_brace_expand( dest, src, &src ) == 0 )
+	   {
+	     /* ...on success, note that there may be further
+	      * embedded brace bounded sub-expressions; recurse
+	      * to achieve full expansion...
+	      */
+	     status = glob_match( sub_pattern, flags, errfn, gl_buf );
+	     /*
+	      * ...and ensure that matches to all expansions
+	      * after the first, will be appended.
+	      */
+	     flags |= GLOB_APPEND;
+	   }
+	   else
+	   { /* Brace expansion failed, (which implies an opening
+	      * brace with no matching closing brace); bail out.
+	      *
+	      * FIXME: if errfn is specified (not NULL), perhaps we
+	      * should invoke it (but how best?  POSIX says it is to
+	      * be invoked when pattern resolves to a directory which
+	      * cannot be opened, or cannot be read; maybe pass the
+	      * original failing pattern, with errno = EINVAL?).
+	      */
+	     status = GLOB_ABORTED;
+	   }
+	   /* Repeat iteration until all specified substitutions
+	    * for the current expression have been processed, (or
+	    * aborted).
+	    */
+	 } while( (status != GLOB_ABORTED) && (*src == ',') );
+
+    else
+      /* The current brace expression has been reduced to its final
+       * form, (with no further expansion pending); release it for
+       * fall-through glob matching.
+       */
+      brace_option = 0;
   }
 
-  else
-    /* ...otherwise, we simply note that there was no prefix.
-     */
-    dir = NULL;
-
-  /* We now have a globbed list of prefix directories, returned from
-   * recursive processing, in local_gl_buf.gl_pathv, and we also have
-   * a separate pattern which we may attempt to match in each of them;
-   * at the outset, we have yet to match this pattern to anything.
+  /* On falling through brace expansion, (if any)...
    */
-  status = GLOB_NOMATCH;
-
-  /* When the caller has enabled the GLOB_NOCHECK option, then in the
-   * case of any pattern with no prefix, and which contains no explicit
-   * globbing token...
-   */
-  if( (dir == NULL) && accept_glob_nocheck_match( pattern, flags ) )
+  if( brace_option == 0 )
   {
-    /* ...we prefer to store it as is, without any attempt to find
-     * a glob match, (which could also induce a case transliteration
-     * on MS-Windows' case-insensitive file system)...
+    /* ...we have exactly one pattern, with no possible expansions
+     * of brace expressions, to be globbed; (alternate expansions of
+     * any brace expressions are processed in alternative recursive
+     * invocations of this function).
      */
-    glob_store_entry( glob_strdup( pattern ), gl_buf );
-    status = GLOB_SUCCESS;
-  }
-  /* ...otherwise we initiate glob matching, to find all possible
-   * file system matches for the designated pattern, within each of
-   * the identified prefix directory paths.
-   */
-  else for( dirp = local_gl_buf.gl_pathv; *dirp != NULL; free( *dirp++ ) )
-  {
-    /* Provided an earlier cycle hasn't scheduled an abort...
+    glob_t local_gl_buf;
+
+    /* Begin by separating out any path prefix from the glob pattern.
      */
-    if( status != GLOB_ABORTED )
+    char dirbuf[1 + strlen( pattern )];
+    const char *dir = dirname( memcpy( dirbuf, pattern, sizeof( dirbuf )) );
+    char **dirp, preferred_dirsep = GLOB_DIRSEP;
+
+    /* Initialise a temporary local glob_t structure, to capture the
+     * intermediate results at the current level of recursion...
+     */
+    local_gl_buf.gl_offs = 0;
+    if( (status = glob_initialise( &local_gl_buf )) != GLOB_SUCCESS )
+      /*
+       * ...bailing out if unsuccessful.
+       */
+      return status;
+
+    /* Check if there are any globbing tokens in the path prefix...
+     */
+    if( is_glob_pattern( dir, flags ) )
+      /*
+       * ...and recurse to identify all possible matching prefixes,
+       * as may be necessary...
+       */
+      status = glob_match( dir, flags | GLOB_DIRONLY, errfn, &local_gl_buf );
+
+    else
+      /* ...or simply store the current prefix, if not.
+       */
+      status = glob_store_entry( glob_strdup( dir ), &local_gl_buf );
+
+    /* Check nothing has gone wrong, so far...
+     */
+    if( status != GLOB_SUCCESS )
+      /*
+       * ...and bail out if necessary.
+       */
+      return status;
+
+    /* The original "pattern" argument may have included a path name
+     * prefix, which we used "dirname()" to isolate.  If there was no
+     * such prefix, then "dirname()" would have reported an effective
+     * prefix which is identically equal to "."; however, this would
+     * also be the case if the prefix was "./" (or ".\\" in the case
+     * of a WIN32 host).  Thus, we may deduce that...
+     */
+    if( glob_is_dirsep( pattern[1] ) || (strcmp( dir, "." ) != 0) )
     {
-      /* ...take each candidate directory in turn, and prepare
-       * to collate any matched entities within it...
+      /* ...when the prefix is not reported as ".", or even if it is
+       * but the original pattern had "./" (or ".\\") as the prefix,
+       * then we must adjust to identify the effective pattern with
+       * its original prefix stripped away...
        */
-      struct glob_collator *collator = NULL;
+      const char *tail = pattern + strlen( dir );
+      while( (tail > pattern) && ! glob_is_dirsep( *tail ) )
+	--tail;
+      while( glob_is_dirsep( *tail ) )
+	preferred_dirsep = *tail++;
+      pattern = tail;
+    }
 
-      /* ...attempt to open the current candidate directory...
+    else
+      /* ...otherwise, we simply note that there was no prefix.
        */
-      DIR *dp;
-      if( (dp = opendir( *dirp )) != NULL )
+      dir = NULL;
+
+    /* We now have a globbed list of prefix directories, returned from
+     * recursive processing, in local_gl_buf.gl_pathv, and we also have
+     * a separate pattern which we may attempt to match in each of them;
+     * at the outset, we have yet to match this pattern to anything.
+     */
+    status = GLOB_NOMATCH;
+
+    /* When the caller has enabled the GLOB_NOCHECK option, then in the
+     * case of any pattern with no prefix, and which contains no explicit
+     * globbing token...
+     */
+    if( (dir == NULL) && accept_glob_nocheck_match( pattern, flags ) )
+    {
+      /* ...we prefer to store it as is, without any attempt to find
+       * a glob match, (which could also induce a case transliteration
+       * on MS-Windows' case-insensitive file system)...
+       */
+      glob_store_entry( glob_strdup( pattern ), gl_buf );
+      status = GLOB_SUCCESS;
+    }
+    /* ...otherwise we initiate glob matching, to find all possible
+     * file system matches for the designated pattern, within each of
+     * the identified prefix directory paths.
+     */
+    else for( dirp = local_gl_buf.gl_pathv; *dirp != NULL; free( *dirp++ ) )
+    {
+      /* Provided an earlier cycle hasn't scheduled an abort...
+       */
+      if( status != GLOB_ABORTED )
       {
-	/* ...and when successful, instantiate a dirent structure...
+	/* ...take each candidate directory in turn, and prepare
+	 * to collate any matched entities within it...
 	 */
-	struct dirent *entry;
-	size_t dirlen = (dir == NULL) ? 0 : strlen( *dirp );
-	while( (entry = readdir( dp )) != NULL )
+	struct glob_collator *collator = NULL;
+
+	/* ...attempt to open the current candidate directory...
+	 */
+	DIR *dp;
+	if( (dp = opendir( *dirp )) != NULL )
 	{
-	  /* ...into which we read each entry from the candidate
-	   * directory, in turn, then...
-	   */ 
-	  if( (((flags & GLOB_DIRONLY) == 0) || GLOB_ISDIR( entry ))
-	    /*
-	     * ...provided we don't require it to be a subdirectory,
-	     * or it actually is one...
-	     */
-	  && (glob_strcmp( pattern, entry->d_name, flags ) == 0)   )
+	  /* ...and when successful, instantiate a dirent structure...
+	   */
+	  struct dirent *entry;
+	  size_t dirlen = (dir == NULL) ? 0 : strlen( *dirp );
+	  while( (entry = readdir( dp )) != NULL )
 	  {
-	    /* ...and it is a globbed match for the pattern, then
-	     * we allocate a temporary local buffer of sufficient
-	     * size to assemble the matching path name...
+	    /* ...into which we read each entry from the candidate
+	     * directory, in turn, then...
 	     */
-	    char *found;
-	    size_t prefix;
-	    size_t matchlen = D_NAMLEN( entry );
-	    char matchpath[2 + dirlen + matchlen];
-	    if( (prefix = dirlen) > 0 )
-	    {
-	      /* ...first copying the prefix, if any,
-	       * followed by a directory name separator...
-	       */
-	      memcpy( matchpath, *dirp, dirlen );
-	      if( ! glob_is_dirsep( matchpath[prefix - 1] ) )
-		matchpath[prefix++] = preferred_dirsep;
-	    }
-	    /* ...and append the matching dirent entry.
-	     */
-	    memcpy( matchpath + prefix, entry->d_name, matchlen + 1 );
-
-	    /* Duplicate the content of the temporary buffer to
-	     * the heap, for assignment into gl_buf->gl_pathv...
-	     */
-	    if( (found = glob_strdup( matchpath )) == NULL )
+	    if( (((flags & GLOB_DIRONLY) == 0) || GLOB_ISDIR( entry ))
 	      /*
-	       * ...setting the appropriate error code, in the
-	       * event that the heap memory has been exhausted.
+	       * ...provided we don't require it to be a subdirectory,
+	       * or it actually is one...
 	       */
-	      status = GLOB_NOSPACE;
-
-	    else
-	    { /* This glob match has been successfully recorded on
-	       * the heap, ready for assignment to gl_buf->gl_pathv;
-	       * if this is the first match assigned to this gl_buf,
-	       * and we haven't trapped any prior error...
+	    && (glob_strcmp( pattern, entry->d_name, flags ) == 0)   )
+	    {
+	      /* ...and it is a globbed match for the pattern, then
+	       * we allocate a temporary local buffer of sufficient
+	       * size to assemble the matching path name...
 	       */
-	      if( status == GLOB_NOMATCH )
-		/*
-		 * ...then record this successful match.
-		 */
-		status = GLOB_SUCCESS;
-
-	      if( (flags & GLOB_NOSORT) == 0 )
+	      char *found;
+	      size_t prefix;
+	      size_t matchlen = D_NAMLEN( entry );
+	      char matchpath[2 + dirlen + matchlen];
+	      if( (prefix = dirlen) > 0 )
 	      {
-		/* The results of this glob are to be sorted in
-		 * collating sequence order; divert the current
-		 * match into the collator.
+		/* ...first copying the prefix, if any,
+		 * followed by a directory name separator...
 		 */
-		collator = glob_collate_entry( collator, found, flags );
+		memcpy( matchpath, *dirp, dirlen );
+		if( ! glob_is_dirsep( matchpath[prefix - 1] ) )
+		  matchpath[prefix++] = preferred_dirsep;
 	      }
-	      else
-	      { /* Sorting has been suppressed for this glob;
-		 * just add the current match directly into the
-		 * result vector at gl_buf->gl_pathv.
+	      /* ...and append the matching dirent entry.
+	       */
+	      memcpy( matchpath + prefix, entry->d_name, matchlen + 1 );
+
+	      /* Duplicate the content of the temporary buffer to
+	       * the heap, for assignment into gl_buf->gl_pathv...
+	       */
+	      if( (found = glob_strdup( matchpath )) == NULL )
+		/*
+		 * ...setting the appropriate error code, in the
+		 * event that the heap memory has been exhausted.
 		 */
-		glob_store_entry( found, gl_buf );
+		status = GLOB_NOSPACE;
+
+	      else
+	      { /* This glob match has been successfully recorded on
+		 * the heap, ready for assignment to gl_buf->gl_pathv;
+		 * if this is the first match assigned to this gl_buf,
+		 * and we haven't trapped any prior error...
+		 */
+		if( status == GLOB_NOMATCH )
+		  /*
+		   * ...then record this successful match.
+		   */
+		  status = GLOB_SUCCESS;
+
+		if( (flags & GLOB_NOSORT) == 0 )
+		{
+		  /* The results of this glob are to be sorted in
+		   * collating sequence order; divert the current
+		   * match into the collator.
+		   */
+		  collator = glob_collate_entry( collator, found, flags );
+		}
+		else
+		{ /* Sorting has been suppressed for this glob;
+		   * just add the current match directly into the
+		   * result vector at gl_buf->gl_pathv.
+		   */
+		  glob_store_entry( found, gl_buf );
+		}
 	      }
 	    }
 	  }
+	  /* When we've processed all of the entries in the current
+	   * prefix directory, we may close it.
+	   */
+	  closedir( dp );
 	}
-	/* When we've processed all of the entries in the current
-	 * prefix directory, we may close it.
+	/* In the event of failure to open the candidate prefix directory...
 	 */
-	closedir( dp );
-      }
-      /* In the event of failure to open the candidate prefix directory...
-       */
-      else if( (flags & GLOB_ERR) || ((errfn != NULL) && errfn( *dirp, errno )) )
-	/*
-	 * ...and when the caller has set the GLOB_ERR flag, or has provided
-	 * an error handler which returns non-zero for the failure condition,
-	 * then we schedule an abort.
-	 */
-	status = GLOB_ABORTED;
+	else if( (flags & GLOB_ERR) || ((errfn != NULL) && errfn(*dirp, errno)) )
+	  /*
+	   * ...and when the caller has set the GLOB_ERR flag, or has provided
+	   * an error handler which returns non-zero for the failure condition,
+	   * then we schedule an abort.
+	   */
+	  status = GLOB_ABORTED;
 
-      /* When we diverted the glob results for collation...
-       */
-      if( collator != NULL )
-	/*
-	 * ...then we redirect them to gl_buf->gl_pathv now, before we
-	 * begin a new cycle, to process any further prefix directories
-	 * which may have been identified; note that we do this even if
-	 * we scheduled an abort, so that we may return any results we
-	 * may have already collected before the error occurred.
+	/* When we diverted the glob results for collation...
 	 */
-	glob_store_collated_entries( collator, gl_buf );
+	if( collator != NULL )
+	  /*
+	   * ...then we redirect them to gl_buf->gl_pathv now, before we
+	   * begin a new cycle, to process any further prefix directories
+	   * which may have been identified; note that we do this even if
+	   * we scheduled an abort, so that we may return any results we
+	   * may have already collected before the error occurred.
+	   */
+	  glob_store_collated_entries( collator, gl_buf );
+      }
     }
+    /* Finally, free the memory block allocated for the results vector
+     * in the internal glob buffer, to avoid leaking memory, before we
+     * return the resultant status code.
+     */
+    free( local_gl_buf.gl_pathv );
   }
-  /* Finally, free the memory block allocated for the results vector
-   * in the internal glob buffer, to avoid leaking memory, before we
-   * return the resultant status code.
-   */
-  free( local_gl_buf.gl_pathv );
   return status;
 }
 
-#define GLOB_INIT	(0x100 << 0)
-#define GLOB_FREE	(0x100 << 1)
+#define GLOB_INIT	(1 << __GLOB_FLAG_OFFSET_HIGH_WATER_MARK)
+#define GLOB_FREE	(2 << __GLOB_FLAG_OFFSET_HIGH_WATER_MARK)
 
 GLOB_INLINE int glob_signed( const char *check, const char *magic )
 {
