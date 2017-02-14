@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Anders Norlander <anorland@hem2.passagen.se>
- * Copyright (C) 1998-2011, 2016, MinGW.org Project
+ * Copyright (C) 1998-2011, 2016, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -3620,7 +3620,9 @@ typedef union _FILE_SEGMENT_ELEMENT
   ULONGLONG	Alignment;
 } FILE_SEGMENT_ELEMENT, *PFILE_SEGMENT_ELEMENT;
 
-/* JOBOBJECT_BASIC_LIMIT_INFORMATION.LimitFlags constants */
+/* JOBOBJECT_BASIC_LIMIT_INFORMATION.LimitFlags constants:
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/ms684147(v=vs.85).aspx
+ */
 #define JOB_OBJECT_LIMIT_WORKINGSET			0x0001
 #define JOB_OBJECT_LIMIT_PROCESS_TIME			0x0002
 #define JOB_OBJECT_LIMIT_JOB_TIME			0x0004
@@ -3634,6 +3636,7 @@ typedef union _FILE_SEGMENT_ELEMENT
 #define JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION	0x0400
 #define JOB_OBJECT_LIMIT_BREAKAWAY_OK			0x0800
 #define JOB_OBJECT_LIMIT_SILENT_BREAKAWAY_OK		0x1000
+#define JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE		0x2000
 
 /* Wrong definitions, but keep for backward compatibility. */
 #define JOB_OBJECT_BREAKAWAY_OK 	JOB_OBJECT_LIMIT_BREAKAWAY_OK

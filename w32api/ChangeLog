@@ -1,3 +1,9 @@
+2017-02-14  Alexander Krisak  <akrisak@users.sourceforge.net>
+
+	Add missing constant definition, per issue [#2249].
+
+	* include/winnt.h (JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE): Define it.
+
 2017-02-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid unnecessary duplication of configuration files.
