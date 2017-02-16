@@ -1,3 +1,12 @@
+2017-02-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Work around GCC bug; force C++11 to support std::wcstof().
+
+	* include/_mingw.h [_ISOC99_SOURCE && __cplusplus >= 201103L]
+	[__GNUC__ < 6] (_GLIBCXX_HAVE_WCSTOF): Define it to 1; it is required
+	because, prior to GCC-6, GCC's configuration process fails to specify
+	it correctly, and so invalidates its own <string> header file.
+
 2017-02-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Support brace expansion in globbing patterns.

@@ -504,9 +504,10 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
  /* Due to a configuration defect in GCC versions prior to GCC-6, when
   * compiling C++11 code, the ISO-C99 functions may not be incorporated
   * into the appropriate namespace(s); we may be able to mitigate this,
-  * by ensuring that this GCC configuration macro is defined.
+  * by ensuring that these GCC configuration macros are defined.
   */
-# define _GLIBCXX_USE_C99  1
+# define _GLIBCXX_USE_C99	1
+# define _GLIBCXX_HAVE_WCSTOF	1
 #endif
 
 #if ! defined _MINGW32_SOURCE_EXTENDED && ! defined __STRICT_ANSI__
