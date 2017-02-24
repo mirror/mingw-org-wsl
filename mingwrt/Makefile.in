@@ -842,6 +842,15 @@ uninstall-mingwrt-libdir-objects uninstall-mingwrt-libdir-libs: un%:
 	  INSTALL_DATA='cd $$2 && $(RM) $$1' $*
 
 
+# Test Suite
+# ----------
+#
+.PHONY: check-recursive
+check test tests: check-recursive
+check-recursive:
+	$(MAKE) -C tests $@
+
+
 # Distribution
 # ------------
 #
@@ -958,13 +967,5 @@ maintainer-clean-local: maintainer-clean-warning distclean-local
 	$(RM) -r ${mingwrt_srcdir}/autom4te.cache
 
 clean mostlyclean distclean maintainer-clean: %clean: %clean-local
-
-# Testsuite
-# ---------
-#
-.PHONY: check-recursive
-check tests: check-recursive
-check-recursive:
-	$(MAKE) -C tests $@
 
 # $RCSfile$: end of file

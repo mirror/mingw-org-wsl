@@ -317,6 +317,16 @@ uninstall-w32api-libs: un%:
 	$(MAKE) --no-print-directory mkinstalldirs= \
 	  INSTALL_DATA='cd $$2 && rm -f $$1' $*
 
+
+# Test Suite
+# ----------
+#
+.PHONY: check-recursive
+check test tests: check-recursive
+check-recursive:
+	$(MAKE) -C tests $@
+
+
 # Distribution
 # ------------
 #
@@ -345,11 +355,17 @@ mingwrt-srcdist w32api-srcdist: %-srcdist: %-srcdist-dir %-srcdist-files
 	  xz -c > $*-$(PACKAGE_RELEASE_TAG)-src.tar.xz
 	$(RM) -r dist/$*-$(PACKAGE_VERSION)
 
+w32api-srcdist-testsuite-files: $(wildcard ${w32api_srcdir}/tests/*.at)
+w32api-srcdist-testsuite-files: $(wildcard ${w32api_srcdir}/tests/*.in)
+	(cd ${w32api_srcdir} && tar chf - $(addprefix tests/,$(notdir $^))) | \
+	  (cd dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION) && tar xf -)
+
 mingwrt-srcdist-dir w32api-srcdist-dir: %-srcdist-dir:
 	$(RM) -r dist/$*-$(PACKAGE_VERSION)
 	$(call mkinstalldirs,,dist/$*-$(PACKAGE_VERSION))
 
 w32api-srcdist-files: w32api-srcdist-config-files
+w32api-srcdist-files: w32api-srcdist-testsuite-files
 w32api-srcdist-files: w32api-srcdist-package-files
 
 vpath install-sh ${top_srcdir}/.. ${top_srcdir}

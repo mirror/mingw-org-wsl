@@ -85,6 +85,14 @@ subdirs = @subdirs@
 %-subdirs:; $(foreach dir,${subdirs},$(MAKE) -C ${dir} $*;)
 
 
+# Test Suite
+# ----------
+#
+.PHONY: check-recursive
+check test tests: check-recursive
+check-recursive: %: %-subdirs
+
+
 # Distribution
 # ------------
 #

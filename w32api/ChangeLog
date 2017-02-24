@@ -1,3 +1,23 @@
+2017-02-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Implement basic test suite infrastructure.
+
+	* tests: New subdirectory; it hosts...
+	* tests/Makefile.in tests/testsuite.at.in tests/atlocal.in
+	* tests/headers.at: ...these new files; they implement the basic test
+	suite infrastructure, initially comprising header integrity checks.
+
+	* configure.ac (AC_PROG_CXX): Check it.
+	(AC_CONFIG_TESTDIR): Configure tests subdirectory.
+	(AC_CHECK_PROG): Check for autom4te; configure fall back if missing.
+	(AC_CONFIG_FILES): Generate tests/atlocal, tests/testsuite.at.tmp, and
+	tests/Makefile.
+
+	* Makefile.in (check test tests): New rules; all are synonymous.
+	(check-recursive): New rule; invoked by each of the preceding three.
+	(w32api-srcdist-testsuite-files): New rule; implement and use it...
+	(w32api-srcdist-files): ...here.
+
 2017-02-14  Alexander Krisak  <akrisak@users.sourceforge.net>
 
 	Add missing constant definition, per issue [#2249].

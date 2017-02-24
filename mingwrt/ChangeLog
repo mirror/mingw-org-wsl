@@ -1,3 +1,10 @@
+2017-02-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make mingwrt and w32api test suites consistent.
+
+	* Makefile.in (test): New rule; define it as a synonym for...
+	(check tests): ...these, so maintaining consistency with w32api.
+
 2017-02-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Work around GCC bug; force C++11 to support std::wcstof().

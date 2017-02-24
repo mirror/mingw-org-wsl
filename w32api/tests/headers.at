@@ -1,0 +1,326 @@
+# headers.at
+#
+# Autotest module for checking integrity of MinGW runtime headers.
+# Each header is first individually compiled, to ensure that it is
+# both valid and self contained; all are then compiled together, to
+# verify mutual consistency.
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2017, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+#
+# W32API_AT_PACKAGE_HEADERS
+# -------------------------
+# Specify the gamut of package headers to be tested.  This list is updated
+# dynamically, when running "make check"; there is no need to edit it.
+#
+m4_define([W32API_AT_PACKAGE_HEADERS],[dnl
+accctrl.h dnl
+aclapi.h dnl
+aclui.h dnl
+adsprop.h dnl
+afxres.h dnl
+amaudio.h dnl
+amvideo.h dnl
+audevcod.h dnl
+aviriff.h dnl
+aygshell.h dnl
+basetsd.h dnl
+basetyps.h dnl
+bdatypes.h dnl
+cderr.h dnl
+cguid.h dnl
+cmnquery.h dnl
+comcat.h dnl
+commctrl.h dnl
+commdlg.h dnl
+control.h dnl
+cplext.h dnl
+cpl.h dnl
+custcntl.h dnl
+dbt.h dnl
+dde.h dnl
+ddeml.h dnl
+devguid.h dnl
+dhcpcsdk.h dnl
+dlgs.h dnl
+docobj.h dnl
+dsadmin.h dnl
+dsclient.h dnl
+dsgetdc.h dnl
+dshow.h dnl
+dsquery.h dnl
+dsrole.h dnl
+dvdevcod.h dnl
+dvdmedia.h dnl
+edevdefs.h dnl
+errorrep.h dnl
+errors.h dnl
+evcode.h dnl
+exdisp.h dnl
+exdispid.h dnl
+fltdefs.h dnl
+gdiplus.h dnl
+httpext.h dnl
+icm.h dnl
+idispids.h dnl
+il21dec.h dnl
+imagehlp.h dnl
+imm.h dnl
+initguid.h dnl
+intshcut.h dnl
+ipexport.h dnl
+iphlpapi.h dnl
+ipifcons.h dnl
+ipinfoid.h dnl
+iprtrmib.h dnl
+iptypes.h dnl
+ipxconst.h dnl
+ipxrtdef.h dnl
+ipxtfflt.h dnl
+isguids.h dnl
+ks.h dnl
+ksmedia.h dnl
+largeint.h dnl
+lmaccess.h dnl
+lmalert.h dnl
+lmapibuf.h dnl
+lmat.h dnl
+lmaudit.h dnl
+lmbrowsr.h dnl
+lmchdev.h dnl
+lmconfig.h dnl
+lmcons.h dnl
+lmerr.h dnl
+lmerrlog.h dnl
+lm.h dnl
+lmmsg.h dnl
+lmremutl.h dnl
+lmrepl.h dnl
+lmserver.h dnl
+lmshare.h dnl
+lmsname.h dnl
+lmstats.h dnl
+lmsvc.h dnl
+lmuseflg.h dnl
+lmuse.h dnl
+lmwksta.h dnl
+lzexpand.h dnl
+mapi.h dnl
+mciavi.h dnl
+mcx.h dnl
+mgm.h dnl
+mgmtapi.h dnl
+mlang.h dnl
+mmreg.h dnl
+mmsystem.h dnl
+mpegtype.h dnl
+mprapi.h dnl
+mq.h dnl
+msacm.h dnl
+mshtml.h dnl
+mswsock.h dnl
+nb30.h dnl
+nddeapi.h dnl
+nspapi.h dnl
+ntdef.h dnl
+ntdll.h dnl
+ntdsapi.h dnl
+ntdsbcli.h dnl
+ntldap.h dnl
+ntsecapi.h dnl
+ntsecpkg.h dnl
+oaidl.h dnl
+objbase.h dnl
+objfwd.h dnl
+objidl.h dnl
+objsafe.h dnl
+objsel.h dnl
+ocidl.h dnl
+odbcinst.h dnl
+ole2.h dnl
+ole2ver.h dnl
+oleacc.h dnl
+oleauto.h dnl
+olectl.h dnl
+olectlid.h dnl
+oledlg.h dnl
+ole.h dnl
+oleidl.h dnl
+poppack.h dnl
+powrprof.h dnl
+prsht.h dnl
+psapi.h dnl
+pshpack1.h dnl
+pshpack2.h dnl
+pshpack4.h dnl
+pshpack8.h dnl
+qedit.h dnl
+rapi.h dnl
+rasdlg.h dnl
+raserror.h dnl
+ras.h dnl
+rassapi.h dnl
+reason.h dnl
+regstr.h dnl
+richedit.h dnl
+richole.h dnl
+routprot.h dnl
+rpcdce2.h dnl
+rpcdce.h dnl
+rpcdcep.h dnl
+rpc.h dnl
+rpcndr.h dnl
+rpcnsi.h dnl
+rpcnsip.h dnl
+rpcnterr.h dnl
+rpcproxy.h dnl
+rtutils.h dnl
+schannel.h dnl
+schnlsp.h dnl
+scrnsave.h dnl
+sddl.h dnl
+sdkddkver.h dnl
+secext.h dnl
+security.h dnl
+servprov.h dnl
+setupapi.h dnl
+shellapi.h dnl
+shldisp.h dnl
+shlguid.h dnl
+shlobj.h dnl
+shlwapi.h dnl
+shobjidl.h dnl
+snmp.h dnl
+specstrings.h dnl
+sqlext.h dnl
+sql.h dnl
+sqltypes.h dnl
+sqlucode.h dnl
+sspi.h dnl
+stm.h dnl
+strmif.h dnl
+subauth.h dnl
+svcguid.h dnl
+tlhelp32.h dnl
+tmschema.h dnl
+unknwn.h dnl
+userenv.h dnl
+usp10.h dnl
+uxtheme.h dnl
+vfw.h dnl
+vidcap.h dnl
+vmr9.h dnl
+vptype.h dnl
+winbase.h dnl
+winber.h dnl
+wincon.h dnl
+wincrypt.h dnl
+windef.h dnl
+windns.h dnl
+windows.h dnl
+windowsx.h dnl
+winerror.h dnl
+wingdi.h dnl
+wininet.h dnl
+winioctl.h dnl
+winldap.h dnl
+winnetwk.h dnl
+winnls.h dnl
+winnt.h dnl
+winperf.h dnl
+winreg.h dnl
+winresrc.h dnl
+winsnmp.h dnl
+winsock2.h dnl
+winsock.h dnl
+winspool.h dnl
+winsvc.h dnl
+winuser.h dnl
+winver.h dnl
+ws2spi.h dnl
+ws2tcpip.h dnl
+wsahelp.h dnl
+wsipx.h dnl
+wsnetbs.h dnl
+wtsapi32.h dnl
+wtypes.h dnl
+xprtdefs.h dnl
+zmouse.h dnl
+])# W32API_AT_PACKAGE_HEADERS
+
+# W32API_AT_HASH_INCLUDE( HEADER )
+# --------------------------------
+# Emit a single "#include <HEADER>" statement into a generated
+# program language source file.
+#
+m4_define([W32API_AT_HASH_INCLUDE],dnl
+[[#include <$1>
+]])# W32API_AT_HASH_INCLUDE
+
+# W32API_AT_CHECK_HEADERS_STANDALONE( LANG )
+# ------------------------------------------
+# Check compilability and self-containment of all package headers,
+# when each is compiled individually, using the LANG compiler.
+#
+m4_define([W32API_AT_CHECK_HEADERS_STANDALONE],[MINGW_AT_LANG([$1])dnl
+AT_BANNER([Header integrity checks: stand-alone compile; language = $1.])
+m4_foreach_w([HEADER],W32API_AT_PACKAGE_HEADERS,[dnl
+AT_SETUP([#include <]HEADER[>])AT_KEYWORDS([$1 $1-headers])
+AS_VAR_APPEND([CPPFLAGS],[" -Wall -Wextra -Wsystem-headers"])
+MINGW_AT_CHECK_COMPILE([dnl
+#define __IN_W32API_TESTSUITE__ 1
+W32API_AT_HASH_INCLUDE(HEADER)dnl
+int main(){ return 0; }])
+AT_CLEANUP
+])])# W32API_AT_CHECK_HEADERS_STANDALONE
+#
+# Run it, for each of LANG = C and LANG = C++
+#
+m4_foreach([LANG],[C,C++],[W32API_AT_CHECK_HEADERS_STANDALONE(LANG)])
+
+# W32API_AT_CHECK_HEADERS_COMBINED( LANG )
+# ----------------------------------------
+# Check compilability of package headers, when all are included within
+# a single translation unit, and compiled using the LANG compiler.
+#
+m4_define([W32API_AT_CHECK_HEADERS_COMBINED],[MINGW_AT_LANG([$1])dnl
+AT_SETUP([#include all; language = $1])AT_KEYWORDS([$1 $1-headers])
+AS_VAR_APPEND([CPPFLAGS],[" -Wall -Wextra -Wsystem-headers"])
+m4_if([$1],[C],AS_VAR_APPEND([CPPFLAGS],[" -Wno-deprecated-declarations"]))
+MINGW_AT_CHECK_COMPILE([dnl
+m4_foreach_w([HEADER],W32API_AT_PACKAGE_HEADERS,[dnl
+W32API_AT_HASH_INCLUDE(HEADER)])
+int main(){ return __W32API_MAJOR_VERSION; }])
+AT_CLEANUP
+])# W32API_AT_CHECK_HEADERS_COMBINED
+#
+# Run it, for each of LANG = C and LANG = C++
+#
+AT_BANNER([Header consistency checks: composite compile.])
+m4_foreach([LANG],[C,C++],[W32API_AT_CHECK_HEADERS_COMBINED(LANG)])
+
+# vim: filetype=config formatoptions=croql
+# $RCSfile$: end of file
