@@ -5,7 +5,7 @@
 ## $Id$
 ##
 ## Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-## Copyright (C) 2014, 2016, MinGW.org Project
+## Copyright (C) 2014, 2016, 2017, MinGW.org Project
 ##
 ##
 m4_include([VERSION.m4])
@@ -164,6 +164,16 @@ AC_DEFUN([MINGW_AC_PROG_COMPILE_SX],
  test "x$ac_val" = "xnot supported" && {
   AC_MSG_FAILURE([$CC cannot compile .sx files])
   }dnl
+])
+
+# MINGW_AC_SET_DLLVERSION( TAG, IMPLIB, DLLVERSION )
+# --------------------------------------------------
+# Create a configuration time substitution for MAP_[TAG]_A_DLLVERSION,
+# such that it will define a target specific makefile variable assignment
+# for target IMPLIB, with specified value assigned to DLLVERSION.
+#
+AC_DEFUN([MINGW_AC_SET_DLLVERSION],dnl
+[AC_SUBST([MAP_][$1][_A_DLLVERSION],['$2: DLLVERSION = "$3"'])dnl
 ])
 
 # $RCSfile$: end of file

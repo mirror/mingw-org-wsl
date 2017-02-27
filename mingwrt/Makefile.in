@@ -677,6 +677,56 @@ all-mingwrt-libs install-mingwrt-libs: libgmon.a
 libgmon.a: $(addsuffix .$(OBJEXT), gmon mcount profil)
 
 
+# Optional DLL Generation Rules
+# -----------------------------
+#
+# The following rules are provided to accommodate optional delivery
+# of certain of the static libraries, generated as components of this
+# package, in the alternative form of DLLs, each with an accompanying
+# import library.  Each such DLL should be versioned, ideally with an
+# explicitly specified version number, but we provide this fall back
+# as a catch-all default for any which is not so specified; (all such
+# version specifications should be in the "current:revision:age" form,
+# conforming to the GNU-libtool convention).
+#
+DLLVERSION = "0:0:0"
+
+# Generally, we should prefer to have explicit version specifications,
+# relating individually to each DLL; these are specified in VERSION.m4,
+# and propagated here via configure time substitution.
+#
+@MAP_LIBMINGWEX_A_DLLVERSION@
+
+# For convenience, we implement the DLL build rule in the form of a
+# generic pattern rule, invoked in the form of a request to build any
+# version-agnostic import library; the versioned DLL is then built as
+# a side effect of building the import library.
+#
+# Note that, in addition to the obvious dependency on the originating
+# static library, we also make this depend on configure; this ensures
+# that DLL version changes, specified in VERSION.m4, are propagated.
+#
+# Further note that we use an alternatively named reference link to
+# the originating static library, as code source for the DLL, rather
+# than the original name; this is to work around a limitation of the
+# handling of --whole-archive, by GNU-ld, which suppresses creation
+# of an exports table, in the event that the same static library is
+# named among GCC's implicit default libraries, after reverting to
+# --no-whole-archive operation.
+#
+%.dll.a: %.a configure
+	$(LN_S) -f $< tmp$<
+	$(CC) $(call a2dll,tmp$<,$(call dllname,$*)) -L. -Wl,--out-implib=$@
+	$(RM) tmp$<
+
+dllname = $1-$(dllsuffix).dll
+a2dll = -shared -o $2 -Wl,--whole-archive $1 -Wl,--no-whole-archive
+dllsuffix = `echo $(DLLVERSION) | awk -F: '{printf "%d",$$1-$$3}'`
+
+all-optional-dlls: all-mingwrt-optional-dlls
+all-mingwrt-optional-dlls: libmingwex.dll.a
+
+
 # Installation Rules
 # ------------------
 #
@@ -793,6 +843,17 @@ install-%-dll-files:
 	$(call INSTALL_DATA,$^,${bindir})
 	$(if $(STRIP_DLL),$(call STRIP_DLL,$^))
 
+$(call optional_dll_version,libmingwex,@MAP_LIBMINGWEX_A_DLLVERSION@)
+optional_dll_version = $(shell echo '$2' | sed s,^[^:]*,install-$1-optional-dll,)
+
+install-optional-dlls: install-mingwrt-optional-dlls
+install-mingwrt-optional-dlls: install-libmingwex-optional-dll
+install-%-optional-dll: %.dll.a bindir libdir
+	$(call INSTALL_DATA,$<,${libdir})
+	$(call INSTALL_DATA,$(call dllname,$*),${bindir})
+	$(if $(STRIP_DLL),$(call STRIP_DLL,$(call dllname,$*)))
+	$(if $(STRIP_DATA),$(call STRIP_DATA,$<))
+
 
 # Install manpages.
 #
@@ -830,6 +891,7 @@ getdelim.$(man3ext): %: %.mancopy-recursive
 #
 uninstall: uninstall-mingwrt
 uninstall-bin uninstall-dll uninstall-mingwrt: uninstall-mingwrt-dll
+uninstall-optional-dlls uninstall-mingwrt: uninstall-mingwrt-optional-dlls
 uninstall-mingwrt: uninstall-mingwrt-headers uninstall-mingwrt-libdir-libs
 uninstall-mingwrt: uninstall-mingwrt-libdir-objects
 
@@ -843,7 +905,7 @@ uninstall-mingwrt-headers:
 	  done
 	$(call REMOVE_HEADERS,${includedir},${mingwrt_srcdir}/profile/*.h)
 
-uninstall-mingwrt-dll \
+uninstall-mingwrt-dll uninstall-mingwrt-optional-dlls \
 uninstall-mingwrt-libdir-objects uninstall-mingwrt-libdir-libs: un%:
 	$(MAKE) --no-print-directory mkinstalldirs= \
 	  INSTALL_DATA='cd $$2 && $(RM) $$1' $*
@@ -862,7 +924,7 @@ check-recursive:
 # ------------
 #
 .PHONY: dist
-dist: devdist dlldist licdist mandist srcdist
+dist: devdist dlldist licdist mandist optdist srcdist
 	$(RM) -r dist/mingwrt dist/w32api
 
 mingwrt-dist-staged w32api-dist-staged: %-dist-staged:
@@ -894,6 +956,21 @@ mingwrt-mandist: %-mandist:
 	$(MAKE) --no-print-directory prefix=`pwd`/tmp install-$*-manpages
 	cd tmp && tar chf - --hard-dereference share | \
 	  xz -c > ../dist/$*-$(PACKAGE_RELEASE_TAG)-man.tar.xz
+	$(RM) -r tmp
+
+optdist: mingwrt-optdist
+mingwrt-optdist: mingwrt-libmingwex-optdist
+
+$(call optional_dll_package,libmingwex,@MAP_LIBMINGWEX_A_DLLVERSION@)
+optional_dll_package = $(shell echo '$2' | sed s,^[^:]*,mingwrt-$1-optdist)
+
+mingwrt-%-optdist:
+	$(RM) -r tmp
+	$(MAKE) --no-print-directory prefix=`pwd`/tmp install-$*-optional-dll
+	cd tmp && tar chf - --hard-dereference bin | \
+	  xz -c > ../dist/$*-$(PACKAGE_RELEASE_TAG)-dll-$(dllsuffix).tar.xz
+	cd tmp && tar chf - --hard-dereference lib | \
+	  xz -c > ../dist/$*-$(PACKAGE_RELEASE_TAG)-dev.tar.xz
 	$(RM) -r tmp
 
 srcdist: mingwrt-srcdist
