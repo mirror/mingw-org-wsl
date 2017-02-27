@@ -236,10 +236,17 @@ $(addsuffix .$(OBJEXT), crt1 dllcrt1): %.$(OBJEXT): %.c
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -D__CRTDLL__ -o $@ $<
 
 # ...while, for the current build case, we need an explicit mapping
-# to identify the disparately named source file.
+# to identify the disparately named source file...
 #
 $(addsuffix .$(OBJEXT), crt2 dllcrt2): %2.$(OBJEXT): %1.c
 	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+# ...and for the pair of default FPU configuration selectors, we
+# need to pass the configuration specification to the compiler, when
+# compiling the common source for each of the two cases.
+#
+CRT_fp8.$(OBJEXT) CRT_fp10.$(OBJEXT): CRT_fp%.$(OBJEXT): CRT_fenv.c
+	$(CC) -c $(CPPFLAGS) $(ALL_CFLAGS) -D_CRT_FE_DFL_ENV=$* -o $@ $<
 
 # The initialization hook for profiling code is inherited from Cygwin,
 # where it is built as gcrt0.$(OBJEXT); we build it, unmodified, as each
