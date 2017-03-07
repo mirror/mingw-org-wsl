@@ -719,12 +719,17 @@ DLLVERSION = "0:0:0"
 	$(CC) $(call a2dll,tmp$<,$(call dllname,$*)) -L. -Wl,--out-implib=$@
 	$(RM) tmp$<
 
-dllname = $1-$(dllsuffix).dll
+dllname = $1-$(dllsuffix).dll $(LIBGCC_LINK_OPTION)
 a2dll = -shared -o $2 -Wl,--whole-archive $1 -Wl,--no-whole-archive
 dllsuffix = `echo $(DLLVERSION) | awk -F: '{printf "%d",$$1-$$3}'`
 
 all-optional-dlls: all-mingwrt-optional-dlls
 all-mingwrt-optional-dlls: libmingwex.dll.a
+
+# In most optional DLL build cases, we should avoid creating any
+# unnecessary dependency on (known to be broken) -shared-libgcc
+#
+libmingwex.dll.a: LIBGCC_LINK_OPTION = -static-libgcc
 
 
 # Installation Rules

@@ -1,3 +1,11 @@
+2017-03-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid -shared-libgcc dependencies in optional DLLs.
+
+	* Makefile.in (dllname): Qualify it, by addition of...
+	(LIBGCC_LINK_OPTION): ...this DLL name specific linking option macro.
+	(libmingwex.dll.a): Force it to use -static-libgcc for associated DLL.
+
 2017-02-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Support optional DLL builds from static libraries.
