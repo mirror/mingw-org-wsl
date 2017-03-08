@@ -1,3 +1,9 @@
+2017-03-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag for release of MinGW.org WSL-5.0
+
+	* All files (wsl-5.0-release): Tag assigned.
+
 2017-02-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Extend basic test suite infrastructure to w32api.
