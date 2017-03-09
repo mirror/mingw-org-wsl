@@ -1,3 +1,10 @@
+2017-03-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	MinGW.org WSL-5.0 released; update repository version.
+
+	* VERSION.m4 (__VERSION__): Increment it to 5.0.1, anticipating a
+	possible patch release prior to WSL-5.1
+
 2017-03-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag for release of MinGW.org WSL-5.0
