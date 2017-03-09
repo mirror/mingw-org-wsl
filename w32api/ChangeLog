@@ -1,3 +1,12 @@
+2017-03-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix generated header file dependencies.
+
+	* Makefile.in (_mingw.h, w32api): Make them depend on changes in...
+	[VERSION.m4]: ...this; package version changes are no longer made...
+	[configure.ac]: ...here; delete associated prerequisite reference.
+	(distclean-local): Delete them.
+
 2017-03-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag for release of w32api-5.0 package set.

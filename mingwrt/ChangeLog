@@ -1,5 +1,14 @@
 2017-03-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Fix generated header file dependencies.
+
+	* Makefile.in (_mingw.h, w32api): Make them depend on changes in...
+	[VERSION.m4]: ...this; package version changes are no longer made...
+	[configure.ac]: ...here; delete associated prerequisite reference.
+	(distclean-local): Delete them.
+
+2017-03-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Strip optional DLLs, when staging for distribution.
 
 	* Makefile.in (mingwrt-%-optist): Recursively make...

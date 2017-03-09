@@ -148,7 +148,8 @@ configure: configure.ac aclocal.m4 VERSION.m4
 vpath _mingw.h.in ${top_srcdir}/include
 vpath w32api.h.in ${w32api_srcdir}/include
 
-_mingw.h w32api.h: configure.ac
+_mingw.h w32api.h: %.h: %.h.in VERSION.m4
+	$(PACKAGE_VERSION_SCRIPT) $< > $@
 
 PACKAGE_VERSION_SCRIPT = sed \
   -e s"`$(call PACKAGE_VERSION_FORMAT,LONG,%d,$$3+1000*($$2+1000*$$1))`" \
@@ -159,9 +160,6 @@ PACKAGE_VERSION_SCRIPT = sed \
 PACKAGE_VERSION_FORMAT = echo $(PACKAGE_VERSION).0.0 | awk -F. '{ \
   printf ",%%PACKAGE_VERSION_$1%%,$2,", $3; \
 }'
-
-_mingw.h w32api.h: %.h: %.h.in
-	$(PACKAGE_VERSION_SCRIPT) $< > $@
 
 # Capture dependencies conveyed within source files, ensuring that
 # header files are taken from our working source tree, and not from
@@ -1045,7 +1043,7 @@ mostlyclean-local:
 	$(RM) *.d *.$(OBJEXT) Makefile.stub *.libimpl
 
 distclean-local: clean-local
-	$(RM) config.log config.status libm_dummy.c
+	$(RM) config.log config.status libm_dummy.c _mingw.h w32api.h
 
 maintainer-clean-warning:
 	$(warning $(MAKE) $(@:%-warning=%))
