@@ -971,7 +971,7 @@ optional_dll_package = $(shell echo '$2' | sed s,^[^:]*,mingwrt-$1-optdist)
 
 mingwrt-%-optdist:
 	$(RM) -r tmp
-	$(MAKE) --no-print-directory prefix=`pwd`/tmp install-$*-optional-dll
+	$(MAKE) --no-print-directory prefix=`pwd`/tmp install-strip-$*-optional-dll
 	cd tmp && tar chf - --hard-dereference bin | \
 	  xz -c > ../dist/$*-$(PACKAGE_RELEASE_TAG)-dll-$(dllsuffix).tar.xz
 	cd tmp && tar chf - --hard-dereference lib | \
