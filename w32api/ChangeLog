@@ -1,3 +1,10 @@
+2017-03-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct a copyright notice update omission.
+
+	* configure.ac: Extend copyright date range to include 2017.  Also
+	clean up superfluous trailing whitespace.
+
 2017-03-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix generated header file dependencies.
