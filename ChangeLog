@@ -1,3 +1,15 @@
+2017-03-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor mingwrt and w32api common makefile content.
+
+	* Makefile.comm: New file.
+	(COMMON_MAKEFILE): New macro; define it to identify this file.
+	(%-srcdist-common-files): New generic build rule; implement it.
+	(configure, config.status, Makefile, config.status.missing, _mingw.h)
+	(w32api.h, PACKAGE_VERSION_SCRIPT, PACKAGE_VERSION_FORMAT): Reproduce
+	the original common content, which has been factored out from...
+	* mingwrt/Makefile.in w32api/Makefile.in: ...here.
+
 2017-03-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	MinGW.org WSL-5.0 released; update repository version.

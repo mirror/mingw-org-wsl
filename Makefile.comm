@@ -1,0 +1,106 @@
+# Makefile.comm
+#
+# Common elements, shared by the subpackage makefiles for each of the
+# MinGW.org Runtime Library and Windows-32 API packages.
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2017, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+
+# Note whence we are reading this makefile fragment, so that we may
+# access it again, for inclusion in source distributions.
+#
+COMMON_MAKEFILE := $(lastword $(MAKEFILE_LIST))
+
+# Configuration
+# -------------
+#
+# Keep the configuration in a consistent state.  Note that we assume
+# that configure has been run initially, (otherwise we wouldn't have
+# a Makefile to begin with); since this also creates config.status,
+# we may normally assume that it is already available ...
+#
+vpath configure ${top_srcdir}
+config.status: configure
+	$(SHELL) config.status --recheck
+
+# ... in which case, updating Makefile should be a simple matter of
+# running config.status ...
+#
+vpath Makefile.in ${top_srcdir}
+requires_existing = $(if $(wildcard $1),$1,$1.missing)
+Makefile: Makefile.in configure $(call requires_existing,config.status)
+	$(SHELL) config.status
+	$(RM) Makefile.stub
+
+.PHONY: config.status.missing
+# ... but, in the event that this may be missing, (e.g. because it
+# has been manually removed, or removed by "make distclean"), suggest
+# running configure, and bail out.
+#
+config.status.missing:
+	$(warning *** cannot execute config.status)
+	$(error please run ${top_srcdir}/configure to regenerate it.)
+
+# If configure itself needs to be updated, we must run autoconf in the
+# respective top level source directory.
+#
+vpath configure.ac ${top_srcdir}
+vpath %.m4 ${top_srcdir}/.. ${top_srcdir}
+configure: configure.ac aclocal.m4 VERSION.m4
+	cd ${top_srcdir}; autoconf -I ..
+
+# Propagate package version, as configured, consistently throughout
+# the package build; in particular, we must generate the _mingw.h and
+# w32api.h header files, from their respective templates with each of
+# the package version macro definitions completed.
+#
+vpath %.h.in ${mingwrt_srcdir}/include ${w32api_srcdir}/include
+
+_mingw.h w32api.h: %.h: %.h.in VERSION.m4
+	$(PACKAGE_VERSION_SCRIPT) $< > $@
+
+PACKAGE_VERSION_SCRIPT = sed \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,LONG,%d,$$3+1000*($$2+1000*$$1))`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,MAJOR,%7d,$$1)`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,MINOR,%7d,$$2)`" \
+  -e s"`$(call PACKAGE_VERSION_FORMAT,PATCH,%7d,$$3)`"
+
+PACKAGE_VERSION_FORMAT = echo $(PACKAGE_VERSION).0.0 | awk -F. '{ \
+  printf ",%%PACKAGE_VERSION_$1%%,$2,", $3; \
+}'
+
+
+# Distribution
+# ------------
+#
+# Propagate common source files to individual subpackage source
+# distribution tarballs.
+#
+vpath install-sh ${top_srcdir}/.. ${top_srcdir}
+%-srcdist-common-files: $(COMMON_MAKEFILE) VERSION.m4 aclocal.m4 install-sh
+	cp -p $^ dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
+
+# $RCSfile$: end of file

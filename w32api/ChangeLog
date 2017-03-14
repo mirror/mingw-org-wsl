@@ -1,3 +1,15 @@
+2017-03-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor mingwrt and w32api common makefile content.
+
+	* Makefile.in (w32api-srcdist-config-files): Rename it...
+	(w32api-srcdist-common-files): ...as this phoney build rule.
+	(shared_include_file): New macro; define it, and include named file.
+	(configure, config.status, Makefile, config.status.missing, _mingw.h)
+	(w32api.h, PACKAGE_VERSION_SCRIPT, PACKAGE_VERSION_FORMAT): Factor
+	out; relocate them to new file in common parent directory...
+	* ../Makefile.comm: ...here.
+
 2017-03-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct a copyright notice update omission.

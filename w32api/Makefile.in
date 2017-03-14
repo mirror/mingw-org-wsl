@@ -80,57 +80,13 @@ INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@ $1 $2
 LN_S = @LN_S@
 
-# Keep the configuration in a consistent state.  Note that we assume
-# that configure has been run initially, (otherwise we wouldn't have
-# a Makefile to begin with); since this also creates config.status,
-# we may normally assume that it is already available ...
+# Include the makefile content which is common to both the mingwrt,
+# and the w32api packages; this may be included within the top level
+# source directory for each package individually, but we must also
+# be prepared to find it in their common parent directory.
 #
-vpath configure ${top_srcdir}
-config.status: configure
-	$(SHELL) config.status --recheck
-
-# ... in which case, updating Makefile should be a simple matter of
-# running config.status ...
-#
-vpath Makefile.in ${top_srcdir}
-requires_existing = $(if $(wildcard $1),$1,$1.missing)
-Makefile: Makefile.in configure $(call requires_existing,config.status)
-	$(SHELL) config.status
-
-.PHONY: config.status.missing
-# ... but, in the event that this may be missing, (e.g. because it
-# has been manually removed, or removed by "make distclean"), suggest
-# running configure, and bail out.
-#
-config.status.missing:
-	$(warning *** cannot execute config.status)
-	$(error please run ${top_srcdir}/configure to regenerate it.)
-
-# If configure itself needs to be updated, we must run autoconf in the
-# top level source directory.
-#
-vpath configure.ac ${top_srcdir}
-vpath %.m4 ${top_srcdir}/.. ${top_srcdir}
-configure: configure.ac aclocal.m4 VERSION.m4
-	cd ${top_srcdir}; autoconf -I ..
-
-# Propagate package version, as configured, consistently throughout
-# the package build.
-#
-vpath %.h.in ${top_srcdir}/include ${mingwrt_srcdir}/include
-
-w32api.h _mingw.h: %.h: %.h.in VERSION.m4
-	$(PACKAGE_VERSION_SCRIPT) $< > $@
-
-PACKAGE_VERSION_SCRIPT = sed \
-  -e s"`$(call PACKAGE_VERSION_FORMAT,LONG,%d,$$3+1000*($$2+1000*$$1))`" \
-  -e s"`$(call PACKAGE_VERSION_FORMAT,MAJOR,%7d,$$1)`" \
-  -e s"`$(call PACKAGE_VERSION_FORMAT,MINOR,%7d,$$2)`" \
-  -e s"`$(call PACKAGE_VERSION_FORMAT,PATCH,%7d,$$3)`"
-
-PACKAGE_VERSION_FORMAT = echo $(PACKAGE_VERSION).0.0 | awk -F. '{ \
-  printf ",%%PACKAGE_VERSION_$1%%,$2,", $3; \
-}'
+shared_include_file = $1$(if $(wildcard $1/$2),,/..)/$2
+include $(call shared_include_file,${top_srcdir},Makefile.comm)
 
 # Capture dependencies conveyed within source files, ensuring that
 # header files are taken from our working source tree, and not from
@@ -362,13 +318,9 @@ mingwrt-srcdist-dir w32api-srcdist-dir: %-srcdist-dir:
 	$(RM) -r dist/$*-$(PACKAGE_VERSION)
 	$(call mkinstalldirs,,dist/$*-$(PACKAGE_VERSION))
 
-w32api-srcdist-files: w32api-srcdist-config-files
+w32api-srcdist-files: w32api-srcdist-common-files
 w32api-srcdist-files: w32api-srcdist-testsuite-files
 w32api-srcdist-files: w32api-srcdist-package-files
-
-vpath install-sh ${top_srcdir}/.. ${top_srcdir}
-%-srcdist-config-files: aclocal.m4 VERSION.m4 install-sh
-	  cp -p $^ dist/$*-$(PACKAGE_VERSION)
 
 %-srcdist-package-files:
 	(cd ${$*_srcdir} && tar chf - --hard-dereference $(notdir $^)) | \
