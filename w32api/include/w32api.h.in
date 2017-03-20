@@ -170,11 +170,13 @@
 #define __AW__WCHAR_T__(__TEXT__)  __AW_STRING_A__(L##__TEXT__)
 #define __AW_STRING_W__(__TEXT__)  __AW__WCHAR_T__(__TEXT__)
 
-/* A further use of __AW_EXTENDED__, encapsulated in __AW_ALIAS__,
- * provides a convenient generic mapping for type names which have
- * alternative representations for UNICODE and non-UNICODE usage.
+/* Further uses of __AW_SUFFIXED__ and __AW_EXTENDED__, encapsulated
+ * within __AW_ALIAS__ and __AW_ALIAS_EX__; each provides a convenient
+ * generic mapping for type names with alternative representations for
+ * UNICODE and non-UNICODE usage.
  */
-#define __AW_ALIAS__(__NAME__)     __AW_EXTENDED__(__NAME__) __NAME__
+#define __AW_ALIAS__(__NAME__)     __AW_SUFFIXED__(__NAME__) __NAME__
+#define __AW_ALIAS_EX__(__NAME__)  __AW_EXTENDED__(__NAME__) __NAME__
 
 #ifdef __cplusplus
 /* When compiling C++ code, these macros provide a convenient notation

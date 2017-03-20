@@ -1,3 +1,80 @@
+2017-03-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Tidy, and make <winbase.h> header effectively self-contained.
+
+	* include/w32api.h (__AW_ALIAS__): Rename original implementation...
+	(__AW_ALIAS_EX__): ...as this, retaining its encapsulation of...
+	(__AW_EXTENDED__): ...this; subsequently reimplement...
+	(__AW_ALIAS__): ...this, with original name, now encapsulating...
+	(__AW_SUFFIXED__): ...this.
+
+	* include/dbt.h (__AW_ALIAS__): Replace all references with...
+	(__AW_ALIAS_EX__): ...this renamed alternative, when defining...
+	(DEV_BROADCAST_DEVICEINTERFACE, PDEV_BROADCAST_DEVICEINTERFACE)
+	(DEV_BROADCAST_PORT, PDEV_BROADCAST_PORT): ...these.
+
+	* include/winbase.h: Tidy layout; assert copyright.
+	(stdarg.h, windef.h): Include them, to achieve self-containment.
+	[_BEGIN_C_DECLS, _END_C_DECLS]: Use them, as appropriate.
+	[UNICODE vs. ! UNICODE]: Replace separated declarations; use...
+	[__AW_ALIAS__]: ...this, to correctly specify each of...
+	(STARTUPINFO, LPSTARTUPINFO, WIN32_FIND_DATA, PWIN32_FIND_DATA)
+	(LPWIN32_FIND_DATA, HW_PROFILE_INFO, LPHW_PROFILE_INFO, ACTCTX)
+	(PACTCTX, PCACTCTX): ...these generic typedefs, and...
+	[__AW_SUFFIXED__]: ...this, to correctly map each of...
+	(ENUMRESLANGPROC, ENUMRESNAMEPROC, ENUMRESTYPEPROC, AddAtom)
+	(AccessCheckAndAuditAlarm, BackupEventLog, BeginUpdateResource)
+	(BuildCommDCB, BuildCommDCBAndTimeouts, CheckNameLegalDOS8Dot3)
+	(CallNamedPipe, ClearEventLog, CommConfigDialog, CopyFile, CopyFileEx)
+	(CreateActCtx, CreateDirectory, CreateDirectoryEx, CreateEvent)
+	(CreateFile, CreateFileMapping, CreateHardLink, CreateJobObject)
+	(CreateMailslot, CreateMutex, CreateNamedPipe, CreateProcess)
+	(CreateProcessAsUser, CreateSemaphore, CreateSymbolicLink)
+	(CreateWaitableTimer, DefineDosDevice, DeleteFile, EncryptFile)
+	(DeleteVolumeMountPoint, DnsHostnameToComputerName, EndUpdateResource)
+	(EnumResourceLanguages, EnumResourceNames, EnumResourceTypes)
+	(ExpandEnvironmentStrings, FatalAppExit, FileEncryptionStatus)
+	(FindActCtxSectionString, FindAtom, FindFirstChangeNotification)
+	(FindFirstFile, FindFirstFileEx, FindFirstVolume, FindNextFile)
+	(FindFirstVolumeMountPoint, FindNextVolume, FindNextVolumeMountPoint)
+	(FindResource, FindResourceEx, FormatMessage, FreeEnvironmentStrings)
+	(GetAtomName, GetBinaryType, GetCommandLine, GetCompressedFileSize)
+	(GetComputerName, GetComputerNameEx, GetCurrentDirectory)
+	(GetDefaultCommConfig, GetDiskFreeSpace, GetDiskFreeSpaceEx)
+	(GetDllDirectory, GetDriveType, GetEnvironmentStrings)
+	(GetEnvironmentVariable, GetFileAttributes, GetFileAttributesEx)
+	(GetFileSecurity, GetFinalPathNameByHandle, GetFullPathName)
+	(GetLogicalDriveStrings, GetLongPathName, GetModuleFileName)
+	(GetModuleHandle, GetModuleHandleEx, GetNamedPipeHandleState)
+	(GetPrivateProfileInt, GetPrivateProfileSection)
+	(GetPrivateProfileSectionNames, GetPrivateProfileString)
+	(GetPrivateProfileStruct, GetProfileInt, GetProfileSection)
+	(GetProfileString, GetShortPathName, GetStartupInfo)
+	(GetSystemDirectory, GetSystemWindowsDirectory, GetTempFileName)
+	(GetSystemWow64Directory, GetTempPath, GetUserName, GetVersionEx)
+	(GetVolumeInformation, GetVolumeNameForVolumeMountPoint)
+	(GetVolumePathName, GetVolumePathNamesForVolumeName, GlobalAddAtom)
+	(GetWindowsDirectory, GlobalFindAtom, GlobalGetAtomName)
+	(IsBadStringPtr, LoadLibrary, LoadLibraryEx, LogonUser)
+	(LookupAccountName, LookupAccountSid, LookupPrivilegeDisplayName)
+	(LookupPrivilegeName, LookupPrivilegeValue, lstrcat, lstrcmp)
+	(lstrcmpi, lstrcpy, lstrcpyn, lstrlen, MoveFile, MoveFileEx)
+	(MoveFileWithProgress, ObjectCloseAuditAlarm, ObjectDeleteAuditAlarm)
+	(ObjectOpenAuditAlarm, ObjectPrivilegeAuditAlarm, OpenBackupEventLog)
+	(OpenEvent, OpenEventLog, OpenFileMapping, OpenMutex, OpenSemaphore)
+	(OutputDebugString, PrivilegedServiceAuditAlarm, QueryDosDevice)
+	(ReadEventLog, RegisterEventSource, RemoveDirectory, ReplaceFile)
+	(ReportEvent, SearchPath, SetComputerName, SetCurrentDirectory)
+	(SetDefaultCommConfig, SetDllDirectory, SetEnvironmentVariable)
+	(SetFileAttributes, SetFileSecurity, SetFileShortName, SetVolumeLabel)
+	(SetFirmwareEnvironmentVariable, SetVolumeMountPoint, UpdateResource)
+	(VerifyVersionInfo, WaitNamedPipe, WritePrivateProfileSection)
+	(WritePrivateProfileString, WritePrivateProfileStruct)
+	(WriteProfileSection, WriteProfileString): ...these, and add...
+	(GetCurrentHwProfile, OpenWaitableTimer, SetComputerNameEx)
+	(GetFirmwareEnvironmentVariable): ...these previously missing generic
+	function name aliases.
+
 2017-03-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor mingwrt and w32api common makefile content.
@@ -4700,7 +4777,7 @@
 2004-10-15  Robert Wruck  <wruck@tweerlei.de>
 	    Danny Smith  <dannysmith@users.sourceforge.net>
 
-	= include/winbase.h (InitializeSListHead, Interlocked*):
+	* include/winbase.h (InitializeSListHead, Interlocked*):
 	Guard with !__USE_NTOSKRNL__.
 
 	* include/ddk/ntddk.h (__USE_NTOSKRNL__): Define.
@@ -9195,7 +9272,7 @@
 
 2001-12-15  Andrew Begel  <abegel@eecs.berkeley.edu>
 
-	*include/winbase.h (CreateHardLink): Correct typo in UNICODE
+	* include/winbase.h (CreateHardLink): Correct typo in UNICODE
 	mappings.
 
 2001-12-11  Phillip Susi  <psusi@cfl.rr.com>

@@ -153,8 +153,8 @@ typedef struct _DEV_BROADCAST_PORT_W
 /* Map generic type name references for UNICODE/non-UNICODE usage
  * of the preceding pair of structured data types.
  */
-typedef __AW_ALIAS__(DEV_BROADCAST_PORT);
-typedef __AW_ALIAS__(PDEV_BROADCAST_PORT);
+typedef __AW_ALIAS_EX__(DEV_BROADCAST_PORT);
+typedef __AW_ALIAS_EX__(PDEV_BROADCAST_PORT);
 
 typedef struct _DEV_BROADCAST_USERDEFINED
 { struct _DEV_BROADCAST_HDR	dbud_dbh;
@@ -190,8 +190,8 @@ typedef struct _DEV_BROADCAST_DEVICEINTERFACE_W
 /* Map generic type name references for UNICODE/non-UNICODE usage
  * of the preceding pair of structured data types.
  */
-typedef __AW_ALIAS__(DEV_BROADCAST_DEVICEINTERFACE);
-typedef __AW_ALIAS__(PDEV_BROADCAST_DEVICEINTERFACE);
+typedef __AW_ALIAS_EX__(DEV_BROADCAST_DEVICEINTERFACE);
+typedef __AW_ALIAS_EX__(PDEV_BROADCAST_DEVICEINTERFACE);
 
 typedef struct _DEV_BROADCAST_HANDLE
 { DWORD 			dbch_size;
