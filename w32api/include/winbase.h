@@ -493,19 +493,11 @@ _BEGIN_C_DECLS
 #define WAIT_OBJECT_0						       0
 #define WAIT_ABANDONED_0					     128
 
-#ifndef WAIT_TIMEOUT
-/* FIXME: This guard MUST be removed!  Even if WAIT_TIMEOUT is also defined
- * in <winerror.h>, the definitions MUST be IDENTICALLY the same; guards such
- * as this deny the compiler any opportunity to check this, and thus invite
- * inconsistency, broken definitions, and hard-to-locate bugs.
+/* WAIT_TIMEOUT is also defined in <winerror.h>.  We MUST ensure that the
+ * definitions are IDENTICALLY the same in BOTH headers; they are defined
+ * without guards, to give the compiler an opportunity to check this.
  */
-#define WAIT_TIMEOUT						     258
-#else
-/* FIXME: Redundant definition, to force compile time check; may be removed,
- * when resolving the <winerror.h> duplication issue.
- */
-#define WAIT_TIMEOUT						     258
-#endif
+#define WAIT_TIMEOUT						     258L
 
 #define WAIT_IO_COMPLETION					    0xC0
 #define WAIT_ABANDONED						     128

@@ -1,5 +1,16 @@
 2017-03-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Resolve potential <winbase.h> vs. <winerror.h> inconsistency.
+
+	* include/winerror.h: Tidy layout; assert copyright.
+
+	* include/winbase.h (WAIT_TIMEOUT): Redefine; make it identical to...
+	* include/winerror.h (WAIT_TIMEOUT): ...this equivalent; remove...
+	[!defined WAIT_TIMEOUT]: ...this conditional redefinition guard from
+	both locations; it permitted inconsistency between the two.
+
+2017-03-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Consolidate <winbase.h> version specific conditionals.
 
 	* include/winbase.h: Reorganize file content; group manifest constant
