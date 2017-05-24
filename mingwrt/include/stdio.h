@@ -298,10 +298,46 @@ _CRTIMP __cdecl __MINGW_NOTHROW  void   setbuf (FILE *, char *);
 /* Formatted Output
  *
  * MSVCRT implementations are not ANSI C99 conformant...
- * we offer these conforming alternatives from libmingwex.a
+ * we offer conforming alternatives from libmingwex.a
  */
 #undef  __mingw_stdio_redirect__
-#define __mingw_stdio_redirect__(F) __cdecl __MINGW_NOTHROW __mingw_##F
+#define __mingw_stdio_redirect__(F) __cdecl __MINGW_NOTHROW __Wformat(F)
+#define __Wformat_mingw_printf(F,A) __attribute__((__format__(__mingw_printf__,F,A)))
+
+#if __GNUC__ >= 6
+/* From GCC-6 onwards, we will provide customized -Wformat
+ * handling, via our own mingw_printf format category...
+ */
+#define __Wformat(F)		__Wformat_##F __mingw_##F
+
+#else	/* __GNUC__ < 6 */
+/* ...whereas, for earlier GCC, we preserve the status quo,
+ * offering no -Wformat checking for those functions which
+ * replace the MSVCRT.DLL versions...
+ */
+#define __Wformat(F)		__mingw_##F
+/*
+ * ...while degrading to gnu_printf checking for snprintf()
+ * and vsnprintf(), (which are ALWAYS MinGW.org variants).
+ */
+#define __mingw_printf__	__gnu_printf__
+#endif
+
+/* The following convenience macros specify the appropriate
+ * -Wformat checking for MSVCRT.DLL replacement functions...
+ */
+#define __Wformat_printf	__Wformat_mingw_printf(1,2)
+#define __Wformat_fprintf	__Wformat_mingw_printf(2,3)
+#define __Wformat_sprintf	__Wformat_mingw_printf(2,3)
+#define __Wformat_vprintf	__Wformat_mingw_printf(1,0)
+#define __Wformat_vfprintf	__Wformat_mingw_printf(2,0)
+#define __Wformat_vsprintf	__Wformat_mingw_printf(2,0)
+/*
+ * ...while this pair are specific to the two MinGW.org
+ * only functions.
+ */
+#define __Wformat_snprintf	__Wformat_mingw_printf(3,4)
+#define __Wformat_vsnprintf	__Wformat_mingw_printf(3,0)
 
 extern int __mingw_stdio_redirect__(fprintf)(FILE*, const char*, ...);
 extern int __mingw_stdio_redirect__(printf)(const char*, ...);
@@ -394,16 +430,6 @@ int sprintf (char *__stream, const char *__format, ...)
 }
 
 __mingw_stdio_redirect__
-int snprintf (char *__stream, size_t __len, const char *__format, ...)
-{
-  register int __retval;
-  __builtin_va_list __local_argv; __builtin_va_start( __local_argv, __format );
-  __retval = __mingw_vsnprintf( __stream, __len, __format, __local_argv );
-  __builtin_va_end( __local_argv );
-  return __retval;
-}
-
-__mingw_stdio_redirect__
 int vfprintf (FILE *__stream, const char *__format, __VALIST __local_argv)
 {
   return __mingw_vfprintf( __stream, __format, __local_argv );
@@ -421,13 +447,7 @@ int vsprintf (char *__stream, const char *__format, __VALIST __local_argv)
   return __mingw_vsprintf( __stream, __format, __local_argv );
 }
 
-__mingw_stdio_redirect__
-int vsnprintf (char *__stream, size_t __len, const char *__format, __VALIST __local_argv)
-{
-  return __mingw_vsnprintf( __stream, __len, __format, __local_argv );
-}
-
-#else
+#else	/* !__USE_MINGW_ANSI_STDIO */
 /* Default configuration: simply direct all calls to MSVCRT...
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int fprintf (FILE *, const char *, ...);
@@ -439,10 +459,21 @@ _CRTIMP __cdecl __MINGW_NOTHROW  int vsprintf (char *, const char *, __VALIST);
 
 #endif
 /* Regardless of user preference, always offer these alternative
- * entry points, for direct access to the MSVCRT implementations.
+ * entry points, for direct access to the MSVCRT implementations,
+ * with ms_printf -Wformat checking in each case.
  */
+#undef  __Wformat
 #undef  __mingw_stdio_redirect__
-#define __mingw_stdio_redirect__(F) __cdecl __MINGW_NOTHROW __msvcrt_##F
+#define __mingw_stdio_redirect__(F) __cdecl __MINGW_NOTHROW __Wformat(F)
+#define __Wformat_msvcrt_printf(F,A) __attribute__((__format__(__ms_printf__,F,A)))
+#define __Wformat(F) __Wformat_ms_##F __msvcrt_##F
+
+#define __Wformat_ms_printf	__Wformat_msvcrt_printf(1,2)
+#define __Wformat_ms_fprintf	__Wformat_msvcrt_printf(2,3)
+#define __Wformat_ms_sprintf	__Wformat_msvcrt_printf(2,3)
+#define __Wformat_ms_vprintf	__Wformat_msvcrt_printf(1,0)
+#define __Wformat_ms_vfprintf	__Wformat_msvcrt_printf(2,0)
+#define __Wformat_ms_vsprintf	__Wformat_msvcrt_printf(2,0)
 
 _CRTIMP int __mingw_stdio_redirect__(fprintf)(FILE *, const char *, ...);
 _CRTIMP int __mingw_stdio_redirect__(printf)(const char *, ...);
@@ -452,6 +483,7 @@ _CRTIMP int __mingw_stdio_redirect__(vprintf)(const char *, __VALIST);
 _CRTIMP int __mingw_stdio_redirect__(vsprintf)(char *, const char *, __VALIST);
 
 #undef  __mingw_stdio_redirect__
+#undef  __Wformat
 
 /* The following three ALWAYS refer to the MSVCRT implementations...
  */
@@ -466,10 +498,14 @@ _CRTIMP __cdecl __MINGW_NOTHROW  int _vscprintf (const char *, __VALIST);
  * NOT compatible with C99, but the following are; if you want the
  * MSVCRT behaviour, you MUST use the Microsoft "uglified" names.
  */
-__cdecl __MINGW_NOTHROW  int snprintf (char *, size_t, const char *, ...);
-__cdecl __MINGW_NOTHROW  int vsnprintf (char *, size_t, const char *, __VALIST);
+__cdecl __MINGW_NOTHROW __Wformat_snprintf
+int snprintf (char *, size_t, const char *, ...);
 
-__cdecl __MINGW_NOTHROW  int vscanf (const char * __restrict__, __VALIST);
+__cdecl __MINGW_NOTHROW __Wformat_vsnprintf
+int vsnprintf (char *, size_t, const char *, __VALIST);
+
+__cdecl __MINGW_NOTHROW
+int vscanf (const char * __restrict__, __VALIST);
 
 __cdecl __MINGW_NOTHROW
 int vfscanf (FILE * __restrict__, const char * __restrict__, __VALIST);
