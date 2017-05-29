@@ -3004,6 +3004,19 @@ WINBASEAPI DWORD WINAPI GetFinalPathNameByHandleA (HANDLE, LPSTR, DWORD, DWORD);
 WINBASEAPI DWORD WINAPI GetFinalPathNameByHandleW
 (HANDLE, LPWSTR, DWORD, DWORD);
 
+/* https://msdn.microsoft.com/en-us/library/aa904937%28v=vs.85%29.aspx */
+/* Note: MSDN does not offer any detail of how SRWLOCK should be defined,
+ * (other than stating that it is a structure with the size of a pointer);
+ * an opaque generic pointer type appears to be sufficient.
+ */
+typedef PVOID SRWLOCK, *PSRWLOCK;
+
+void WINAPI InitializeSRWLock (PSRWLOCK);
+void WINAPI AcquireSRWLockExclusive (PSRWLOCK);
+void WINAPI AcquireSRWLockShared (PSRWLOCK);
+void WINAPI ReleaseSRWLockExclusive (PSRWLOCK);
+void WINAPI ReleaseSRWLockShared (PSRWLOCK);
+
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN7
 /* Additional features, available only on the WinNT series platforms, from
  * the release of Windows-7 onwards.
@@ -3012,6 +3025,10 @@ WINBASEAPI BOOL WINAPI GetProcessDEPPolicy (HANDLE, LPDWORD, PBOOL);
 WINBASEAPI DEP_SYSTEM_POLICY_TYPE WINAPI GetSystemDEPPolicy (void);
 
 WINBASEAPI BOOL WINAPI SetProcessDEPPolicy (DWORD);
+
+/* https://msdn.microsoft.com/en-us/library/aa904937%28v=vs.85%29.aspx */
+BOOLEAN WINAPI TryAcquireSRWLockExclusive (PSRWLOCK);
+BOOLEAN WINAPI TryAcquireSRWLockShared (PSRWLOCK);
 
 #endif	/* Win7 and later */
 #endif	/* Windows Vista and later */

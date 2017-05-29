@@ -1,3 +1,14 @@
+2017-05-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Declare SRWLOCK API, to support feature request [#2314]
+
+	* include/winbase.h [_WIN32_WINNT >= _WIN32_WINNT_VISTA]
+	(SRWLOCK, *PSRWLOCK): Define these data types, and declare...
+	(InitializeSRWLock, AcquireSRWLockExclusive, AcquireSRWLockShared)
+	(ReleaseSRWLockExclusive, ReleaseSRWLockShared): ...these prototypes.
+	[_WIN32_WINNT >= _WIN32_WINNT_WIN7] (TryAcquireSRWLockExclusive)
+	(TryAcquireSRWLockShared): Declare additional prototypes.
+
 2017-03-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Resolve potential <winbase.h> vs. <winerror.h> inconsistency.
