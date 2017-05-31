@@ -1,3 +1,13 @@
+2017-05-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Declare CONDITION_VARIABLE API, per feature request [#2314]
+
+	* include/winbase.h [_WIN32_WINNT >= _WIN32_WINNT_VISTA]
+	(CONDITION_VARIABLE, PCONDITION_VARIABLE): Define data types, and...
+	(InitializeConditionVariable, SleepConditionVariableCS)
+	(SleepConditionVariableSRW, WakeAllConditionVariable)
+	(WakeConditionVariable): ...declare prototypes.
+
 2017-05-29  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Declare SRWLOCK API, to support feature request [#2314]

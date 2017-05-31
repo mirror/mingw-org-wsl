@@ -3017,6 +3017,18 @@ void WINAPI AcquireSRWLockShared (PSRWLOCK);
 void WINAPI ReleaseSRWLockExclusive (PSRWLOCK);
 void WINAPI ReleaseSRWLockShared (PSRWLOCK);
 
+/* https://msdn.microsoft.com/en-us/library/ms682052%28v=vs.85%29.aspx */
+/* Note: once again, MSDN fails to document this, but an opaque generic
+ * pointer type appears to suffice.
+ */
+typedef PVOID CONDITION_VARIABLE, *PCONDITION_VARIABLE;
+
+void WINAPI InitializeConditionVariable (PCONDITION_VARIABLE);
+BOOL WINAPI SleepConditionVariableCS (PCONDITION_VARIABLE, PCRITICAL_SECTION, DWORD);
+BOOL WINAPI SleepConditionVariableSRW (PCONDITION_VARIABLE, PSRWLOCK, DWORD, ULONG);
+void WINAPI WakeAllConditionVariable (PCONDITION_VARIABLE);
+void WINAPI WakeConditionVariable (PCONDITION_VARIABLE);
+
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN7
 /* Additional features, available only on the WinNT series platforms, from
  * the release of Windows-7 onwards.
