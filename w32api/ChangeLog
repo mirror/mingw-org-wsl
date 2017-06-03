@@ -1,3 +1,36 @@
+2017-06-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Tidy, and make <wingdi.h> header effectively self-contained.
+
+	* include/wingdi.h: Tidy layout; assert copyright.
+	(windef.h): Include it; this achieves self-containment.
+	[_BEGIN_C_DECLS, _END_C_DECLS]: Use them.
+	[UNICODE vs. !UNICODE]: Discriminate generic symbol names, using...
+	(__AW_ALIAS__): ...this, when defining each of...
+	(DEVMODE, PDEVMODE, LPDEVMODE, DOCINFO, LPDOCINFO, LOGCOLORSPACE)
+	(LOGFONT, PLOGFONT, LPLOGFONT, EXTLOGFONT, PEXTLOGFONT, LPEXTLOGFONT)
+	(LPLOGCOLORSPACE, TEXTMETRIC, PTEXTMETRIC, LPTEXTMETRIC, GCP_RESULTS)
+	(PPOLYTEXT, LPPOLYTEXT, NEWTEXTMETRIC, PNEWTEXTMETRIC, LPNEWTEXTMETRIC)
+	(LPENUMLOGFONTEX, ENUMLOGFONTEXDV, PENUMLOGFONTEXDV, LPENUMLOGFONTEXDV)
+	(OUTLINETEXTMETRIC, POUTLINETEXTMETRIC, LPOUTLINETEXTMETRIC, POLYTEXT)
+	(LPGCP_RESULTS, DISPLAY_DEVICE, PDISPLAY_DEVICE, LPDISPLAY_DEVICE)
+	(NEWTEXTMETRICEX, ENUMLOGFONT, LPENUMLOGFONT, ENUMLOGFONTEX): ...these.
+	(__AW_SUFFIXED__): Similarly, use this when declaring each of...
+	(FONTENUMPROC, ICMENUMPROC, AddFontResource, AddFontResourceEx,
+	(CopyEnhMetaFile, CopyMetaFile, CreateColorSpace, CreateEnhMetaFile)
+	(CreateDC, CreateFont, CreateFontIndirect, CreateIC, CreateMetaFile)
+	(CreateScalableFontResource, DeviceCapabilities, EnumFontFamilies)
+	(EnumFontFamiliesEx, EnumFonts, EnumICMProfiles, ExtTextOut)
+	(GetCharABCWidths, GetCharABCWidthsFloat, GetCharacterPlacement)
+	(GetCharWidth32, GetCharWidth, GetCharWidthFloat, GetEnhMetaFile)
+	(GetEnhMetaFileDescription, GetGlyphOutline, GetICMProfile)
+	(GetKerningPairs, GetLogColorSpace, GetMetaFile, GetObject)
+	(GetOutlineTextMetrics, GetTextExtentExPoint, GetTextExtentPoint)
+	(GetTextExtentPoint32, GetTextFace, GetTextMetrics, PolyTextOut,
+	(RemoveFontResource, RemoveFontResourceEx, ResetDC, SetICMProfile)
+	(StartDoc, TextOut, UpdateICMRegKey, wglUseFontBitmaps)
+	(wglUseFontOutlines, GetGlyphIndices): ...these.
+
 2017-05-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Declare CONDITION_VARIABLE API, per feature request [#2314]
