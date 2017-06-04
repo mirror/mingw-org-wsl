@@ -1,3 +1,15 @@
+2017-06-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Consolidate <wingdi.h> version specific conditionals.
+
+	* include/wingdi.h: Reorganize file content; group manifest constant
+	definitions into a single nested collection of conditional blocks, for
+	those definitions which are common to both Win9x and WinNT, with one
+	block per Windows version evolution, sorting alphabetically within
+	each block; do likewise for additional manifest constant definitions
+	which are specific to WinNT, and also for data type definitions and
+	function prototypes.
+
 2017-06-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Tidy, and make <wingdi.h> header effectively self-contained.
