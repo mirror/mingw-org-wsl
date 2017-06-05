@@ -1,3 +1,12 @@
+2017-06-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Automatically correct obsolete _XOPEN_SOURCE usage.
+
+	* include/_mingw.h.in (__paste, __valueless): New macros; define them.
+	(_XOPEN_SOURCE) [defined with no value]: Use them to attempt to deduce
+	this obsolete usage; if detected, redefine it with a default assigned
+	value of one, emulating -D_XOPEN_SOURCE command line definition.
+
 2017-05-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix snprintf()/vsnprintf() -Wformat vs. multiple definition issue.

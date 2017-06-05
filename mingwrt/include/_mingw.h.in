@@ -401,6 +401,31 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 # endif
 #endif
 
+/* Some applications may define _XOPEN_SOURCE, without assigning any
+ * value to it.  Such usage may have been permitted in early SUS, but
+ * it became obsolete as of SUSv2.  Attempt to detect obsolete usage,
+ * as it makes an effective evaluation of any _XOPEN_SOURCE version
+ * dependency difficult, (without the use of ugly kludges at EVERY
+ * point of reference which attempts a version comparison).
+ */
+#define __paste(prefix,suffix)  prefix ## suffix
+#define __valueless(token)  ((token - 0) == 0) && (__paste(token,10) == 10)
+
+#if defined _XOPEN_SOURCE && __valueless(_XOPEN_SOURCE)
+/* _XOPEN_SOURCE appears to have been defined without its mandatory
+ * value; diagnose this brain-damaged obsolete usage (verbosely)...
+ */
+#warning "_XOPEN_SOURCE seems to have been improperly defined."
+#warning "Mandatory _XOPEN_SOURCE value assignment appears to be missing."
+#warning "Redefining _XOPEN_SOURCE to mitigate obsolete misuse."
+
+/* ...and redefine, emulating implicit behaviour of -D_XOPEN_SOURCE on
+ * the GCC command line, (which DOES assign an implied value of one).
+ */
+#undef  _XOPEN_SOURCE
+#define _XOPEN_SOURCE  1
+#endif
+
 #ifndef _POSIX_C_SOURCE
  /* Users may define this, either directly or indirectly, to explicitly
   * enable a particular level of visibility for the subset of those POSIX
