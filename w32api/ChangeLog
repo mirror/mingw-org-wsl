@@ -1,3 +1,11 @@
+2017-06-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make <winuser.h> header effectively self-contained.
+
+	* include/winuser.h (stdarg.h): Include it, in addition to...
+	[NOGDI] (windef.h): ...this, directly or otherwise indirectly via...
+	[!NOGDI] (wingdi.h): ...this, for effective self-containment.
+
 2017-06-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Consolidate <wingdi.h> version specific conditionals.

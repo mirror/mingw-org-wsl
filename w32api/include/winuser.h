@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Anders Norlander <anorland@hem2.passagen.se>
- * Copyright (C) 1998-2012, 2016, MinGW.org Project
+ * Copyright (C) 1998-2012, 2016, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -38,6 +38,17 @@
  * of formerly duplicated content from its primary source headers.
  */
 #define __WINUSER_H_SOURCED__
+
+/* To make <winuser.h> effectively self-contained, we require definitions
+ * from <windef.h>, possibly <wingdi.h>, (which also requires <windef.h>),
+ * and <stdarg.h>
+ */
+#ifdef NOGDI
+#include <windef.h>
+#else
+#include <wingdi.h>
+#endif
+#include <stdarg.h>
 
 _BEGIN_C_DECLS
 
