@@ -1,3 +1,14 @@
+2017-06-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Consolidate <winuser.h> version specific conditionals.
+
+	* include/winuser.h: Reorganize file content; group manifest constant
+	definitions into one nested collection of conditional blocks, with one
+	block per Windows version evolution; do likewise for type definitions
+	and function prototypes which are always exposed, and separately...
+	[! defined NOGDI]: ...for those which may be suppressed, when GDI
+	support is not required.
+
 2017-06-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make <winuser.h> header effectively self-contained.
