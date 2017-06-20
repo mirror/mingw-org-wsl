@@ -31,6 +31,16 @@
  */
 #ifndef _WINNT_H
 #pragma GCC system_header
+
+/* For effective self-containment, <winnt.h> requires <windef.h> to have
+ * been included, BEFORE defining the _WINNT_H repeat inclusion guard...
+ */
+#include <windef.h>
+/* ...but this has the unfortunate side effect that <windef.h> may then
+ * recursively include <winnt.h>; retest the inclusion guard, to break
+ * out of any ensuing recursive inclusion loop.
+ */
+#ifndef _WINNT_H
 #define _WINNT_H
 
 #include <winerror.h>
@@ -4324,4 +4334,5 @@ static FORCEINLINE void MemoryBarrier (void)
 _END_C_DECLS
 
 #endif	/* ! RC_INVOKED */
+#endif	/* !_WINNT_H: internal recursion break */
 #endif	/* !_WINNT_H: $RCSfile$: end of file */

@@ -1,3 +1,11 @@
+2017-06-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make <winnt.h> header effectively self-contained.
+
+	* include/winnt.h (_WINNT_H): Defer definition unless included via...
+	(windef.h): ...this; include it, to enforce inclusion order, then...
+	[_WINNT_H]: ...re-evaluate it, to avoid recursive inclusion loop.
+
 2017-06-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Consolidate <winuser.h> version specific conditionals.
