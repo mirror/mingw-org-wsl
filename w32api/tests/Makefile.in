@@ -103,7 +103,7 @@ autotest_missing = $(call missing,autom4te,Unable to compile the testsuite)
 testsuite: %: %.at
 	$(AUTOTEST_COMPILE) -o $* $<
 
-testsuite: headers.at
+testsuite: $(notdir $(wildcard ${srcdir}/*.at))
 
 # Display a diagnostic message, explaining that any specified program
 # is required, but has not been installed.

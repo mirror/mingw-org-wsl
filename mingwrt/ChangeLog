@@ -1,3 +1,12 @@
+2017-07-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Automate testsuite dependency generation.
+
+	* tests/Makefile.in (testsuite) [$srcdir/*.at]: Automatically
+	enumerate all such wildcard matches as prerequisites, instead of...
+	(headers.at, ansiprintf.at, logarithms.at, powerfunc.at): ...these,
+	which were previously enumerated explicitly.
+
 2017-06-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Automatically correct obsolete _XOPEN_SOURCE usage.

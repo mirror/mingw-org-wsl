@@ -5,7 +5,7 @@
 # $Id$
 #
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2016, MinGW.org Project
+# Copyright (C) 2016, 2017, MinGW.org Project
 #
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -102,7 +102,7 @@ autotest_missing = $(call missing,autom4te,Unable to compile the testsuite)
 testsuite: %: %.at
 	$(AUTOTEST_COMPILE) -o $* $<
 
-testsuite: headers.at ansiprintf.at logarithms.at powerfunc.at
+testsuite: $(notdir $(wildcard ${srcdir}/*.at))
 
 # Display a diagnostic message, explaining that any specified program
 # is required, but has not been installed.

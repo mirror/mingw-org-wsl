@@ -1,3 +1,11 @@
+2017-07-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Automate testsuite dependency generation.
+
+	* tests/Makefile.in (testsuite) [$srcdir/*.at]: Automatically
+	enumerate all such wildcard matches as prerequisites, instead of...
+	(headers.at): ...this sole explicit dependency.
+
 2017-06-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make <winnt.h> header effectively self-contained.
