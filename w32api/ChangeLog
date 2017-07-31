@@ -1,3 +1,9 @@
+2017-07-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare and tag for release of MinGW.org WSL-5.0.1
+
+	* All files (wsl-5.0.1-release): Tag assigned.
+
 2017-07-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Automate testsuite dependency generation.
