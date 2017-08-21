@@ -63,9 +63,32 @@ m4_define([MINGW_AT_CHECK_COMPILE],[AT_DATA([at_lang_source],$1
 # specified to each of STDOUT and STDERR.
 #
 m4_define([MINGW_AT_CHECK_RUN],[AT_DATA([at_lang_source],$1
-) AT_CHECK([at_lang_compile at_lang_source -o at_prog.exe -L../../lib])
+) AT_CHECK([at_lang_compile at_lang_source -o at_prog.exe at_lang_libs])
 AT_CHECK([./at_prog.exe],[$2],[$3],[$4])
 ])# MINGW_AT_CHECK_RUN
+
+# MINGW_AT_LINK_LIBS( [-LIBPATH_OPTION ...] LIB ... )
+# ---------------------------------------------------
+# Specify the sequence of library specification arguments, and
+# library search path options, to be passed to the compiler for
+# any subsequent invocation of MINGW_AT_CHECK_RUN.
+#
+m4_define([MINGW_AT_LINK_LIBS],dnl
+[m4_define([at_lang_libs],[at_lang_libs_default $1])dnl
+])# MINGW_AT_LINK_LIBS
+
+# MINGW_AT_LINK_LIBS_DEFAULT
+# --------------------------
+# Initialize the list of libraries to be specified in subsequent
+# invocations of MINGW_AT_CHECK_RUN, or reset the library list to
+# its initial default state, after completion of any invocation of
+# MINGW_AT_CHECK_RUN, for which the list was extended by a prior
+# invocation of MINGW_AT_LINK_LIBS
+#
+m4_define([MINGW_AT_LINK_LIBS_DEFAULT],dnl
+[m4_define([at_lang_libs_default],[-L../../lib])]dnl
+[m4_define([at_lang_libs],[at_lang_libs_default])dnl
+])# MINGW_AT_LINK_LIBS
 
 # MINGW_AT_DATA_CRLF( FILENAME, TEXT )
 # ------------------------------------
@@ -82,11 +105,13 @@ m4_if([$1],[stdout],,AT_CHECK([mv stdout $1]))dnl
 #
 AT_INIT
 MINGW_AT_LANG([C])
+MINGW_AT_LINK_LIBS_DEFAULT
 
 # Individual test groups are specified separately, via the following
 # collection of autotest M4 include files.
 #
 m4_include([headers.at])
+m4_include([winsock.at])
 
 # vim: filetype=config formatoptions=croql
 # $RCSfile$: end of file

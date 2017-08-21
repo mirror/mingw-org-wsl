@@ -1,0 +1,177 @@
+# winsock.at
+#
+# Autotest module to verify correct operation of various aspects
+# of the Windows Sockets API.
+#
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2017, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+#
+# All tests specified herein are written in the C language.
+#
+MINGW_AT_LANG([C])
+
+# MINGW_AT_INITIALIZE_FD_SET( NAME, FDLIST )
+# ------------------------------------------
+# Emit C source code to instantiate an fd_set entity called NAME,
+# and populate it with the list of fd numbers specified by FDLIST;
+# note that this permits assignment of duplicate fd entries within
+# the fd_set population, contrary to correct operational practice.
+#
+m4_define([MINGW_AT_INITIALIZE_FD_SET],[dnl
+[fd_set $1 = { m4_count($2), { $2 }}]dnl
+])
+
+# MINGW_AT_CHECK_FD_MACRO( HEADER, MACRO, DESCRIPTION, EXPOUT, BODY )
+# -------------------------------------------------------------------
+# Construct a test group to verify the behaviour of MACRO, when compiled
+# with inclusion of <HEADER.h>, under conditions per DESCRIPTION; confirm
+# that execution of a main function, with specified BODY, produces output
+# as specified by EXPOUT, on the standard output stream.
+#
+m4_define([MINGW_AT_CHECK_FD_MACRO],[dnl
+AT_SETUP([$2 $3])AT_KEYWORDS([C $1 fd_set $2])dnl
+MINGW_AT_DATA_CRLF([expout],[$4
+])MINGW_AT_CHECK_RUN([[[
+#include <stdio.h>
+#include <$1.h>
+
+static void show_fd_set( fd_set *set )
+{
+  unsigned int i = 0;
+  printf( "%d entries%c", set->fd_count, set->fd_count ? ':' : '\n' );
+  while( i < set->fd_count )
+  { int k = set->fd_array[i++];
+    printf( " %d%c", k, (i < set->fd_count) ? ',' : '\n' );
+  }
+}
+
+int main()
+]]$5],,[expout])dnl
+AT_CLEANUP])
+
+# MINGW_AT_CHECK_FD_ISSET_MACRO( HEADER, FD )
+# -------------------------------------------
+# Construct a test group to verify that descriptor FD is, or is not,
+# present within the predefined (and degenerate) fd_set {1, 2, 2, 3},
+# using the FD_ISSET macro as it is defined by <HEADER.h>
+#
+m4_define([MINGW_AT_CHECK_FD_ISSET_MACRO],[dnl
+AT_SETUP([FD_ISSET does ]m4_case(m4_sign([$2-3]),[1],dnl
+[not detect excluded],[detect included])[ descriptor])dnl
+AT_KEYWORDS([C $1 fd_set FD_ISSET])MINGW_AT_CHECK_RUN([[
+#include <$1.h>
+int main()]
+{ MINGW_AT_INITIALIZE_FD_SET([at_set],[1, 2, 2, 3])[;
+  return FD_ISSET($2, &at_set) ? (($2 > 3) ? 1 : 0) : (($2 > 3) ? 0 : 1);
+}]])
+AT_CLEANUP])
+
+# MINGW_AT_CHECK_WINSOCK( VERSION, HEADER )
+# -----------------------------------------
+# Run a sequence of checks for WinSock VERSION, compiling with
+# inclusion of <HEADER.h>
+#
+m4_define([MINGW_AT_CHECK_WINSOCK],[dnl
+AT_BANNER([Windows Sockets $1 fd_set macro checks.])
+
+# Verify that the FD_ZERO macro clears all descriptors from the
+# predefined, non-empty fd_set {1, 2, 3, 4}
+#
+MINGW_AT_CHECK_FD_MACRO([$2],[FD_ZERO],dnl
+[removes all descriptors],[0 entries],[
+{ MINGW_AT_INITIALIZE_FD_SET([at_set],[1, 2, 3, 4])[;
+  FD_ZERO (&at_set); show_fd_set (&at_set);
+  return 0;
+}]])
+
+# Verify that the FD_SET macro will successfully add descriptor 6
+# to the predefined fd_set {1, 2, 3, 4}, given that it is not yet
+# a member of that set.
+#
+MINGW_AT_CHECK_FD_MACRO([$2],[FD_SET],dnl
+[adds one unique descriptor],[5 entries: 1, 2, 3, 4, 6],[
+{ MINGW_AT_INITIALIZE_FD_SET([at_set],[1, 2, 3, 4])[;
+  FD_SET (6, &at_set); show_fd_set (&at_set);
+  return 0;
+}]])
+
+# Verify that the FD_SET macro will NOT add a second instance of
+# descriptor 2 to the predefined fd_set {1, 2, 3, 4}, given that
+# it is already a member of that set.
+#
+MINGW_AT_CHECK_FD_MACRO([$2],[FD_SET],dnl
+[does not add duplicate descriptors],[4 entries: 1, 2, 3, 4],[
+{ MINGW_AT_INITIALIZE_FD_SET([at_set],[1, 2, 3, 4])[;
+  FD_SET (2, &at_set); show_fd_set (&at_set);
+  return 0;
+}]])
+
+# Verify that the FD_CLR macro successfully removes a solitary
+# instance of descriptor 2 from well-formed fd_set {1, 2, 3, 4}
+#
+MINGW_AT_CHECK_FD_MACRO([$2],[FD_CLR],dnl
+[removes a uniquely matched descriptor],[3 entries: 1, 3, 4],[
+{ MINGW_AT_INITIALIZE_FD_SET([at_set],[1, 2, 3, 4])[;
+  FD_CLR (2, &at_set); show_fd_set (&at_set);
+  return 0;
+}]])
+
+# Verify that the FD_CLR macro correcly removes ALL instances
+# of descriptor 2 from malformed fd_set {1, 2, 3, 4, 2}
+#
+MINGW_AT_CHECK_FD_MACRO([$2],[FD_CLR],dnl
+[removes all matching descriptors],[3 entries: 1, 3, 4],[
+{ MINGW_AT_INITIALIZE_FD_SET([at_set],[1, 2, 3, 4, 2])[;
+  FD_CLR (2, &at_set); show_fd_set (&at_set);
+  return 0;
+}]])
+
+# Verify that the FD_ISSET macro correctly reports absence of
+# descriptor 4 from, and presence of descriptor 2, within the
+# predefined fd_set {1, 2, 3}; note that, since macro FD_ISSET
+# may be defined in terms of Microsoft's __WSAFDIsSet() library
+# function, we must ensure that the test code is linked with
+# the appropriate version of the WinSock library.
+#
+MINGW_AT_LINK_LIBS([m4_case([$1],[v2],[-lws2_32],[-lwsock32])])
+MINGW_AT_CHECK_FD_ISSET_MACRO([$2],[4])
+MINGW_AT_CHECK_FD_ISSET_MACRO([$2],[2])
+
+# Finally, restore the default set of libraries which are to
+# be used when linking subsequent test code.
+#
+MINGW_AT_LINK_LIBS_DEFAULT
+])
+
+# Invoke the gamut of WinSock tests for each of the provided
+# WinSock v1.1, and WinSock v2 implementations.
+#
+MINGW_AT_CHECK_WINSOCK([v1.1],[winsock])
+MINGW_AT_CHECK_WINSOCK([v2],[winsock2])
+
+# vim: filetype=config formatoptions=croql
+# $RCSfile$: end of file

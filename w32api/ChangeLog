@@ -1,3 +1,18 @@
+2017-08-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Extend testsuite to cover winsock fd_set macro operations.
+
+	* tests/winsock.at: New file; it implements appropriate tests, and
+	enables use of "-k winsock", "-k winsock2", and "-k fd_set" autotest
+	keywords to invoke them, (e.g. make check TESTSUITEFLAGS='-k fd_set').
+
+	* tests/testsuite.at.in (winsock.at): Integrate it.
+	(MINGW_AT_CHECK_RUN): Accept a variant list of libraries when linking.
+	(MINGW_AT_LINK_LIBS_DEFAULT): New macro; it establishes the initial
+	default list of libraries, or resets the list to this initial default.
+	(MINGW_AT_LINK_LIBS): New macro; it establishes an augmented list of
+	library specifications, to be used until subsequently reset.
+
 2017-07-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Prepare and tag for release of MinGW.org WSL-5.0.1
