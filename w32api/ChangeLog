@@ -1,5 +1,14 @@
 2017-08-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Resolve secondary issue arising from MinGW-Bug [#2350]
+
+	* include/winuser.h (GetTitleBarInfo)
+	[_WIN32_WINDOWS >= _WIN32_WINDOWS_98]: Remove exposure restriction;
+	it conflicted with current MSDN documentation, so now falls within...
+	[_WIN32_WINNT >= Win2K || _WIN32_WINDOWS >= Win98]: ...this.
+
+2017-08-28  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Resolve MinGW-Bug [#2350]
 
 	* include/winuser.h (GetTitleBarInfo): Move prototype after...
