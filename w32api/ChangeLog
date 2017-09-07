@@ -1,5 +1,13 @@
 2017-09-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Correct misuse of __INSIDE_MSYS__ feature test.
+
+	* include/winsock2.h [!__INSIDE_MSYS__]: One of several instances
+	omits "defined" operator; it should be expressed consistently as...
+	[! defined __INSIDE_MSYS__]: ...this; correct it.
+
+2017-09-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Prepare for <winsock.h> vs. <winsock2.h> refactoring.
 
 	* include/winsock.h: Tidy layout; assert copyright.

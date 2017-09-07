@@ -148,7 +148,7 @@ int PASCAL __WSAFDIsSet (SOCKET, fd_set *);
 #warning "Your <sys/types.h> may cause runtime problems with W32 sockets."
 #endif	/* !_SYS_TYPES_FD_SET */
 
-#if ! (defined __INSIDE_CYGWIN__ || (__INSIDE_MSYS__))
+#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
 
 #ifndef _TIMEVAL_DEFINED
 /* FIXME: These should be factored out; they are properly defined
