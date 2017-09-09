@@ -1,3 +1,12 @@
+2017-09-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Source BSD non-standard type definitions from mingwrt header.
+
+	* include/winsock.h include/winsock2.h [_BSDTYPES_DEFINED]: Delete
+	conditional block, and its entire type definition content; include...
+	* include/sys/bsdtypes.h: ...this common file instead; it defines...
+	(u_char, u_int, u_long, u_short): ...these non-standard data types.
+
 2017-09-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct misuse of __INSIDE_MSYS__ feature test.

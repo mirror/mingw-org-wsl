@@ -47,21 +47,9 @@
 #define _GNU_H_WINDOWS32_SOCKETS
 
 #include <windows.h>
+#include <sys/bsdtypes.h>
 
 _BEGIN_C_DECLS
-
-#ifndef _BSDTYPES_DEFINED
-/* FIXME: these are also defined in mingwrt's <gmon.h> and in cygwin's
- * (i.e. newlib's) <sys/types>; we should factor them out, to their own
- * header file, and include that.
- */
-typedef unsigned char	u_char;
-typedef unsigned short	u_short;
-typedef unsigned int	u_int;
-typedef unsigned long	u_long;
-
-#define _BSDTYPES_DEFINED
-#endif	/* !_BSDTYPES_DEFINED  */
 
 typedef u_int  SOCKET;
 
