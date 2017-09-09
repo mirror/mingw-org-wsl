@@ -30,6 +30,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+#define _BSD_SOURCE
 
 #if !defined(lint) && !defined(_KERNEL) && defined(LIBC_SCCS)
 static char rcsid[] = "$OpenBSD: mcount.c,v 1.6 1997/07/23 21:11:27 kstailey Exp $";
