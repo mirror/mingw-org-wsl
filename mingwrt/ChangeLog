@@ -1,3 +1,16 @@
+2017-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor <sys/time.h> duplicate content out of winsock headers.
+
+	* include/sys/time.h: Assert copyright; tidy layout.
+	[_BEGIN_C_DECLS, _END_C_DECLS]: Use them to avoid C++ name mangling.
+	[__WINSOCK_H_SOURCED__] (_SYS_TIME_H): Do not define it; hence...
+	[!defined _SYS_TIME_H]: ...selectively expose definitions for only...
+	(timerclear, timerisset, timercmp): ...these functional macros, and...
+	(struct timeval): ...this data type; inhibit redefinition on...
+	[defined _SYS_TIME_H && _WINSOCK_H]: ...second reading.
+	(_TIMEVAL_DEFINED): Do not define; it isn't required.
+
 2017-09-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor BSD non-standard type definitions into common header.

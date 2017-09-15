@@ -44,9 +44,13 @@
 #pragma GCC system_header
 
 #define _GNU_H_WINDOWS32_SOCKETS
+#define __WINSOCK_H_SOURCED__ 1
 
 #include <windows.h>
 #include <sys/bsdtypes.h>
+#include <sys/time.h>
+
+#undef __WINSOCK_H_SOURCED__
 
 #ifndef WINSOCK_API_LINKAGE
 #ifdef __W32API_USE_DLLIMPORT__
@@ -137,24 +141,6 @@ int PASCAL __WSAFDIsSet (SOCKET, fd_set *);
 #endif	/* !_SYS_TYPES_FD_SET */
 
 #if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
-
-#ifndef _TIMEVAL_DEFINED
-/* FIXME: These should be factored out; they are properly defined
- * in <sys/time.h>, whence they should be included.
- */
-#define _TIMEVAL_DEFINED
-struct timeval
-{ long		  tv_sec;
-  long		  tv_usec;
-};
-
-#define timerisset(tvp)	 ((tvp)->tv_sec || (tvp)->tv_usec)
-#define timercmp(tvp, uvp, cmp) \
-	(((tvp)->tv_sec != (uvp)->tv_sec) ? \
-	((tvp)->tv_sec cmp (uvp)->tv_sec) : \
-	((tvp)->tv_usec cmp (uvp)->tv_usec))
-#define timerclear(tvp)	 (tvp)->tv_sec = (tvp)->tv_usec = 0
-#endif	/* _TIMEVAL_DEFINED */
 
 struct hostent
 { char		 *h_name;

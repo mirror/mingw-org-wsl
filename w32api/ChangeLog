@@ -1,3 +1,13 @@
+2017-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor <sys/time.h> duplicate content out of winsock headers.
+
+	* include/winsock.h include/winsock2.h [_TIMEVAL_DEFINED]: Delete
+	conditional block, and all its content; include <sys/time.h> instead.
+	(__WINSOCK_H_SOURCED__): New macro; define it temporarily, only while
+	processing this header, such that only selected content from other
+	internally referenced headers is exposed.
+
 2017-09-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Source BSD non-standard type definitions from mingwrt header.
