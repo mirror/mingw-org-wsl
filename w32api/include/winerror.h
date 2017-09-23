@@ -31,8 +31,14 @@
  *
  */
 #ifndef _WINERROR_H
-#define _WINERROR_H
 #pragma GCC system_header
+
+#ifndef __WINSOCK_H_SOURCED__
+/* Part of this header is available for selective inclusion by <winsock.h>;
+ * mark it as fully processed, only when NOT so included; otherwise, occlude
+ * those parts which are not relevant for <winsock.h>
+ */
+#define _WINERROR_H
 
 #define _HRESULT_TYPEDEF_(_sc)  ((HRESULT)(_sc))
 
@@ -1592,106 +1598,169 @@
 #define DNS_ERROR_DP_ALREADY_ENLISTED					 9904L
 #define DNS_ERROR_DP_NOT_AVAILABLE					 9905L
 
-#ifndef WSABASEERR
-/* FIXME: Guarding this is inappropriate; wherever else these constants may
- * be defined, we should give the compiler an opportunity to check them for
- * consistency, and the guard denies any such opportunity.  Alternatively,
- * we may consider guarding the remainder of the header content, such that
- * these definitions may be exposed selectively, from THIS location ONLY,
- * or delete them from here, and include them selectively from elsewhere.
+/* This ends the first group of error codes which are to be occluded
+ * when selectively included by <winsock.h>
  */
-#define WSABASEERR							10000L
-#define WSAEINTR							10004L
-#define WSAEBADF							10009L
-#define WSAEACCES							10013L
-#define WSAEFAULT							10014L
-#define WSAEINVAL							10022L
-#define WSAEMFILE							10024L
-#define WSAEWOULDBLOCK							10035L
-#define WSAEINPROGRESS							10036L
-#define WSAEALREADY							10037L
-#define WSAENOTSOCK							10038L
-#define WSAEDESTADDRREQ 						10039L
-#define WSAEMSGSIZE							10040L
-#define WSAEPROTOTYPE							10041L
-#define WSAENOPROTOOPT							10042L
-#define WSAEPROTONOSUPPORT						10043L
-#define WSAESOCKTNOSUPPORT						10044L
-#define WSAEOPNOTSUPP							10045L
-#define WSAEPFNOSUPPORT 						10046L
-#define WSAEAFNOSUPPORT 						10047L
-#define WSAEADDRINUSE							10048L
-#define WSAEADDRNOTAVAIL						10049L
-#define WSAENETDOWN							10050L
-#define WSAENETUNREACH							10051L
-#define WSAENETRESET							10052L
-#define WSAECONNABORTED 						10053L
-#define WSAECONNRESET							10054L
-#define WSAENOBUFS							10055L
-#define WSAEISCONN							10056L
-#define WSAENOTCONN							10057L
-#define WSAESHUTDOWN							10058L
-#define WSAETOOMANYREFS 						10059L
-#define WSAETIMEDOUT							10060L
-#define WSAECONNREFUSED 						10061L
-#define WSAELOOP							10062L
-#define WSAENAMETOOLONG 						10063L
-#define WSAEHOSTDOWN							10064L
-#define WSAEHOSTUNREACH 						10065L
-#define WSAENOTEMPTY							10066L
-#define WSAEPROCLIM							10067L
-#define WSAEUSERS							10068L
-#define WSAEDQUOT							10069L
-#define WSAESTALE							10070L
-#define WSAEREMOTE							10071L
-#define WSASYSNOTREADY							10091L
-#define WSAVERNOTSUPPORTED						10092L
-#define WSANOTINITIALISED						10093L
-#define WSAEDISCON							10101L
-#define WSAENOMORE							10102L
-#define WSAECANCELLED							10103L
-#define WSAEINVALIDPROCTABLE						10104L
-#define WSAEINVALIDPROVIDER						10105L
-#define WSAEPROVIDERFAILEDINIT						10106L
-#define WSASYSCALLFAILURE						10107L
-#define WSASERVICE_NOT_FOUND						10108L
-#define WSATYPE_NOT_FOUND						10109L
-#define WSA_E_NO_MORE							10110L
-#define WSA_E_CANCELLED 						10111L
-#define WSAEREFUSED							10112L
-#define WSAHOST_NOT_FOUND						11001L
-#define WSATRY_AGAIN							11002L
-#define WSANO_RECOVERY							11003L
-#define WSANO_DATA							11004L
-#define WSA_QOS_RECEIVERS						11005L
-#define WSA_QOS_SENDERS 						11006L
-#define WSA_QOS_NO_SENDERS						11007L
-#define WSA_QOS_NO_RECEIVERS						11008L
-#define WSA_QOS_REQUEST_CONFIRMED					11009L
-#define WSA_QOS_ADMISSION_FAILURE					11010L
-#define WSA_QOS_POLICY_FAILURE						11011L
-#define WSA_QOS_BAD_STYLE						11012L
-#define WSA_QOS_BAD_OBJECT						11013L
-#define WSA_QOS_TRAFFIC_CTRL_ERROR					11014L
-#define WSA_QOS_GENERIC_ERROR						11015L
-#define WSA_QOS_ESERVICETYPE						11016L
-#define WSA_QOS_EFLOWSPEC						11017L
-#define WSA_QOS_EPROVSPECBUF						11018L
-#define WSA_QOS_EFILTERSTYLE						11019L
-#define WSA_QOS_EFILTERTYPE						11020L
-#define WSA_QOS_EFILTERCOUNT						11021L
-#define WSA_QOS_EOBJLENGTH						11022L
-#define WSA_QOS_EFLOWCOUNT						11023L
-#define WSA_QOS_EUNKOWNPSOBJ						11024L
-#define WSA_QOS_EPOLICYOBJ						11025L
-#define WSA_QOS_EFLOWDESC						11026L
-#define WSA_QOS_EPSFLOWSPEC						11027L
-#define WSA_QOS_EPSFILTERSPEC						11028L
-#define WSA_QOS_ESDMODEOBJ						11029L
-#define WSA_QOS_ESHAPERATEOBJ						11030L
-#define WSA_QOS_RESERVED_PETYPE 					11031L
-#endif /* !WSABASEERR */
+#endif	/* !__WINSOCK_H_SOURCED__ */
 
+/* The following are to be defined both when including <winerror.h> directly,
+ * and when including it selectively, via <winsock.h>; (those codes which are
+ * specific to WinSock v2 are excluded, during selective inclusion, unless
+ * <winsock.h> itself is included on behalf of <winsock2.h>).
+ */
+#undef __WINSOCK_V1_ERRORS__
+#if ! (defined _WINERROR_H && defined _WINSOCK_H)
+/* Error codes for WinSock v1 must be defined if either _WINERROR_H is
+ * defined, (indicating direct inclusion of <winerror.h>), or _WINSOCK_H
+ * is defined, (indicating possible indirect inclusion via <winsock.h>),
+ * but if both are defined, this must be the second pass through these
+ * definitions; there is no need to process them a second time.
+ */
+# define __WINSOCK_V1_ERRORS__ (defined _WINERROR_H || defined _WINSOCK_H)
+#endif
+
+#if __WINSOCK_V1_ERRORS__
+/* The following group of error codes are applicable to both WinSock v1,
+ * and WinSock v2 protocols, and we have yet to define them; do so now,
+ * noting that all are biased by addition of WSABASEERR.
+ */
+#define __WSA_ERRNO(N)  		 	 (WSABASEERR + (N))
+#define WSABASEERR			  				10000L
+
+#define WSAEINTR				__WSA_ERRNO(    4 )  /*	10004L */
+#define WSAEBADF				__WSA_ERRNO(    9 )  /*	10009L */
+#define WSAEACCES				__WSA_ERRNO(   13 )  /*	10013L */
+#define WSAEFAULT				__WSA_ERRNO(   14 )  /*	10014L */
+#define WSAEINVAL				__WSA_ERRNO(   22 )  /*	10022L */
+#define WSAEMFILE				__WSA_ERRNO(   24 )  /*	10024L */
+#define WSAEWOULDBLOCK				__WSA_ERRNO(   35 )  /*	10035L */
+#define WSAEINPROGRESS				__WSA_ERRNO(   36 )  /*	10036L */
+#define WSAEALREADY				__WSA_ERRNO(   37 )  /*	10037L */
+#define WSAENOTSOCK				__WSA_ERRNO(   38 )  /*	10038L */
+#define WSAEDESTADDRREQ 			__WSA_ERRNO(   39 )  /*	10039L */
+#define WSAEMSGSIZE				__WSA_ERRNO(   40 )  /*	10040L */
+#define WSAEPROTOTYPE				__WSA_ERRNO(   41 )  /*	10041L */
+#define WSAENOPROTOOPT				__WSA_ERRNO(   42 )  /*	10042L */
+#define WSAEPROTONOSUPPORT			__WSA_ERRNO(   43 )  /*	10043L */
+#define WSAESOCKTNOSUPPORT			__WSA_ERRNO(   44 )  /*	10044L */
+#define WSAEOPNOTSUPP				__WSA_ERRNO(   45 )  /*	10045L */
+#define WSAEPFNOSUPPORT 			__WSA_ERRNO(   46 )  /*	10046L */
+#define WSAEAFNOSUPPORT 			__WSA_ERRNO(   47 )  /*	10047L */
+#define WSAEADDRINUSE				__WSA_ERRNO(   48 )  /*	10048L */
+#define WSAEADDRNOTAVAIL			__WSA_ERRNO(   49 )  /*	10049L */
+#define WSAENETDOWN				__WSA_ERRNO(   50 )  /*	10050L */
+#define WSAENETUNREACH				__WSA_ERRNO(   51 )  /*	10051L */
+#define WSAENETRESET				__WSA_ERRNO(   52 )  /*	10052L */
+#define WSAECONNABORTED 			__WSA_ERRNO(   53 )  /*	10053L */
+#define WSAECONNRESET				__WSA_ERRNO(   54 )  /*	10054L */
+#define WSAENOBUFS				__WSA_ERRNO(   55 )  /*	10055L */
+#define WSAEISCONN				__WSA_ERRNO(   56 )  /*	10056L */
+#define WSAENOTCONN				__WSA_ERRNO(   57 )  /*	10057L */
+#define WSAESHUTDOWN				__WSA_ERRNO(   58 )  /*	10058L */
+#define WSAETOOMANYREFS 			__WSA_ERRNO(   59 )  /*	10059L */
+#define WSAETIMEDOUT				__WSA_ERRNO(   60 )  /*	10060L */
+#define WSAECONNREFUSED 			__WSA_ERRNO(   61 )  /*	10061L */
+#define WSAELOOP				__WSA_ERRNO(   62 )  /*	10062L */
+#define WSAENAMETOOLONG 			__WSA_ERRNO(   63 )  /*	10063L */
+#define WSAEHOSTDOWN				__WSA_ERRNO(   64 )  /*	10064L */
+#define WSAEHOSTUNREACH 			__WSA_ERRNO(   65 )  /*	10065L */
+#define WSAENOTEMPTY				__WSA_ERRNO(   66 )  /*	10066L */
+#define WSAEPROCLIM				__WSA_ERRNO(   67 )  /*	10067L */
+#define WSAEUSERS				__WSA_ERRNO(   68 )  /*	10068L */
+#define WSAEDQUOT				__WSA_ERRNO(   69 )  /*	10069L */
+#define WSAESTALE				__WSA_ERRNO(   70 )  /*	10070L */
+#define WSAEREMOTE				__WSA_ERRNO(   71 )  /*	10071L */
+#define WSASYSNOTREADY				__WSA_ERRNO(   91 )  /*	10091L */
+#define WSAVERNOTSUPPORTED			__WSA_ERRNO(   92 )  /*	10092L */
+#define WSANOTINITIALISED			__WSA_ERRNO(   93 )  /*	10093L */
+#define WSAEDISCON				__WSA_ERRNO(  101 )  /*	10101L */
+#endif	/* __WINSOCK_V1_ERRORS__ */
+
+#undef  __WINSOCK_V2_ERRORS__
+#if ! (defined _WINERROR_H && defined _WINSOCK2_H)
+/* Error codes for WinSock v2 must be defined if either _WINERROR_H is
+ * defined, (indicating direct inclusion of <winerror.h>), or _WINSOCK2_H
+ * is defined, (indicating possible indirect inclusion via <winsock.h> on
+ * behalf of <winsock2.h>), but if both are defined, it is implicit that
+ * this must be the second pass through these definitions; there is no
+ * need to process them a second time.
+ */
+# define __WINSOCK_V2_ERRORS__ (defined _WINERROR_H || defined _WINSOCK2_H)
+#endif
+
+#if __WINSOCK_V2_ERRORS__
+/* The following group of error codes are specific to the WinSock v2 protocol;
+ * their definitions are suppressed during selective inclusion by <winsock.h>,
+ * when such inclusion has not been requested by <winsock2.h>
+ */
+#define WSAENOMORE				__WSA_ERRNO(  102 )  /*	10102L */
+#define WSAECANCELLED				__WSA_ERRNO(  103 )  /*	10103L */
+#define WSAEINVALIDPROCTABLE			__WSA_ERRNO(  104 )  /*	10104L */
+#define WSAEINVALIDPROVIDER			__WSA_ERRNO(  105 )  /*	10105L */
+#define WSAEPROVIDERFAILEDINIT			__WSA_ERRNO(  106 )  /*	10106L */
+#define WSASYSCALLFAILURE			__WSA_ERRNO(  107 )  /*	10107L */
+#define WSASERVICE_NOT_FOUND			__WSA_ERRNO(  108 )  /*	10108L */
+#define WSATYPE_NOT_FOUND			__WSA_ERRNO(  109 )  /*	10109L */
+#define WSA_E_NO_MORE				__WSA_ERRNO(  110 )  /*	10110L */
+#define WSA_E_CANCELLED 			__WSA_ERRNO(  111 )  /*	10111L */
+#define WSAEREFUSED				__WSA_ERRNO(  112 )  /*	10112L */
+#endif	/* __WINSOCK_V2_ERRORS__ */
+
+#if __WINSOCK_V1_ERRORS__
+/* A further group of error codes which apply to both WinSock v1, and WinSock v2
+ * protocols; collated here to preserve numerical sort order across both groups.
+ */
+#define WSAHOST_NOT_FOUND			__WSA_ERRNO( 1001 )  /*	11001L */
+#define WSATRY_AGAIN				__WSA_ERRNO( 1002 )  /*	11002L */
+#define WSANO_RECOVERY				__WSA_ERRNO( 1003 )  /*	11003L */
+#define WSANO_DATA				__WSA_ERRNO( 1004 )  /*	11004L */
+#endif	/* __WINSOCK_V1_ERRORS__ */
+
+#if __WINSOCK_V2_ERRORS__
+/* WinSock v2 Quality of Service errors; once again, these definitions are
+ * suppressed during selective inclusion by <winsock.h>, unless inclusion is
+ * on behalf of <winsock2.h>
+ */
+#define WSA_QOS_RECEIVERS			__WSA_ERRNO( 1005 )  /*	11005L */
+#define WSA_QOS_SENDERS 			__WSA_ERRNO( 1006 )  /*	11006L */
+#define WSA_QOS_NO_SENDERS			__WSA_ERRNO( 1007 )  /*	11007L */
+#define WSA_QOS_NO_RECEIVERS			__WSA_ERRNO( 1008 )  /*	11008L */
+#define WSA_QOS_REQUEST_CONFIRMED		__WSA_ERRNO( 1009 )  /*	11009L */
+#define WSA_QOS_ADMISSION_FAILURE		__WSA_ERRNO( 1010 )  /*	11010L */
+#define WSA_QOS_POLICY_FAILURE			__WSA_ERRNO( 1011 )  /*	11011L */
+#define WSA_QOS_BAD_STYLE			__WSA_ERRNO( 1012 )  /*	11012L */
+#define WSA_QOS_BAD_OBJECT			__WSA_ERRNO( 1013 )  /*	11013L */
+#define WSA_QOS_TRAFFIC_CTRL_ERROR		__WSA_ERRNO( 1014 )  /*	11014L */
+#define WSA_QOS_GENERIC_ERROR			__WSA_ERRNO( 1015 )  /*	11015L */
+#define WSA_QOS_ESERVICETYPE			__WSA_ERRNO( 1016 )  /*	11016L */
+#define WSA_QOS_EFLOWSPEC			__WSA_ERRNO( 1017 )  /*	11017L */
+#define WSA_QOS_EPROVSPECBUF			__WSA_ERRNO( 1018 )  /*	11018L */
+#define WSA_QOS_EFILTERSTYLE			__WSA_ERRNO( 1019 )  /*	11019L */
+#define WSA_QOS_EFILTERTYPE			__WSA_ERRNO( 1020 )  /*	11020L */
+#define WSA_QOS_EFILTERCOUNT			__WSA_ERRNO( 1021 )  /*	11021L */
+#define WSA_QOS_EOBJLENGTH			__WSA_ERRNO( 1022 )  /*	11022L */
+#define WSA_QOS_EFLOWCOUNT			__WSA_ERRNO( 1023 )  /*	11023L */
+#define WSA_QOS_EUNKOWNPSOBJ			__WSA_ERRNO( 1024 )  /*	11024L */
+#define WSA_QOS_EPOLICYOBJ			__WSA_ERRNO( 1025 )  /*	11025L */
+#define WSA_QOS_EFLOWDESC			__WSA_ERRNO( 1026 )  /*	11026L */
+#define WSA_QOS_EPSFLOWSPEC			__WSA_ERRNO( 1027 )  /*	11027L */
+#define WSA_QOS_EPSFILTERSPEC			__WSA_ERRNO( 1028 )  /*	11028L */
+#define WSA_QOS_ESDMODEOBJ			__WSA_ERRNO( 1029 )  /*	11029L */
+#define WSA_QOS_ESHAPERATEOBJ			__WSA_ERRNO( 1030 )  /*	11030L */
+#define WSA_QOS_RESERVED_PETYPE 		__WSA_ERRNO( 1031 )  /*	11031L */
+#endif	/* __WINSOCK_V2_ERRORS__ */
+
+/* Regardless of which groups, if any, of WinSock error codes may have been
+ * defined on this occasion, we no longer require their selectors; clean up
+ * the namespace.
+ */
+#undef  __WINSOCK_V1_ERRORS__
+#undef  __WINSOCK_V2_ERRORS__
+
+#ifdef _WINERROR_H
+/* The remaining error codes defined below are to be exposed ONLY when
+ * <winerror.h> is included directly, in its own right.
+ */
 #define ERROR_IPSEC_QM_POLICY_EXISTS					13000L
 #define ERROR_IPSEC_QM_POLICY_NOT_FOUND 				13001L
 #define ERROR_IPSEC_QM_POLICY_IN_USE					13002L
@@ -1882,7 +1951,7 @@
 #define ERROR_SXS_MISSING_ASSEMBLY_IDENTITY_ATTRIBUTE			14079L
 #define ERROR_SXS_INVALID_ASSEMBLY_IDENTITY_ATTRIBUTE_NAME		14080L
 
-//Crypto realted errors
+/* Crypto realted errors */
 #define CRYPT_E_NOT_FOUND			 _HRESULT_TYPEDEF_(0x80092004L)
 #define CRYPT_E_EXISTS				 _HRESULT_TYPEDEF_(0x80092005L)
 #define CRYPT_E_NO_PROVIDER			 _HRESULT_TYPEDEF_(0x80092006L)
@@ -2337,5 +2406,6 @@
 #define NTE_TOKEN_KEYSET_STORAGE_FULL			((HRESULT)(0x80090023L))
 #define NTE_TEMPORARY_PROFILE				((HRESULT)(0x80090024L))
 #define NTE_FIXEDPARAMETER				((HRESULT)(0x80090025L))
+#endif	/* _WINERROR_H */
 
 #endif	/* !_WINERROR_H: $RCSfile$: end of file */

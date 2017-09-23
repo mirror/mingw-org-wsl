@@ -1,3 +1,17 @@
+2017-09-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Factor <winerror.h> duplicate content out of winsock headers.
+
+	* include/winsock.h include/winsock2.h [!defined WSABASEERR]: Delete
+	conditional block, and all of its content; selectively include...
+	* include/winerror.h [__WINSOCK_H_SOURCED__]: ...this instead.
+	[__WINSOCK_H_SOURCED__] (_WINERROR_H): Do not define it.
+	(__WINSOCK_V1_ERRORS__, __WINSOCK_V2_ERRORS__): New temporary macros;
+	define them, to segregate WSA error messages applicable to WinSock v2
+	only, from those applicable to both WinSock v1.1 and WinSock v2.
+	(__WSA_ERRNO): New macro; use it to redefine all WSA specific error
+	codes, except WSABASEERR, relative to WSABASEERR itself.
+
 2017-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor <sys/time.h> duplicate content out of winsock headers.
