@@ -1,3 +1,13 @@
+2017-10-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Include, and make <sys/bsdtypes.h> test suite safe.
+
+	* tests/headers.at (sys/bsdtypes.h): Add reference.
+
+	* include/sys/bsdtypes.h [__IN_MINGWRT_TESTSUITE__]: Add to...
+	[_BSD_SOURCE || _WINSOCK2_H]: ...these, as conditions for supression
+	of "ill-advised usage" warning message.
+
 2017-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor <sys/time.h> duplicate content out of winsock headers.

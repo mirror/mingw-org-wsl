@@ -5,7 +5,7 @@
  * and adopted by the Windows sockets implementation; users are advised
  * to avoid using these data types, and use standard types instead.
  *
- * $Id$
+ * $Id: bsdtypes.h,v 54917a4a822e 2017/10/25 14:32:38 keithmarshall $
  *
  * Abstracted from MinGW.org's WinSock implementation
  * Copyright (C) 2017, MinGW.org Project
@@ -44,13 +44,14 @@
  */
 #include <_mingw.h>
 
-#if ! (defined _BSD_SOURCE || defined _WINSOCK_H)
-/* Users are STRONGLY recommended to avoid using the non-standard BSD
- * data types defined herein, unless compiling code which proclaims its
- * _BSD_SOURCE heritage, or which uses the Windows Sockets API, (which
- * has ill-advisedly adopted them).
- */
-#warning "Use of non-standard BSD type definitions is ill-advised."
+#if ! __IN_MINGWRT_TESTSUITE__ \
+ && ! (defined _BSD_SOURCE || defined _WINSOCK_H)
+ /* Users are STRONGLY recommended to avoid using the non-standard BSD
+  * data types defined herein, unless compiling code which proclaims its
+  * _BSD_SOURCE heritage, or which uses the Windows Sockets API, (which
+  * has ill-advisedly adopted them).
+  */
+# warning "Use of non-standard BSD type definitions is ill-advised."
 #endif
 
 /* Use "unsigned foo" instead of these "u_foo" shorthand aliases.
@@ -62,4 +63,4 @@ typedef unsigned long	u_long;
 
 #define _BSDTYPES_DEFINED
 #endif	/* !_BSDTYPES_DEFINED */
-#endif	/* _SYS_BSDTYPES_H: $RCSfile$: end of file */
+#endif	/* _SYS_BSDTYPES_H: $RCSfile: bsdtypes.h,v $: end of file */
