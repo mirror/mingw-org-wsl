@@ -82,6 +82,7 @@ utime.h dnl
 values.h dnl
 wchar.h dnl
 wctype.h dnl
+sys/bsdtypes.h dnl
 sys/fcntl.h dnl
 sys/file.h dnl
 sys/locking.h dnl

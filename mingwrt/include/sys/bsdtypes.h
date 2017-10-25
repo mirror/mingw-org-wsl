@@ -5,7 +5,7 @@
  * and adopted by the Windows sockets implementation; users are advised
  * to avoid using these data types, and use standard types instead.
  *
- * $Id: bsdtypes.h,v 54917a4a822e 2017/10/25 14:32:38 keithmarshall $
+ * $Id$
  *
  * Abstracted from MinGW.org's WinSock implementation
  * Copyright (C) 2017, MinGW.org Project
@@ -63,4 +63,4 @@ typedef unsigned long	u_long;
 
 #define _BSDTYPES_DEFINED
 #endif	/* !_BSDTYPES_DEFINED */
-#endif	/* _SYS_BSDTYPES_H: $RCSfile: bsdtypes.h,v $: end of file */
+#endif	/* _SYS_BSDTYPES_H: $RCSfile$: end of file */
