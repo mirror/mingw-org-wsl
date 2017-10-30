@@ -650,6 +650,16 @@ typedef struct protoent PROTOENT, *PPROTOENT, *LPPROTOENT;
 typedef struct timeval TIMEVAL, *PTIMEVAL, *LPTIMEVAL;
 
 /* winsock2 additions */
+#define __WINSOCK2_H_SOURCED__
+
+/* We need a definition for the BLOB data type; although an incomplete
+ * type definition would suffice here, other related headers, <nspapi.h>
+ * in particular, require the full definition, so we may just as well
+ * incorporate that here, by selective inclusion from "wtypes.h", by
+ * way of indirect inclusion from "nspapi.h"
+ */
+#include "nspapi.h"
+
 #define ADDR_ANY			  INADDR_ANY
 
 #define IN_CLASSD(i)	    (((long)(i) & 0xF0000000) == 0xE0000000)
@@ -782,45 +792,11 @@ struct _WSAVersion
   WSAECOMPARATOR	 ecHow;
 } WSAVERSION, *PWSAVERSION, *LPWSAVERSION;
 
-#ifndef __CSADDR_T_DEFINED
-/* FIXME: This content is also defined in <nspapi.h>; it should be
- * factored out to a single shared location.
- */
-typedef
-struct _SOCKET_ADDRESS
-{ LPSOCKADDR		 lpSockaddr;
-  INT			 iSockaddrLength;
-} SOCKET_ADDRESS, *PSOCKET_ADDRESS, *LPSOCKET_ADDRESS;
-
-typedef
-struct _CSADDR_INFO
-{ SOCKET_ADDRESS	 LocalAddr;
-  SOCKET_ADDRESS	 RemoteAddr;
-  INT			 iSocketType;
-  INT			 iProtocol;
-} CSADDR_INFO, *PCSADDR_INFO, *LPCSADDR_INFO;
-
-#define __CSADDR_T_DEFINED
-#endif
-
 typedef
 struct _SOCKET_ADDRESS_LIST
 { INT			 iAddressCount;
   SOCKET_ADDRESS	 Address[1];
 } SOCKET_ADDRESS_LIST, *LPSOCKET_ADDRESS_LIST;
-
-#ifndef __BLOB_T_DEFINED
-/* FIXME: This is also in <wtypes.h> and <nspapi.h>; once again,
- * it should be similarly factored out.
- */
-typedef
-struct _BLOB
-{ ULONG 		 cbSize;
-  BYTE			*pBlobData;
-} BLOB, *PBLOB, *LPBLOB;
-
-#define __BLOB_T_DEFINED
-#endif
 
 typedef
 struct _WSAQuerySetA
@@ -1278,4 +1254,5 @@ typedef DWORD (WINAPI *LPFN_WSAWAITFORMULTIPLEEVENTS) (DWORD, const WSAEVENT *, 
 
 _END_C_DECLS
 
+#undef __WINSOCK2_H_SOURCED__
 #endif	/* _WINSOCK2_H: $RCSfile$: end of file */

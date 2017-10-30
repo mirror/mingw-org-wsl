@@ -1,3 +1,39 @@
+2017-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Refactor <wtypes.h> vs. <nspapi.h> and WinSock headers.
+
+	* include/wtypes.h: Tidy layout; assert copyright.
+	[_BEGIN_C_DECLS, _END_C_DECLS]: Use them, as appropriate.
+	[__NSPAPI_H_SOURCED__]: Restrict exposure of declared content to...
+	[!__BLOB_DATA_TYPE_DEFINED] (BLOB, PBLOB, LPBLOB): ...these; define...
+	(__BLOB_DATA_TYPE_DEFINED__): ...this internal guard; it renames...
+	(__BLOB_T_DEFINED): ...this; do not define...
+	(_WTYPES_H): ...this external guard.
+
+	* include/nspapi.h: Tidy layout; assert copyright.
+	[_BEGIN_C_DECLS, _END_C_DECLS]: Use them, as appropriate.
+	(__CSADDR_T_DEFINED): Do not define; it is no longer required.
+	[__WINSOCK2_H_SOURCED__]: Restrict exposure of declared content to...
+	(struct _CSADDR_INFO): ...this, as an incomplete type, along with...
+	(CSADDR_INFO, PCSADDR_INFO, LPCSADDR_INFO): ...these typedefs; also...
+	(SOCKET_ADDRESS, PSOCKET_ADDRESS, LPSOCKET_ADDRESS): ...define fully.
+	[__WINSOCK2_H_SOURCED__] (_NSPAPI_H): Do not define external guard.
+	[!__WINSOCK2_H_SOURCED__] (struct _CSADDR_INFO): Define fully.
+	(__BLOB_T_DEFINED, BLOB, PBLOB, LPBLOB): Do not define; instead...
+	(__NSPAPI_H_SOURCED__): ...define this, temporarily; include wtypes.h
+	[!__WINSOCK2_H_SOURCED__ && _WIN32_WINNT >= WIN2K]: Include winsock2.h
+	[!__WINSOCK2_H_SOURCED__ && _WIN32_WINNT < WIN2K]: Include winsock.h
+	[UNICODE vs. !UNICODE]: Discriminate generic symbol names, using...
+	(__AW_SUFFIXED__): ...this, to facilitate definition of each of...
+	(SetService, GetAddressByName, _SERVICE_INFO): ...these, and...
+	(__AW_ALIAS__): ...this, for definition of each of...
+	(SERVICE_INFO, LPSERVICE_INFO): ...these.
+
+	* include/winsock2.h (__WINSOCK2_H_SOURCED__): Define it temporarily.
+	(__CSADDR_T_DEFINED, struct _CSADDR_INFO, CSADDR_INFO, PCSADDR_INFO)
+	(LPCSADDR_INFO, __BLOB_T_DEFINED, BLOB, PBLOB, LPBLOB): Do not define;
+	include nspapi.h selectively, to acquire them.
+
 2017-09-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Factor <winerror.h> duplicate content out of winsock headers.
