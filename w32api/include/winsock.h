@@ -41,8 +41,8 @@
  *
  */
 #ifndef _WINSOCK_H
-#define _WINSOCK_H
 #pragma GCC system_header
+#define _WINSOCK_H
 
 #define _GNU_H_WINDOWS32_SOCKETS
 #define __WINSOCK_H_SOURCED__ 1
@@ -51,6 +51,30 @@
 #include <winerror.h>
 #include <sys/bsdtypes.h>
 #include <sys/time.h>
+
+#ifndef WINSOCK_API_LINKAGE
+/* Historically, this was defined (and used) within <winsock2.h>, but not
+ * <winsock.h>, to qualify function declarations which are common to both;
+ * for consistency, we now define, (and subsequently use it here), while
+ * preserving the effect of its previous absence, within <winsock.h>, by
+ * ensuring that it expands to nothing in this context.
+ *
+ * FIXME: Is this logical?  Perhaps <winsock.h> should adopt the effect,
+ * exactly as it was previously implemented exclusively in <winsock2.h>?
+ */
+#if defined _WINSOCK2_H && defined __W32API_USE_DLLIMPORT__
+/* To preserve backward compatibility, DECLSPEC_IMPORT option is
+ * available only to WinSock v2 clients, which request it...
+ */
+#define WINSOCK_API_LINKAGE  DECLSPEC_IMPORT
+
+#else
+/* ...whereas WinSock v1.1 clients, and those WinSock v2 clients which
+ * do not request DECLSPEC_IMPORT, will always use default linkage.
+ */
+#define WINSOCK_API_LINKAGE
+#endif
+#endif
 
 _BEGIN_C_DECLS
 
@@ -444,64 +468,64 @@ struct sockproto
 
 #endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
 
-SOCKET PASCAL accept (SOCKET, struct sockaddr *, int *);
+WINSOCK_API_LINKAGE SOCKET PASCAL accept (SOCKET, struct sockaddr *, int *);
 
-int PASCAL bind (SOCKET, const struct sockaddr *, int);
-int PASCAL closesocket (SOCKET);
-int PASCAL connect (SOCKET, const struct sockaddr *, int);
-int PASCAL ioctlsocket (SOCKET, long, u_long *);
-int PASCAL getpeername (SOCKET, struct sockaddr *, int *);
-int PASCAL getsockname (SOCKET, struct sockaddr *, int *);
-int PASCAL getsockopt (SOCKET, int, int, char *, int *);
+WINSOCK_API_LINKAGE int PASCAL bind (SOCKET, const struct sockaddr *, int);
+WINSOCK_API_LINKAGE int PASCAL closesocket (SOCKET);
+WINSOCK_API_LINKAGE int PASCAL connect (SOCKET, const struct sockaddr *, int);
+WINSOCK_API_LINKAGE int PASCAL ioctlsocket (SOCKET, long, u_long *);
+WINSOCK_API_LINKAGE int PASCAL getpeername (SOCKET, struct sockaddr *, int *);
+WINSOCK_API_LINKAGE int PASCAL getsockname (SOCKET, struct sockaddr *, int *);
+WINSOCK_API_LINKAGE int PASCAL getsockopt (SOCKET, int, int, char *, int *);
 
-unsigned long PASCAL inet_addr (const char *);
+WINSOCK_API_LINKAGE unsigned long PASCAL inet_addr (const char *);
 
-DECLARE_STDCALL_P (char *) inet_ntoa (struct in_addr);
+WINSOCK_API_LINKAGE DECLARE_STDCALL_P (char *) inet_ntoa (struct in_addr);
 
-int PASCAL listen (SOCKET, int);
-int PASCAL recv (SOCKET, char *, int, int);
-int PASCAL recvfrom (SOCKET, char *, int, int, struct sockaddr *, int *);
-int PASCAL send (SOCKET, const char *, int, int);
-int PASCAL sendto (SOCKET, const char *, int, int, const struct sockaddr *, int);
-int PASCAL setsockopt (SOCKET, int, int, const char *, int);
-int PASCAL shutdown (SOCKET, int);
+WINSOCK_API_LINKAGE int PASCAL listen (SOCKET, int);
+WINSOCK_API_LINKAGE int PASCAL recv (SOCKET, char *, int, int);
+WINSOCK_API_LINKAGE int PASCAL recvfrom (SOCKET, char *, int, int, struct sockaddr *, int *);
+WINSOCK_API_LINKAGE int PASCAL send (SOCKET, const char *, int, int);
+WINSOCK_API_LINKAGE int PASCAL sendto (SOCKET, const char *, int, int, const struct sockaddr *, int);
+WINSOCK_API_LINKAGE int PASCAL setsockopt (SOCKET, int, int, const char *, int);
+WINSOCK_API_LINKAGE int PASCAL shutdown (SOCKET, int);
 
-SOCKET PASCAL socket (int, int, int);
+WINSOCK_API_LINKAGE SOCKET PASCAL socket (int, int, int);
 
-DECLARE_STDCALL_P (struct hostent *)  gethostbyaddr (const char *, int, int);
-DECLARE_STDCALL_P (struct hostent *)  gethostbyname (const char *);
-DECLARE_STDCALL_P (struct servent *)  getservbyport (int, const char *);
-DECLARE_STDCALL_P (struct servent *)  getservbyname (const char *, const char *);
-DECLARE_STDCALL_P (struct protoent *) getprotobynumber (int);
-DECLARE_STDCALL_P (struct protoent *) getprotobyname (const char *);
+WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct hostent *)  gethostbyaddr (const char *, int, int);
+WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct hostent *)  gethostbyname (const char *);
+WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct servent *)  getservbyport (int, const char *);
+WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct servent *)  getservbyname (const char *, const char *);
+WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct protoent *) getprotobynumber (int);
+WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct protoent *) getprotobyname (const char *);
 
-int PASCAL WSAStartup (WORD, LPWSADATA);
-int PASCAL WSACleanup (void);
-void PASCAL WSASetLastError (int);
-int PASCAL WSAGetLastError (void);
+WINSOCK_API_LINKAGE int PASCAL WSAStartup (WORD, LPWSADATA);
+WINSOCK_API_LINKAGE int PASCAL WSACleanup (void);
+WINSOCK_API_LINKAGE void PASCAL WSASetLastError (int);
+WINSOCK_API_LINKAGE int PASCAL WSAGetLastError (void);
 
-BOOL PASCAL WSAIsBlocking (void);
-int PASCAL WSAUnhookBlockingHook (void);
-FARPROC PASCAL WSASetBlockingHook (FARPROC);
-int PASCAL WSACancelBlockingCall (void);
+WINSOCK_API_LINKAGE BOOL PASCAL WSAIsBlocking (void);
+WINSOCK_API_LINKAGE int PASCAL WSAUnhookBlockingHook (void);
+WINSOCK_API_LINKAGE FARPROC PASCAL WSASetBlockingHook (FARPROC);
+WINSOCK_API_LINKAGE int PASCAL WSACancelBlockingCall (void);
 
-HANDLE PASCAL WSAAsyncGetServByName (HWND, u_int, const char *, const char *, char *, int);
-HANDLE PASCAL WSAAsyncGetServByPort (HWND, u_int, int, const char *, char *, int);
-HANDLE PASCAL WSAAsyncGetProtoByName (HWND, u_int, const char *, char *, int);
-HANDLE PASCAL WSAAsyncGetProtoByNumber (HWND, u_int, int, char *, int);
-HANDLE PASCAL WSAAsyncGetHostByName (HWND, u_int, const char *, char *, int);
-HANDLE PASCAL WSAAsyncGetHostByAddr (HWND, u_int, const char *, int, int, char *, int);
+WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetServByName (HWND, u_int, const char *, const char *, char *, int);
+WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetServByPort (HWND, u_int, int, const char *, char *, int);
+WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetProtoByName (HWND, u_int, const char *, char *, int);
+WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetProtoByNumber (HWND, u_int, int, char *, int);
+WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetHostByName (HWND, u_int, const char *, char *, int);
+WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetHostByAddr (HWND, u_int, const char *, int, int, char *, int);
 
-int PASCAL WSACancelAsyncRequest (HANDLE);
-int PASCAL WSAAsyncSelect (SOCKET, HWND, u_int, long);
+WINSOCK_API_LINKAGE int PASCAL WSACancelAsyncRequest (HANDLE);
+WINSOCK_API_LINKAGE int PASCAL WSAAsyncSelect (SOCKET, HWND, u_int, long);
 
 #if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
 
-u_long PASCAL htonl (u_long);
-u_long PASCAL ntohl (u_long);
-u_short PASCAL htons (u_short);
-u_short PASCAL ntohs (u_short);
-int PASCAL select (int nfds, fd_set *, fd_set *, fd_set *, const struct timeval *);
+WINSOCK_API_LINKAGE u_long PASCAL htonl (u_long);
+WINSOCK_API_LINKAGE u_long PASCAL ntohl (u_long);
+WINSOCK_API_LINKAGE u_short PASCAL htons (u_short);
+WINSOCK_API_LINKAGE u_short PASCAL ntohs (u_short);
+WINSOCK_API_LINKAGE int PASCAL select (int nfds, fd_set *, fd_set *, fd_set *, const struct timeval *);
 int PASCAL gethostname (char *, int );
 
 #endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */

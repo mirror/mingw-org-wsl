@@ -1,3 +1,22 @@
+2017-11-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Use WINSOCK_API_LINKAGE consistently in WinSock headers.
+
+	* include/winsock.h (WINSOCK_API_LINKAGE): Define, and prefix to...
+	(accept, bind, closesocket, connect, ioctlsocket, inet_addr, inet_ntoa)
+	(getpeername, getsockname, getsockopt, listen, recv, recvfrom, send)
+	(sendto, setsockopt, shutdown, socket, gethostbyaddr, gethostbyname)
+	(getservbyport, getservbyname, getprotobynumber, getprotobyname)
+	(WSAStartup, WSACleanup, WSASetLastError, WSAGetLastError)
+	(WSAIsBlocking, WSAUnhookBlockingHook, WSASetBlockingHook)
+	(WSACancelBlockingCall, WSAAsyncGetServByName, WSAAsyncGetServByPort)
+	(WSAAsyncGetProtoByName, WSAAsyncGetProtoByNumber, WSAAsyncSelect)
+	(WSAAsyncGetHostByName, WSAAsyncGetHostByAddr, WSACancelAsyncRequest)
+	(htonl, ntohl, htons, ntohs, select): ...these function prototypes.
+
+	* include/winsock2.h (WINSOCK_API_LINKAGE): Remove it from...
+	(LPFN_WSASTARTUP): ...this typedef; it is inappropriate.
+
 2017-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Refactor <wtypes.h> vs. <nspapi.h> and WinSock headers.
