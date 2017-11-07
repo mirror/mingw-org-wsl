@@ -1,3 +1,11 @@
+2017-11-07  Keith Marshall  <keith@users.osdn.me>
+
+	Adopt system naming convention for USE_SYS_TYPES_FD_SET macro.
+
+	* include/winsock.h (USE_SYS_TYPES_FD_SET): Deprecate it; use...
+	(_USE_SYS_TYPES_FD_SET): ...this alternative; it is named to conform
+	with preferred convention for system feature test macros.
+
 2017-11-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Use WINSOCK_API_LINKAGE consistently in WinSock headers.

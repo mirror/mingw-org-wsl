@@ -76,6 +76,17 @@
 #endif
 #endif
 
+#if ! defined _USE_SYS_TYPES_FD_SET && defined USE_SYS_TYPES_FD_SET
+/* Originally defined by the deprecated name, USE_SYS_TYPES_FD_SET, users
+ * may specify this to suppress warnings, in the event that (incompatible)
+ * fd_set manipulation macros may have been inherited from <sys/types.h>;
+ * accommodate use of the deprecated feature test name.
+ */
+#warning "Feature test macro USE_SYS_TYPES_FD_SET is deprecated."
+#warning "Use the _USE_SYS_TYPES_FD_SET feature test macro instead."
+#define _USE_SYS_TYPES_FD_SET  1
+#endif
+
 _BEGIN_C_DECLS
 
 typedef u_int  SOCKET;
@@ -133,10 +144,10 @@ int PASCAL __WSAFDIsSet (SOCKET, fd_set *);
 #define FD_ISSET( fd, set )  __WSAFDIsSet((SOCKET)(fd), (fd_set *)(set))
 #endif	/* ! defined FD_ISSET */
 
-#elif ! defined USE_SYS_TYPES_FD_SET
+#elif ! defined _USE_SYS_TYPES_FD_SET
 /* Definitions from <sys/types.h> probably aren't what the user wants;
  * if they know what they are doing, and they are sure that this really
- * is what they want, then they may enable the USE_SYS_TYPES_FD_SET
+ * is what they want, then they may enable the _USE_SYS_TYPES_FD_SET
  * feature test macro, to suppress this warning.
  */
 #warning "fd_set and associated macros have been defined in <sys/types.h>"
