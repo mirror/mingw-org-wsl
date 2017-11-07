@@ -87,6 +87,15 @@
 #define _USE_SYS_TYPES_FD_SET  1
 #endif
 
+#ifndef __WINSOCK2_DEPRECATED
+/* Some of the WinSock v1.1 declarations have become deprecated in
+ * WinSock v2.  If <winsock2.h> has been included, this deprecation
+ * attribute macro should already have been defined; if not, we now
+ * define it to do nothing.
+ */
+#define __WINSOCK2_DEPRECATED
+#endif
+
 _BEGIN_C_DECLS
 
 typedef u_int  SOCKET;
@@ -515,10 +524,15 @@ WINSOCK_API_LINKAGE int PASCAL WSACleanup (void);
 WINSOCK_API_LINKAGE void PASCAL WSASetLastError (int);
 WINSOCK_API_LINKAGE int PASCAL WSAGetLastError (void);
 
-WINSOCK_API_LINKAGE BOOL PASCAL WSAIsBlocking (void);
-WINSOCK_API_LINKAGE int PASCAL WSAUnhookBlockingHook (void);
-WINSOCK_API_LINKAGE FARPROC PASCAL WSASetBlockingHook (FARPROC);
-WINSOCK_API_LINKAGE int PASCAL WSACancelBlockingCall (void);
+/* The following four pseudo-blocking functions are provided
+ * to support WinSock v1.1, but have been marked as deprecated
+ * in WinSock v2; they remain available, but it is recommended
+ * that threads should be used instead!
+ */
+WINSOCK_API_LINKAGE BOOL PASCAL WSAIsBlocking (void) __WINSOCK2_DEPRECATED;
+WINSOCK_API_LINKAGE int PASCAL WSAUnhookBlockingHook (void) __WINSOCK2_DEPRECATED;
+WINSOCK_API_LINKAGE FARPROC PASCAL WSASetBlockingHook (FARPROC) __WINSOCK2_DEPRECATED;
+WINSOCK_API_LINKAGE int PASCAL WSACancelBlockingCall (void) __WINSOCK2_DEPRECATED;
 
 WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetServByName (HWND, u_int, const char *, const char *, char *, int);
 WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetServByPort (HWND, u_int, int, const char *, char *, int);

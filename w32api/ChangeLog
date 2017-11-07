@@ -1,5 +1,18 @@
 2017-11-07  Keith Marshall  <keith@users.osdn.me>
 
+	Identify features which have been deprecated in WinSock v2.
+
+	* include/winsock.h (__WINSOCK2_DEPRECATED): Define as nothing.
+	* include/winsock2.h (__WINSOCK2_DEPRECATED): Define as equivalent...
+	(__MINGW_ATTRIB_DEPRECATED): ...to this.
+
+	* include/winsock.h include/winsock2.h: Qualify...
+	(WSAIsBlocking, WSAUnhookBlockingHook, WSASetBlockingHook)
+	(WSACancelBlockingCall): ...each of these function prototypes, with...
+	(__WINSOCK2_DEPRECATED): ...this attribute.
+
+2017-11-07  Keith Marshall  <keith@users.osdn.me>
+
 	Adopt system naming convention for USE_SYS_TYPES_FD_SET macro.
 
 	* include/winsock.h (USE_SYS_TYPES_FD_SET): Deprecate it; use...
