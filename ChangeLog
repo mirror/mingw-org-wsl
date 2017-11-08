@@ -1,3 +1,10 @@
+2017-11-08  Earnie Boyd  <earnie@users.osdn.me>
+
+	Prepare environment for Earnie's tools.
+
+	* .gitignore (nohup.out, nbproject): Add, to avoid file collisions
+	from gvim wrapper and Netbeans IDE project system.
+
 2017-11-08  Keith Marshall  <keith@users.osdn.me>
 
 	Create 6.0-exp branch, for Win64 support preparation.

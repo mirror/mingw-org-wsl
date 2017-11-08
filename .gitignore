@@ -16,3 +16,5 @@ depcomp
 *.bak
 *.o
 *~
+nohup.out
+nbproject
