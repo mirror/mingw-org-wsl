@@ -120,38 +120,50 @@ struct fd_set
   SOCKET	fd_array[FD_SETSIZE];
 } fd_set;
 
-int PASCAL __WSAFDIsSet (SOCKET, fd_set *);
+#ifndef FD_ISSET
+int FD_ISSET (SOCKET, fd_set *);
+#define FD_ISSET( __fd, __set )  __FD_ISSET ((__fd), (__set))
 
-#ifndef FD_CLR
-#define FD_CLR( fd, set )  do					\
-  { u_int __i;							\
-    for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++)	\
-    { if (((fd_set *)(set))->fd_array[__i] == (fd))		\
-      { while (__i < ((fd_set *)(set))->fd_count-1)		\
-	{ ((fd_set *)(set))->fd_array[__i]			\
-	    = ((fd_set *)(set))->fd_array[__i + 1]; __i++;	\
-	}							\
-	((fd_set *)(set))->fd_count--;				\
-	break;							\
-      } 							\
-    }								\
-  } while (0)
-#endif	/* ! defined FD_CLR */
+/* Microsoft provide this library function equivalent of the FD_ISSET
+ * macro, and erroneously claim that it is neccessary to implement the
+ * macro.  We could just as easily implement it entirely inline...
+ */
+int PASCAL __WSAFDIsSet (SOCKET, fd_set *);
+/* ...but, given the availability of the library function, we may just
+ * as well use it.
+ */
+__CRT_ALIAS int __FD_ISSET( SOCKET __fd, fd_set *__set )
+{ return __WSAFDIsSet (__fd, __set); }
+#endif	/* ! defined FD_ISSET */
 
 #ifndef FD_SET
-#define FD_SET( fd, set )  do						   \
-  { if (((fd_set *)(set))->fd_count < FD_SETSIZE)			   \
-       ((fd_set *)(set))->fd_array[((fd_set *)(set))->fd_count++] = (fd);  \
-  } while (0)
+void FD_SET (SOCKET, fd_set *);
+#define FD_SET( __fd, __set )  __FD_SET ((__fd), (__set))
+__CRT_ALIAS void __FD_SET (SOCKET __fd, fd_set *__set)
+{ if( (__set->fd_count < FD_SETSIZE) && ! FD_ISSET (__fd, __set) )
+    __set->fd_array[__set->fd_count++] = __fd;
+}
 #endif	/* ! defined FD_SET */
 
-#ifndef FD_ZERO
-#define FD_ZERO( set )  (((fd_set *)(set))->fd_count = 0)
-#endif	/* ! defined FD_ZERO */
+#ifndef FD_CLR
+void FD_CLR (SOCKET, fd_set *);
+#define FD_CLR( __fd, __set )  __FD_CLR ((__fd), (__set))
+__CRT_ALIAS void __FD_CLR (SOCKET __fd, fd_set *__set)
+{ u_int __m, __n; for (__m = __n = 0; __n < __set->fd_count; __n++)
+  { if (__fd != __set->fd_array[__n])
+    { if (__m < __n) __set->fd_array[__m] = __set->fd_array[__n];
+      ++__m;
+    }
+  } __set->fd_count = __m;
+}
+#endif	/* ! defined FD_CLR */
 
-#ifndef FD_ISSET
-#define FD_ISSET( fd, set )  __WSAFDIsSet((SOCKET)(fd), (fd_set *)(set))
-#endif	/* ! defined FD_ISSET */
+#ifndef FD_ZERO
+void FD_ZERO (fd_set *);
+#define FD_ZERO( __set )  __FD_ZERO (__set)
+__CRT_ALIAS void __FD_ZERO (fd_set *__set)
+{ __set->fd_count = 0; }
+#endif	/* ! defined FD_ZERO */
 
 #elif ! defined _USE_SYS_TYPES_FD_SET
 /* Definitions from <sys/types.h> probably aren't what the user wants;
@@ -562,7 +574,7 @@ int PASCAL gethostname (char *, int );
 #define WSAGETSELECTEVENT(l)			LOWORD(l)
 #define WSAGETSELECTERROR(l)			HIWORD(l)
 
-typedef struct fd_set FD_SET, *PFD_SET, *LPFD_SET;
+typedef struct fd_set /* FD_SET, */ *PFD_SET, *LPFD_SET;
 typedef struct sockaddr SOCKADDR, *PSOCKADDR, *LPSOCKADDR;
 typedef struct sockaddr_in SOCKADDR_IN, *PSOCKADDR_IN, *LPSOCKADDR_IN;
 typedef struct linger LINGER, *PLINGER, *LPLINGER;

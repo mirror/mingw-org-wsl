@@ -1,3 +1,20 @@
+2017-11-08  Keith Marshall  <keith@users.osdn.me>
+
+	Overhaul WinSock fd_set content management macros.
+
+	* include/winsock.h (FD_SET, FD_ISSET, FD_CLR, FD_ZERO): Replace the
+	original implementations of each of these macros, redirecting to...
+	(__FD_SET, __FD_ISSET, __FD_CLR, __FD_ZERO): ...these new, equivalent
+	inline functions, respectively; these are more robust, and correct a
+	defect in the original FD_SET macro implementation, whereby duplicate
+	descriptors could be added to an fd_set array, but would not then be
+	removed by the corresponding FD_CLR macro.
+
+	* tests/winsock.at (MINGW_AT_CHECK_WINSOCK): Ensure that all test
+	programs are linked with -lwsock32 or -lws2_32, as appropriate; the
+	__FD_SET and __FD_ISSET functions are dependent on the __WSAFDIsSet()
+	function, which is implemented in each of these libraries.
+
 2017-11-07  Keith Marshall  <keith@users.osdn.me>
 
 	Identify features which have been deprecated in WinSock v2.

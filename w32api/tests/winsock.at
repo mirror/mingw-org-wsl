@@ -97,6 +97,7 @@ AT_CLEANUP])
 #
 m4_define([MINGW_AT_CHECK_WINSOCK],[dnl
 AT_BANNER([Windows Sockets $1 fd_set macro checks.])
+MINGW_AT_LINK_LIBS([m4_case([$1],[v2],[-lws2_32],[-lwsock32])])
 
 # Verify that the FD_ZERO macro clears all descriptors from the
 # predefined, non-empty fd_set {1, 2, 3, 4}
@@ -157,7 +158,6 @@ MINGW_AT_CHECK_FD_MACRO([$2],[FD_CLR],dnl
 # function, we must ensure that the test code is linked with
 # the appropriate version of the WinSock library.
 #
-MINGW_AT_LINK_LIBS([m4_case([$1],[v2],[-lws2_32],[-lwsock32])])
 MINGW_AT_CHECK_FD_ISSET_MACRO([$2],[4])
 MINGW_AT_CHECK_FD_ISSET_MACRO([$2],[2])
 
