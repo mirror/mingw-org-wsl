@@ -1,5 +1,17 @@
 2017-11-09  Keith Marshall  <keith@users.osdn.me>
 
+	Filter potential WinSock v2 conflicts out of <winsock.h>
+
+	* include/winsock.h [_WINSOCK2_H] <mswsock.h>: Do not include it.
+	[_WINSOCK2_H] (IP_MULTICAST_IF, IP_MULTICAST_TTL, IP_MULTICAST_LOOP)
+	(IP_ADD_MEMBERSHIP, IP_DROP_MEMBERSHIP, IP_DEFAULT_MULTICAST_TTL)
+	(IP_DEFAULT_MULTICAST_LOOP, IP_MAX_MEMBERSHIPS, struct ip_mreq): Do
+	not define any of these; they are not compatible with WinSock v2.
+	[_WINSOCK2_H] (SOMAXCONN): Do not define it; it will be defined
+	appropiately in <winsock2.h>
+
+2017-11-09  Keith Marshall  <keith@users.osdn.me>
+
 	Filter out <winsock.h> typedef anomalies.
 
 	* include/winsock.h (FD_SET, PFD_SET, LPFD_SET): If user defines...

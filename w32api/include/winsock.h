@@ -389,6 +389,7 @@ struct WSAData
 
 #endif	/* !__INSIDE_MSYS__ */
 
+#ifndef _WINSOCK2_H
 /* The following IP defines are specific to WinSock v1.1 (wsock32.dll).
  * They may cause errors, or produce unexpected results, if exposed when
  * compiling application code which is intended to use the getsockopts(),
@@ -409,6 +410,7 @@ struct ip_mreq
 { struct in_addr	 imr_multiaddr;
   struct in_addr	 imr_interface;
 };
+#endif	/* !_WINSOCK2_H */
 
 #define INVALID_SOCKET			 (SOCKET)(~0)
 #define SOCKET_ERROR				 (-1)
@@ -491,7 +493,18 @@ struct sockproto
 #define PF_MAX				      AF_MAX
 
 #define SOL_SOCKET			      0xFFFF
+
+#ifndef _WINSOCK2_H
+/* FIXME: Is this behaviour correct?
+ * Historically, <winsock.h> defined SOMAXCONN unconditionally, with a
+ * value of 5.  However, <winsock2.h> defines it, using a significantly
+ * different value, only when compiling native Windows code, and doesn't
+ * define it at all, when compiling for Cygwin or MSYS.  To accommodate
+ * this difference in philosophy, we must now suppress this definition
+ * in <winsock.h>, when <winsock.h> has been included by <winsock2.h>
+ */
 #define SOMAXCONN				   5
+#endif	/* !_WINSOCK2_H */
 
 #if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
 
@@ -588,7 +601,12 @@ WINSOCK_API_LINKAGE u_long PASCAL ntohl (u_long);
 WINSOCK_API_LINKAGE u_short PASCAL htons (u_short);
 WINSOCK_API_LINKAGE u_short PASCAL ntohs (u_short);
 WINSOCK_API_LINKAGE int PASCAL select (int nfds, fd_set *, fd_set *, fd_set *, const struct timeval *);
-int PASCAL gethostname (char *, int );
+
+/* FIXME: <winsock2.h> moves the following declaration out of the
+ * !(__INSIDE_CYGWIN__||__INSIDE_MSYS__) filter; which is correct?
+ * Furthermore, should this not also have WINSOCK_API_LINKAGE?
+ */
+int PASCAL gethostname (char *, int);
 
 #endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
 
@@ -610,6 +628,7 @@ typedef struct timeval TIMEVAL, *PTIMEVAL, *LPTIMEVAL;
 
 _END_C_DECLS
 
+#ifndef _WINSOCK2_H
 /* MSDN documentation indicates that the MS-specific extensions exported
  * from mswsock.dll, (i.e. the AcceptEx(), TransmitFile(), WSARecEx(), and
  * GetAcceptExSockaddrs() functions), are declared in <mswsock.h>.  These
@@ -623,6 +642,7 @@ _END_C_DECLS
  * references to the mswsock extensions.
  */
 #include <mswsock.h>
+#endif
 
 #undef	__WINSOCK_H_SOURCED__
 #endif	/* _WINSOCK_H: $RCSfile$: end of file */
