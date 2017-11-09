@@ -1,3 +1,13 @@
+2017-11-09  Keith Marshall  <keith@users.osdn.me>
+
+	Filter out <winsock.h> typedef anomalies.
+
+	* include/winsock.h (FD_SET, PFD_SET, LPFD_SET): If user defines...
+	[_WINSOCK_ANOMALOUS_TYPEDEFS]: ...this new feature test macro, expose
+	them as type definitions, but warn of potential conflict with...
+	[!_WINSOCK_ANOMALOUS_TYPEDEFS] (FD_SET): ...this POSIX.1 mandated
+	function; declare its prototype.
+
 2017-11-08  Keith Marshall  <keith@users.osdn.me>
 
 	Overhaul WinSock fd_set content management macros.

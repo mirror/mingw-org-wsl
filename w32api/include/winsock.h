@@ -137,7 +137,32 @@ __CRT_ALIAS int __FD_ISSET( SOCKET __fd, fd_set *__set )
 #endif	/* ! defined FD_ISSET */
 
 #ifndef FD_SET
+#if !_WINSOCK_ANOMALOUS_TYPEDEFS
+/* WinSock is intended to mimic the Berkeley Sockets API, for which
+ * POSIX.1 provides a reference specification; this states that FD_SET
+ * may be implemented as either a macro, or as a function.  The reference
+ * <winsock.h> implementation at http://www.sockets.com/winsock.htm#WinsockH
+ * includes a typedef for FD_SET, which a) conflicts with the latter POSIX.1
+ * provision, and b) creates potential confusion with the former.  Thus, we
+ * prefer to conform with POSIX.1 functional semantics, and recommend that
+ * users avoid the potentially confusing FD_SET typedefs, so allowing us
+ * to provide this function prototype:
+ */
 void FD_SET (SOCKET, fd_set *);
+
+#else	/* _WINSOCK_ANOMALOUS_TYPEDEFS */
+/* However, for users who insist on eschewing standard C/C++ syntax, and
+ * for whatever reason must use FD_SET as a data type, instead of correctly
+ * referring to fd_set, or for pointer references, use PFD_SET or LPFD_SET
+ * instead of standard fd_set * references, we make these anomalous types
+ * visible, when the _WINSOCK_ANOMALOUS_TYPEDEFS feature test macro is
+ * defined with a non-zero value.
+ */
+#warning "FD_SET, PFD_SET, and LPFD_SET data types are non-portable."
+#warning "Use portable fd_set, and fd_set * type references instead."
+
+typedef struct fd_set FD_SET, *PFD_SET, *LPFD_SET;
+#endif
 #define FD_SET( __fd, __set )  __FD_SET ((__fd), (__set))
 __CRT_ALIAS void __FD_SET (SOCKET __fd, fd_set *__set)
 { if( (__set->fd_count < FD_SETSIZE) && ! FD_ISSET (__fd, __set) )
@@ -574,7 +599,6 @@ int PASCAL gethostname (char *, int );
 #define WSAGETSELECTEVENT(l)			LOWORD(l)
 #define WSAGETSELECTERROR(l)			HIWORD(l)
 
-typedef struct fd_set /* FD_SET, */ *PFD_SET, *LPFD_SET;
 typedef struct sockaddr SOCKADDR, *PSOCKADDR, *LPSOCKADDR;
 typedef struct sockaddr_in SOCKADDR_IN, *PSOCKADDR_IN, *LPSOCKADDR_IN;
 typedef struct linger LINGER, *PLINGER, *LPLINGER;
