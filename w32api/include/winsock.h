@@ -1,7 +1,9 @@
 /*
  * winsock.h
  *
- * Definitions for WinSock Version 1.1 API.
+ * Definitions for WinSock Version 1.1 API; also includes a subset of the
+ * definitions which become applicable for WinSock Version 2, filtered such
+ * that they are exposed only when this file is included by <winsock2.h>
  *
  *
  * $Id$
@@ -518,12 +520,54 @@ struct sockproto
 #define MSG_PARTIAL			      0x8000
 #define MAXGETHOSTSTRUCT			1024
 
-#define FD_READ 				   1
-#define FD_WRITE				   2
-#define FD_OOB					   4
-#define FD_ACCEPT				   8
-#define FD_CONNECT				  16
-#define FD_CLOSE				  32
+enum
+{ /* Enumerate the flags used to represent the events which may be
+   * detected on any socket, when monitored via an fd_set array.
+   */
+  FD_READ_BIT = 0,
+# define FD_READ		      (1 << FD_READ_BIT)
+
+  FD_WRITE_BIT,
+# define FD_WRITE		      (1 << FD_WRITE_BIT)
+
+  FD_OOB_BIT,
+# define FD_OOB 		      (1 << FD_OOB_BIT)
+
+  FD_ACCEPT_BIT,
+# define FD_ACCEPT		      (1 << FD_ACCEPT_BIT)
+
+  FD_CONNECT_BIT,
+# define FD_CONNECT		      (1 << FD_CONNECT_BIT)
+
+  FD_CLOSE_BIT,
+# define FD_CLOSE		      (1 << FD_CLOSE_BIT)
+
+# ifdef _WINSOCK2_H
+/* WinSock v1.1 defines no further events, beyond FD_CLOSE (1 << 5 = 32).
+ * The following are specific to WinSock v2; for convenience, they may be
+ * enumerated here, but they are exposed only when <winsock.h> is included
+ * indirectly, by way of including <winsock2.h>
+ */
+  FD_QOS_BIT,
+# define FD_QOS 		      (1 << FD_QOS_BIT)
+
+  FD_GROUP_QOS_BIT,
+# define FD_GROUP_QOS		      (1 << FD_GROUP_QOS_BIT)
+
+  FD_ROUTING_INTERFACE_CHANGE_BIT,
+# define FD_ROUTING_INTERFACE_CHANGE  (1 << FD_ROUTING_INTERFACE_CHANGE_BIT)
+
+  FD_ADDRESS_LIST_CHANGE_BIT,
+# define FD_ADDRESS_LIST_CHANGE       (1 << FD_ADDRESS_LIST_CHANGE_BIT)
+
+# endif /* _WINSOCK2_H */
+  /* Regardless of WinSock version, FD_MAX_EVENTS represents the first
+   * unused flag bit, whence we may deduce FD_ALL_EVENTS, as a mask for
+   * all supported event flags, specific to the WinSock version in use.
+   */
+  FD_MAX_EVENTS,
+# define FD_ALL_EVENTS			((1 << FD_MAX_EVENTS) - 1)
+};
 
 #define WSANO_ADDRESS			WSANO_DATA
 

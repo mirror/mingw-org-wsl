@@ -1,5 +1,23 @@
 2017-11-09  Keith Marshall  <keith@users.osdn.me>
 
+	Normalize fd_set event macros for <winsock2.h> compatibility.
+
+	* include/winsock.h (FD_READ, FD_WRITE, FD_OOB, FD_ACCEPT, FD_CONNECT)
+	(FD_CLOSE): Redefine them, deriving respective values as shifts by...
+	(FD_READ_BIT, FD_WRITE_BIT, FD_OOB_BIT, FD_ACCEPT_BIT, FD_CONNECT_BIT)
+	(FD_CLOSE_BIT): ...this new enumerated count sequence, applying each
+	count to a bit flag with value of 1, in each case respectively.
+	[_WINSOCK2_H]: Extend shift count enumeration, to include...
+	(FD_QOS_BIT, FD_GROUP_QOS_BIT, FD_ROUTING_INTERFACE_CHANGE_BIT)
+	(FD_ADDRESS_LIST_CHANGE_BIT): ...these additional counts; hence...
+	[_WINSOCK2_H] (FD_QOS, FD_GROUP_QOS, FD_ROUTING_INTERFACE_CHANGE)
+	[_WINSOCK2_H] (FD_ADDRESS_LIST_CHANGE): ...define each of these.
+	(FD_MAX_EVENTS): Define unconditionally; it represents a shift count
+	of 1 greater than the offset of the last defined flag; hence...
+	(FD_ALL_EVENTS): ...derive this mask for all event flags.
+
+2017-11-09  Keith Marshall  <keith@users.osdn.me>
+
 	Filter potential WinSock v2 conflicts out of <winsock.h>
 
 	* include/winsock.h [_WINSOCK2_H] <mswsock.h>: Do not include it.
