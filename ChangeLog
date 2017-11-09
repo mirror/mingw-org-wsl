@@ -1,3 +1,15 @@
+2017-11-09  Keith Marshall  <keith@users.osdn.me>
+
+	Avoid an implication that the API is exclusively 32-bit.
+
+	* w32api: Rename directory to...
+	* wslapi: ...this, thus removing any implied 32-bit specificity.
+	* configure.ac (AC_CONFIG_SUBDIRS): Update directory name reference
+	from "w32api" to "wslapi" accordingly.
+
+	* Makefile.comm (w32api_srcdir): Rename macro...
+	(wslapi_srcdir): ...to this.
+
 2017-11-08  Earnie Boyd  <earnie@users.osdn.me>
 
 	Prepare environment for Earnie's tools.

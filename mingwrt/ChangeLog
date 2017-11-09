@@ -1,3 +1,18 @@
+2017-11-09  Keith Marshall  <keith@users.osdn.me>
+
+	Avoid an implication that the API is exclusively 32-bit.
+
+	* configure.ac (MINGW_AC_CONFIG_EXTRA_SUBDIR): Update directory name
+	reference from "w32api" to "wslapi", per top level rename.
+
+	* Makefile.in (w32api_srcdir): Rename macro and AC_SUBST variable...
+	(wslapi_srcdir): ...to this; update all references.
+
+	* tests/Makefile.in (install-w32api-headers): Update directory name
+	reference, to ensure that the testsuite finds the corresponding target
+	in the build directory's wslapi/Makefile; do NOT change the target
+	name until it has been updated in wslapi/Makefile.in itself!
+
 2017-10-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Include, and make <sys/bsdtypes.h> test suite safe.

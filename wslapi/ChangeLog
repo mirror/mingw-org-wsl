@@ -1,3 +1,10 @@
+2017-11-09  Keith Marshall  <keith@users.osdn.me>
+
+	Avoid an implication that the API is exclusively 32-bit.
+
+	* Makefile.in (w32api_srcdir): Rename macro...
+	(wslapi_srcdir): ...to this; update all references.
+
 2017-11-08  Keith Marshall  <keith@users.osdn.me>
 
 	Overhaul WinSock fd_set content management macros.

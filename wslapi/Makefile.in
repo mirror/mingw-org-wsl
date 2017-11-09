@@ -50,7 +50,7 @@ NTDDI_VERSION_SPEC := $(NTDDI_VERSION:%=-D NTDDI_VERSION=%)
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
 mingwrt_srcdir = @mingwrt_srcdir@
-w32api_srcdir = @srcdir@
+wslapi_srcdir = @srcdir@
 abs_builddir = @abs_builddir@
 
 CC = @CC@
@@ -309,9 +309,9 @@ mingwrt-srcdist w32api-srcdist: %-srcdist: %-srcdist-dir %-srcdist-files
 	  xz -c > $*-$(PACKAGE_RELEASE_TAG)-src.tar.xz
 	$(RM) -r dist/$*-$(PACKAGE_VERSION)
 
-w32api-srcdist-testsuite-files: $(wildcard ${w32api_srcdir}/tests/*.at)
-w32api-srcdist-testsuite-files: $(wildcard ${w32api_srcdir}/tests/*.in)
-	(cd ${w32api_srcdir} && tar chf - $(addprefix tests/,$(notdir $^))) | \
+w32api-srcdist-testsuite-files: $(wildcard ${wslapi_srcdir}/tests/*.at)
+w32api-srcdist-testsuite-files: $(wildcard ${wslapi_srcdir}/tests/*.in)
+	(cd ${wslapi_srcdir} && tar chf - $(addprefix tests/,$(notdir $^))) | \
 	  (cd dist/$(PACKAGE_TARNAME)-$(PACKAGE_VERSION) && tar xf -)
 
 mingwrt-srcdist-dir w32api-srcdist-dir: %-srcdist-dir:

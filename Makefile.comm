@@ -77,7 +77,7 @@ configure: configure.ac aclocal.m4 VERSION.m4
 # w32api.h header files, from their respective templates with each of
 # the package version macro definitions completed.
 #
-vpath %.h.in ${mingwrt_srcdir}/include ${w32api_srcdir}/include
+vpath %.h.in ${mingwrt_srcdir}/include ${wslapi_srcdir}/include
 
 _mingw.h w32api.h: %.h: %.h.in VERSION.m4
 	$(PACKAGE_VERSION_SCRIPT) $< > $@

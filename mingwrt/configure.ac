@@ -35,7 +35,7 @@
 
   AC_PREFIX_DEFAULT([/mingw])
   AC_CONFIG_SRCDIR([include/_mingw.h.in])
-  MINGW_AC_CONFIG_EXTRA_SRCDIR([w32api],[include/w32api.h.in])
+  MINGW_AC_CONFIG_EXTRA_SRCDIR([wslapi],[include/w32api.h.in])
   MINGW_AC_PROG_CC_COMPILE_ONLY
   MINGW_AC_PROG_COMPILE_SX
 

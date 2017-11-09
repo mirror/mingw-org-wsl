@@ -1,7 +1,7 @@
 # configure.ac -*- Autoconf -*- vim: filetype=config
 #
-# Process this file with autoconf, to create a configure script for
-# the composite MinGW.org Runtime Library and Win32-API packages.
+# Process this file with "autoreconf -I ..", to create configure scripts
+# for the composite MinGW.org Runtime Library and Win-API packages.
 #
 # $Id$
 #
@@ -35,7 +35,7 @@
   AC_PROG_MKDIR_P
   AC_PATH_PROG([LN],[ln],[ln])
 
-  AC_CONFIG_SUBDIRS([mingwrt w32api])
+  AC_CONFIG_SUBDIRS([mingwrt wslapi])
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #

@@ -141,7 +141,7 @@ install-mingwrt:
 
 chkconfig = ($1/config.status --version | grep $2) 2>&1 > /dev/null
 install-w32api-headers:
-	@for dir in ../../w32api*; do \
+	@for dir in ../../wslapi*; do \
 	  if $(call chkconfig,$$dir,'MinGW Win32 API'); then \
 	     $(MAKE) -C $$dir --no-print-directory prefix=${CURDIR} $@; break; \
 	     fi; \
