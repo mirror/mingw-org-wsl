@@ -1,5 +1,18 @@
 2017-11-14  Keith Marshall  <keith@users.osdn.me>
 
+	Establish default selection for WinSock API declaration.
+
+	* include/windows.h include/nspapi.h: Include...
+	* include/_winsock.h: ...this new system private header; it selects...
+	[_WIN32_WINNT >= _WIN32_WINNT_NT4]: ...WinSock v2 API declarations, as
+	provided by conditional inclusion of <winsock2.h>, otherwise...
+	[_WIN32_WINNT < _WIN32_WINNT_NT4]: ...WinSock v1.1 API declarations,
+	as provided by inclusion of <winsock.h>
+
+	* tests/headers.at <_winsock.h>: Add reference.
+
+2017-11-14  Keith Marshall  <keith@users.osdn.me>
+
 	Update gethostname() declaration; drop Cygwin specificity.
 
 	* include/winsock.h (gethostname): Declare unconditionally; add...

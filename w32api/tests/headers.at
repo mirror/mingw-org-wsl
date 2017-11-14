@@ -255,6 +255,7 @@ winreg.h dnl
 winresrc.h dnl
 winsnmp.h dnl
 winsock2.h dnl
+_winsock.h dnl
 winsock.h dnl
 winspool.h dnl
 winsvc.h dnl

@@ -6,7 +6,7 @@
  * $Id$
  *
  * Written by Anders Norlander <anorland@hem2.passagen.se>
- * Copyright (C) 1998-2003, 2006, 2007, 2016, MinGW.org Project
+ * Copyright (C) 1998-2003, 2006, 2007, 2016, 2017, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -68,24 +68,28 @@
 #include <commdlg.h>
 #include <winspool.h>
 #endif
-#if defined(Win32_Winsock)
-#warning "The  Win32_Winsock macro name is deprecated.\
-    Please use __USE_W32_SOCKETS instead"
-#ifndef __USE_W32_SOCKETS
-#define __USE_W32_SOCKETS
+#if defined Win32_Winsock
+#warning "The Win32_Winsock macro is deprecated; use __USE_W32_SOCKETS instead."
+# ifndef __USE_W32_SOCKETS
+#  define __USE_W32_SOCKETS
+# endif
 #endif
-#endif
-#if defined(__USE_W32_SOCKETS) || !(defined(__CYGWIN__) || defined(__MSYS__) || defined(_UWIN))
-#if (_WIN32_WINNT >= 0x0400)
-#include <winsock2.h>
-/*
- * MS likes to include mswsock.h here as well,
- * but that can cause undefined symbols if
- * winsock2.h is included before windows.h
- */
-#else
-#include <winsock.h>
-#endif /*  (_WIN32_WINNT >= 0x0400) */
+#if defined __USE_W32_SOCKETS \
+ || ! (defined __CYGWIN__ || defined __MSYS__ || defined _UWIN)
+ /* The WinSock API should be declared; including the following
+  * private header file will make an informed choice between the
+  * WinSock v1.1 API, as declared in <winsock.h>, and WinSock v2,
+  * as declared in <winsock2.h>, as the preferred default level
+  * of WinSock API support to be offered.
+  */
+# include "_winsock.h"
+ /*
+  * FIXME: strict Microsoft compatibility may require inclusion
+  * of <mswsock.h> here as well; however, this has been observed
+  * to produce undefined symbol errors, if <winsock2.h> has been
+  * included before <windows.h>, so we omit this.
+  */
+# /* include <mswsock.h> */
 #endif
 #ifndef NOGDI
 /* In older versions we disallowed COM declarations in __OBJC__
