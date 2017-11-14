@@ -1,3 +1,12 @@
+2017-11-14  Keith Marshall  <keith@users.osdn.me>
+
+	Update gethostname() declaration; drop Cygwin specificity.
+
+	* include/winsock.h (gethostname): Declare unconditionally; add...
+	(WINSOCK_API_LINKAGE): ...this DLL import control attribute.
+	[!(defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)]: Recast...
+	[!defined __INSIDE_MSYS__]: ...as this, throughout.
+
 2017-11-09  Keith Marshall  <keith@users.osdn.me>
 
 	Normalize fd_set event macros for <winsock2.h> compatibility.

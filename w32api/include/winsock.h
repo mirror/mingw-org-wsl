@@ -202,7 +202,7 @@ __CRT_ALIAS void __FD_ZERO (fd_set *__set)
 #warning "Your <sys/types.h> may cause runtime problems with W32 sockets."
 #endif	/* !_SYS_TYPES_FD_SET */
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 struct hostent
 { char		 *h_name;
@@ -218,7 +218,7 @@ struct linger
   u_short	  l_linger;
 };
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 #define IOCPARM_MASK			      0x7F
 #define IOC_VOID			0x20000000
@@ -226,7 +226,7 @@ struct linger
 #define IOC_IN				0x80000000
 #define IOC_INOUT		    (IOC_IN | IOC_OUT)
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define _IO(x,y)	(IOC_VOID|((x)<<8)|(y))
 #define _IOR(x,y,t)	(IOC_OUT|(((long)sizeof(t)&IOCPARM_MASK)<<16)|((x)<<8)|(y))
@@ -234,7 +234,7 @@ struct linger
 
 #define FIONBIO 		_IOW('f', 126, u_long)
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 #define FIONREAD		_IOR('f', 127, u_long)
 #define FIOASYNC		_IOW('f', 125, u_long)
@@ -244,7 +244,7 @@ struct linger
 #define SIOCGLOWAT		_IOR('s',  3, u_long)
 #define SIOCATMARK		_IOR('s',  7, u_long)
 
-#if ! ( defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 struct netent
 { char		 *n_name;
@@ -266,7 +266,7 @@ struct protoent
   short 	  p_proto;
 };
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 #define IPPROTO_IP				   0
 #define IPPROTO_ICMP				   1
@@ -451,7 +451,7 @@ struct ip_mreq
 #define AF_ATM					  22
 #define AF_INET6				  23
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define AF_MAX					  24
 
@@ -460,7 +460,7 @@ struct sockaddr
   char			 sa_data[14];
 };
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 struct sockproto
 { u_short		 sp_family;
@@ -508,13 +508,13 @@ struct sockproto
 #define SOMAXCONN				   5
 #endif	/* !_WINSOCK2_H */
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define MSG_OOB 				   1
 #define MSG_PEEK				   2
 #define MSG_DONTROUTE				   4
 
-#endif  /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif  /* !__INSIDE_MSYS__ */
 
 #define MSG_MAXIOVLEN				  16
 #define MSG_PARTIAL			      0x8000
@@ -571,7 +571,7 @@ enum
 
 #define WSANO_ADDRESS			WSANO_DATA
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define h_errno 			WSAGetLastError()
 #define HOST_NOT_FOUND			WSAHOST_NOT_FOUND
@@ -580,7 +580,7 @@ enum
 #define NO_DATA 			WSANO_DATA
 #define NO_ADDRESS			WSANO_ADDRESS
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 WINSOCK_API_LINKAGE SOCKET PASCAL accept (SOCKET, struct sockaddr *, int *);
 
@@ -638,7 +638,7 @@ WINSOCK_API_LINKAGE HANDLE PASCAL WSAAsyncGetHostByAddr (HWND, u_int, const char
 WINSOCK_API_LINKAGE int PASCAL WSACancelAsyncRequest (HANDLE);
 WINSOCK_API_LINKAGE int PASCAL WSAAsyncSelect (SOCKET, HWND, u_int, long);
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 WINSOCK_API_LINKAGE u_long PASCAL htonl (u_long);
 WINSOCK_API_LINKAGE u_long PASCAL ntohl (u_long);
@@ -646,13 +646,9 @@ WINSOCK_API_LINKAGE u_short PASCAL htons (u_short);
 WINSOCK_API_LINKAGE u_short PASCAL ntohs (u_short);
 WINSOCK_API_LINKAGE int PASCAL select (int nfds, fd_set *, fd_set *, fd_set *, const struct timeval *);
 
-/* FIXME: <winsock2.h> moves the following declaration out of the
- * !(__INSIDE_CYGWIN__||__INSIDE_MSYS__) filter; which is correct?
- * Furthermore, should this not also have WINSOCK_API_LINKAGE?
- */
-int PASCAL gethostname (char *, int);
+#endif	/* !__INSIDE_MSYS__ */
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+WINSOCK_API_LINKAGE int PASCAL gethostname (char *, int);
 
 #define WSAMAKEASYNCREPLY(b,e)			MAKELONG(b,e)
 #define WSAMAKESELECTREPLY(e,error)		MAKELONG(e,error)
