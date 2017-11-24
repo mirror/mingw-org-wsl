@@ -496,19 +496,9 @@ struct sockproto
 
 #define SOL_SOCKET			      0xFFFF
 
-#ifndef _WINSOCK2_H
-/* FIXME: Is this behaviour correct?
- * Historically, <winsock.h> defined SOMAXCONN unconditionally, with a
- * value of 5.  However, <winsock2.h> defines it, using a significantly
- * different value, only when compiling native Windows code, and doesn't
- * define it at all, when compiling for Cygwin or MSYS.  To accommodate
- * this difference in philosophy, we must now suppress this definition
- * in <winsock.h>, when <winsock.h> has been included by <winsock2.h>
- */
-#define SOMAXCONN				   5
-#endif	/* !_WINSOCK2_H */
-
 #ifndef __INSIDE_MSYS__
+
+#define SOMAXCONN				   5
 
 #define MSG_OOB 				   1
 #define MSG_PEEK				   2

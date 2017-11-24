@@ -1,3 +1,30 @@
+2017-11-24  Keith Marshall  <keith@users.osdn.me>
+
+	Make <winsock.h> and <winsock2.h> duplicate code congruent.
+
+	* include/winsock.h (SOMAXCONN): Move definition into...
+	[!__INSIDE_MSYS__]: ...this guarded scope.
+
+	* include/winsock2.h: Rearrange as necessary.
+	[_BEGIN_C_DECLS, _END_C_DECLS]: Keep them balanced.
+	(_USE_SYS_TYPES_FD_SET): Define and use, as in <winsock.h>
+	[!_WINSOCK_ANOMALOUS_TYPEDEFS] (FD_SET): Declare function, not type.
+	[!_WINSOCK_ANOMALOUS_TYPEDEFS] (PFD_SET, LPFD_SET): Suppress typedefs.
+	(FD_SET, FD_ISSET, FD_CLR, FD_ZERO): Reimplement, as in <winsock.h>
+	(FD_READ_BIT, FD_WRITE_BIT, FD_OOB_BIT, FD_ACCEPT_BIT)
+	(FD_CONNECT_BIT, FD_CLOSE_BIT, FD_QOS_BIT, FD_GROUP_QOS_BIT)
+	(FD_ROUTING_INTERFACE_CHANGE_BIT, FD_ADDRESS_LIST_CHANGE_BIT)
+	(FD_MAX_EVENTS): Enumerate them, as in <winsock.h>
+	[!(defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)]: Recast...
+	[!defined __INSIDE_MSYS__]: ...as this, throughout.
+	(gethostname): Update function prototype, adding...
+	(WINSOCK_API_LINKAGE): ...this DLL import control attribute.
+
+	* include/ws2spi.h: Tidy layout; assert copyright.
+	[_BEGIN_C_DECLS, _END_C_DECLS]: Use them, as appropriate.
+	(LPFD_SET): Delete all type references; use...
+	(fd_set *): ...this instead.
+
 2017-11-14  Keith Marshall  <keith@users.osdn.me>
 
 	Establish default selection for WinSock API declaration.

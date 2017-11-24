@@ -39,6 +39,7 @@
  *
  */
 #if !(defined _WINSOCK2_H || defined _WINSOCK_H)
+#pragma GCC system_header
 #define _WINSOCK2_H
 
 /* WinSock v2 deprecates several features, which are standard
@@ -49,7 +50,6 @@
 #define __WINSOCK2_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
 
 #define _WINSOCK_H /* to prevent later inclusion of winsock.h */
-#pragma GCC system_header
 
 #define _GNU_H_WINDOWS32_SOCKETS
 #define __WINSOCK_H_SOURCED__ 1
@@ -59,14 +59,23 @@
 #include <sys/bsdtypes.h>
 #include <sys/time.h>
 
-#undef __WINSOCK_H_SOURCED__
-
 #ifndef WINSOCK_API_LINKAGE
 #ifdef __W32API_USE_DLLIMPORT__
 #define WINSOCK_API_LINKAGE DECLSPEC_IMPORT
 #else
 #define WINSOCK_API_LINKAGE
 #endif
+#endif
+
+#if ! defined _USE_SYS_TYPES_FD_SET && defined USE_SYS_TYPES_FD_SET
+/* Originally defined by the deprecated name, USE_SYS_TYPES_FD_SET, users
+ * may specify this to suppress warnings, in the event that (incompatible)
+ * fd_set manipulation macros may have been inherited from <sys/types.h>;
+ * accommodate use of the deprecated feature test name.
+ */
+#warning "Feature test macro USE_SYS_TYPES_FD_SET is deprecated."
+#warning "Use the _USE_SYS_TYPES_FD_SET feature test macro instead."
+#define _USE_SYS_TYPES_FD_SET  1
 #endif
 
 _BEGIN_C_DECLS
@@ -95,61 +104,87 @@ struct fd_set
   SOCKET	fd_array[FD_SETSIZE];
 } fd_set;
 
-int PASCAL __WSAFDIsSet (SOCKET, fd_set *);
-
-#ifndef FD_CLR
-#define FD_CLR( fd, set )  do					\
-  { u_int __i;							\
-    for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++)	\
-    { if (((fd_set *)(set))->fd_array[__i] == (fd))		\
-      { while (__i < ((fd_set *)(set))->fd_count-1)		\
-	{ ((fd_set *)(set))->fd_array[__i]			\
-	    = ((fd_set *)(set))->fd_array[__i + 1]; __i++;	\
-	}							\
-	((fd_set *)(set))->fd_count--;				\
-	break;							\
-      } 							\
-    }								\
-  } while (0)
-#endif	/* ! defined FD_CLR */
-
-#ifndef FD_SET
-/* FIXME: this differs from the original definition in <winsock.h>, and also
- * from the corresponding definition in Cygwin's <sys/types.h>, (which isn't
- * compatible with the WinSock fd_set type); which is correct?
- */
-#define FD_SET( fd, set )  do					\
-  { u_int __i;							\
-    for (__i = 0; __i < ((fd_set *)(set))->fd_count ; __i++)	\
-      if (((fd_set *)(set))->fd_array[__i] == (fd)) break;	\
-    if (__i == ((fd_set *)(set))->fd_count)			\
-    { if (((fd_set *)(set))->fd_count < FD_SETSIZE)		\
-      { ((fd_set *)(set))->fd_array[__i] = (fd);		\
-	((fd_set *)(set))->fd_count++;				\
-      } 							\
-    }								\
-  } while (0)
-#endif	/* ! defined FD_SET */
-
-#ifndef FD_ZERO
-#define FD_ZERO( set )  (((fd_set *)(set))->fd_count = 0)
-#endif	/* ! defined FD_ZERO */
-
 #ifndef FD_ISSET
-#define FD_ISSET( fd, set )  __WSAFDIsSet((SOCKET)(fd), (fd_set *)(set))
+int FD_ISSET (SOCKET, fd_set *);
+#define FD_ISSET( __fd, __set )  __FD_ISSET ((__fd), (__set))
+
+/* Microsoft provide this library function equivalent of the FD_ISSET
+ * macro, and erroneously claim that it is neccessary to implement the
+ * macro.  We could just as easily implement it entirely inline...
+ */
+int PASCAL __WSAFDIsSet (SOCKET, fd_set *);
+/* ...but, given the availability of the library function, we may just
+ * as well use it.
+ */
+__CRT_ALIAS int __FD_ISSET( SOCKET __fd, fd_set *__set )
+{ return __WSAFDIsSet (__fd, __set); }
 #endif	/* ! defined FD_ISSET */
 
-#elif ! defined USE_SYS_TYPES_FD_SET
+#ifndef FD_SET
+#if !_WINSOCK_ANOMALOUS_TYPEDEFS
+/* WinSock is intended to mimic the Berkeley Sockets API, for which
+ * POSIX.1 provides a reference specification; this states that FD_SET
+ * may be implemented as either a macro, or as a function.  The reference
+ * <winsock.h> implementation at http://www.sockets.com/winsock.htm#WinsockH
+ * includes a typedef for FD_SET, which a) conflicts with the latter POSIX.1
+ * provision, and b) creates potential confusion with the former.  Thus, we
+ * prefer to conform with POSIX.1 functional semantics, and recommend that
+ * users avoid the potentially confusing FD_SET typedefs, so allowing us
+ * to provide this function prototype:
+ */
+void FD_SET (SOCKET, fd_set *);
+
+#else	/* _WINSOCK_ANOMALOUS_TYPEDEFS */
+/* However, for users who insist on eschewing standard C/C++ syntax, and
+ * for whatever reason must use FD_SET as a data type, instead of correctly
+ * referring to fd_set, or for pointer references, use PFD_SET or LPFD_SET
+ * instead of standard fd_set * references, we make these anomalous types
+ * visible, when the _WINSOCK_ANOMALOUS_TYPEDEFS feature test macro is
+ * defined with a non-zero value.
+ */
+#warning "FD_SET, PFD_SET, and LPFD_SET data types are non-portable."
+#warning "Use portable fd_set, and fd_set * type references instead."
+
+typedef struct fd_set FD_SET, *PFD_SET, *LPFD_SET;
+#endif
+#define FD_SET( __fd, __set )  __FD_SET ((__fd), (__set))
+__CRT_ALIAS void __FD_SET (SOCKET __fd, fd_set *__set)
+{ if( (__set->fd_count < FD_SETSIZE) && ! FD_ISSET (__fd, __set) )
+    __set->fd_array[__set->fd_count++] = __fd;
+}
+#endif	/* ! defined FD_SET */
+
+#ifndef FD_CLR
+void FD_CLR (SOCKET, fd_set *);
+#define FD_CLR( __fd, __set )  __FD_CLR ((__fd), (__set))
+__CRT_ALIAS void __FD_CLR (SOCKET __fd, fd_set *__set)
+{ u_int __m, __n; for (__m = __n = 0; __n < __set->fd_count; __n++)
+  { if (__fd != __set->fd_array[__n])
+    { if (__m < __n) __set->fd_array[__m] = __set->fd_array[__n];
+      ++__m;
+    }
+  } __set->fd_count = __m;
+}
+#endif	/* ! defined FD_CLR */
+
+#ifndef FD_ZERO
+void FD_ZERO (fd_set *);
+#define FD_ZERO( __set )  __FD_ZERO (__set)
+__CRT_ALIAS void __FD_ZERO (fd_set *__set)
+{ __set->fd_count = 0; }
+#endif	/* ! defined FD_ZERO */
+
+#elif ! defined _USE_SYS_TYPES_FD_SET
 /* Definitions from <sys/types.h> probably aren't what the user wants;
  * if they know what they are doing, and they are sure that this really
- * is what they want, then they may enable the USE_SYS_TYPES_FD_SET
+ * is what they want, then they may enable the _USE_SYS_TYPES_FD_SET
  * feature test macro, to suppress this warning.
  */
 #warning "fd_set and associated macros have been defined in <sys/types.h>"
 #warning "Your <sys/types.h> may cause runtime problems with W32 sockets."
 #endif	/* !_SYS_TYPES_FD_SET */
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 struct hostent
 { char		 *h_name;
@@ -165,7 +200,7 @@ struct linger
   u_short	  l_linger;
 };
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 #define IOCPARM_MASK			      0x7F
 #define IOC_VOID			0x20000000
@@ -173,7 +208,7 @@ struct linger
 #define IOC_IN				0x80000000
 #define IOC_INOUT		    (IOC_IN | IOC_OUT)
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define _IO(x,y)	(IOC_VOID|((x)<<8)|(y))
 #define _IOR(x,y,t)	(IOC_OUT|(((long)sizeof(t)&IOCPARM_MASK)<<16)|((x)<<8)|(y))
@@ -181,7 +216,7 @@ struct linger
 
 #define FIONBIO 		_IOW('f', 126, u_long)
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 #define FIONREAD		_IOR('f', 127, u_long)
 #define FIOASYNC		_IOW('f', 125, u_long)
@@ -191,7 +226,7 @@ struct linger
 #define SIOCGLOWAT		_IOR('s',  3, u_long)
 #define SIOCATMARK		_IOR('s',  7, u_long)
 
-#if ! ( defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 struct netent
 { char		 *n_name;
@@ -213,7 +248,7 @@ struct protoent
   short 	  p_proto;
 };
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 #define IPPROTO_IP				   0
 #define IPPROTO_ICMP				   1
@@ -228,7 +263,8 @@ struct protoent
 #define IPPROTO_RAW				 255
 #define IPPROTO_MAX				 256
 
-/* IPv6 options */
+/* IPv6 options: these are unsupported, prior to Winsock v2.
+ */
 #define IPPROTO_HOPOPTS 			   0  /* IPv6 Hop-by-Hop options */
 #define IPPROTO_IPV6				  41  /* IPv6 header */
 #define IPPROTO_ROUTING 			  43  /* IPv6 Routing header */
@@ -323,7 +359,7 @@ struct WSAData
   char			*lpVendorInfo;
 } WSADATA, *LPWSADATA;
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define IP_OPTIONS				   1
 #define SO_DEBUG				   1
@@ -348,7 +384,7 @@ struct WSAData
 #define SO_ERROR			      0x1007
 #define SO_TYPE 			      0x1008
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 #define INVALID_SOCKET			 (SOCKET)(~0)
 #define SOCKET_ERROR				 (-1)
@@ -457,7 +493,7 @@ struct sockproto
 
 #define SOL_SOCKET			      0xFFFF
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define SOMAXCONN			  0x7FFFFFFF /* (5) in WinSock1.1 */
 
@@ -465,42 +501,64 @@ struct sockproto
 #define MSG_PEEK				   2
 #define MSG_DONTROUTE				   4
 
-#endif  /* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif  /* !__INSIDE_MSYS__ */
 
 #define MSG_MAXIOVLEN				  16
 #define MSG_PARTIAL			      0x8000
 #define MAXGETHOSTSTRUCT			1024
 
-#define FD_READ_BIT		       0
-#define FD_READ 		      (1 << FD_READ_BIT)
-#define FD_WRITE_BIT		       1
-#define FD_WRITE		      (1 << FD_WRITE_BIT)
-#define FD_OOB_BIT		       2
-#define FD_OOB			      (1 << FD_OOB_BIT)
-#define FD_ACCEPT_BIT		       3
-#define FD_ACCEPT		      (1 << FD_ACCEPT_BIT)
-#define FD_CONNECT_BIT		       4
-#define FD_CONNECT		      (1 << FD_CONNECT_BIT)
-#define FD_CLOSE_BIT		       5
-#define FD_CLOSE		      (1 << FD_CLOSE_BIT)
-/* WinSock v1.1 defines no further events, beyond FD_CLOSE (32);
- * the following are specific to WinSock v2.
- */
-#define FD_QOS_BIT		       6
-#define FD_QOS			      (1 << FD_QOS_BIT)
-#define FD_GROUP_QOS_BIT	       7
-#define FD_GROUP_QOS		      (1 << FD_GROUP_QOS_BIT)
-#define FD_ROUTING_INTERFACE_CHANGE_BIT 8
-#define FD_ROUTING_INTERFACE_CHANGE   (1 << FD_ROUTING_INTERFACE_CHANGE_BIT)
-#define FD_ADDRESS_LIST_CHANGE_BIT     9
-#define FD_ADDRESS_LIST_CHANGE	      (1 << FD_ADDRESS_LIST_CHANGE_BIT)
+enum
+{ /* Enumerate the flags used to represent the events which may be
+   * detected on any socket, when monitored via an fd_set array.
+   */
+  FD_READ_BIT = 0,
+# define FD_READ		      (1 << FD_READ_BIT)
 
-#define FD_MAX_EVENTS			 10
-#define FD_ALL_EVENTS			((1 << FD_MAX_EVENTS) - 1)
+  FD_WRITE_BIT,
+# define FD_WRITE		      (1 << FD_WRITE_BIT)
+
+  FD_OOB_BIT,
+# define FD_OOB 		      (1 << FD_OOB_BIT)
+
+  FD_ACCEPT_BIT,
+# define FD_ACCEPT		      (1 << FD_ACCEPT_BIT)
+
+  FD_CONNECT_BIT,
+# define FD_CONNECT		      (1 << FD_CONNECT_BIT)
+
+  FD_CLOSE_BIT,
+# define FD_CLOSE		      (1 << FD_CLOSE_BIT)
+
+# ifdef _WINSOCK2_H
+/* WinSock v1.1 defines no further events, beyond FD_CLOSE (1 << 5 = 32).
+ * The following are specific to WinSock v2; for convenience, they may be
+ * enumerated here, but they are exposed only when <winsock.h> is included
+ * indirectly, by way of including <winsock2.h>
+ */
+  FD_QOS_BIT,
+# define FD_QOS 		      (1 << FD_QOS_BIT)
+
+  FD_GROUP_QOS_BIT,
+# define FD_GROUP_QOS		      (1 << FD_GROUP_QOS_BIT)
+
+  FD_ROUTING_INTERFACE_CHANGE_BIT,
+# define FD_ROUTING_INTERFACE_CHANGE  (1 << FD_ROUTING_INTERFACE_CHANGE_BIT)
+
+  FD_ADDRESS_LIST_CHANGE_BIT,
+# define FD_ADDRESS_LIST_CHANGE       (1 << FD_ADDRESS_LIST_CHANGE_BIT)
+
+# endif /* _WINSOCK2_H */
+  /* Regardless of WinSock version, FD_MAX_EVENTS represents the first
+   * unused flag bit, whence we may deduce FD_ALL_EVENTS, as a mask for
+   * all supported event flags, specific to the WinSock version in use.
+   */
+  FD_MAX_EVENTS,
+# define FD_ALL_EVENTS			((1 << FD_MAX_EVENTS) - 1)
+};
 
 #define WSANO_ADDRESS			WSANO_DATA
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 #define h_errno 			WSAGetLastError()
 #define HOST_NOT_FOUND			WSAHOST_NOT_FOUND
@@ -509,7 +567,7 @@ struct sockproto
 #define NO_DATA 			WSANO_DATA
 #define NO_ADDRESS			WSANO_ADDRESS
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
 WINSOCK_API_LINKAGE SOCKET PASCAL accept (SOCKET, struct sockaddr *, int *);
 
@@ -541,7 +599,6 @@ WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct servent *)  getservbyport (int, co
 WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct servent *)  getservbyname (const char *, const char *);
 WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct protoent *) getprotobynumber (int);
 WINSOCK_API_LINKAGE DECLARE_STDCALL_P (struct protoent *) getprotobyname (const char *);
-
 
 typedef SOCKET (PASCAL *LPFN_ACCEPT) (SOCKET, struct sockaddr *, int *);
 
@@ -629,7 +686,7 @@ typedef HANDLE (PASCAL *LPFN_WSAASYNCGETHOSTBYADDR) (HWND, u_int, const char*, i
 typedef int (PASCAL *LPFN_WSACANCELASYNCREQUEST) (HANDLE);
 typedef int (PASCAL *LPFN_WSAASYNCSELECT) (SOCKET, HWND, u_int, long);
 
-#if ! (defined __INSIDE_CYGWIN__ || defined __INSIDE_MSYS__)
+#ifndef __INSIDE_MSYS__
 
 WINSOCK_API_LINKAGE u_long PASCAL htonl (u_long);
 WINSOCK_API_LINKAGE u_long PASCAL ntohl (u_long);
@@ -637,9 +694,9 @@ WINSOCK_API_LINKAGE u_short PASCAL htons (u_short);
 WINSOCK_API_LINKAGE u_short PASCAL ntohs (u_short);
 WINSOCK_API_LINKAGE int PASCAL select (int nfds, fd_set *, fd_set *, fd_set *, const struct timeval *);
 
-#endif	/* ! (__INSIDE_CYGWIN__ || __INSIDE_MSYS__) */
+#endif	/* !__INSIDE_MSYS__ */
 
-int PASCAL gethostname (char *, int);
+WINSOCK_API_LINKAGE int PASCAL gethostname (char *, int);
 
 #define WSAMAKEASYNCREPLY(b,e)			MAKELONG(b,e)
 #define WSAMAKESELECTREPLY(e,error)		MAKELONG(e,error)
@@ -653,11 +710,15 @@ typedef struct sockaddr_storage SOCKADDR_STORAGE, *PSOCKADDR_STORAGE;
 typedef struct sockaddr_in SOCKADDR_IN, *PSOCKADDR_IN, *LPSOCKADDR_IN;
 typedef struct linger LINGER, *PLINGER, *LPLINGER;
 typedef struct in_addr IN_ADDR, *PIN_ADDR, *LPIN_ADDR;
-typedef struct fd_set FD_SET, *PFD_SET, *LPFD_SET;
 typedef struct hostent HOSTENT, *PHOSTENT, *LPHOSTENT;
 typedef struct servent SERVENT, *PSERVENT, *LPSERVENT;
 typedef struct protoent PROTOENT, *PPROTOENT, *LPPROTOENT;
 typedef struct timeval TIMEVAL, *PTIMEVAL, *LPTIMEVAL;
+
+_END_C_DECLS
+
+
+#undef	__WINSOCK_H_SOURCED__
 
 /* winsock2 additions */
 #define __WINSOCK2_H_SOURCED__
@@ -669,6 +730,8 @@ typedef struct timeval TIMEVAL, *PTIMEVAL, *LPTIMEVAL;
  * way of indirect inclusion from "nspapi.h"
  */
 #include "nspapi.h"
+
+_BEGIN_C_DECLS
 
 #define ADDR_ANY			  INADDR_ANY
 
