@@ -1,3 +1,14 @@
+2017-11-28  Keith Marshall  <keith@users.osdn.me>
+
+	Handle indeterminate FLT_EVAL_METHOD; fix issue [#2352].
+
+	* include/math.h [FLT_EVAL_METHOD == 0 || FLT_EVAL_METHOD == 1]
+	(float_t, double_t): Define them explicitly, as appropriate for each
+	of these two specific cases only; otherwise, define them as if for...
+	[FLT_EVAL_METHOD == 2]: ...this explicit case, but also apply it as a
+	suitable default compromise for the indeterminate case, in which...
+	[FLT_EVAL_METHOD != 2]: ...emit indeterminacy warning.
+
 2017-10-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Include, and make <sys/bsdtypes.h> test suite safe.

@@ -326,28 +326,48 @@ _CRTIMP int __cdecl _set_SSE2_enable (int);
 
 # endif /* __MINGW_GNUC_PREREQ(3, 3) */
 
-#ifdef __FLT_EVAL_METHOD__
-/* Use the compiler's builtin definition for FLT_EVAL_METHOD
- * to establish appropriate float_t and double_t typedefs.
+/* Use the compiler's internal definition for FLT_EVAL_METHOD, if one
+ * is available, to establish appropriate float_t and double_t typedefs;
+ * in the case of GCC, this is specified as __FLT_EVAL_METHOD__, which
+ * is expected to be assigned standardized values of 0, 1, or 2, (or
+ * exceptionally, a value of -1, representing indeterminacy).
  */
+#if ! defined __FLT_EVAL_METHOD__ || __valueless(__FLT_EVAL_METHOD__) \
+ || (__FLT_EVAL_METHOD__ - 0) < 0 || (__FLT_EVAL_METHOD__ - 0) > 1
+ /* __FLT_EVAL_METHOD__ has not been defined, or it is defined with no
+  * value, or with a value of -1 (or less), or a value of 2 or more; in
+  * the specific case of a value of 2, this represents an explicit choice
+  * of the IX387 FPU configuration, while in each of the other cases, we
+  * implicitly fall back to this same default configuration.
+  *
+  * NOTE: this configuration is correct for X87 FPU computations, (for
+  * which __FLT_EVAL_METHOD__ is correctly specified as 2); however...
+  */
+# if defined __FLT_EVAL_METHOD__ && (__FLT_EVAL_METHOD__ - 0) != 2
+  /* ...due to a GCC bug, introduced in GCC-6 and persisting into later
+   * versions, it may be selected via __FLT_EVAL_METHOD__ == -1, for the
+   * case of the "-msse -mfpmath=sse" option combination.  In this case,
+   * it is (at best) an unsatisfactory compromise; to avoid it, you may
+   * prefer to adopt "-mfpmath=387", or "-msse2 -mfpmath=sse" instead.
+   */
+#  warning "Default FLT_EVAL_METHOD is inderminate; assuming X87 semantics."
+# endif
+  typedef long double float_t;
+  typedef long double double_t;
+
+#else
+ /* __FLT_EVAL_METHOD__ must have been defined with an explicit value
+  * of either 0 or 1; select the corresponding SSE configuration which
+  * is applicable in each case.
+  */
 # if __FLT_EVAL_METHOD__ == 0
    typedef float float_t;
    typedef double double_t;
 
-# elif __FLT_EVAL_METHOD__ == 1
+# else /*  __FLT_EVAL_METHOD__ == 1 */
    typedef double float_t;
    typedef double double_t;
-
-# elif __FLT_EVAL_METHOD__ == 2
-   typedef long double float_t;
-   typedef long double double_t;
-
 # endif
-#else
- /* ix87 FPU default
-  */
-  typedef long double float_t;
-  typedef long double double_t;
 #endif
 
 /* 7.12.3.1
