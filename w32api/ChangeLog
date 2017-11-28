@@ -1,5 +1,14 @@
 2017-11-28  Keith Marshall  <keith@users.osdn.me>
 
+	Make <wsnetbs.h> header effectively self-contained.
+
+	* include/wsnetbs.h: Assert copyright; tidy layout; include
+	"_winsock.h", so making this header effectively self-contained, and
+	thus relieving the user of a responsibility for ensuring that some
+	other appropriate WinSock header has been included first.
+
+2017-11-28  Keith Marshall  <keith@users.osdn.me>
+
 	Factor <winsock.h> duplicate content out of <winsock2.h>
 
 	* include/winsock2.h: Remove all declarations and definitions which
