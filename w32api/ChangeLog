@@ -1,3 +1,18 @@
+2017-11-28  Keith Marshall  <keith@users.osdn.me>
+
+	Factor <winsock.h> duplicate content out of <winsock2.h>
+
+	* include/winsock2.h: Remove all declarations and definitions which
+	are identically specified in <winsock.h>, but keep them in scope by...
+	[! defined _WINSOCK_H]: ...including <winsock.h> itself; override any
+	declarations and definitions therefrom, which introduce conflicts.
+	[defined _WINSOCK_H]: Diagnose misuse; suppress all further
+	definitions and declarations.
+
+	* include/winsock.h (SOMAXCONN): Add comment; note disparity between
+	WinSock v1.1 and WinSock v2, the latter of which will override when
+	correctly included by <winsock2.h>
+
 2017-11-24  Keith Marshall  <keith@users.osdn.me>
 
 	Make <winsock.h> and <winsock2.h> duplicate code congruent.

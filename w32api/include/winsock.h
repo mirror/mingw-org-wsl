@@ -498,6 +498,11 @@ struct sockproto
 
 #ifndef __INSIDE_MSYS__
 
+/* This definition of SOMAXCONN is correct for WinSock v1.1, but not
+ * for WinSock v2; we define it thus here, but note that, if included
+ * by <winsock2.h>, it will subsequently be overridden by the correct
+ * WinSock v2 definition.
+ */
 #define SOMAXCONN				   5
 
 #define MSG_OOB 				   1
