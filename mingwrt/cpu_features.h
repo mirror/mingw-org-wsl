@@ -14,11 +14,12 @@
 #define  _CRT_3DNOW		0x0100
 #define  _CRT_3DNOWP		0x0200
 
+#if !__ASSEMBLER__
 extern unsigned int __cpu_features;
 extern void __cpu_features_init (void);
+#endif
 
 /* Currently we use this in fpenv  functions */
 #define __HAS_SSE  __cpu_features & _CRT_SSE
-
 
 #endif

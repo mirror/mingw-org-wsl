@@ -1,0 +1,284 @@
+.file	"cpu_features.sx"
+/*
+ * Initialization procedure for identification of CPU supported features.
+ *
+ * $Id$
+ *
+ * Written by Keith Marshall <keith@users.osdn.me>
+ * Copyright (C) 2017, MinGW.org Project
+ *
+ * Adapted from an original C language implementation.
+ * Written by Danny Smith <dannysmith@users.sourceforge.net>
+ * Copyright (C) 2006, 2008, 2009, MinGW.org Project
+ *
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice (including the next
+ * paragraph) shall be included in all copies or substantial portions of the
+ * Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ *
+ */
+.intel_syntax noprefix
+
+#include "cpu_features.h"
+
+#define RX_FLAG(BITNUM)		(1 << (BITNUM))
+#define RH_FLAG(BITNUM)		(1 << ((BITNUM) - 8))
+
+#define CPUID_FLAG		RX_FLAG(21)	/* EFLAGS bit 21 */
+
+#define FXSAVE_BUFSIZ		       512
+#define FXSAVE_BUF_ALIGN	0xFFFFFFF0
+#define FXTEST_BITS		0x0013C0DE
+
+/* FIXME: is this optimization really worthwhile here?  It breaks,
+ * with older GAS versions, (such as that commonly deployed in the
+ * GCC-3.4.5 era, and earlier)!
+ *
+ * GCC, (since GCC-4), emits "repz ret" rather than single-byte "ret",
+ * when optimizing with "generic" tuning, and the return opcode would
+ * otherwise become a branch destination, or is the fall-through for a
+ * conditional branch which is not taken.  This opcode sequence, (which
+ * appears as if it should be illegal), is a work-around for an AMD K8,
+ * Athlon, and AMD10 family branch predictor bug; it is decoded as being
+ * effectively equivalent to a 2-byte "ret" instruction, (equivalent to
+ * preceding the "ret" with a "nop", but without incurring additional
+ * overhead to decode the "nop" instruction).
+ */
+#define ret  			repz ret
+
+.bss
+.globl	___cpu_features;	.align 4
+___cpu_features:		.space 4
+
+.text
+.globl	___cpu_features_init;	.p2align	4,,15
+.def	___cpu_features_init;	.scl	2;	.type	32;	.endef
+
+___cpu_features_init:
+
+.cfi_startproc
+/* Initialization requires use of the CPUID instruction; to check if it is
+ * supported by the host CPU, we try to toggle the CPUID flag bit within the
+ * EFLAGS register, (ultimately leaving it unchanged).
+ */
+		pushf				/* save original flags state */
+		pushf				/* duplicate them in both... */
+		pop	eax			/* ...the EAX, and...	     */
+		mov	edx, eax		/* ...the EDX registers      */
+		xor	eax, CPUID_FLAG		/* flip the CPUID_FLAG bit   */
+		push	eax			/* try to toggle the bit...  */
+		popf				/* ...within EFLAGS itself   */
+		pushf				/* capture the result...     */
+		pop	eax			/* ...in the EAX register    */
+		popf				/* restore original flags    */
+
+/* The preceding code leaves all EFLAGS in their original state, as at
+ * procedure entry, with this state replicated in EDX, while EAX reflects
+ * their state after attempting to toggle the CPUID_FLAG bit; thus, if the
+ * CPU supports the CPUID instruction, EAX and EDX must now reflect
+ * differing states of this bit, and thus...
+ */
+		xor	eax, edx		/* isolate CPUID_FLAG state  */
+		test	eax, CPUID_FLAG		/* did it change?	     */
+		je	90f			/* no: quit immediately      */
+
+/* If we're still here, then we may safely interrogate the CPU, using
+ * the CPUID instruction, to identify various CPU features which may, or
+ * may not, be supported, but first...
+ */
+		push	ebx			/* ...we MUST preserve this! */
+
+.cfi_def_cfa_offset	8
+.cfi_offset		ebx, -8
+
+/* First, we must perform a level zero CPUID enquiry, to determine the
+ * maximum level of interrogation which is supported.
+ */
+		xor	eax, eax		/* zero request level code   */
+		cpuid				/* get max supported level   */
+		test	eax, eax		/* is it greater than zero?  */
+		je	80f			/* no: we can do no more     */
+
+/* If we're still here, we may progress to a level one (supported features)
+ * CPUID enquiry.
+ */
+		mov	eax, 1			/* select level one enquiry  */
+		cpuid				/* get level one response    */
+
+/* Evaluate CPU capabilities (available features), accumulating flags for
+ * each in EAX, for eventual update of the global ___cpu_features variable.
+ */
+		xor	eax, eax		/* start with a clean slate  */
+
+/* The CPUID level one features, in which we are interested, are reported
+ * in the ECX and EDX registers, using the following single bit flags for
+ * each feature; (note that, for code size efficiency, for flags expressed
+ * using bits 0..7 we interrogate only CL or DL, and for bits 8..15, only
+ * the CH or DH sub-registers, as appropriate).
+ */
+#define CPUID_SSE3_FLAG 	cl, RX_FLAG(0)
+#define CPUID_CMPXCHG16B_FLAG	ch, RH_FLAG(13)
+
+#define CPUID_CMPXCHG8B_FLAG	dh, RH_FLAG(8)
+#define CPUID_CMOV_FLAG 	dh, RH_FLAG(15)
+
+#define CPUID_MMX_FLAG		edx, RX_FLAG(23)
+#define CPUID_FXSR_FLAG 	edx, RX_FLAG(24)
+#define CPUID_SSE_FLAG		edx, RX_FLAG(25)
+#define CPUID_SSE2_FLAG 	edx, RX_FLAG(26)
+
+.macro		chk	rx, cond, feature, next=15f
+		test	\rx, \cond
+		jz	\next
+		or	eax, \feature
+15:
+.endm
+#define CPUID_CAP(FLG)	CPUID_##FLG##_FLAG, _CRT_##FLG
+
+		chk	CPUID_CAP(CMPXCHG8B)
+		chk	CPUID_CAP(CMPXCHG16B)
+		chk	CPUID_CAP(CMOV)
+		chk	CPUID_CAP(MMX)
+
+/* Even if CPUID feature tests indicate that SSE instructions are available,
+ * the underlying operating system may not support them, and any attempt to
+ * use them may raise unhandled exceptions; (this is most likely to arise in
+ * the case of a legacy version of Windows, running on modern hardware).  To
+ * avoid this issue, provided that the FXSAVE and FXRSTOR instructions are
+ * supported, we may use them to predict the likelihood of this issue
+ * arising, and consequently bypass SSE detection.
+ */
+		chk	CPUID_CAP(FXSR), 20f
+
+/* We must create a local stack frame, with the stack pointer aligned to a
+ * sixteen byte boundary, in which to allocate an FXSAVE buffer; (failure to
+ * align this correctly will raise an unhandled exception, and GCC cannot be
+ * trusted to get this right in C language code).
+ */
+		push	ebp
+		mov	ebp, esp
+
+.cfi_def_cfa		ebp, 12
+.cfi_offset		ebp, -12
+
+		sub	esp, FXSAVE_BUFSIZ
+		and	esp, FXSAVE_BUF_ALIGN
+
+/* Save the FPU state, and immediately attempt to restore it with some of
+ * the SSE specific control flags inverted.
+ */
+		fxsave	[esp]
+		mov	ebx, DWORD PTR 200[esp]
+		xor	DWORD PTR 200[esp], FXTEST_BITS
+		fxrstor	[esp]
+
+/* Return the FXSAVE buffer to its original state, then overwrite it with
+ * the state just restored.
+ */
+		mov	DWORD PTR 200[esp], ebx
+		fxsave	[esp]
+
+/* Explicitly restore the original FPU state, while noting (in EBX) the
+ * state of those SSE control flags, as retrieved from the FPU itself,
+ * after the attempt to change them.
+ */
+		xchg	DWORD PTR 200[esp], ebx
+		fxrstor	[esp]
+
+/* Check if the operating system actually allowed the requested change of
+ * the SSE control flags, then discard the local stack frame.
+ */
+		xor	ebx, DWORD PTR 200[esp]
+		leave
+
+.cfi_restore		ebp
+.cfi_def_cfa		esp, 8
+
+		cmp	ebx, FXTEST_BITS	/* SSE flags were changed?   */
+		jne	20f			/* no: skip SSE detection    */
+
+/* If we're still here, then the operating system should support SSE;
+ * proceed to check whether the CPU does so.
+ */
+		chk	CPUID_CAP(SSE)
+		chk	CPUID_CAP(SSE2)
+		chk	CPUID_CAP(SSE3)
+
+/* Before we move on to extended feature tests, we must store the feature
+ * test flags which we have accumulated so far...
+ */
+20:		mov	DWORD PTR ___cpu_features, eax
+
+/* ...so that EAX becomes available for us to, first confirm that extended
+ * feature tests are supported...
+ */
+		mov	eax, 0x80000000		/* select extended features  */
+		cpuid				/* get maximum support level */
+		cmp	eax, 0x80000000		/* extended features okay?   */
+		jbe	80f			/* no: exit now 	     */
+
+/* ...and, when so, request the extended feature test flags.
+ */
+		mov	eax, 0x80000001		/* select extended level 1   */
+		cpuid				/* get extended features     */
+
+/* Initially, we will accumulate the extended feature flags, in which we are
+ * interested, separately from those already accumulated, so...
+ */
+		xor	eax, eax		/* ...clean the slate again  */
+
+/* Of the extended feature tests, we are interested in the following:
+ */
+#define CPUID_3DNOWP_FLAG	edx, RX_FLAG(30)
+#define CPUID_3DNOW_FLAG	edx, RX_FLAG(31)
+
+/* Since the CPUID_3DNOW_FLAG maps directly to the sign bit of EDX, rather
+ * than the obvious feature test:
+ *
+ * 		chk	CPUID_CAP(3DNOW)
+ *
+ * it is more efficient to use...
+ */
+		test	edx, edx		/* is the sign bit set?      */
+		jns	30f			/* no: we don't have 3DNOW   */
+		mov	eax, _CRT_3DNOW		/* yes: note that we do      */
+
+/* ...whereas, for other extended feature tests, we revert to use of
+ * our "chk" macro.
+ */
+30:		chk	CPUID_CAP(3DNOWP)
+
+/* Finally, we combine the extended feature test flags with those which we
+ * had previously accumulated from the regular feature tests, before...
+ */
+		or	DWORD PTR ___cpu_features, eax
+
+/* ...we restore the preserved state of the EBX register...
+ */
+80:		pop	ebx
+
+.cfi_restore		ebx
+.cfi_def_cfa_offset	4
+
+/* ...and return to the C runtime initialization procedure.
+ */
+90:		ret
+
+.cfi_endproc
+
+/* $RCSfile$: end of file */

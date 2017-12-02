@@ -1,3 +1,15 @@
+2017-12-02  Keith Marshall  <keith@users.osdn.me>
+
+	Provide legacy OS work around for issue [#2357]
+
+	* cpu_features.c: Delete; replace it with...
+	* cpu_features.sx: ...this new assembly language file.
+
+	* cpu_features.h [__ASSEMBLER__]
+	(__cpu_features, __cpu_features_init): Suppress declarations.
+
+	* Makefile (%.sx): Add $srcdir vpath reference.
+
 2017-11-28  Keith Marshall  <keith@users.osdn.me>
 
 	Handle indeterminate FLT_EVAL_METHOD; fix issue [#2352].
