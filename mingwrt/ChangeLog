@@ -1,3 +1,12 @@
+2017-12-06  Keith Marshall  <keith@users.osdn.me>
+
+	Prepare and publish MinGW.org WSL-5.0.2 release.
+
+	* All files (wsl-5.0.2-release): Tag assigned.
+
+	* Makefile.in (mingwrt-srcdist-package-files): Add reference...
+	* $mingwrt_srcdir/*.sx: ...for files matching this template.
+
 2017-12-02  Keith Marshall  <keith@users.osdn.me>
 
 	Provide legacy OS work around for issue [#2357]

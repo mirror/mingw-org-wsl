@@ -1,3 +1,9 @@
+2017-12-06  Keith Marshall  <keith@users.osdn.me>
+
+	Prepare and publish MinGW.org WSL-5.0.2 release.
+
+	* All files (wsl-5.0.2-release): Tag assigned.
+
 2017-11-28  Keith Marshall  <keith@users.osdn.me>
 
 	Make <wsnetbs.h> header effectively self-contained.

@@ -1,3 +1,9 @@
+2017-12-06  Keith Marshall  <keith@users.osdn.me>
+
+	Prepare and publish MinGW.org WSL-5.0.2 release.
+
+	* All files (wsl-5.0.2-release): Tag assigned.
+
 2017-07-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	MinGW.org WSL-5.0.1 released; update repository version.

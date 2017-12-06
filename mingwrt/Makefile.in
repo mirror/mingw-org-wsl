@@ -954,7 +954,7 @@ mingwrt-srcdist-package-files: $(wildcard ${mingwrt_srcdir}/*.[chs]) \
   $(wildcard ${mingwrt_srcdir}/*.def.in) $(wildcard ${mingwrt_srcdir}/config*) \
   $(addprefix ${mingwrt_srcdir}/,include man mingwex msvcrt-xref profile) \
   $(addprefix ${mingwrt_srcdir}/,TODO Makefile.in crtdll.def) \
-  $(wildcard ${mingwrt_srcdir}/*.txt)
+  $(wildcard $(addprefix ${mingwrt_srcdir}/,*.sx *.txt))
 
 mingwrt-srcdist-testsuite-files: $(wildcard ${mingwrt_srcdir}/tests/*.at)
 mingwrt-srcdist-testsuite-files: $(wildcard ${mingwrt_srcdir}/tests/*.in)
