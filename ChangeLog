@@ -1,5 +1,13 @@
 2017-12-06  Keith Marshall  <keith@users.osdn.me>
 
+	Adjust repository version following WSL-5.0.2 release.
+
+	* VERSION.m4 (__VERSION__): Increment it to 5.1; no further patch
+	releases are anticipated for development on the 5.0 branch, hence...
+	* All files (5.1-trunk): ...assign new development branch name.
+
+2017-12-06  Keith Marshall  <keith@users.osdn.me>
+
 	Prepare and publish MinGW.org WSL-5.0.2 release.
 
 	* All files (wsl-5.0.2-release): Tag assigned.
