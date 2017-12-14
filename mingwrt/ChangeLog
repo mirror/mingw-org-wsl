@@ -1,3 +1,13 @@
+2017-12-14  Keith Marshall  <keith@users.osdn.me>
+
+	Add support for POSIX.1 "obsolescence" warnings.
+
+	* include/_mingwrt.h.in (__POSIX_1995_DEPRECATED)
+	(__POSIX_2001_DEPRECATED, __POSIX_2008_DEPRECATED): New macros; define
+	them, such as each is conditional on the specific value assigned to...
+	[_POSIX_C_SOURCE]: ...this feature test macro, as the equivalent of...
+	(__MINGW_ATTRIB_DEPRECATED): ...this, or of nothing, as appropriate.
+
 2017-12-06  Keith Marshall  <keith@users.osdn.me>
 
 	Prepare and publish MinGW.org WSL-5.0.2 release.

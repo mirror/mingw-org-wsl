@@ -478,6 +478,49 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
 # endif
 #endif
 
+#if _POSIX_C_SOURCE >= 199506L
+/* Conformance with POSIX.1-1996 has been requested; ensure that any
+ * interfaces which have been marked as "obsolescent", from this POSIX
+ * version onwards, will be reported as "deprecated", at point of use.
+ */
+# define __POSIX_1995_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
+
+#if _POSIX_C_SOURCE >= 200112L
+/* Conformance with POSIX.1-2001 has been requested; ensure that any
+ * interfaces which have been marked as "obsolescent", from this POSIX
+ * version onwards, will be reported as "deprecated", at point of use.
+ */
+# define __POSIX_2001_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
+
+#if _POSIX_C_SOURCE >= 200809L
+/* Conformance with POSIX.1-2008 has been requested; ensure that any
+ * interfaces which have been marked as "obsolescent", from this POSIX
+ * version onwards, will be reported as "deprecated", at point of use.
+ */
+# define __POSIX_2008_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
+
+#else
+/* POSIX.1-2008 conformance is NOT required; do not object to use of
+ * interfaces which became "obsolescent" in this POSIX version, but
+ * were still fully supported in earlier versions.
+ */
+# define __POSIX_2008_DEPRECATED
+#endif
+#else
+/* POSIX.1-2001 conformance is NOT required; do not object to use of
+ * interfaces which became "obsolescent" in this POSIX version, but
+ * were still fully supported in earlier versions.
+ */
+# define __POSIX_2001_DEPRECATED
+#endif
+#else
+/* POSIX.1-1996 conformance is NOT required; do not object to use of
+ * interfaces which became "obsolescent" in this POSIX version, but
+ * were still fully supported in earlier versions.
+ */
+# define __POSIX_1995_DEPRECATED
+#endif
+
 #ifndef _ISOC99_SOURCE
  /* libmingwex.a provides free-standing implementations for many of the
   * functions which were introduced in C99; MinGW headers do not expose
