@@ -102,10 +102,8 @@ struct timezone
  * designated as IEEE Std 1003.1, 2016 Edition; the struct timezone pointer
  * argument of some Unix implementations (declared as a pointer to void in
  * POSIX.1) is ignored, as are all error conditions.
- *
- * FIXME: Deprecate this for _POSIX_C_SOURCE >= 200809L
  */
-int __cdecl __MINGW_NOTHROW gettimeofday
+int __cdecl __MINGW_NOTHROW __POSIX_2008_DEPRECATED gettimeofday
 (struct timeval *__restrict__, void *__restrict__ /* tzp (unused) */);
 
 _END_C_DECLS

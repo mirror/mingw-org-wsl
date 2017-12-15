@@ -1,3 +1,18 @@
+2017-12-15  Keith Marshall  <keith@users.osdn.me>
+
+	Implement a subset of the POSIX.1b-1993 clock API.
+
+	* include/time.h [_POSIX_C_SOURCE >= 199309L]
+	(clockid_t): New structured data type; define it opaquely, and...
+	(CLOCK_REALTIME, CLOCK_MONOTONIC): ...declare these extern instances.
+	[_POSIX_C_SOURCE >= 200809L] (gettimeofday): Mark it "deprecated".
+	[_POSIX_C_SOURCE >= 199309L] (clock_getres, clock_gettime)
+	(clock_settime): New functions; declare prototypes.
+
+	* mingwex/clockapi.h mingwex/clockapi.c mingwex/clockres.c
+	* mingwex/clockset.c mingwex/clocktime.c: New files; they implement
+	the preceding clock instances, and associated API functions.
+
 2017-12-14  Keith Marshall  <keith@users.osdn.me>
 
 	Add support for POSIX.1 "obsolescence" warnings.
