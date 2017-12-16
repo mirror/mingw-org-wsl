@@ -8,12 +8,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#ifndef _WIN32_IE
-/* define _WIN32_IE if you really want it */
-#if 0
-#define _WIN32_IE	0x0300
-#endif
-#endif
 
 #ifndef COMMCTRLAPI
 #ifdef __W32API_USE_DLLIMPORT__

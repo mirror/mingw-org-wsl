@@ -201,6 +201,17 @@
 # define NTDDI_VERSION NTDDI_VERSION_FROM_WIN32_WINNT(_WIN32_WINNT)
 #endif
 
+#ifndef _WIN32_IE
+/* https://msdn.microsoft.com/en-us/library/windows/desktop/bb776779%28v=vs.85%29.aspx
+ * specifies that the user should define _WIN32_IE, but in the absence of
+ * any such definition, a default equivalent to IE-5.0 may be assumed.
+ */
+# ifdef _WARN_DEFAULTS
+#  warning "Assuming default _WIN32_IE setting to match _WIN32_IE_IE50"
+# endif
+# define _WIN32_IE _WIN32_IE_IE50
+#endif
+
 /* Map GCC architecture identification macros to their MSVC equivalents.
  * This mapping was previously specified in <winnt.h>, and duplicated in
  * <windows.h>; it is now only defined here, because both <windows.h> and

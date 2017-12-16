@@ -1,3 +1,13 @@
+2017-12-16  Keith Marshall  <keith@users.osdn.me>
+
+	Provide default definition for _WIN32_IE feature test macro.
+
+	* include/sdkddkver.h [!defined _WIN32_IE]: Define it, with...
+	(_WIN32_IE_IE50): ...this default value.
+
+	* include/commctrl.h (_WIN32_IE): Delete definition hint; it offered
+	a conflicting proposal for the default value.
+
 2017-12-06  Keith Marshall  <keith@users.osdn.me>
 
 	Prepare and publish MinGW.org WSL-5.0.2 release.
