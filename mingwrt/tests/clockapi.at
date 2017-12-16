@@ -1,0 +1,104 @@
+# clockapi.at
+#
+# Autotest module to verify correct operation of the POSIX.1b-1993
+# clock API functions, providing CLOCK_REALTIME and CLOCK_MONOTONIC.
+#
+# $Id$
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2017, MinGW.org Project
+#
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice (including the next
+# paragraph) shall be included in all copies or substantial portions of the
+# Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR THE COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+#
+#
+# All tests specified herein are written in the C language.
+#
+MINGW_AT_LANG([C])
+AT_BANNER([POSIX clock API function checks.])
+
+# MINGW_AT_CHECK_CLOCK_WORKS( CLOCK_ID )
+# --------------------------------------
+# Confirm that, for the specified CLOCK_ID, both clock_getres()
+# and clock_gettime() return zero, as they should for a correctly
+# working clock; (this DOES NOT check for reasonable return values
+# within the associated struct timespec argument).
+#
+m4_define([MINGW_AT_CHECK_CLOCK_WORKS],[dnl
+AT_SETUP([$1 availability confirmation])dnl
+AT_KEYWORDS([C clock $1])MINGW_AT_CHECK_RUN([[[
+#define _POSIX_C_SOURCE  199309L
+#include <time.h>
+int main()
+{ struct timespec ts;
+  return clock_getres (]]$1[[, &ts) | clock_gettime (]]$1[[, &ts);
+}]]])dnl
+AT_CLEANUP
+])# MINGW_AT_CHECK_CLOCK_WORKS
+
+# Apply the preceding availability check for CLOCK_REALTIME, then
+# check that it does, in fact, return clock_gettime() results which
+# agree closely with the system time reported by the time() function;
+# (we note that system latency between the time() and clock_gettime()
+# calls may introduce discrepancies between the two time indications,
+# so we accept a maximum offset of one time() quantum, i.e. 1 second,
+# between the first read clock_gettime() indication, and later time()
+# indication, of what should represent the same wall-clock time).
+#
+MINGW_AT_CHECK_CLOCK_WORKS([CLOCK_REALTIME])
+AT_SETUP([CLOCK_REALTIME agreement with time() function])dnl
+AT_KEYWORDS([C clock CLOCK_REALTIME])MINGW_AT_CHECK_RUN([[[
+#define _POSIX_C_SOURCE  199309L
+#include <time.h>
+int main()
+{ struct timespec ts;
+  return clock_gettime( CLOCK_REALTIME, &ts )
+    || ((time( NULL ) - ts.tv_sec) > 1LL);
+}]]])dnl
+AT_CLEANUP
+
+# Similarly, apply the availability check for CLOCK_MONOTONIC, then
+# verify that it advances monotonically, in temporal synchronicity
+# with intervals timed by the time() function, again allowing up to
+# one time() quantum of deviation within each sampled interval, to
+# account for the possible effect of system latency.
+#
+MINGW_AT_CHECK_CLOCK_WORKS([CLOCK_MONOTONIC])
+AT_SETUP([CLOCK_MONOTONIC advancement])
+AT_KEYWORDS([C clock CLOCK_MONOTONIC])MINGW_AT_CHECK_RUN([[[
+#define _POSIX_C_SOURCE  199309L
+#include <time.h>
+#include <unistd.h>
+int main()
+{ struct timespec ts;
+  int result = clock_gettime( CLOCK_MONOTONIC, &ts );
+  time_t interval, start = time( NULL );
+  while( (result == 0) && ((interval = time( NULL ) - start) < 15) )
+  { struct timespec at; result = clock_gettime( CLOCK_MONOTONIC, &at );
+    if( (at.tv_sec - ts.tv_sec - interval) > 1LL )
+      result = -1;
+    sleep( 2 );
+  }
+  return result;
+}]]])dnl
+AT_CLEANUP
+
+# vim: filetype=config formatoptions=croql
+# $RCSfile$: end of file

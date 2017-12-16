@@ -1,3 +1,10 @@
+2017-12-16  Keith Marshall  <keith@users.osdn.me>
+
+	Implement autotest module for POSIX clock API functions.
+
+	* tests/clockapi.at: New file.
+	* tests/testsuite.at.in (clockapi.at): Incorporate it.
+
 2017-12-15  Keith Marshall  <keith@users.osdn.me>
 
 	Implement a subset of the POSIX.1b-1993 clock API.

@@ -90,6 +90,7 @@ m4_include([headers.at])
 m4_include([ansiprintf.at])
 m4_include([logarithms.at])
 m4_include([powerfunc.at])
+m4_include([clockapi.at])
 
 # vim: filetype=config formatoptions=croql
 # $RCSfile$: end of file
