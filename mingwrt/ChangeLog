@@ -1,3 +1,19 @@
+2017-12-18  Keith Marshall  <keith@users.osdn.me>
+
+	Support strtok() re-entrancy, per request [#2342].
+
+	* mingwex/strtok_r.c: New file; it implements...
+	(strtok_r): ...this function, per POSIX.1-1995 specification.
+	* Makefile.in (libmingwex.a): Add reference; make it depend on...
+	(strtok_r.$OBJEXT): ...this.
+
+	* include/string.h: Declare corresponding runtime API.
+	[_POSIX_C_SOURCE >= 199506L] (strtok_r): Add function prototype.
+	[__MSVCRT_VERSION__ >= __MSVCR80_DLL] (strtok_s): Likewise; this is
+	the Microsoft equivalent function, first introduced in this non-free
+	MSVC runtime library; subsequently available in MSVCRT.DLL since...
+	[_WIN32_WINNT >= _WIN32_WINNT_VISTA]: ...this release, likewise.
+
 2017-12-16  Keith Marshall  <keith@users.osdn.me>
 
 	Implement autotest module for POSIX clock API functions.
@@ -12,13 +28,15 @@
 	* include/time.h [_POSIX_C_SOURCE >= 199309L]
 	(clockid_t): New structured data type; define it opaquely, and...
 	(CLOCK_REALTIME, CLOCK_MONOTONIC): ...declare these extern instances.
-	[_POSIX_C_SOURCE >= 200809L] (gettimeofday): Mark it "deprecated".
-	[_POSIX_C_SOURCE >= 199309L] (clock_getres, clock_gettime)
-	(clock_settime): New functions; declare prototypes.
+	(clock_getres, clock_gettime, clock_settime): New functions; declare
+	prototypes.
 
 	* mingwex/clockapi.h mingwex/clockapi.c mingwex/clockres.c
 	* mingwex/clockset.c mingwex/clocktime.c: New files; they implement
 	the preceding clock instances, and associated API functions.
+
+	* include/sys/time.h [_POSIX_C_SOURCE >= 200809L] (gettimeofday):
+	Mark it as "deprecated".
 
 2017-12-14  Keith Marshall  <keith@users.osdn.me>
 

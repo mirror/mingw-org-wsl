@@ -452,7 +452,7 @@ libmingwex.a: $(addsuffix .$(OBJEXT), clockapi clockres clockset clocktime)
 libmingwex.a: $(addsuffix .$(OBJEXT), mkstemp mkdtemp cryptnam setenv)
 
 libmingwex.a: $(addsuffix .$(OBJEXT), tdelete tfind tsearch twalk)
-libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn strerror_r)
+libmingwex.a: $(addsuffix .$(OBJEXT), dirent wdirent dlfcn strerror_r strtok_r)
 libmingwex.a: $(addsuffix .$(OBJEXT), getdelim gettimeofday)
 
 vpath %.s ${mingwrt_srcdir}/mingwex

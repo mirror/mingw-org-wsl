@@ -199,6 +199,17 @@ __CRT_ALIAS size_t strnlen (const char *__text, size_t __maxlen)
 #endif	/* MSVCRT.DLL || pre-MSVCR80.DLL */
 #endif	/* _POSIX_C_SOURCE >= 200809L */
 
+#if _POSIX_C_SOURCE >= 199506L  /* SUSv2 */
+/* SUSv2 added a re-entrant variant of strtok(), which maintains state
+ * using a user supplied reference pointer, rather than the internal
+ * reference used by strtok() itself, thus making it both thread-safe,
+ * and suitable for interleaved use on multiple strings, even within a
+ * single thread context, (which isn't possible with strtok() itself,
+ * even with Microsoft's intrinsically thread-safe implementation).
+ */
+extern char *strtok_r
+(char *__restrict__, const char *__restrict__, char **__restrict__);
+
 #if _POSIX_C_SOURCE >= 200112L
 /* POSIX.1-2001 added a re-entrant variant of strerror(), which stores
  * the message text in a user supplied buffer, rather than in (possibly
@@ -210,7 +221,9 @@ __CRT_ALIAS size_t strnlen (const char *__text, size_t __maxlen)
  * copies of strerror()'s message text.
  */
 extern int strerror_r (int, char *, size_t);
-#endif
+
+#endif	/* POSIX.1-2001 */
+#endif	/* SUSv2 */
 
 #if __MSVCRT_VERSION__>=__MSVCR80_DLL || _WIN32_WINNT >= _WIN32_WINNT_VISTA
 /* MSVCR80.DLL introduced a safer, (erroneously so called "more secure"),
@@ -218,6 +231,13 @@ extern int strerror_r (int, char *, size_t);
  * to MSVCRT.DLL, from the release of Windows-Vista onwards.
  */
 _CRTIMP __cdecl __MINGW_NOTHROW  int strerror_s (char *, size_t, int);
+
+/* Also introduced in MSVCR80.DLL, and retrofitted to MSVCRT.DLL from the
+ * release of Windows-Vista, strtok_s() is a direct analogue for POSIX.1's
+ * strtok_r() function; (contrary to Microsoft's description, it is neither
+ * a "more secure", nor even a "safer" version of strtok() itself).
+ */
+_CRTIMP __cdecl __MINGW_NOTHROW  char *strtok_s (char *, const char *, char **);
 
 #elif _POSIX_C_SOURCE >= 200112L
 /* For the benefit of pre-Vista MSVCRT.DLL users, we provide an approximate
