@@ -34,7 +34,7 @@
 #pragma GCC system_header
 #define _WINREG_H
 
-#include <_mingw.h>
+#include <winbase.h>
 #include <reason.h>
 
 #ifndef WINADVAPI

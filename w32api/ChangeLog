@@ -1,5 +1,13 @@
 2017-12-20  Keith Marshall  <keith@users.osdn.me>
 
+	Make <winreg.h> header effectively self-contained.
+
+	* include/winreg.h: Include <winbase.h>, thus achieving effective
+	self-containment; since this also indirectly includes <_mingw.h>,
+	there is no longer any need to include it directly.
+
+2017-12-20  Keith Marshall  <keith@users.osdn.me>
+
 	Clean up, following issue [#2262] patch application.
 
 	* include/winreg.h: Tidy layout; correct copyright assertion.
