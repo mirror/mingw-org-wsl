@@ -1,3 +1,54 @@
+2017-12-20  Sebastián Puebla  <spuebla@users.sourceforge.net>
+
+	Update registry management API, per issue [#2262].
+
+	* include/winreg.h: Merge changes from 4.1-dev branch.
+	(REG_LATEST_FORMAT, REG_NO_COMPRESSION, REG_OPTION_BACKUP_RESTORE)
+	(REG_STANDARD_FORMAT, RRF_RT_ANY, RRF_RT_DWORD, RRF_RT_QWORD)
+	(RRF_RT_REG_BINARY, RRF_RT_REG_DWORD, RRF_RT_REG_EXPAND_SZ)
+	(RRF_RT_REG_MULTI_SZ, RRF_RT_REG_NONE, RRF_RT_REG_QWORD, RRF_RT_REG_SZ)
+	(RRF_NOEXPAND, RRF_SUBKEY_WOW6464KEY, RRF_SUBKEY_WOW6432KEY)
+	(RRF_ZEROONFAILURE): New manifest constants; define them.
+	(RegDisablePredefinedCache, RegOpenCurrentUser, RegOpenUserClassesRoot)
+	(RegOverridePredefKey): Add previously omitted function prototypes.
+	[_WIN32_WINNT >= _WIN32_WINNT_WINXP] (RegSaveKeyEx): Define...
+	[!defined UNICODE] (__AW): ...mapping it for SBCS/MBCS case, or...
+	[defined UNICODE] (__AW): ...for UTF-16LE case to either one of...
+	(RegSaveKeyExA, RegSaveKeyExW): ...these, respectively, and...
+	[_WIN32_WINNT >= _WIN32_WINNT_WINXP]: ...declare function prototypes.
+	[_WIN32_WINNT >= _WIN32_WINNT_WS03] (RegDisableReflectionKey)
+	(RegEnableReflectionKey, RegQueryReflectionKey): Declare prototypes.
+	[_WIN32_WINNT >= _WIN32_WINNT_VISTA] (RegCopyTreeA, RegCopyTreeW)
+	(RegCreateKeyTransactedA, RegCreateKeyTransactedW)
+	(RegDeleteKeyTransactedA, RegDeleteKeyTransactedW)
+	(RegDeleteKeyValueA, RegDeleteKeyValueW)
+	(RegDeleteTreeA, RegDeleteTreeW, RegDisablePredefinedCacheEx)
+	(RegGetValueA, RegGetValueW, RegLoadMUIStringA, RegLoadMUIStringW)
+	(RegOpenKeyTransactedA, RegOpenKeyTransactedW)
+	(RegSetKeyValueA, RegSetKeyValueW): Declare prototypes.
+	[_WIN32_WINNT >= _WIN32_WINNT_VISTA] (RegCopyTree)
+	(RegCreateKeyTransacted, RegDeleteKeyTransacted, RegDeleteKeyValue)
+	(RegDeleteTree, RegGetValue, RegLoadMUIString, RegOpenKeyTransacted)
+	(RegSetKeyValue): Define, mapping each to its respective function...
+	[!defined UNICODE] (__AW): ...for the SBCS/MBCS case, or...
+	[defined UNICODE] (__AW): ...for the UTF-16LE case.
+
+	* lib/kernel32.def (RegDeleteTreeA@8, RegDeleteTreeW@8)
+	(RegDisablePredefinedCacheEx@0, RegGetValueA@28, RegGetValueW@28)
+	(RegLoadMUIStringA@28, RegLoadMUIStringW@28, RegSaveKeyExA@16)
+	(RegSaveKeyExW@16): Remove them; relocate them to...
+	* lib/advapi32.def (RegDeleteTreeA@8, RegDeleteTreeW@8)
+	(RegDisablePredefinedCacheEx@0, RegGetValueA@28, RegGetValueW@28)
+	(RegLoadMUIStringA@28, RegLoadMUIStringW@28, RegSaveKeyExA@16)
+	(RegSaveKeyExW@16): ...their correct location, here.
+	(RegCopyTreeA@12, RegCopyTreeW@12, RegQueryReflectionKey@8)
+	(RegCreateKeyTransactedA@44, RegCreateKeyTransactedW@44)
+	(RegDeleteKeyTransactedA@24, RegDeleteKeyTransactedW@24)
+	(RegDeleteKeyValueA@12, RegDeleteKeyValueW@12)
+	(RegDisableReflectionKey@4, RegEnableReflectionKey@4)
+	(RegOpenKeyTransactedA@28, RegOpenKeyTransactedW@28)
+	(RegSetKeyValueA@24, RegSetKeyValueW@24): Add these.
+
 2017-12-16  Keith Marshall  <keith@users.osdn.me>
 
 	Provide default definition for _WIN32_IE feature test macro.

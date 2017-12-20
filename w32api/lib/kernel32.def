@@ -957,17 +957,8 @@ ReadFileEx@20
 ReadFileScatter@20
 ReadProcessMemory@20
 ReadThreadProfilingData@12
-RegDeleteTreeA@8
-RegDeleteTreeW@8
-RegDisablePredefinedCacheEx@0
-RegGetValueA@28
-RegGetValueW@28
 RegKrnGetGlobalState@0
 RegKrnInitialize@12
-RegLoadMUIStringA@28
-RegLoadMUIStringW@28
-RegSaveKeyExA@16
-RegSaveKeyExW@16
 RegisterApplicationRecoveryCallback@16
 RegisterApplicationRestart@8
 RegisterConsoleIME@8
