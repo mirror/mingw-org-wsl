@@ -1,3 +1,29 @@
+2017-12-20  Keith Marshall  <keith@users.osdn.me>
+
+	Clean up, following issue [#2262] patch application.
+
+	* include/winreg.h: Tidy layout; correct copyright assertion.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them, as appropriate.
+	[UNICODE] (__AW): Do not use deleted macro; replace it with...
+	[UNICODE] (__AW_ALIAS__): ...this, for conditional typedef mapping...
+	[UNICODE] (VALENT, PVALENT): ...of these; similarly replace with...
+	[UNICODE] (__AW_SUFFIXED__): ...this, to define function mappings...
+	[UNICODE] (AbortSystemShutdown, InitiateSystemShutdown)
+	(RegConnectRegistry, RegCreateKey, RegCreateKeyEx, RegDeleteKey)
+	(RegDeleteValue, RegEnumKey, RegEnumKeyEx, RegEnumValue, RegLoadKey)
+	(RegOpenKey, RegOpenKeyEx, RegQueryInfoKey, RegQueryMultipleValues)
+	(RegQueryValue, RegQueryValueEx, RegReplaceKey, RegRestoreKey)
+	(RegSaveKey, RegSetValue, RegSetValueEx, RegUnLoadKey, RegSaveKeyEx)
+	(RegDeleteKeyTransacted, RegDeleteKeyValue, RegDeleteTree, RegGetValue)
+	(RegLoadMUIString, RegOpenKeyTransacted, RegSetKeyValue)
+	(RegDeleteKeyEx, RegCopyTree, RegCreateKeyTransacted): ...for these.
+	(RegDeleteKeyEx, RegDeleteKeyExA, RegDeleteKeyExW): Fix regression;
+	all "4.x" branches specified these incorrectly, dependent on...
+	[_WIN32_WINNT >= _WIN32_WINNT_WIN2K]: ...this condition, whereas the
+	"legacy" branch, whence the "5.x" branches are propagated, correctly
+	required an alternative condition which is the equivalent of...
+	[_WIN32_WINNT >= _WIN32_WINNT_WS03]: ...this; revert it.
+
 2017-12-20  Sebastián Puebla  <spuebla@users.sourceforge.net>
 
 	Update registry management API, per issue [#2262].
