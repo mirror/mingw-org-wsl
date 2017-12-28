@@ -491,15 +491,15 @@ $(addsuffix .$(OBJEXT), llround llroundf llroundl): %.$(OBJEXT): lround_generic.
 #
 vpath %.sx ${mingwrt_srcdir}/mingwex/math
 $(addsuffix .$(OBJEXT), % %f %l): %_generic.sx
-	$(CC) -c -D_$*_source $(ALL_CPPFLAGS) $(ASFLAGS) -o $*.$(OBJEXT) $<
-	$(CC) -c -D_$*f_source $(ALL_CPPFLAGS) $(ASFLAGS) -o $*f.$(OBJEXT) $<
-	$(CC) -c -D_$*l_source $(ALL_CPPFLAGS) $(ASFLAGS) -o $*l.$(OBJEXT) $<
+	$(COMPILE.sx) -D_$*_source -o $*.$(OBJEXT) $<
+	$(COMPILE.sx) -D_$*f_source -o $*f.$(OBJEXT) $<
+	$(COMPILE.sx) -D_$*l_source -o $*l.$(OBJEXT) $<
 
 # Several generically implemented functions also require separate
 # assembly of their generic back-end support routines.
 #
 x87%.$(OBJEXT): %_generic.sx
-	$(CC) -c $(ALL_CPPFLAGS) $(ASFLAGS) -o $@ $<
+	$(COMPILE.sx) -o $@ $<
 
 # Historically, MinGW.org's libm.a has been a dummy, delivering
 # nothing of value; FIXME: IMO, this sucks; it should deliver the

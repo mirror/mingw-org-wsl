@@ -1,3 +1,12 @@
+2017-12-28  Keith Marshall  <keith@users.osdn.me>
+
+	Fix a build issue, assembling generic SX files.
+
+	* Makefile.in (%_generic.sx): Always use $(COMPILE.sx) to pre-process
+	and assemble these; with $(CC) -c $(ALL_CPPFLAGS) $(ASFLAGS), versions
+	of GCC, prior to GCC-4.3, will fail to identify the source file suffix
+	correctly, resulting in failure to assemble the code.
+
 2017-12-18  Keith Marshall  <keith@users.osdn.me>
 
 	Support strtok() re-entrancy, per request [#2342].
