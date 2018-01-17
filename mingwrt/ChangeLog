@@ -1,3 +1,14 @@
+2018-01-17  Keith Marshall  <keith@users.osdn.me>
+
+	Fix faulty POSIX deprecation warning logic.
+
+	* include/_mingw.h.in (__POSIX_2008_DEPRECATED): Do not nest...
+	(__POSIX_2001_DEPRECATED): ...within defininion of this; similarly...
+	(__POSIX_1995_DEPRECATED): ...neither within this; rename this as...
+	(__POSIX_1996_DEPRECATED): ...this; although conditional upon...
+	[_POSIX_C_SOURCE >= 199506L]: ...this, the corresponding standard was
+	eventually ratified, not as POSIX.1-1995, but as POSIX.1-1996
+
 2017-12-28  Keith Marshall  <keith@users.osdn.me>
 
 	Fix a build issue, assembling generic SX files.

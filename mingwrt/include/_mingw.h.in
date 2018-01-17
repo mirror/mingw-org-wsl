@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Mumit Khan  <khan@xraylith.wisc.edu>
- * Copyright (C) 1999, 2001-2011, 2014-2017, MinGW.org Project
+ * Copyright (C) 1999, 2001-2011, 2014-2018, MinGW.org Project
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -483,7 +483,14 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
  * interfaces which have been marked as "obsolescent", from this POSIX
  * version onwards, will be reported as "deprecated", at point of use.
  */
-# define __POSIX_1995_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
+# define __POSIX_1996_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
+#else
+/* POSIX.1-1996 conformance is NOT required; do not object to use of
+ * interfaces which became "obsolescent" in this POSIX version, but
+ * were still fully supported in earlier versions.
+ */
+# define __POSIX_1996_DEPRECATED
+#endif
 
 #if _POSIX_C_SOURCE >= 200112L
 /* Conformance with POSIX.1-2001 has been requested; ensure that any
@@ -491,21 +498,6 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
  * version onwards, will be reported as "deprecated", at point of use.
  */
 # define __POSIX_2001_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
-
-#if _POSIX_C_SOURCE >= 200809L
-/* Conformance with POSIX.1-2008 has been requested; ensure that any
- * interfaces which have been marked as "obsolescent", from this POSIX
- * version onwards, will be reported as "deprecated", at point of use.
- */
-# define __POSIX_2008_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
-
-#else
-/* POSIX.1-2008 conformance is NOT required; do not object to use of
- * interfaces which became "obsolescent" in this POSIX version, but
- * were still fully supported in earlier versions.
- */
-# define __POSIX_2008_DEPRECATED
-#endif
 #else
 /* POSIX.1-2001 conformance is NOT required; do not object to use of
  * interfaces which became "obsolescent" in this POSIX version, but
@@ -513,12 +505,19 @@ allow GCC to optimize away some EH unwind code, at least in DW2 case.  */
  */
 # define __POSIX_2001_DEPRECATED
 #endif
+
+#if _POSIX_C_SOURCE >= 200809L
+/* Conformance with POSIX.1-2008 has been requested; ensure that any
+ * interfaces which have been marked as "obsolescent", from this POSIX
+ * version onwards, will be reported as "deprecated", at point of use.
+ */
+# define __POSIX_2008_DEPRECATED  __MINGW_ATTRIB_DEPRECATED
 #else
-/* POSIX.1-1996 conformance is NOT required; do not object to use of
+/* POSIX.1-2008 conformance is NOT required; do not object to use of
  * interfaces which became "obsolescent" in this POSIX version, but
  * were still fully supported in earlier versions.
  */
-# define __POSIX_1995_DEPRECATED
+# define __POSIX_2008_DEPRECATED
 #endif
 
 #ifndef _ISOC99_SOURCE
