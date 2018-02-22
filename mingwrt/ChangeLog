@@ -1,3 +1,24 @@
+2018-02-22  Keith Marshall  <keith@users.osdn.me>
+
+	Correct Windows version support for <utime.h> functions.
+
+	* include/sys/utime.h: Tidy layout; assert copyright.
+	(_UTIME_H_): Rename this repeat inclusion guard macro...
+	(_SYS_UTIME_H): ...to this, for consistency with current practice.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them, as appropriate.
+	(struct __utimbuf32): Define it unconditionally; remove...
+	[__MSVCRT_VERSION__>=0x0800]: ...this prerequisite.
+	(_utime32, _wutime32, _futime32): Declare them for...
+	[_WIN32_WINNT >= _WIN32_WINNT_VISTA]: ...this, in addition to...
+	[__MSVCRT_VERSION__>=__MSVCR80_DLL]: ...this original condition, but
+	also emulate them in-line, if neither condition applies.
+	[__MSVCRT_VERSION__>=__MSVCR80.DLL] (_utime, _wutime, _futime):
+	Implement them in-line, delegating each respectively to...
+	[_USE_32BIT_TIME_T] (_utime32, _wutime32, _futime32): ...these, or...
+	[!_USE_32BIT_TIME_T] (_utime64, _wutime64, _futime64): ...to these.
+	[__MSVCRT_VERSION__>=__MSVCR80.DLL] (utime): Implement in-line, or...
+	[__MSVCRT_VERSION__<__MSVCR80.DLL] (utime): ...declare it.
+
 2018-01-17  Keith Marshall  <keith@users.osdn.me>
 
 	Fix faulty POSIX deprecation warning logic.
