@@ -1,5 +1,33 @@
 2018-02-22  Keith Marshall  <keith@users.osdn.me>
 
+	Correct <sys/timeb.h> 32-bit vs. 64-bit time_t anomalies.
+
+	* include/sys/timeb.h: Assert copyright; tidy layout.
+	(_TIMEB_H_): Original multiple inclusion guard macro; rename it...
+	(_SYS_TIMEB_H): ...conforming to this preferred naming convention.
+	(GCC system_header): Add pragma, asserting it as such a header.
+	(__need_time_t): Define for selective <sys/types.h> inclusion.
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them as appropriate.
+	(pragma pack): Push to pack all structs with 2-byte alignment.
+	(struct timeb): Mark as deprecated, from POSIX.1-2001 onwards.
+	(ftime): Likewise, mark as deprecated; always emulate it by in-line
+	redirection to _ftime(), however this may be implemented.
+	(struct __timeb32): Make its definition unconditionally visible.
+	(_ftime32) [__MSVCRT_VERSION__ >= __MSVCR80_DLL]: Declare prototype.
+	(_ftime32) [_WIN64 || _WIN32_WINNT >= _WIN32_WINNT_VISTA]: Likewise,
+	otherwise emulate it by in-line redirection to 32-bit _ftime().
+	(struct __timeb64, _ftime64): Make visibility condition symbolic...
+	[__MSVCRT_VERSION__ >= __MSVCR61_DLL]: ...thus; add visibility for...
+	[_WIN64 || _WIN32_WINNT >= _WIN32_WINNT_WIN2K]: ...these alternatives.
+	(_ftime) [__MSVCRT_VERSION__ < __MSVCR80_DLL]: Declare prototype.
+	(_ftime) [__MSVCRT_VERSION__ >= __MSVCR80_DLL]: Emulate it...
+	[_USE_32BIT_TIME_T]: ...by in-line redirection to _ftime32(), else...
+	[!_USE_32BIT_TIME_T]: ...to _ftime64().
+
+	* tests/headers.at [sys/timeb.h]: Suppress "deprecated" warnings.
+
+2018-02-22  Keith Marshall  <keith@users.osdn.me>
+
 	Correct Windows version support for <utime.h> functions.
 
 	* include/sys/utime.h: Tidy layout; assert copyright.

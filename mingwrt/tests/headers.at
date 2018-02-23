@@ -115,6 +115,7 @@ m4_foreach_w([HEADER],MINGWRT_AT_PACKAGE_HEADERS,[dnl
 AT_SETUP([#include <]HEADER[>])AT_KEYWORDS([$1 $1-headers])
 AS_VAR_APPEND([CPPFLAGS],[" -Wall -Wextra -Wsystem-headers"])
 m4_if(HEADER,[unistd.h],AS_VAR_APPEND([CPPFLAGS],[" -Wno-deprecated-declarations"]))
+m4_if(HEADER,[sys/timeb.h],AS_VAR_APPEND([CPPFLAGS],[" -Wno-deprecated-declarations"]))
 m4_if(HEADER,[sys/stat.h],AS_VAR_APPEND([CPPFLAGS],[" -D_MINGW_S_IFBLK_KLUDGE"]))
 MINGW_AT_CHECK_COMPILE([dnl
 #define __IN_MINGWRT_TESTSUITE__ 1
@@ -136,7 +137,7 @@ m4_foreach([LANG],[C,C++],[MINGWRT_AT_CHECK_HEADERS_STANDALONE(LANG)])
 m4_define([MINGWRT_AT_CHECK_HEADERS_COMBINED],[MINGW_AT_LANG([$1])dnl
 AT_SETUP([#include all; language = $1])AT_KEYWORDS([$1 $1-headers])
 AS_VAR_APPEND([CPPFLAGS],[" -Wall -Wextra -Wsystem-headers"])
-m4_if([$1],[C],AS_VAR_APPEND([CPPFLAGS],[" -Wno-deprecated-declarations"]))
+AS_VAR_APPEND([CPPFLAGS],[" -Wno-deprecated-declarations"])
 MINGW_AT_CHECK_COMPILE([dnl
 #define _MINGW_S_IFBLK_KLUDGE 1
 #define __IN_MINGWRT_TESTSUITE__ 1
