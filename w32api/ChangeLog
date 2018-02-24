@@ -1,3 +1,18 @@
+2018-02-24  Keith Marshall  <keith@users.osdn.me>
+
+	Make <iptypes.h> header effectively self-contained.
+
+	* include/iptypes.h: Assert copyright; tidy layout.
+	Include <windef.h>; it is required for self-containment.
+	(__need_time_t): Define for selective inclusion of <sys/types.h>
+	(_BEGIN_C_DECLS, _END_C_DECLS): Use them as appropriate.
+	(_WIN32_WINNT): Always compare it symbolically.
+	(__dhcp_time_t): New temporary data type macro; define it...
+	[_WIN64]: ...as equivalent to __time64_t, otherwise...
+	[!_WIN64]: ...equivalent to __time32_t, and then...
+	(struct _IP_ADAPTER_INFO): ...use it as the data type for...
+	(LeaseObtained, LeaseExpires): ...these fields.
+
 2017-12-20  Keith Marshall  <keith@users.osdn.me>
 
 	Make <winreg.h> header effectively self-contained.
