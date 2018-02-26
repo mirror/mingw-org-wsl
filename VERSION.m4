@@ -6,7 +6,7 @@
 # assign a common version number to each of the mingwrt and w32api
 # MinGW System Library sub-packages.
 #
-m4_define([__VERSION__],[5.1])
+m4_define([__VERSION__],[5.1.1])
 
 # This is also a convenient place to specify the import library
 # associations, and DLLVERSION information for each DLL which may
