@@ -7,7 +7,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2011-2014, 2017, MinGW.org Project.
+ * Copyright (C) 2011-2014, 2017, 2018, MinGW.org Project.
  *
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -902,15 +902,96 @@ glob_match( const char *pattern, int flags, int (*errfn)(), glob_t *gl_buf )
 	    */
 	   if( *src != '\0') *dest++ = *src++;
 	 }
-	 /* ...copying every character up to but excluding the
-	  * opening brace of the first brace bounded expression
-	  * (if any), or up to and including the NUL terminator
-	  * otherwise...
+	 if( (c = *src) == '{' )
+	 {
+	   /* We've found the opening brace of a possible brace
+	    * expansion; perform a look-ahead, to confirm that it
+	    * is actually expandible, (i.e. its matching closing
+	    * brace is present, and there is at least one comma
+	    * separator at its initial nesting level).
+	    */
+	   const char *scan = src; int level = 1, comma = ',';
+	   do {
+		/* We already know that the first character in
+		 * the look-ahead range is '{', so we start our
+		 * look-ahead scan at the following character in
+		 * level one, proceeding until we either find the
+		 * corresponding '}', or we run out of scannable
+		 * characters; in passing, note whether or not
+		 * we find a comma separator at level one.
+		 */
+		switch( *++scan )
+		{
+		  /* While scanning, any further opening brace
+		   * characters take us to one higher level of
+		   * expression nesting, whereas closing braces
+		   * bring us back to one lower level, until we
+		   * ultimately drop out of level one.
+		   */
+		  case '{': ++level; break;
+		  case '}': --level; break;
+
+		  /* If we find a comma...
+		   */
+		  case ',':
+		    /* ...and it appears at expression nesting
+		     * level one, we note that it is associated
+		     * with an opening brace, (this doesn't imply
+		     * character replacement; merely association,
+		     * and at any other nesting level, we assign
+		     * no significance to the comma).
+		     */
+		    if( level == 1 ) comma = '{';
+		    break;
+
+		  /* If we run out of scannable characters, (i.e.
+		   * we find a NUL terminator)...
+		   */
+		  case '\0':
+		    /* ...then the expression is malformed; drop
+		     * any previously noted association for comma,
+		     * and forcibly close all open nesting levels,
+		     * so aborting the expression scan.
+		     */
+		    comma = ','; level = 0;
+		    break;
+
+		  /* Other than the above...
+		   */
+		  default:
+		    /* ...we must handle escapes for any of these
+		     * special characters, while again taking care
+		     * to avoid overrunning the NUL terminator.
+		     */
+		    if( (*scan == glob_escape_char) && (scan[1] != '\0') )
+		      ++scan;
+		}
+		/* We continue this look-ahead until we either exit
+		 * the level one scan naturally, (on detection of its
+		 * closing '}'), or because we ran out of characters
+		 * to scan, (i.e. we found a NUL terminator).
+		 */
+	      } while( level > 0 );
+
+	   /* In the event that we have found an opening brace, but
+	    * no associated comma separator, (or worse, no matching
+     	    * closing brace), then our "comma" variable will reflect
+	    * an unsuccessful expression validation; since it will
+	    * otherwise have mapped an association to the opening
+	    * brace, we can simply update "c" to match.
+	    */
+	   c = comma;
+	 }
+	 /* In the event that we didn't find a well-formed brace
+	  * expression, (including at least one comma separator at
+	  * nesting level one), then we must simply store whatever
+	  * character we did find at the current pattern offset...
 	  */
-	 if( (c = *src) != '{' ) *dest++ = *src++;
+	 if( c != '{' ) *dest++ = *src++;
 	 /*
 	  * ...repeating until we either exhaust the original
-	  * pattern, or we find an opening brace.
+	  * pattern, or we do find an opening brace which does
+	  * have an associated level one comma separator.
 	  */
        } while( (c != '\0') && (c != '{') );
 

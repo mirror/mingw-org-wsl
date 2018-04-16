@@ -1,3 +1,12 @@
+2018-04-16  Keith Marshall  <keith@users.osdn.me>
+
+	Suppress glob-brace expansion of single item lists.
+
+	* mingwex/glob.c (glob_match) [c == '{']: Look-ahead to matching '}';
+	ignore intervening nested '{' ... '}' expression groups, and suppress
+	special interpretation of '{' if '\0' encountered before '}' at outer
+	nesting level, or if no unescaped ',' found within outer expression.
+
 2018-02-26  Keith Marshall  <keith@users.osdn.me>
 
 	Prepare and publish MinGW.org WSL-5.1 release.
