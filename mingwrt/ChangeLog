@@ -1,5 +1,12 @@
 2018-04-16  Keith Marshall  <keith@users.osdn.me>
 
+	Suppress glob-brace expansion within quoted arguments.
+
+	* setargv.c (__mingw32_setargv) [quoted]: Handle '{', ',', and '}'
+	in the same manner as '*', and '?'.
+
+2018-04-16  Keith Marshall  <keith@users.osdn.me>
+
 	Suppress glob-brace expansion of single item lists.
 
 	* mingwex/glob.c (glob_match) [c == '{']: Look-ahead to matching '}';

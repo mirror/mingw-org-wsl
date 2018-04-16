@@ -8,7 +8,7 @@
  * $Id$
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2014, 2017, MinGW.org Project
+ * Copyright (C) 2014, 2017, 2018, MinGW.org Project
  *
  * ---------------------------------------------------------------------------
  *
@@ -143,9 +143,14 @@ void __mingw32_setargv( const char *cmdline )
 	 */
 	bracket = (_CRT_glob & ARGV_NOGROUP) ? 0 : ARGV_NOGROUP;
 
-      case '*':
-      case '?':
-	/* These standard globbing tokens...
+      case '*': case '?':
+	/* These standard globbing tokens,...
+	 */
+      case '{': case ',': case '}':
+	/* ...this additional triplet, non-standard, but required
+	 * to support GNU's GLOB_BRACE extension; (strictly we need
+	 * to consider these only if GLOB_BRACE is enabled, but it
+	 * should do no harm to consider them regardless),...
 	 */
       case ARGV_ESCAPE:
 	/* ...and the escape character itself, need to be escaped
