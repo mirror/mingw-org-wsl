@@ -1,3 +1,14 @@
+2018-07-11  Keith Marshall  <keith@users.osdn.me>
+
+	Correct <wincrypt.h> typographic errors; fix issue [#38391]
+
+	* include/wincrypt.h (CALG_TLS1PRF): Delete symbolic reference to...
+	(ALG_CLASS_DHASH): ...this; there is no such symbol; replace it with...
+	(ALG_CLASS_HASH): ...this, which represents the correct reference.
+	(struct _CRYPTOAPI_BLOB): Delete extraneous "typedef" keyword; this
+	struct definition is not directly associated with any type name.
+	(struct _SSL_EXTRA_CERT_CHAIN_POLICY_PARA): Likewise.
+
 2018-02-26  Keith Marshall  <keith@users.osdn.me>
 
 	Prepare and publish MinGW.org WSL-5.1 release.
