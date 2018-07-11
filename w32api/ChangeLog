@@ -1,5 +1,11 @@
 2018-07-11  Keith Marshall  <keith@users.osdn.me>
 
+	Make <wincrypt.h> header effectively self-contained.
+
+	* include/wincrypt.h: Include <winbase.h>
+
+2018-07-11  Keith Marshall  <keith@users.osdn.me>
+
 	Correct <wincrypt.h> typographic errors; fix issue [#38391]
 
 	* include/wincrypt.h (CALG_TLS1PRF): Delete symbolic reference to...

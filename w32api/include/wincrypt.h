@@ -34,6 +34,8 @@
 #define _WINCRYPT_H
 #pragma GCC system_header
 
+#include <winbase.h>
+
 #ifndef WINADVAPI
 #define WINADVAPI
 #endif
