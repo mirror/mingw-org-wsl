@@ -1,12 +1,52 @@
-mingw.org-wsl (Windows System Libraries):
-=====
-This package contains both the C Runtime (libcrt) and the Windows API (winapi)
-definitions as provided by the MinGW.org team.  These libraries can be used
-for both 32 bit and 64 bit Windows programming.  We have extended some parts
-of the C runtime to be C99 compliant but for the most part you can find the
-documentation provided by http://msdn.microsoft.com to be your best source for
-how to use these libraries in your C programming.  The GNU C++ compiler (g++)
-has its own implementation of the C++ standard and the documentation you find
-for stdc++ on the http://gcc.gnu.org site will be your best source of informa-
-tion for it.  Note that some of the C++ API will not able to be used on Windows
-due to lack of implementation for the Windows platform.
+MinGW.org-WSL (Windows System Libraries)
+========================================
+
+This package provides both the C Runtime (mingwrt) and the Windows API
+(winapi, a.k.a. w32api) system library components, which are required to
+support the MinGW.org distribution of the GNU Compiler Collection.
+
+
+Important Notice
+----------------
+
+The canonical URI for this package's source code repository is:
+git://git.osdn.net/gitroot/mingw/mingw-org-wsl.git
+
+Alternative canonical URIs, equivalent to the above are:
+https://scm.osdn.net/gitroot/mingw/mingw-org-wsl.git
+http://scm.osdn.net/gitroot/mingw/mingw-org-wsl.git
+
+Privileged users, with SSH update rights, may clone the repository from:
+ssh://USERNAME@git.osdn.net:/gitroot/mingw/mingw-org-wsl.git
+
+Privileged users, who favour Mercurial over Git, may enable Mercurial's
+git extension, and then "hg clone" from the equivalent (hg-capable) URI:
+git+ssh://USERNAME@git.osdn.net:/gitroot/mingw/mingw-org-wsl.git
+
+If you obtain source code from any URI, other than those canonical URIs
+listed above, (or any alternative URI as may be identified subsequently,
+at these URIs), then you should be advised that such source code is not
+maintained by the MinGW.org Development Team, and is likely obsolete.
+
+
+Description
+-----------
+
+MinGW.org-WSL is provided, and maintained by the MinGW.org Development
+Team, to furnish essential bindings between the GNU Compiler Collection
+and the MS-Windows operating system.  Historically, development has been
+focused on support for the 32-bit MS-Windows platform.  However, these
+libraries are intended for use in both 32-bit and 64-bit programming;
+patches to imporve support for both platforms, and in particular the
+64-bit platform, will be gratefully considered.
+
+Parts of the C runtime have been adapted to improve C99 compliance, but
+for the most part you may find that Microsoft's documentation, provided
+at http://msdn.microsoft.com, offers the most useful advice on the use
+the MinGW.org-WSL libraries in your own programming.
+
+The GNU C++ Compiler (g++) provides its own implementation of the C++
+standard; http://gcc.gnu.org offers the most useful documentation for
+this particular implementation of the C++ standard.  (Do please note
+that not all features of this implementation are fully supported on
+the MS-Windows platforms).

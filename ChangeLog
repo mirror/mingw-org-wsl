@@ -1,3 +1,10 @@
+2018-07-13  Keith Marshall  <keith@users.osdn.me>
+
+	Advertise new canonical URI for source code repository.
+
+	* README (Important Notice): New section; identify new canonical
+	repository URIs; note obsolescence of old repositories.
+
 2018-02-26  Keith Marshall  <keith@users.osdn.me>
 
 	Adjust repository version following WSL-5.1 release.
